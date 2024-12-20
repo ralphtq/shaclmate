@@ -23,14 +23,12 @@ export function toJsonFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
   const jsonObjectMembers: string[] = [];
   const parameters: OptionalKind<ParameterDeclarationStructure>[] = [];
   const returnType: string[] = [];
-  let satisfies: string;
 
   switch (this.declarationType) {
     case "class":
       if (this.parentObjectTypes.length > 0) {
         jsonObjectMembers.push("...super.toJson()");
       }
-      satisfies = `ReturnType<${this.name}["toJson"]>`;
       break;
     case "interface":
       for (const parentObjectType of this.parentObjectTypes) {
@@ -42,7 +40,6 @@ export function toJsonFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
         name: this.thisVariable,
         type: this.name,
       });
-      satisfies = `ReturnType<typeof ${this.name}.toJson>`;
       break;
   }
 
@@ -90,7 +87,7 @@ export function toJsonFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
     parameters,
     returnType: returnType.length > 0 ? returnType.join(" & ") : "object",
     statements: [
-      `return JSON.parse(JSON.stringify({ ${jsonObjectMembers.join(",")} } satisfies ${satisfies}));`,
+      `return JSON.parse(JSON.stringify({ ${jsonObjectMembers.join(",")} } satisfies ${this.jsonName}));`,
     ],
   });
 }

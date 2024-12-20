@@ -204,7 +204,14 @@ export class ObjectType extends DeclaredType {
   }
 
   get jsonName(): string {
-    return `ReturnType<${this.name}["toJson"]>`;
+    switch (this.declarationType) {
+      case "class":
+        return `ReturnType<${this.name}["toJson"]>`;
+      case "interface":
+        return `ReturnType<typeof ${this.name}.toJson>`;
+      default:
+        throw new RangeError(this.declarationType);
+    }
   }
 
   @Memoize()
