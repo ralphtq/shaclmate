@@ -1,6 +1,7 @@
 export * from "./Ast.js";
 export * from "./IdentifierType.js";
 export * from "./IntersectionType.js";
+export * from "./ListType.js";
 export * from "./LiteralType.js";
 export * from "./Name.js";
 export * from "./ObjectIntersectionType.js";

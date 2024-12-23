@@ -43,15 +43,22 @@ export function transformPropertyShapeToAstCompositeType(
     if (extern.orDefault(false)) {
       // Use the identifier type instead
       let nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
-      if (astType.kind === "ObjectType") {
-        nodeKinds = astType.nodeKinds;
-      } else {
-        nodeKinds = new Set();
-        for (const memberType of astType.memberTypes) {
-          for (const nodeKind of memberType.nodeKinds) {
-            nodeKinds.add(nodeKind);
+      switch (astType.kind) {
+        case "ListType":
+          nodeKinds = new Set();
+          nodeKinds.add(astType.identifierNodeKind);
+          break;
+        case "ObjectType":
+          nodeKinds = astType.nodeKinds;
+          break;
+        case "ObjectIntersectionType":
+        case "ObjectUnionType":
+          nodeKinds = new Set();
+          for (const memberType of astType.memberTypes) {
+            for (const nodeKind of memberType.nodeKinds) {
+              nodeKinds.add(nodeKind);
+            }
           }
-        }
       }
 
       return Either.of({

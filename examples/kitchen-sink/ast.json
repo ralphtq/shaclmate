@@ -207,95 +207,6 @@
     {
       "kind": "ObjectType",
       "name": {
-        "curie": ":ListShape",
-        "identifier": {
-          "termType": "NamedNode",
-          "value": "http://example.com/ListShape"
-        },
-        "shName": "ListShape"
-      },
-      "properties": [
-        {
-          "name": {
-            "curie": ":ListShape-first",
-            "identifier": {
-              "termType": "NamedNode",
-              "value": "http://example.com/ListShape-first"
-            },
-            "shName": "first"
-          },
-          "path": "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-          "type": {
-            "datatype": {
-              "termType": "NamedNode",
-              "value": "http://www.w3.org/2001/XMLSchema#string"
-            },
-            "kind": "LiteralType"
-          }
-        },
-        {
-          "name": {
-            "curie": ":ListShape-rest",
-            "identifier": {
-              "termType": "NamedNode",
-              "value": "http://example.com/ListShape-rest"
-            },
-            "shName": "rest"
-          },
-          "path": "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-          "type": {
-            "kind": "UnionType",
-            "types": [
-              {
-                "fromRdfType": {
-                  "termType": "NamedNode",
-                  "value": "http://example.com/ListShape"
-                },
-                "kind": "ObjectType",
-                "listItemType": {
-                  "datatype": {
-                    "termType": "NamedNode",
-                    "value": "http://www.w3.org/2001/XMLSchema#string"
-                  },
-                  "kind": "LiteralType"
-                },
-                "name": {
-                  "curie": ":ListShape",
-                  "identifier": {
-                    "termType": "NamedNode",
-                    "value": "http://example.com/ListShape"
-                  },
-                  "shName": "ListShape"
-                },
-                "nodeKinds": [
-                  "BlankNode",
-                  "NamedNode"
-                ],
-                "toRdfTypes": [
-                  {
-                    "termType": "NamedNode",
-                    "value": "http://example.com/ListShape"
-                  }
-                ]
-              },
-              {
-                "hasValue": {
-                  "termType": "NamedNode",
-                  "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
-                },
-                "kind": "IdentifierType",
-                "nodeKinds": [
-                  "NamedNode"
-                ]
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "kind": "ObjectType",
-      "name": {
         "curie": ":NodeShapeWithDefaultValueProperties",
         "identifier": {
           "termType": "NamedNode",
@@ -725,36 +636,14 @@
           },
           "path": "http://example.com/listProperty",
           "type": {
-            "fromRdfType": {
-              "termType": "NamedNode",
-              "value": "http://example.com/ListShape"
-            },
-            "kind": "ObjectType",
-            "listItemType": {
+            "itemType": {
               "datatype": {
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#string"
               },
               "kind": "LiteralType"
             },
-            "name": {
-              "curie": ":ListShape",
-              "identifier": {
-                "termType": "NamedNode",
-                "value": "http://example.com/ListShape"
-              },
-              "shName": "ListShape"
-            },
-            "nodeKinds": [
-              "BlankNode",
-              "NamedNode"
-            ],
-            "toRdfTypes": [
-              {
-                "termType": "NamedNode",
-                "value": "http://example.com/ListShape"
-              }
-            ]
+            "kind": "ListType"
           }
         }
       ]

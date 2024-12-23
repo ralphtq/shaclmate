@@ -1,5 +1,7 @@
+import { NodeKind } from "@shaclmate/shacl-ast";
 import { rdf } from "@tpluscode/rdf-ns-builders";
-import { Either, Left, Maybe } from "purify-ts";
+import { Either, Left } from "purify-ts";
+import { invariant } from "ts-invariant";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
 import type { TsFeature } from "../enums/index.js";
@@ -20,28 +22,63 @@ const tsFeaturesDefault: Set<TsFeature> = new Set([
  * Is an ast.ObjectType actually the shape of an RDF list?
  * If so, return the type of its rdf:first.
  */
-function astObjectTypeListItemType(
-  astObjectType: ast.ObjectType,
+function transformNodeShapeToListType(
+  this: ShapesGraphToAstTransformer,
   nodeShape: input.NodeShape,
-): Either<Error, ast.Type> {
-  if (!nodeShape.resource.isSubClassOf(rdf.List)) {
-    return Left(new Error(`${nodeShape} is not an rdfs:subClassOf rdf:List`));
+): Either<Error, ast.ListType> {
+  invariant(nodeShape.resource.isSubClassOf(rdf.List));
+
+  // Put a placeholder in the cache to deal with cyclic references
+  const listType: ast.ListType = {
+    fromRdfType: nodeShape.fromRdfType,
+    identifierNodeKind: nodeShape.nodeKinds.has(NodeKind.BLANK_NODE)
+      ? NodeKind.BLANK_NODE
+      : NodeKind.IRI,
+    itemType: {
+      kind: "PlaceholderType" as const,
+    },
+    kind: "ListType" as const,
+    name: this.shapeAstName(nodeShape),
+    mintingStrategy: nodeShape.mintingStrategy.toMaybe(),
+    toRdfTypes: nodeShape.toRdfTypes,
+  };
+
+  this.nodeShapeAstTypesByIdentifier.set(
+    nodeShape.resource.identifier,
+    listType,
+  );
+
+  const properties: ast.ObjectType.Property[] = [];
+  for (const propertyShape of nodeShape.constraints.properties) {
+    const propertyEither =
+      this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
+    if (propertyEither.isLeft()) {
+      logger.warn(
+        "error transforming %s %s: %s",
+        nodeShape,
+        propertyShape,
+        (propertyEither.extract() as Error).message,
+      );
+      continue;
+      // return property;
+    }
+    properties.push(propertyEither.unsafeCoerce());
   }
 
-  if (astObjectType.properties.length !== 2) {
+  if (properties.length !== 2) {
     return Left(new Error(`${nodeShape} does not have exactly two properties`));
   }
 
   // rdf:first can have any type
   // The type of the rdf:first property is the list item type.
-  const firstProperty = astObjectType.properties.find((property) =>
+  const firstProperty = properties.find((property) =>
     property.path.iri.equals(rdf.first),
   );
   if (!firstProperty) {
     return Left(new Error(`${nodeShape} does not have an rdf:first property`));
   }
 
-  const restProperty = astObjectType.properties.find((property) =>
+  const restProperty = properties.find((property) =>
     property.path.iri.equals(rdf.rest),
   );
   if (!restProperty) {
@@ -61,7 +98,7 @@ function astObjectTypeListItemType(
   if (
     !restProperty.type.memberTypes.find(
       (type) =>
-        type.kind === "ObjectType" &&
+        type.kind === "ListType" &&
         type.name.identifier.equals(nodeShape.resource.identifier),
     )
   ) {
@@ -83,7 +120,9 @@ function astObjectTypeListItemType(
     );
   }
 
-  return Either.of(firstProperty.type);
+  listType.itemType = firstProperty.type;
+
+  return Either.of(listType);
 }
 
 export function transformNodeShapeToAstType(
@@ -97,6 +136,10 @@ export function transformNodeShapeToAstType(
     if (type) {
       return Either.of(type);
     }
+  }
+
+  if (nodeShape.resource.isSubClassOf(rdf.List)) {
+    return transformNodeShapeToListType.bind(this)(nodeShape);
   }
 
   const export_ = nodeShape.export.orDefault(true);
@@ -169,7 +212,6 @@ export function transformNodeShapeToAstType(
     extern: nodeShape.extern.orDefault(false),
     fromRdfType: nodeShape.fromRdfType,
     kind: "ObjectType",
-    listItemType: Maybe.empty(),
     mintingStrategy: nodeShape.mintingStrategy.toMaybe(),
     name: this.shapeAstName(nodeShape),
     nodeKinds: nodeShape.nodeKinds,
@@ -230,12 +272,6 @@ export function transformNodeShapeToAstType(
     }
     objectType.properties.push(propertyEither.unsafeCoerce());
   }
-
-  // Is the object type an RDF list?
-  objectType.listItemType = astObjectTypeListItemType(
-    objectType,
-    nodeShape,
-  ).toMaybe();
 
   return Either.of(objectType);
 }
