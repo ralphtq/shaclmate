@@ -96,13 +96,21 @@ class InterfaceHarness<
 }
 
 describe("TsGenerator", () => {
-  const harnessesById = {
+  const harnesses = {
     concreteChildClassNodeShape: new ClassHarness({
       fromRdf: kitchenSink.ConcreteChildClassNodeShape.fromRdf,
       instance: new kitchenSink.ConcreteChildClassNodeShape({
         identifier: dataFactory.blankNode(),
         abcStringProperty: "abc",
         childStringProperty: "child",
+        parentStringProperty: "parent",
+      }),
+    }),
+    concreteParentClassNodeShape: new ClassHarness({
+      fromRdf: kitchenSink.ConcreteParentClassNodeShape.fromRdf,
+      instance: new kitchenSink.ConcreteParentClassNodeShape({
+        identifier: dataFactory.blankNode(),
+        abcStringProperty: "abc",
         parentStringProperty: "parent",
       }),
     }),
@@ -119,9 +127,37 @@ describe("TsGenerator", () => {
       },
       toRdf: kitchenSink.InterfaceNodeShape.toRdf,
     }),
+    iriNodeShape: new ClassHarness({
+      fromRdf: kitchenSink.IriNodeShape.fromRdf,
+      instance: new kitchenSink.IriNodeShape({
+        identifier: dataFactory.namedNode("http://example.com/test"),
+        stringProperty: "test",
+      }),
+    }),
     nodeShapeWithDefaultValueProperties: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
       instance: new kitchenSink.NodeShapeWithDefaultValueProperties({}),
+    }),
+    nodeShapeWithDefaultValuePropertiesOverriddenDifferent: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
+        falseBooleanProperty: true,
+        identifier: dataFactory.blankNode(),
+        numberProperty: 1,
+        stringProperty: "test",
+        trueBooleanProperty: false,
+      }),
+    }),
+    nodeShapeWithDefaultValuePropertiesOverriddenSame: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
+        falseBooleanProperty: false,
+        dateTimeProperty: new Date(1523268000000),
+        identifier: dataFactory.blankNode(),
+        numberProperty: 0,
+        stringProperty: "",
+        trueBooleanProperty: true,
+      }),
     }),
     nodeShapeWithExplicitRdfTypes: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithExplicitRdfTypes.fromRdf,
@@ -183,27 +219,6 @@ describe("TsGenerator", () => {
         orTermsProperty: dataFactory.literal("test"),
       }),
     }),
-    nodeShapeWithOverriddenDefaultValuePropertiesDifferent: new ClassHarness({
-      fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
-      instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
-        falseBooleanProperty: true,
-        identifier: dataFactory.blankNode(),
-        numberProperty: 1,
-        stringProperty: "test",
-        trueBooleanProperty: false,
-      }),
-    }),
-    nodeShapeWithOverriddenDefaultValuePropertiesSame: new ClassHarness({
-      fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
-      instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
-        falseBooleanProperty: false,
-        dateTimeProperty: new Date(1523268000000),
-        identifier: dataFactory.blankNode(),
-        numberProperty: 0,
-        stringProperty: "",
-        trueBooleanProperty: true,
-      }),
-    }),
     nodeShapeWithPropertyCardinalities: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithPropertyCardinalities.fromRdf,
       instance: new kitchenSink.NodeShapeWithPropertyCardinalities({
@@ -213,11 +228,33 @@ describe("TsGenerator", () => {
         setStringProperty: undefined,
       }),
     }),
+    nodeShapeWithPropertyVisibilities: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithPropertyVisibilities.fromRdf,
+      instance: new kitchenSink.NodeShapeWithPropertyVisibilities({
+        privateProperty: "private",
+        protectedProperty: "protected",
+        publicProperty: "public",
+      }),
+    }),
     nonClassNodeShape: new ClassHarness({
       fromRdf: kitchenSink.NonClassNodeShape.fromRdf,
       instance: new kitchenSink.NonClassNodeShape({
         identifier: dataFactory.blankNode(),
         stringProperty: "Test",
+      }),
+    }),
+    orNodeShapeMember1: new ClassHarness({
+      fromRdf: kitchenSink.OrNodeShapeMember1.fromRdf,
+      instance: new kitchenSink.OrNodeShapeMember1({
+        identifier: dataFactory.blankNode(),
+        stringProperty1: "test",
+      }),
+    }),
+    orNodeShapeMember2: new ClassHarness({
+      fromRdf: kitchenSink.OrNodeShapeMember2.fromRdf,
+      instance: new kitchenSink.OrNodeShapeMember2({
+        identifier: dataFactory.blankNode(),
+        stringProperty2: "test",
       }),
     }),
     sha256IriNodeShapeWithExplicitIdentifier: new ClassHarness({
@@ -227,21 +264,39 @@ describe("TsGenerator", () => {
         stringProperty: "test",
       }),
     }),
+    sha256IriNodeShapeWithoutExplicitIdentifier: new ClassHarness({
+      fromRdf: kitchenSink.Sha256IriNodeShape.fromRdf,
+      instance: new kitchenSink.Sha256IriNodeShape({
+        stringProperty: "test",
+      }),
+    }),
+    uuidv4IriNodeShapeWithExplicitIdentifier: new ClassHarness({
+      fromRdf: kitchenSink.UuidV4IriNodeShape.fromRdf,
+      instance: new kitchenSink.UuidV4IriNodeShape({
+        identifier: dataFactory.namedNode("http://example.com/instance"),
+        stringProperty: "test",
+      }),
+    }),
+    uuidv4IriNodeShapeWithoutExplicitIdentifier: new ClassHarness({
+      fromRdf: kitchenSink.UuidV4IriNodeShape.fromRdf,
+      instance: new kitchenSink.UuidV4IriNodeShape({
+        stringProperty: "test",
+      }),
+    }),
   };
-  const harnesses: Harness<any, any>[] = Object.values(harnessesById);
 
   it("interfaces: should generate valid TypeScript interfaces", ({
     expect,
   }) => {
     expect(
-      harnessesById["interfaceNodeShape"].instance.stringProperty,
+      harnesses["interfaceNodeShape"].instance.stringProperty,
     ).toStrictEqual("Test");
   });
 
   it("class constructor: construct a class instance from convertible parameters", ({
     expect,
   }) => {
-    const instance = harnessesById.nodeShapeWithPropertyCardinalities.instance;
+    const instance = harnesses.nodeShapeWithPropertyCardinalities.instance;
     expect(instance.optionalStringProperty.isNothing()).toStrictEqual(true);
     expect(instance.setStringProperty).toStrictEqual([]);
     expect(instance.requiredStringProperty).toStrictEqual("test");
@@ -251,7 +306,7 @@ describe("TsGenerator", () => {
     expect,
   }) => {
     expect(
-      harnessesById.sha256IriNodeShapeWithExplicitIdentifier.instance.identifier.equals(
+      harnesses.sha256IriNodeShapeWithExplicitIdentifier.instance.identifier.equals(
         dataFactory.namedNode("http://example.com/instance"),
       ),
     ).toStrictEqual(true);
@@ -275,18 +330,15 @@ describe("TsGenerator", () => {
   it("class constructor: mint an IRI with UUIDv4 if none is supplied", ({
     expect,
   }) => {
-    const instance = new kitchenSink.UuidV4IriNodeShape({
-      stringProperty: "test",
-    });
+    const instance =
+      harnesses.uuidv4IriNodeShapeWithoutExplicitIdentifier.instance;
     expect(instance.identifier.value).toMatch(
       /urn:shaclmate:object:UuidV4IriNodeShape:[0-9A-Fa-f]{8}-/,
     );
   });
 
   it("class constructor: default values", ({ expect }) => {
-    const model = new kitchenSink.NodeShapeWithDefaultValueProperties({
-      identifier: dataFactory.blankNode(),
-    });
+    const model = harnesses.nodeShapeWithDefaultValueProperties.instance;
     expect(model.falseBooleanProperty).toStrictEqual(false);
     expect(model.dateTimeProperty.getTime()).toStrictEqual(1523268000000);
     expect(model.numberProperty).toStrictEqual(0);
@@ -305,27 +357,23 @@ describe("TsGenerator", () => {
 
   it("should generate a type alias", ({ expect }) => {
     const instance1: kitchenSink.OrNodeShape =
-      new kitchenSink.OrNodeShapeMember1({
-        identifier: dataFactory.blankNode(),
-        stringProperty1: "test1",
-      });
+      harnesses.orNodeShapeMember1.instance;
     const instance2: kitchenSink.OrNodeShape =
-      new kitchenSink.OrNodeShapeMember2({
-        identifier: dataFactory.blankNode(),
-        stringProperty2: "test2",
-      });
+      harnesses.orNodeShapeMember2.instance;
     expect(
       kitchenSink.OrNodeShape.equals(instance1, instance2).extract(),
     ).not.toStrictEqual(true);
   });
 
-  it("equals: should return true when the two objects are equal", ({
-    expect,
-  }) => {
-    for (const harness of harnesses) {
-      expect(harness.equals(harness.instance).extract()).toStrictEqual(true);
-    }
-  });
+  for (const [id, harness] of Object.entries(harnesses)) {
+    it(`equals: should return true when the two ${id} objects are equal`, ({
+      expect,
+    }) => {
+      expect(
+        harness.equals((harness as Harness<any, any>).instance).extract(),
+      ).toStrictEqual(true);
+    });
+  }
 
   it("equals: should return Unequals when the two objects are unequal", ({
     expect,
@@ -410,8 +458,8 @@ describe("TsGenerator", () => {
     ).not.toStrictEqual(true);
   });
 
-  it("fromRdf: round trip", ({ expect }) => {
-    for (const harness of Object.values(harnessesById)) {
+  for (const [id, harness] of Object.entries(harnesses)) {
+    it(`fromRdf: ${id} round trip`, ({ expect }) => {
       const fromRdfInstance = harness
         .fromRdf({
           extra: 1,
@@ -425,8 +473,8 @@ describe("TsGenerator", () => {
         })
         .unsafeCoerce() as any;
       expect(harness.equals(fromRdfInstance).extract()).toStrictEqual(true);
-    }
-  });
+    });
+  }
 
   it("fromRdf: ensure hasValue (sh:hasValue)", ({ expect }) => {
     const dataset = new N3.Store();
@@ -555,17 +603,16 @@ describe("TsGenerator", () => {
     expect(instance.inStringsProperty.isNothing()).toStrictEqual(true);
   });
 
-  it("hash", ({ expect }) => {
+  it("hash: known hash", ({ expect }) => {
     expect(
-      harnessesById.nonClassNodeShape.instance.hash(sha256.create()).hex(),
+      harnesses.nonClassNodeShape.instance.hash(sha256.create()).hex(),
     ).toStrictEqual(
       "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25",
     );
   });
 
   it("toJson: or properties", ({ expect }) => {
-    const jsonObject =
-      harnessesById.nodeShapeWithOrProperties.instance.toJson();
+    const jsonObject = harnesses.nodeShapeWithOrProperties.instance.toJson();
     expect(jsonObject["@id"]).toStrictEqual("http://example.com/instance");
     expect(jsonObject.type).toStrictEqual("NodeShapeWithOrProperties");
     expect(jsonObject.orLiteralsProperty).toStrictEqual({
@@ -576,8 +623,7 @@ describe("TsGenerator", () => {
   });
 
   it("toJson: child-parent", ({ expect }) => {
-    const jsonObject =
-      harnessesById.concreteChildClassNodeShape.instance.toJson();
+    const jsonObject = harnesses.concreteChildClassNodeShape.instance.toJson();
     expect(jsonObject.abcStringProperty).toStrictEqual("abc");
     expect(jsonObject.childStringProperty).toStrictEqual("child");
     expect(jsonObject.parentStringProperty).toStrictEqual("parent");
@@ -587,14 +633,14 @@ describe("TsGenerator", () => {
   it("toRdf: should populate a dataset", ({ expect }) => {
     const dataset = new N3.Store();
     const resourceSet = new MutableResourceSet({ dataFactory, dataset });
-    const resource = harnessesById.concreteChildClassNodeShape.instance.toRdf({
+    const resource = harnesses.concreteChildClassNodeShape.instance.toRdf({
       resourceSet,
       mutateGraph: dataFactory.defaultGraph(),
     });
     expect(dataset.size).toStrictEqual(4);
     expect(
       resource.identifier.equals(
-        harnessesById.concreteChildClassNodeShape.instance.identifier,
+        harnesses.concreteChildClassNodeShape.instance.identifier,
       ),
     ).toStrictEqual(true);
     expect(
@@ -618,7 +664,7 @@ describe("TsGenerator", () => {
 
   it("toRdf: should produce serializable RDF", ({ expect }) => {
     const dataset = new N3.Store();
-    harnessesById.nonClassNodeShape.toRdf({
+    harnesses.nonClassNodeShape.toRdf({
       mutateGraph: dataFactory.defaultGraph(),
       resourceSet: new MutableResourceSet({ dataFactory, dataset }),
     });
@@ -630,7 +676,7 @@ describe("TsGenerator", () => {
 
   it("toRdf: explicit RDF types", ({ expect }) => {
     const dataset = new N3.Store();
-    const resource = harnessesById.nodeShapeWithExplicitRdfTypes.toRdf({
+    const resource = harnesses.nodeShapeWithExplicitRdfTypes.toRdf({
       mutateGraph: dataFactory.defaultGraph(),
       resourceSet: new MutableResourceSet({
         dataFactory,
@@ -658,7 +704,7 @@ describe("TsGenerator", () => {
 
   it("toRdf: should not serialize default values", ({ expect }) => {
     const dataset = new N3.Store();
-    harnessesById.nodeShapeWithDefaultValueProperties.toRdf({
+    harnesses.nodeShapeWithDefaultValueProperties.toRdf({
       mutateGraph: dataFactory.defaultGraph(),
       resourceSet: new MutableResourceSet({ dataFactory, dataset }),
     });
@@ -668,12 +714,10 @@ describe("TsGenerator", () => {
   it("toRdf: should serialize non-default values", ({ expect }) => {
     const dataset = new N3.Store();
     const resource =
-      harnessesById.nodeShapeWithOverriddenDefaultValuePropertiesDifferent.toRdf(
-        {
-          mutateGraph: dataFactory.defaultGraph(),
-          resourceSet: new MutableResourceSet({ dataFactory, dataset }),
-        },
-      );
+      harnesses.nodeShapeWithDefaultValuePropertiesOverriddenDifferent.toRdf({
+        mutateGraph: dataFactory.defaultGraph(),
+        resourceSet: new MutableResourceSet({ dataFactory, dataset }),
+      });
     expect(dataset.size).toStrictEqual(4);
     expect(
       resource
