@@ -296,36 +296,6 @@
     {
       "kind": "ObjectType",
       "name": {
-        "curie": ":NodeShapeWithExplicitRdfTypes",
-        "identifier": {
-          "termType": "NamedNode",
-          "value": "http://example.com/NodeShapeWithExplicitRdfTypes"
-        },
-        "shName": "NodeShapeWithExplicitRdfTypes"
-      },
-      "properties": [
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-149"
-            },
-            "shName": "stringProperty"
-          },
-          "path": "http://example.com/stringProperty",
-          "type": {
-            "datatype": {
-              "termType": "NamedNode",
-              "value": "http://www.w3.org/2001/XMLSchema#string"
-            },
-            "kind": "LiteralType"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "ObjectType",
-      "name": {
         "curie": ":NodeShapeWithDefaultValueProperties",
         "identifier": {
           "termType": "NamedNode",
@@ -338,7 +308,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-150"
+              "value": "n3-149"
             },
             "shName": "falseBooleanProperty"
           },
@@ -351,7 +321,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-151"
+              "value": "n3-150"
             },
             "shName": "dateTimeProperty"
           },
@@ -364,7 +334,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-152"
+              "value": "n3-151"
             },
             "shName": "numberProperty"
           },
@@ -377,7 +347,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-153"
+              "value": "n3-152"
             },
             "shName": "stringProperty"
           },
@@ -390,12 +360,42 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-154"
+              "value": "n3-153"
             },
             "shName": "trueBooleanProperty"
           },
           "path": "http://example.com/trueBooleanProperty",
           "type": {
+            "kind": "LiteralType"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "ObjectType",
+      "name": {
+        "curie": ":NodeShapeWithExplicitRdfTypes",
+        "identifier": {
+          "termType": "NamedNode",
+          "value": "http://example.com/NodeShapeWithExplicitRdfTypes"
+        },
+        "shName": "NodeShapeWithExplicitRdfTypes"
+      },
+      "properties": [
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-154"
+            },
+            "shName": "stringProperty"
+          },
+          "path": "http://example.com/stringProperty",
+          "type": {
+            "datatype": {
+              "termType": "NamedNode",
+              "value": "http://www.w3.org/2001/XMLSchema#string"
+            },
             "kind": "LiteralType"
           }
         }
@@ -935,7 +935,7 @@
             },
             "shName": "protectedProperty"
           },
-          "path": "http://example.com/publicProperty",
+          "path": "http://example.com/protectedProperty",
           "type": {
             "datatype": {
               "termType": "NamedNode",

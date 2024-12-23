@@ -1,3 +1,4 @@
+import type { BlankNode, NamedNode } from "@rdfjs/types";
 import { rdf } from "@tpluscode/rdf-ns-builders";
 import { sha256 } from "js-sha256";
 import N3, { DataFactory as dataFactory } from "n3";
@@ -8,63 +9,294 @@ import {
   MutableResourceSet,
   type Resource,
 } from "rdfjs-resource";
-import { type ExpectStatic, describe, it } from "vitest";
+import { describe, it } from "vitest";
 import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObjectType.js";
 import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
 
-function testFromRdf<
-  ModelT extends {
-    equals: (other: ModelT) => Equatable.EqualsResult;
-    toRdf: (kwds: {
+abstract class Harness<
+  T extends { readonly identifier: IdentifierT },
+  IdentifierT extends BlankNode | NamedNode,
+> {
+  readonly fromRdf: (parameters: {
+    [_index: string]: any;
+    resource: Resource<IdentifierT>;
+  }) => Either<Resource.ValueError, T>;
+  readonly instance: T;
+
+  constructor({
+    fromRdf,
+    instance,
+  }: {
+    fromRdf: Harness<T, IdentifierT>["fromRdf"];
+    instance: T;
+  }) {
+    this.fromRdf = fromRdf;
+    this.instance = instance;
+  }
+
+  abstract equals(other: T): Equatable.EqualsResult;
+
+  abstract toRdf(kwds: {
+    mutateGraph: MutableResource.MutateGraph;
+    resourceSet: MutableResourceSet;
+  }): Resource<IdentifierT>;
+}
+
+class ClassHarness<
+  T extends {
+    equals: (other: T) => Equatable.EqualsResult;
+    identifier: IdentifierT;
+    toRdf: (options: {
       mutateGraph: MutableResource.MutateGraph;
       resourceSet: MutableResourceSet;
-    }) => Resource;
+    }) => Resource<IdentifierT>;
   },
->({
-  expect,
-  modelFromRdf,
-  model,
-}: {
-  expect: ExpectStatic;
-  modelFromRdf: (parameters: { resource: Resource }) => Either<
-    Resource.ValueError,
-    ModelT
-  >;
-  model: ModelT;
-}) {
-  const fromRdfModel = modelFromRdf({
-    resource: model.toRdf({
-      mutateGraph: dataFactory.defaultGraph(),
-      resourceSet: new MutableResourceSet({
-        dataFactory,
-        dataset: new N3.Store(),
-      }),
-    }),
-  }).unsafeCoerce();
-  expect(fromRdfModel.equals(model).extract()).toStrictEqual(true);
+  IdentifierT extends BlankNode | NamedNode,
+> extends Harness<T, IdentifierT> {
+  override equals(other: T): Equatable.EqualsResult {
+    return this.instance.equals(other);
+  }
+
+  override toRdf(options: {
+    mutateGraph: MutableResource.MutateGraph;
+    resourceSet: MutableResourceSet;
+  }): Resource<IdentifierT> {
+    return this.instance.toRdf(options);
+  }
+}
+
+class InterfaceHarness<
+  T extends { readonly identifier: IdentifierT },
+  IdentifierT extends BlankNode | NamedNode,
+> extends Harness<T, IdentifierT> {
+  readonly equals: (other: T) => Equatable.EqualsResult;
+  readonly toRdf: (options: {
+    mutateGraph: MutableResource.MutateGraph;
+    resourceSet: MutableResourceSet;
+  }) => Resource<IdentifierT>;
+
+  constructor({
+    equals,
+    toRdf,
+    ...superParameters
+  }: {
+    equals: (left: T, right: T) => Equatable.EqualsResult;
+    toRdf: (
+      instance: T,
+      options: {
+        mutateGraph: MutableResource.MutateGraph;
+        resourceSet: MutableResourceSet;
+      },
+    ) => Resource<IdentifierT>;
+  } & ConstructorParameters<typeof Harness<T, IdentifierT>>[0]) {
+    super(superParameters);
+    this.equals = (other) => equals(this.instance, other);
+    this.toRdf = (kwds) => toRdf(this.instance, kwds);
+  }
 }
 
 describe("TsGenerator", () => {
+  const harnesses = {
+    concreteChildClassNodeShape: new ClassHarness({
+      fromRdf: kitchenSink.ConcreteChildClassNodeShape.fromRdf,
+      instance: new kitchenSink.ConcreteChildClassNodeShape({
+        identifier: dataFactory.blankNode(),
+        abcStringProperty: "abc",
+        childStringProperty: "child",
+        parentStringProperty: "parent",
+      }),
+    }),
+    concreteParentClassNodeShape: new ClassHarness({
+      fromRdf: kitchenSink.ConcreteParentClassNodeShape.fromRdf,
+      instance: new kitchenSink.ConcreteParentClassNodeShape({
+        identifier: dataFactory.blankNode(),
+        abcStringProperty: "abc",
+        parentStringProperty: "parent",
+      }),
+    }),
+    interfaceNodeShape: new InterfaceHarness<
+      kitchenSink.InterfaceNodeShape,
+      BlankNode | NamedNode
+    >({
+      equals: kitchenSink.InterfaceNodeShape.equals,
+      fromRdf: kitchenSink.InterfaceNodeShape.fromRdf,
+      instance: {
+        identifier: dataFactory.blankNode(),
+        stringProperty: "Test",
+        type: "InterfaceNodeShape",
+      },
+      toRdf: kitchenSink.InterfaceNodeShape.toRdf,
+    }),
+    iriNodeShape: new ClassHarness({
+      fromRdf: kitchenSink.IriNodeShape.fromRdf,
+      instance: new kitchenSink.IriNodeShape({
+        identifier: dataFactory.namedNode("http://example.com/test"),
+        stringProperty: "test",
+      }),
+    }),
+    nodeShapeWithDefaultValueProperties: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithDefaultValueProperties({}),
+    }),
+    nodeShapeWithDefaultValuePropertiesOverriddenDifferent: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
+        falseBooleanProperty: true,
+        identifier: dataFactory.blankNode(),
+        numberProperty: 1,
+        stringProperty: "test",
+        trueBooleanProperty: false,
+      }),
+    }),
+    nodeShapeWithDefaultValuePropertiesOverriddenSame: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
+        falseBooleanProperty: false,
+        dateTimeProperty: new Date(1523268000000),
+        identifier: dataFactory.blankNode(),
+        numberProperty: 0,
+        stringProperty: "",
+        trueBooleanProperty: true,
+      }),
+    }),
+    nodeShapeWithExplicitRdfTypes: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithExplicitRdfTypes.fromRdf,
+      instance: new kitchenSink.NodeShapeWithExplicitRdfTypes({
+        identifier: dataFactory.blankNode(),
+        stringProperty: "test",
+      }),
+    }),
+    nodeShapeWithExternProperties: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithExternProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithExternProperties({
+        identifier: dataFactory.blankNode(),
+        externObjectTypeProperty: new ExternObjectType(dataFactory.blankNode()),
+        externProperty: dataFactory.blankNode(),
+        inlineProperty: new kitchenSink.InlineNodeShape({
+          identifier: dataFactory.blankNode(),
+          stringProperty: "Test",
+        }),
+      }),
+    }),
+    nodeShapeWithHasValueProperties: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithHasValueProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithHasValueProperties({
+        identifier: dataFactory.blankNode(),
+        hasIriProperty: dataFactory.namedNode(
+          "http://example.com/NodeShapeWithHasValuePropertiesIri1",
+        ),
+      }),
+    }),
+    nodeShapeWithInIrisProperty: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithInProperties({
+        identifier: dataFactory.blankNode(),
+        inIrisProperty: dataFactory.namedNode(
+          "http://example.com/NodeShapeWithInPropertiesIri1",
+        ),
+      }),
+    }),
+    nodeShapeWithInLiteralsProperty: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithInProperties({
+        identifier: dataFactory.blankNode(),
+        inStringsProperty: "text",
+      }),
+    }),
+    nodeShapeWithListProperty: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithListProperty.fromRdf,
+      instance: new kitchenSink.NodeShapeWithListProperty({
+        identifier: dataFactory.blankNode(),
+        listProperty: ["Test1", "Test2"],
+      }),
+    }),
+    nodeShapeWithOrProperties: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithOrProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithOrProperties({
+        identifier: dataFactory.namedNode("http://example.com/instance"),
+        orLiteralsProperty: 1,
+        orUnrelatedProperty: { type: "0-number", value: 1 },
+        orTermsProperty: dataFactory.literal("test"),
+      }),
+    }),
+    nodeShapeWithPropertyCardinalities: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithPropertyCardinalities.fromRdf,
+      instance: new kitchenSink.NodeShapeWithPropertyCardinalities({
+        identifier: dataFactory.blankNode(),
+        optionalStringProperty: undefined,
+        requiredStringProperty: "test",
+        setStringProperty: undefined,
+      }),
+    }),
+    nodeShapeWithPropertyVisibilities: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithPropertyVisibilities.fromRdf,
+      instance: new kitchenSink.NodeShapeWithPropertyVisibilities({
+        privateProperty: "private",
+        protectedProperty: "protected",
+        publicProperty: "public",
+      }),
+    }),
+    nonClassNodeShape: new ClassHarness({
+      fromRdf: kitchenSink.NonClassNodeShape.fromRdf,
+      instance: new kitchenSink.NonClassNodeShape({
+        identifier: dataFactory.blankNode(),
+        stringProperty: "Test",
+      }),
+    }),
+    orNodeShapeMember1: new ClassHarness({
+      fromRdf: kitchenSink.OrNodeShapeMember1.fromRdf,
+      instance: new kitchenSink.OrNodeShapeMember1({
+        identifier: dataFactory.blankNode(),
+        stringProperty1: "test",
+      }),
+    }),
+    orNodeShapeMember2: new ClassHarness({
+      fromRdf: kitchenSink.OrNodeShapeMember2.fromRdf,
+      instance: new kitchenSink.OrNodeShapeMember2({
+        identifier: dataFactory.blankNode(),
+        stringProperty2: "test",
+      }),
+    }),
+    sha256IriNodeShapeWithExplicitIdentifier: new ClassHarness({
+      fromRdf: kitchenSink.Sha256IriNodeShape.fromRdf,
+      instance: new kitchenSink.Sha256IriNodeShape({
+        identifier: dataFactory.namedNode("http://example.com/instance"),
+        stringProperty: "test",
+      }),
+    }),
+    sha256IriNodeShapeWithoutExplicitIdentifier: new ClassHarness({
+      fromRdf: kitchenSink.Sha256IriNodeShape.fromRdf,
+      instance: new kitchenSink.Sha256IriNodeShape({
+        stringProperty: "test",
+      }),
+    }),
+    uuidv4IriNodeShapeWithExplicitIdentifier: new ClassHarness({
+      fromRdf: kitchenSink.UuidV4IriNodeShape.fromRdf,
+      instance: new kitchenSink.UuidV4IriNodeShape({
+        identifier: dataFactory.namedNode("http://example.com/instance"),
+        stringProperty: "test",
+      }),
+    }),
+    uuidv4IriNodeShapeWithoutExplicitIdentifier: new ClassHarness({
+      fromRdf: kitchenSink.UuidV4IriNodeShape.fromRdf,
+      instance: new kitchenSink.UuidV4IriNodeShape({
+        stringProperty: "test",
+      }),
+    }),
+  };
+
   it("interfaces: should generate valid TypeScript interfaces", ({
     expect,
   }) => {
-    const instance: kitchenSink.InterfaceNodeShape = {
-      identifier: dataFactory.blankNode(),
-      stringProperty: "Test",
-      type: "InterfaceNodeShape",
-    };
-    expect(instance.stringProperty).toStrictEqual("Test");
+    expect(
+      harnesses["interfaceNodeShape"].instance.stringProperty,
+    ).toStrictEqual("Test");
   });
 
   it("class constructor: construct a class instance from convertible parameters", ({
     expect,
   }) => {
-    const instance = new kitchenSink.NodeShapeWithPropertyCardinalities({
-      identifier: dataFactory.blankNode(),
-      optionalStringProperty: undefined,
-      requiredStringProperty: "test",
-      setStringProperty: undefined,
-    });
+    const instance = harnesses.nodeShapeWithPropertyCardinalities.instance;
     expect(instance.optionalStringProperty.isNothing()).toStrictEqual(true);
     expect(instance.setStringProperty).toStrictEqual([]);
     expect(instance.requiredStringProperty).toStrictEqual("test");
@@ -73,12 +305,8 @@ describe("TsGenerator", () => {
   it("class constructor: don't mint an IRI if one is supplied", ({
     expect,
   }) => {
-    const instanceWithIdentifier = new kitchenSink.Sha256IriNodeShape({
-      identifier: dataFactory.namedNode("http://example.com/instance"),
-      stringProperty: "test",
-    });
     expect(
-      instanceWithIdentifier.identifier.equals(
+      harnesses.sha256IriNodeShapeWithExplicitIdentifier.instance.identifier.equals(
         dataFactory.namedNode("http://example.com/instance"),
       ),
     ).toStrictEqual(true);
@@ -102,18 +330,15 @@ describe("TsGenerator", () => {
   it("class constructor: mint an IRI with UUIDv4 if none is supplied", ({
     expect,
   }) => {
-    const instance = new kitchenSink.UuidV4IriNodeShape({
-      stringProperty: "test",
-    });
+    const instance =
+      harnesses.uuidv4IriNodeShapeWithoutExplicitIdentifier.instance;
     expect(instance.identifier.value).toMatch(
       /urn:shaclmate:object:UuidV4IriNodeShape:[0-9A-Fa-f]{8}-/,
     );
   });
 
   it("class constructor: default values", ({ expect }) => {
-    const model = new kitchenSink.NodeShapeWithDefaultValueProperties({
-      identifier: dataFactory.blankNode(),
-    });
+    const model = harnesses.nodeShapeWithDefaultValueProperties.instance;
     expect(model.falseBooleanProperty).toStrictEqual(false);
     expect(model.dateTimeProperty.getTime()).toStrictEqual(1523268000000);
     expect(model.numberProperty).toStrictEqual(0);
@@ -132,29 +357,23 @@ describe("TsGenerator", () => {
 
   it("should generate a type alias", ({ expect }) => {
     const instance1: kitchenSink.OrNodeShape =
-      new kitchenSink.OrNodeShapeMember1({
-        identifier: dataFactory.blankNode(),
-        stringProperty1: "test1",
-      });
+      harnesses.orNodeShapeMember1.instance;
     const instance2: kitchenSink.OrNodeShape =
-      new kitchenSink.OrNodeShapeMember2({
-        identifier: dataFactory.blankNode(),
-        stringProperty2: "test2",
-      });
+      harnesses.orNodeShapeMember2.instance;
     expect(
       kitchenSink.OrNodeShape.equals(instance1, instance2).extract(),
     ).not.toStrictEqual(true);
   });
 
-  it("equals: should return true when the two objects are equal", ({
-    expect,
-  }) => {
-    const instance = new kitchenSink.NonClassNodeShape({
-      identifier: dataFactory.blankNode(),
-      stringProperty: "Test",
+  for (const [id, harness] of Object.entries(harnesses)) {
+    it(`equals: should return true when the two ${id} objects are equal`, ({
+      expect,
+    }) => {
+      expect(
+        harness.equals((harness as Harness<any, any>).instance).extract(),
+      ).toStrictEqual(true);
     });
-    expect(instance.equals(instance).extract()).toStrictEqual(true);
-  });
+  }
 
   it("equals: should return Unequals when the two objects are unequal", ({
     expect,
@@ -239,93 +458,25 @@ describe("TsGenerator", () => {
     ).not.toStrictEqual(true);
   });
 
-  it("should extern and inline properties", ({ expect }) => {
-    const instance = new kitchenSink.NodeShapeWithExternProperties({
-      identifier: dataFactory.blankNode(),
-      externProperty: dataFactory.blankNode(),
-      inlineProperty: new kitchenSink.InlineNodeShape({
-        identifier: dataFactory.blankNode(),
-        stringProperty: "Test",
-      }),
+  for (const [id, harness] of Object.entries(harnesses)) {
+    it(`fromRdf: ${id} round trip`, ({ expect }) => {
+      const fromRdfInstance = harness
+        .fromRdf({
+          extra: 1,
+          resource: harness.toRdf({
+            mutateGraph: dataFactory.defaultGraph(),
+            resourceSet: new MutableResourceSet({
+              dataFactory,
+              dataset: new N3.Store(),
+            }),
+          }) as any,
+        })
+        .unsafeCoerce() as any;
+      expect(harness.equals(fromRdfInstance).extract()).toStrictEqual(true);
     });
-    const instanceFromRdf = kitchenSink.NodeShapeWithExternProperties.fromRdf({
-      resource: instance.toRdf({
-        mutateGraph: dataFactory.defaultGraph(),
-        resourceSet: new MutableResourceSet({
-          dataFactory,
-          dataset: new N3.Store(),
-        }),
-      }),
-    }).unsafeCoerce();
-    expect(instance.equals(instanceFromRdf).extract()).toStrictEqual(true);
-  });
-
-  it("fromRdf (child-parent)", ({ expect }) => {
-    testFromRdf({
-      expect,
-      model: new kitchenSink.ConcreteChildClassNodeShape({
-        identifier: dataFactory.blankNode(),
-        abcStringProperty: "abc",
-        childStringProperty: "child",
-        parentStringProperty: "parent",
-      }),
-      modelFromRdf: kitchenSink.ConcreteChildClassNodeShape.fromRdf,
-    });
-  });
-
-  it("fromRdf: take on default values", ({ expect }) => {
-    testFromRdf({
-      expect,
-      model: new kitchenSink.NodeShapeWithDefaultValueProperties({
-        falseBooleanProperty: false,
-        dateTimeProperty: new Date(1523268000000),
-        identifier: dataFactory.blankNode(),
-        numberProperty: 0,
-        stringProperty: "",
-        trueBooleanProperty: true,
-      }),
-      modelFromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
-    });
-  });
-
-  it("fromRdf: override default values", ({ expect }) => {
-    testFromRdf({
-      expect,
-      model: new kitchenSink.NodeShapeWithDefaultValueProperties({
-        falseBooleanProperty: true,
-        dateTimeProperty: new Date(),
-        identifier: dataFactory.blankNode(),
-        numberProperty: 1,
-        stringProperty: "test",
-        trueBooleanProperty: false,
-      }),
-      modelFromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
-    });
-  });
-
-  it("fromRdf: explicit RDF types", ({ expect }) => {
-    testFromRdf({
-      expect,
-      model: new kitchenSink.NodeShapeWithExplicitRdfTypes({
-        identifier: dataFactory.blankNode(),
-        stringProperty: "test",
-      }),
-      modelFromRdf: kitchenSink.NodeShapeWithExplicitRdfTypes.fromRdf,
-    });
-  });
+  }
 
   it("fromRdf: ensure hasValue (sh:hasValue)", ({ expect }) => {
-    testFromRdf({
-      expect,
-      model: new kitchenSink.NodeShapeWithHasValueProperties({
-        identifier: dataFactory.blankNode(),
-        hasIriProperty: dataFactory.namedNode(
-          "http://example.com/NodeShapeWithHasValuePropertiesIri1",
-        ),
-      }),
-      modelFromRdf: kitchenSink.NodeShapeWithHasValueProperties.fromRdf,
-    });
-
     const dataset = new N3.Store();
     const identifier = dataFactory.blankNode();
     const predicate = dataFactory.namedNode(
@@ -374,17 +525,6 @@ describe("TsGenerator", () => {
   });
 
   it("fromRdf: preserve valid IRI values (sh:in)", ({ expect }) => {
-    testFromRdf({
-      expect,
-      model: new kitchenSink.NodeShapeWithInProperties({
-        identifier: dataFactory.blankNode(),
-        inIrisProperty: dataFactory.namedNode(
-          "http://example.com/NodeShapeWithInPropertiesIri1",
-        ),
-      }),
-      modelFromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
-    });
-
     const dataset = new N3.Store();
     const identifier = dataFactory.blankNode();
     const object = dataFactory.namedNode(
@@ -428,15 +568,6 @@ describe("TsGenerator", () => {
   });
 
   it("fromRdf: preserve valid literal values (sh:in)", ({ expect }) => {
-    testFromRdf({
-      expect,
-      model: new kitchenSink.NodeShapeWithInProperties({
-        identifier: dataFactory.blankNode(),
-        inStringsProperty: "text",
-      }),
-      modelFromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
-    });
-
     const dataset = new N3.Store();
     const identifier = dataFactory.blankNode();
     dataset.add(
@@ -472,43 +603,16 @@ describe("TsGenerator", () => {
     expect(instance.inStringsProperty.isNothing()).toStrictEqual(true);
   });
 
-  it("hash", ({ expect }) => {
+  it("hash: known hash", ({ expect }) => {
     expect(
-      new kitchenSink.NonClassNodeShape({
-        identifier: dataFactory.blankNode(),
-        stringProperty: "Test",
-      })
-        .hash(sha256.create())
-        .hex(),
+      harnesses.nonClassNodeShape.instance.hash(sha256.create()).hex(),
     ).toStrictEqual(
       "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25",
     );
   });
 
-  it("should handle extern object types", ({ expect }) => {
-    const instance = new kitchenSink.NodeShapeWithExternProperties({
-      externObjectTypeProperty: new ExternObjectType(dataFactory.blankNode()),
-    });
-    testFromRdf({
-      expect,
-      model: instance,
-      modelFromRdf: ({ resource }) =>
-        kitchenSink.NodeShapeWithExternProperties.fromRdf({
-          extra: 1,
-          resource,
-        }),
-    });
-    instance.hash(sha256.create());
-  });
-
   it("toJson: or properties", ({ expect }) => {
-    const instance = new kitchenSink.NodeShapeWithOrProperties({
-      identifier: dataFactory.namedNode("http://example.com/instance"),
-      orLiteralsProperty: 1,
-      orUnrelatedProperty: { type: "0-number", value: 1 },
-      orTermsProperty: dataFactory.literal("test"),
-    });
-    const jsonObject = instance.toJson();
+    const jsonObject = harnesses.nodeShapeWithOrProperties.instance.toJson();
     expect(jsonObject["@id"]).toStrictEqual("http://example.com/instance");
     expect(jsonObject.type).toStrictEqual("NodeShapeWithOrProperties");
     expect(jsonObject.orLiteralsProperty).toStrictEqual({
@@ -519,12 +623,7 @@ describe("TsGenerator", () => {
   });
 
   it("toJson: child-parent", ({ expect }) => {
-    const instance = new kitchenSink.ConcreteChildClassNodeShape({
-      abcStringProperty: "abc",
-      childStringProperty: "child",
-      parentStringProperty: "parent",
-    });
-    const jsonObject = instance.toJson();
+    const jsonObject = harnesses.concreteChildClassNodeShape.instance.toJson();
     expect(jsonObject.abcStringProperty).toStrictEqual("abc");
     expect(jsonObject.childStringProperty).toStrictEqual("child");
     expect(jsonObject.parentStringProperty).toStrictEqual("parent");
@@ -534,19 +633,16 @@ describe("TsGenerator", () => {
   it("toRdf: should populate a dataset", ({ expect }) => {
     const dataset = new N3.Store();
     const resourceSet = new MutableResourceSet({ dataFactory, dataset });
-    const identifier = dataFactory.blankNode();
-    const model = new kitchenSink.ConcreteChildClassNodeShape({
-      identifier,
-      abcStringProperty: "abc",
-      childStringProperty: "child",
-      parentStringProperty: "parent",
-    });
-    const resource = model.toRdf({
+    const resource = harnesses.concreteChildClassNodeShape.instance.toRdf({
       resourceSet,
       mutateGraph: dataFactory.defaultGraph(),
     });
     expect(dataset.size).toStrictEqual(4);
-    expect(resource.identifier.equals(identifier)).toStrictEqual(true);
+    expect(
+      resource.identifier.equals(
+        harnesses.concreteChildClassNodeShape.instance.identifier,
+      ),
+    ).toStrictEqual(true);
     expect(
       resource
         .value(rdf.type)
@@ -568,10 +664,7 @@ describe("TsGenerator", () => {
 
   it("toRdf: should produce serializable RDF", ({ expect }) => {
     const dataset = new N3.Store();
-    new kitchenSink.NonClassNodeShape({
-      identifier: dataFactory.blankNode(),
-      stringProperty: "Test",
-    }).toRdf({
+    harnesses.nonClassNodeShape.toRdf({
       mutateGraph: dataFactory.defaultGraph(),
       resourceSet: new MutableResourceSet({ dataFactory, dataset }),
     });
@@ -583,10 +676,7 @@ describe("TsGenerator", () => {
 
   it("toRdf: explicit RDF types", ({ expect }) => {
     const dataset = new N3.Store();
-    const resource = new kitchenSink.NodeShapeWithExplicitRdfTypes({
-      identifier: dataFactory.blankNode(),
-      stringProperty: "test",
-    }).toRdf({
+    const resource = harnesses.nodeShapeWithExplicitRdfTypes.toRdf({
       mutateGraph: dataFactory.defaultGraph(),
       resourceSet: new MutableResourceSet({
         dataFactory,
@@ -612,37 +702,9 @@ describe("TsGenerator", () => {
     ).toStrictEqual("test");
   });
 
-  it("toRdf: should serialize and deserialize a list", ({ expect }) => {
-    const dataset = new N3.Store();
-    const instance = new kitchenSink.NodeShapeWithListProperty({
-      identifier: dataFactory.blankNode(),
-      listProperty: ["Test1", "Test2"],
-    });
-    const resource = instance.toRdf({
-      mutateGraph: dataFactory.defaultGraph(),
-      resourceSet: new MutableResourceSet({ dataFactory, dataset }),
-    });
-    const ttl = new N3.Writer({ format: "text/turtle" }).quadsToString([
-      ...dataset,
-    ]);
-    expect(ttl).not.toHaveLength(0);
-
-    const instanceFromRdf = kitchenSink.NodeShapeWithListProperty.fromRdf({
-      resource,
-    }).unsafeCoerce();
-    expect(instance.equals(instanceFromRdf).extract()).toStrictEqual(true);
-  });
-
   it("toRdf: should not serialize default values", ({ expect }) => {
     const dataset = new N3.Store();
-    const instance = new kitchenSink.NodeShapeWithDefaultValueProperties({
-      falseBooleanProperty: false,
-      identifier: dataFactory.blankNode(),
-      numberProperty: 0,
-      stringProperty: "",
-      trueBooleanProperty: true,
-    });
-    instance.toRdf({
+    harnesses.nodeShapeWithDefaultValueProperties.toRdf({
       mutateGraph: dataFactory.defaultGraph(),
       resourceSet: new MutableResourceSet({ dataFactory, dataset }),
     });
@@ -651,17 +713,11 @@ describe("TsGenerator", () => {
 
   it("toRdf: should serialize non-default values", ({ expect }) => {
     const dataset = new N3.Store();
-    const instance = new kitchenSink.NodeShapeWithDefaultValueProperties({
-      falseBooleanProperty: true,
-      identifier: dataFactory.blankNode(),
-      numberProperty: 1,
-      stringProperty: "test",
-      trueBooleanProperty: false,
-    });
-    const resource = instance.toRdf({
-      mutateGraph: dataFactory.defaultGraph(),
-      resourceSet: new MutableResourceSet({ dataFactory, dataset }),
-    });
+    const resource =
+      harnesses.nodeShapeWithDefaultValuePropertiesOverriddenDifferent.toRdf({
+        mutateGraph: dataFactory.defaultGraph(),
+        resourceSet: new MutableResourceSet({ dataFactory, dataset }),
+      });
     expect(dataset.size).toStrictEqual(4);
     expect(
       resource
