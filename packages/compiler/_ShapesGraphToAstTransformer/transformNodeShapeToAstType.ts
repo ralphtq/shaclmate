@@ -34,10 +34,11 @@ function transformNodeShapeToListType(
     identifierNodeKind: nodeShape.nodeKinds.has(NodeKind.BLANK_NODE)
       ? NodeKind.BLANK_NODE
       : NodeKind.IRI,
-    kind: "ListType" as const,
     itemType: {
       kind: "PlaceholderType" as const,
     },
+    kind: "ListType" as const,
+    name: this.shapeAstName(nodeShape),
     mintingStrategy: nodeShape.mintingStrategy.toMaybe(),
     toRdfTypes: nodeShape.toRdfTypes,
   };
@@ -97,7 +98,7 @@ function transformNodeShapeToListType(
   if (
     !restProperty.type.memberTypes.find(
       (type) =>
-        type.kind === "ObjectType" &&
+        type.kind === "ListType" &&
         type.name.identifier.equals(nodeShape.resource.identifier),
     )
   ) {
@@ -137,7 +138,7 @@ export function transformNodeShapeToAstType(
     }
   }
 
-  if (!nodeShape.resource.isSubClassOf(rdf.List)) {
+  if (nodeShape.resource.isSubClassOf(rdf.List)) {
     return transformNodeShapeToListType.bind(this)(nodeShape);
   }
 
