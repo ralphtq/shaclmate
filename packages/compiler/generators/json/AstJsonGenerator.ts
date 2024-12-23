@@ -76,6 +76,12 @@ function typeToJson(type: ast.Type): AstJson.Type {
         kind: type.kind,
         types: type.memberTypes.map((type) => typeToJson(type)),
       };
+    case "ListType": {
+      return {
+        itemType: typeToJson(type.itemType),
+        kind: type.kind,
+      };
+    }
     case "LiteralType": {
       return {
         datatype: type.datatype.extract(),
@@ -98,7 +104,6 @@ function typeToJson(type: ast.Type): AstJson.Type {
       return {
         fromRdfType: type.fromRdfType.map(termToJson).extract(),
         kind: type.kind,
-        listItemType: type.listItemType.map(typeToJson).extract(),
         name: nameToJson(type.name),
         parentObjectTypes:
           type.parentObjectTypes.length > 0
@@ -115,6 +120,8 @@ function typeToJson(type: ast.Type): AstJson.Type {
         itemType: typeToJson(type.itemType),
         kind: type.kind,
       };
+    case "PlaceholderType":
+      throw new Error(type.kind);
     case "SetType":
       return {
         itemType: typeToJson(type.itemType),

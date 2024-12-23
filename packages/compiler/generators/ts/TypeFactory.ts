@@ -1,7 +1,6 @@
 import TermMap from "@rdfjs/term-map";
 import TermSet from "@rdfjs/term-set";
 import type { BlankNode, NamedNode } from "@rdfjs/types";
-import { NodeKind } from "@shaclmate/shacl-ast";
 import { rdf, xsd } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { fromRdf } from "rdf-literal";
@@ -50,6 +49,16 @@ export class TypeFactory {
         });
       case "IntersectionType":
         throw new Error("not implemented");
+      case "ListType": {
+        return new ListType({
+          dataFactoryVariable: this.dataFactoryVariable,
+          fromRdfType: astType.fromRdfType,
+          identifierNodeKind: astType.identifierNodeKind,
+          itemType: this.createTypeFromAstType(astType.itemType),
+          mintingStrategy: astType.mintingStrategy,
+          toRdfTypes: astType.toRdfTypes,
+        });
+      }
       case "LiteralType": {
         // Look at sh:datatype as well as sh:defaultValue/sh:hasValue/sh:in term datatypes
         // If there's one common datatype than we can refine the type
@@ -184,24 +193,8 @@ export class TypeFactory {
       }
       case "ObjectIntersectionType":
         throw new Error("not implemented");
-      case "ObjectType": {
-        if (astType.listItemType.isJust()) {
-          return new ListType({
-            dataFactoryVariable: this.dataFactoryVariable,
-            fromRdfType: astType.fromRdfType,
-            identifierNodeKind: astType.nodeKinds.has(NodeKind.BLANK_NODE)
-              ? NodeKind.BLANK_NODE
-              : NodeKind.IRI,
-            itemType: this.createTypeFromAstType(
-              astType.listItemType.unsafeCoerce(),
-            ),
-            mintingStrategy: astType.mintingStrategy,
-            toRdfTypes: astType.toRdfTypes,
-          });
-        }
-
+      case "ObjectType":
         return this.createObjectTypeFromAstType(astType);
-      }
       case "ObjectUnionType": {
         return new ObjectUnionType({
           dataFactoryVariable: this.dataFactoryVariable,
@@ -218,6 +211,8 @@ export class TypeFactory {
           dataFactoryVariable: this.dataFactoryVariable,
           itemType: this.createTypeFromAstType(astType.itemType),
         });
+      case "PlaceholderType":
+        throw new Error(astType.kind);
       case "SetType":
         return new SetType({
           dataFactoryVariable: this.dataFactoryVariable,

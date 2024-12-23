@@ -1,7 +1,7 @@
 import type { Type } from "./Type.js";
 
 /**
- * A set of items of a specific type.
+ * An unordered set of items of a specific type.
  *
  * This is a property with sh:maxCount != 1.
  */

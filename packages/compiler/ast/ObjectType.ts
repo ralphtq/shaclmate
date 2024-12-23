@@ -70,16 +70,10 @@ export interface ObjectType {
   readonly kind: "ObjectType";
 
   /**
-   * If the ObjectType is an RDF list, this is the type of rdf:first.
-   * https://www.w3.org/TR/rdf-schema/#ch_collectionvocab
-   *
-   * Mutable to support cycle-handling logic in the compiler.
-   */
-  listItemType: Maybe<Type>;
-  /**
-   * Strategy for minting new object identifiers. If not specified, require an identifier on construction.
+   * Strategy for minting new object identifiers.
    */
   readonly mintingStrategy: Maybe<MintingStrategy>;
+
   /**
    * Name of this type, usually derived from sh:name or shaclmate:name.
    */
