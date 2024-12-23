@@ -14,13 +14,13 @@ import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObj
 import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
 
 abstract class Harness<
-  T extends { readonly identifier: IdentifierT },
+  T extends { readonly identifier: IdentifierT  },
   IdentifierT extends BlankNode | NamedNode,
 > {
-  readonly fromRdf: (parameters: { resource: Resource<IdentifierT> }) => Either<
-    Resource.ValueError,
-    T
-  >;
+  readonly fromRdf: (parameters: {
+    [_index: string]: any;
+    resource: Resource<IdentifierT>;
+  }) => Either<Resource.ValueError, T>;
   readonly instance: T;
 
   constructor({
