@@ -27,11 +27,12 @@ import {
 export class ObjectType extends DeclaredType {
   readonly abstract: boolean;
   readonly declarationType: TsObjectDeclarationType;
-  readonly extern: boolean;
-  readonly fromRdfType: Maybe<NamedNode>;
   readonly kind = "ObjectType";
-  readonly mintingStrategy: Maybe<MintingStrategy>;
-  readonly toRdfTypes: readonly NamedNode[];
+  protected readonly extern: boolean;
+  protected readonly comment: Maybe<string>;
+  protected readonly fromRdfType: Maybe<NamedNode>;
+  protected readonly mintingStrategy: Maybe<MintingStrategy>;
+  protected readonly toRdfTypes: readonly NamedNode[];
   private readonly import_: Maybe<string>;
   private readonly lazyAncestorObjectTypes: () => readonly ObjectType[];
   private readonly lazyDescendantObjectTypes: () => readonly ObjectType[];
@@ -40,6 +41,7 @@ export class ObjectType extends DeclaredType {
 
   constructor({
     abstract,
+    comment,
     declarationType,
     extern,
     fromRdfType,
@@ -53,6 +55,7 @@ export class ObjectType extends DeclaredType {
     ...superParameters
   }: {
     abstract: boolean;
+    comment: Maybe<string>;
     declarationType: TsObjectDeclarationType;
     extern: boolean;
     fromRdfType: Maybe<NamedNode>;
@@ -66,6 +69,7 @@ export class ObjectType extends DeclaredType {
   } & ConstructorParameters<typeof DeclaredType>[0]) {
     super(superParameters);
     this.abstract = abstract;
+    this.comment = comment;
     this.declarationType = declarationType;
     this.extern = extern;
     this.fromRdfType = fromRdfType;

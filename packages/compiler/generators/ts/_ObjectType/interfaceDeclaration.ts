@@ -6,6 +6,7 @@ import {
   StructureKind,
 } from "ts-morph";
 import type { ObjectType } from "../ObjectType.js";
+import { tsComment } from "../tsComment.js";
 
 export function interfaceDeclaration(
   this: ObjectType,
@@ -27,6 +28,7 @@ export function interfaceDeclaration(
     ),
     isExported: true,
     kind: StructureKind.Interface,
+    leadingTrivia: this.comment.map(tsComment).extract(),
     name: this.name,
     properties,
   });

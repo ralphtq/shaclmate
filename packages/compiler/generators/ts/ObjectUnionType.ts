@@ -14,6 +14,7 @@ import type { Import } from "./Import.js";
 import type { ObjectType } from "./ObjectType.js";
 import { Type } from "./Type.js";
 import { hasherTypeConstraint } from "./_ObjectType/hashFunctionOrMethodDeclaration.js";
+import { tsComment } from "./tsComment.js";
 
 /**
  * A union of object types, generated as a type alias
@@ -26,20 +27,24 @@ import { hasherTypeConstraint } from "./_ObjectType/hashFunctionOrMethodDeclarat
  * It also generates SPARQL graph patterns that UNION the member object types.
  */
 export class ObjectUnionType extends DeclaredType {
+  private readonly comment: Maybe<string>;
   readonly fromRdfFunctionName = "fromRdf";
   readonly kind = "ObjectUnionType";
   readonly memberTypes: readonly ObjectType[];
   private readonly _discriminatorProperty: Type.DiscriminatorProperty;
 
   constructor({
+    comment,
     memberTypes,
     ...superParameters
   }: ConstructorParameters<typeof DeclaredType>[0] & {
+    comment: Maybe<string>;
     export_: boolean;
     memberTypes: readonly ObjectType[];
     name: string;
   }) {
     super(superParameters);
+    this.comment = comment;
     invariant(memberTypes.length > 0);
     this.memberTypes = memberTypes;
     const discriminatorPropertyName =
@@ -303,6 +308,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
   private get typeAliasDeclaration(): TypeAliasDeclarationStructure {
     return {
       isExported: true,
+      leadingTrivia: this.comment.map(tsComment).extract(),
       kind: StructureKind.TypeAlias,
       name: this.name,
       type: this.memberTypes.map((memberType) => memberType.name).join(" | "),
