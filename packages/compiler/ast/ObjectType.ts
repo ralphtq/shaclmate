@@ -167,6 +167,12 @@ export namespace ObjectType {
     readonly label: Maybe<string>;
 
     /**
+     * The property should be mutable in generated code i.e., it should be re-assignable. The property value may or may
+     * not be mutable.
+     */
+    readonly mutable: Maybe<boolean>;
+
+    /**
      * Name of this property.
      */
     readonly name: Name;

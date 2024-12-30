@@ -1,4 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
+import { shaclmate } from "@shaclmate/compiler/vocabularies/index";
 import { rdfs, sh } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
@@ -111,6 +112,13 @@ export abstract class RdfjsShape<
     return this.resource
       .value(rdfs.label)
       .chain((value) => value.toLiteral())
+      .toMaybe();
+  }
+
+  get mutable(): Maybe<boolean> {
+    return this.resource
+      .value(shaclmate.mutable)
+      .chain((value) => value.toBoolean())
       .toMaybe();
   }
 }

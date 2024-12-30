@@ -377,6 +377,7 @@ export class TypeFactory {
       dataFactoryVariable: this.dataFactoryVariable,
       description: astObjectTypeProperty.description,
       label: astObjectTypeProperty.label,
+      mutable: astObjectTypeProperty.mutable.orDefault(false),
       name: tsName(astObjectTypeProperty.name),
       path: astObjectTypeProperty.path.iri,
       type: this.createTypeFromAstType(astObjectTypeProperty.type),
