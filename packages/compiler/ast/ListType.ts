@@ -46,6 +46,11 @@ export interface ListType {
   readonly kind: "ListType";
 
   /**
+   * The list should be mutable in generated code.
+   */
+  readonly mutable: Maybe<boolean>;
+
+  /**
    * Name of this type, usually derived from sh:name or shaclmate:name.
    */
   readonly name: Name;
