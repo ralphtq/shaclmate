@@ -310,6 +310,9 @@ export class TypeFactory {
             mintingStrategy: astType.mintingStrategy,
             name: astType.tsIdentifierPropertyName,
             objectTypeDeclarationType: astType.tsObjectDeclarationType,
+            objectTypeMutable: properties.some(
+              (property) => property.mutable || property.type.mutable,
+            ),
             override: astType.parentObjectTypes.length > 0,
             type: identifierType,
             visibility: "public",
@@ -337,6 +340,7 @@ export class TypeFactory {
               objectTypeDeclarationType: objectType.declarationType,
               override: objectType.parentObjectTypes.length > 0,
               type: {
+                mutable: false,
                 name: [...typeDiscriminatorValues]
                   .sort()
                   .map((name) => `"${name}"`)
@@ -377,6 +381,7 @@ export class TypeFactory {
       dataFactoryVariable: this.dataFactoryVariable,
       description: astObjectTypeProperty.description,
       label: astObjectTypeProperty.label,
+      mutable: astObjectTypeProperty.mutable.orDefault(false),
       name: tsName(astObjectTypeProperty.name),
       path: astObjectTypeProperty.path.iri,
       type: this.createTypeFromAstType(astObjectTypeProperty.type),

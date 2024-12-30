@@ -1912,6 +1912,167 @@ export namespace NodeShapeWithOrProperties {
   }
 }
 /**
+ * Shape with shaclmate:mutable properties.
+ */
+export class NodeShapeWithMutableProperties {
+  private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
+  mutableStringProperty: string;
+  readonly type = "NodeShapeWithMutableProperties";
+
+  constructor(parameters: {
+    readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly mutableStringProperty: string;
+  }) {
+    this._identifier = parameters.identifier;
+    this.mutableStringProperty = parameters.mutableStringProperty;
+  }
+
+  get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
+    return typeof this._identifier !== "undefined"
+      ? this._identifier
+      : dataFactory.namedNode(
+          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
+        );
+  }
+
+  equals(
+    other: NodeShapeWithMutableProperties,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.booleanEquals(
+      this.identifier,
+      other.identifier,
+    )
+      .mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "identifier",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      }))
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.mutableStringProperty,
+          other.mutableStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "mutableStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(_hasher: HasherT): HasherT {
+    _hasher.update(this.mutableStringProperty);
+    return _hasher;
+  }
+
+  toJson(): {
+    readonly "@id": string;
+    readonly mutableStringProperty: string;
+    readonly type: string;
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id": this.identifier.value,
+        mutableStringProperty: this.mutableStringProperty,
+        type: this.type,
+      } satisfies ReturnType<NodeShapeWithMutableProperties["toJson"]>),
+    );
+  }
+
+  toRdf({
+    mutateGraph,
+    resourceSet,
+  }: {
+    ignoreRdfType?: boolean;
+    mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+    resourceSet: rdfjsResource.MutableResourceSet;
+  }): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource({
+      identifier: this.identifier,
+      mutateGraph,
+    });
+    _resource.add(
+      dataFactory.namedNode("http://example.com/mutableStringProperty"),
+      this.mutableStringProperty,
+    );
+    return _resource;
+  }
+
+  toString(): string {
+    return JSON.stringify(this.toJson());
+  }
+}
+
+export namespace NodeShapeWithMutableProperties {
+  export function fromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    NodeShapeWithMutableProperties
+  > {
+    const identifier = _resource.identifier;
+    const _mutableStringPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(
+        dataFactory.namedNode("http://example.com/mutableStringProperty"),
+        { unique: true },
+      )
+      .head()
+      .chain((_value) => _value.toString());
+    if (_mutableStringPropertyEither.isLeft()) {
+      return _mutableStringPropertyEither;
+    }
+
+    const mutableStringProperty = _mutableStringPropertyEither.unsafeCoerce();
+    return purify.Either.of(
+      new NodeShapeWithMutableProperties({ identifier, mutableStringProperty }),
+    );
+  }
+
+  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
+    constructor(
+      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
+      _options?: { ignoreRdfType?: boolean },
+    ) {
+      super(subject);
+      this.add(
+        sparqlBuilder.GraphPattern.basic(
+          this.subject,
+          dataFactory.namedNode("http://example.com/mutableStringProperty"),
+          this.variable("MutableStringProperty"),
+        ),
+      );
+    }
+  }
+}
+/**
  * Shape that uses the ListShape in a property.
  */
 export class NodeShapeWithListProperty {
@@ -2276,12 +2437,11 @@ export class NodeShapeWithInProperties {
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
+    return typeof this._identifier !== "undefined"
+      ? this._identifier
+      : dataFactory.namedNode(
+          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
+        );
   }
 
   equals(
@@ -3934,12 +4094,11 @@ export class NodeShapeWithDefaultValueProperties {
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
+    return typeof this._identifier !== "undefined"
+      ? this._identifier
+      : dataFactory.namedNode(
+          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
+        );
   }
 
   equals(

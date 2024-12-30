@@ -129,8 +129,8 @@ export class UnionType extends Type {
       .join(" | ");
   }
 
-  override get useImports(): readonly Import[] {
-    return this.memberTypes.flatMap((memberType) => memberType.useImports);
+  get mutable(): boolean {
+    return this.memberTypes.some((memberType) => memberType.mutable);
   }
 
   override propertyEqualsFunction(): string {
@@ -254,6 +254,10 @@ ${this.memberTypeTraits
         }),
       variables,
     });
+  }
+
+  override get useImports(): readonly Import[] {
+    return this.memberTypes.flatMap((memberType) => memberType.useImports);
   }
 
   private ternaryExpression({

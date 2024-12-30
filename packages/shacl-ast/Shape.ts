@@ -44,6 +44,7 @@ export interface Shape<
   readonly identifier: BlankNode | NamedNode;
   readonly isDefinedBy: Maybe<OntologyT>;
   readonly label: Maybe<Literal>;
+  readonly mutable: Maybe<boolean>;
   readonly targets: Shape.Targets;
 }
 

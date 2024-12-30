@@ -222,6 +222,10 @@ export class ObjectType extends DeclaredType {
     }
   }
 
+  get mutable(): boolean {
+    return this.properties.some((property) => property.mutable);
+  }
+
   @Memoize()
   get ownProperties(): readonly ObjectType.Property[] {
     if (this.parentObjectTypes.length === 0) {

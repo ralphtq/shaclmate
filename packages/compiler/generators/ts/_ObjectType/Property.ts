@@ -10,7 +10,9 @@ import type { PropertyVisibility } from "../../../enums/index.js";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
 
-export abstract class Property<TypeT extends { readonly name: string }> {
+export abstract class Property<
+  TypeT extends { readonly mutable: boolean; readonly name: string },
+> {
   abstract readonly classConstructorParametersPropertySignature: Maybe<
     OptionalKind<PropertySignatureStructure>
   >;
@@ -23,6 +25,7 @@ export abstract class Property<TypeT extends { readonly name: string }> {
   abstract readonly equalsFunction: string;
   abstract readonly interfacePropertySignature: OptionalKind<PropertySignatureStructure>;
   abstract readonly jsonPropertySignature: OptionalKind<PropertySignatureStructure>;
+  abstract readonly mutable: boolean;
   readonly name: string;
   readonly type: TypeT;
   readonly visibility: PropertyVisibility;

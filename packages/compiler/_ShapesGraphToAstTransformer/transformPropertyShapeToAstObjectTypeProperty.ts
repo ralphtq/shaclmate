@@ -32,6 +32,7 @@ export function transformPropertyShapeToAstObjectTypeProperty(
     comment: propertyShape.comment.map((literal) => literal.value),
     description: propertyShape.description.map((literal) => literal.value),
     label: propertyShape.label.map((literal) => literal.value),
+    mutable: propertyShape.mutable,
     name: this.shapeAstName(propertyShape),
     path,
     type: type.extract() as ast.Type,

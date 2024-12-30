@@ -17,18 +17,21 @@ export class ShaclProperty extends Property<Type> {
   private readonly comment: Maybe<string>;
   private readonly description: Maybe<string>;
   private readonly label: Maybe<string>;
+  override readonly mutable: boolean;
   private readonly path: rdfjs.NamedNode;
 
   constructor({
     comment,
     description,
     label,
+    mutable,
     path,
     ...superParameters
   }: {
     comment: Maybe<string>;
     description: Maybe<string>;
     label: Maybe<string>;
+    mutable: boolean;
     path: rdfjs.NamedNode;
     type: Type;
   } & ConstructorParameters<typeof Property>[0]) {
@@ -36,6 +39,7 @@ export class ShaclProperty extends Property<Type> {
     this.comment = comment;
     this.description = description;
     this.label = label;
+    this.mutable = mutable;
     this.path = path;
   }
 
@@ -71,7 +75,7 @@ export class ShaclProperty extends Property<Type> {
     OptionalKind<PropertyDeclarationStructure>
   > {
     return Maybe.of({
-      isReadonly: true,
+      isReadonly: !this.mutable,
       leadingTrivia: this.declarationComment,
       name: this.name,
       scope: Property.visibilityToScope(this.visibility),
@@ -89,7 +93,7 @@ export class ShaclProperty extends Property<Type> {
 
   override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {
     return {
-      isReadonly: true,
+      isReadonly: !this.mutable,
       leadingTrivia: this.declarationComment,
       name: this.name,
       type: this.type.name,

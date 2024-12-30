@@ -311,6 +311,19 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :listProperty
     ] .
 
+:NodeShapeWithMutableProperties
+    shaclmate:name "NodeShapeWithMutableProperties" ;
+    a sh:NodeShape ;
+    rdfs:comment "Shape with shaclmate:mutable properties." ;
+    sh:property [
+        shaclmate:mutable true ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "mutableStringProperty" ;
+        sh:path :mutableStringProperty
+    ] .
+
 :NodeShapeWithOrProperties
     shaclmate:name "NodeShapeWithOrProperties" ;
     a sh:NodeShape ;

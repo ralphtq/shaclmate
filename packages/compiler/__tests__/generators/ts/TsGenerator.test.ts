@@ -210,6 +210,12 @@ describe("TsGenerator", () => {
         listProperty: ["Test1", "Test2"],
       }),
     }),
+    nodeShapeWithMutableProperties: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithMutableProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithMutableProperties({
+        mutableStringProperty: "test",
+      }),
+    }),
     nodeShapeWithOrProperties: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithOrProperties.fromRdf,
       instance: new kitchenSink.NodeShapeWithOrProperties({
@@ -608,6 +614,21 @@ describe("TsGenerator", () => {
       harnesses.nonClassNodeShape.instance.hash(sha256.create()).hex(),
     ).toStrictEqual(
       "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25",
+    );
+  });
+
+  it("mutable property", ({ expect }) => {
+    const instance = new kitchenSink.NodeShapeWithMutableProperties({
+      mutableStringProperty: "test",
+    });
+    expect(instance.mutableStringProperty).toStrictEqual("test");
+    expect(instance.identifier.value).toStrictEqual(
+      "urn:shaclmate:object:NodeShapeWithMutableProperties:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+    );
+    instance.mutableStringProperty = "test2";
+    // Hash-based identifier should change when the property does
+    expect(instance.identifier.value).toStrictEqual(
+      "urn:shaclmate:object:NodeShapeWithMutableProperties:60303ae22b998861bce3b28f33eec1be758a213c86c93c076dbe9f558c11c752",
     );
   });
 

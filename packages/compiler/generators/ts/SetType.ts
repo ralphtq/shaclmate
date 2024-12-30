@@ -39,6 +39,10 @@ export class SetType extends Type {
     return `readonly (${this.itemType.jsonName})[]`;
   }
 
+  get mutable(): boolean {
+    return this.itemType.mutable;
+  }
+
   @Memoize()
   get name(): string {
     return `readonly (${this.itemType.name})[]`;

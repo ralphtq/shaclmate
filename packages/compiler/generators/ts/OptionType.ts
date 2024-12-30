@@ -46,6 +46,10 @@ export class OptionType extends Type {
     return `(${this.itemType.jsonName}) | undefined`;
   }
 
+  get mutable(): boolean {
+    return this.itemType.mutable;
+  }
+
   @Memoize()
   get name(): string {
     return `purify.Maybe<${this.itemType.name}>`;
