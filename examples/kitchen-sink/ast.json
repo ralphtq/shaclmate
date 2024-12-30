@@ -3,12 +3,12 @@
     {
       "kind": "ObjectType",
       "name": {
-        "curie": ":AbstractBaseClassWithPropertiesNodeShape",
+        "curie": ":AbstractBaseClassForExternObjectType",
         "identifier": {
           "termType": "NamedNode",
-          "value": "http://example.com/AbstractBaseClassWithPropertiesNodeShape"
+          "value": "http://example.com/AbstractBaseClassForExternObjectType"
         },
-        "shName": "AbstractBaseClassWithPropertiesNodeShape"
+        "shaclmateName": "AbstractBaseClassForExternObjectType"
       },
       "properties": [
         {
@@ -33,12 +33,12 @@
     {
       "kind": "ObjectType",
       "name": {
-        "curie": ":AbstractBaseClassForExternObjectType",
+        "curie": ":AbstractBaseClassWithPropertiesNodeShape",
         "identifier": {
           "termType": "NamedNode",
-          "value": "http://example.com/AbstractBaseClassForExternObjectType"
+          "value": "http://example.com/AbstractBaseClassWithPropertiesNodeShape"
         },
-        "shName": "AbstractBaseClassForExternObjectType"
+        "shaclmateName": "AbstractBaseClassWithPropertiesNodeShape"
       },
       "properties": [
         {
@@ -68,7 +68,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/AbstractBaseClassWithoutPropertiesNodeShape"
         },
-        "shName": "AbstractBaseClassWithoutPropertiesNodeShape"
+        "shaclmateName": "AbstractBaseClassWithoutPropertiesNodeShape"
       },
       "properties": []
     },
@@ -80,7 +80,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/ConcreteChildClassNodeShape"
         },
-        "shName": "ConcreteChildClassNodeShape"
+        "shaclmateName": "ConcreteChildClassNodeShape"
       },
       "properties": [
         {
@@ -110,7 +110,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/ConcreteParentClassNodeShape"
         },
-        "shName": "ConcreteParentClassNodeShape"
+        "shaclmateName": "ConcreteParentClassNodeShape"
       },
       "properties": [
         {
@@ -140,7 +140,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/ExternObjectType"
         },
-        "shName": "ExternObjectType"
+        "shaclmateName": "ExternObjectType"
       },
       "properties": []
     },
@@ -152,7 +152,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/InterfaceNodeShape"
         },
-        "shName": "InterfaceNodeShape"
+        "shaclmateName": "InterfaceNodeShape"
       },
       "properties": [
         {
@@ -182,7 +182,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/IriNodeShape"
         },
-        "shName": "IriNodeShape"
+        "shaclmateName": "IriNodeShape"
       },
       "properties": [
         {
@@ -212,7 +212,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithDefaultValueProperties"
         },
-        "shName": "NodeShapeWithDefaultValueProperties"
+        "shaclmateName": "NodeShapeWithDefaultValueProperties"
       },
       "properties": [
         {
@@ -290,7 +290,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithExplicitRdfTypes"
         },
-        "shName": "NodeShapeWithExplicitRdfTypes"
+        "shaclmateName": "NodeShapeWithExplicitRdfTypes"
       },
       "properties": [
         {
@@ -320,7 +320,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithExternProperties"
         },
-        "shName": "NodeShapeWithExternProperties"
+        "shaclmateName": "NodeShapeWithExternProperties"
       },
       "properties": [
         {
@@ -341,7 +341,7 @@
                   "termType": "NamedNode",
                   "value": "http://example.com/ExternObjectType"
                 },
-                "shName": "ExternObjectType"
+                "shaclmateName": "ExternObjectType"
               },
               "nodeKinds": [
                 "BlankNode",
@@ -389,7 +389,7 @@
                   "termType": "NamedNode",
                   "value": "http://example.com/NodeShapeWithExternProperties-InlineNodeShape"
                 },
-                "shName": "InlineNodeShape"
+                "shaclmateName": "InlineNodeShape"
               },
               "nodeKinds": [
                 "BlankNode",
@@ -409,7 +409,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithExternProperties-ExternNodeShape"
         },
-        "shName": "ExternNodeShape"
+        "shaclmateName": "ExternNodeShape"
       },
       "properties": [
         {
@@ -439,7 +439,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithExternProperties-InlineNodeShape"
         },
-        "shName": "InlineNodeShape"
+        "shaclmateName": "InlineNodeShape"
       },
       "properties": [
         {
@@ -469,7 +469,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithHasValueProperties"
         },
-        "shName": "NodeShapeWithHasValueProperties"
+        "shaclmateName": "NodeShapeWithHasValueProperties"
       },
       "properties": [
         {
@@ -527,7 +527,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithInProperties"
         },
-        "shName": "NodeShapeWithInProperties"
+        "shaclmateName": "NodeShapeWithInProperties"
       },
       "properties": [
         {
@@ -623,7 +623,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithListProperty"
         },
-        "shName": "NodeShapeWithListProperty"
+        "shaclmateName": "NodeShapeWithListProperty"
       },
       "properties": [
         {
@@ -656,7 +656,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithOrProperties"
         },
-        "shName": "NodeShapeWithOrProperties"
+        "shaclmateName": "NodeShapeWithOrProperties"
       },
       "properties": [
         {
@@ -743,7 +743,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithPropertyCardinalities"
         },
-        "shName": "NodeShapeWithPropertyCardinalities"
+        "shaclmateName": "NodeShapeWithPropertyCardinalities"
       },
       "properties": [
         {
@@ -813,7 +813,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NodeShapeWithPropertyVisibilities"
         },
-        "shName": "NodeShapeWithPropertyVisibilities"
+        "shaclmateName": "NodeShapeWithPropertyVisibilities"
       },
       "properties": [
         {
@@ -877,7 +877,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/NonClassNodeShape"
         },
-        "shName": "NonClassNodeShape"
+        "shaclmateName": "NonClassNodeShape"
       },
       "properties": [
         {
@@ -907,7 +907,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/OrNodeShapeMember1"
         },
-        "shName": "OrNodeShapeMember1"
+        "shaclmateName": "OrNodeShapeMember1"
       },
       "properties": [
         {
@@ -937,7 +937,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/OrNodeShapeMember2"
         },
-        "shName": "OrNodeShapeMember2"
+        "shaclmateName": "OrNodeShapeMember2"
       },
       "properties": [
         {
@@ -967,7 +967,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/Sha256IriNodeShape"
         },
-        "shName": "Sha256IriNodeShape"
+        "shaclmateName": "Sha256IriNodeShape"
       },
       "properties": [
         {
@@ -997,7 +997,7 @@
           "termType": "NamedNode",
           "value": "http://example.com/UuidV4IriNodeShape"
         },
-        "shName": "UuidV4IriNodeShape"
+        "shaclmateName": "UuidV4IriNodeShape"
       },
       "properties": [
         {

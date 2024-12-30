@@ -4,8 +4,13 @@ set -e
 
 cd "$(dirname "$0")/.."
 
+format_rdf() {
+  rapper -i turtle -o turtle -q $1 >temp.ttl
+  mv -f temp.ttl $1
+}
 
 # Kitchen sink
+format_rdf $PWD/examples/kitchen-sink/kitchen-sink.shapes.ttl
 ./packages/cli/cli.sh show-ast-json $PWD/examples/kitchen-sink/kitchen-sink.shapes.ttl >examples/kitchen-sink/ast.json
 ./packages/cli/cli.sh generate $PWD/examples/kitchen-sink/kitchen-sink.shapes.ttl >examples/kitchen-sink/generated.ts
 

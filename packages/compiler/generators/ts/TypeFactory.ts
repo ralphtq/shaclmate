@@ -197,6 +197,7 @@ export class TypeFactory {
         return this.createObjectTypeFromAstType(astType);
       case "ObjectUnionType": {
         return new ObjectUnionType({
+          comment: astType.comment,
           dataFactoryVariable: this.dataFactoryVariable,
           export_: astType.export,
           features: astType.tsFeatures,
@@ -250,6 +251,7 @@ export class TypeFactory {
 
     const objectType = new ObjectType({
       abstract: astType.abstract,
+      comment: astType.comment,
       dataFactoryVariable: this.dataFactoryVariable,
       declarationType: astType.tsObjectDeclarationType,
       export_: astType.export,

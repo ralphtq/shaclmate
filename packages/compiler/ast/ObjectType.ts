@@ -36,6 +36,11 @@ export interface ObjectType {
   readonly childObjectTypes: ObjectType[];
 
   /**
+   * Documentation comment.
+   */
+  readonly comment: Maybe<string>;
+
+  /**
    * Descendant (children, their children, ad nauseum) ObjectTypes of this ObjectType.
    *
    * Mutable to support cycle-handling logic in the compiler.
@@ -141,9 +146,34 @@ export interface ObjectType {
 
 export namespace ObjectType {
   export interface Property {
+    /**
+     * Documentation comment from rdfs:comment.
+     */
+    readonly comment: Maybe<string>;
+
+    /**
+     * Description from sh:description.
+     */
+    readonly description: Maybe<string>;
+
+    /**
+     * Name of this property.
+     */
     readonly name: Name;
+
+    /**
+     * SHACL property path (https://www.w3.org/TR/shacl/#property-paths)
+     */
     readonly path: PredicatePath;
+
+    /**
+     * Type of this property.
+     */
     readonly type: Type;
+
+    /**
+     * Visibility: private, protected, public.
+     */
     readonly visibility: PropertyVisibility;
   }
 

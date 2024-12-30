@@ -7,6 +7,13 @@ import type { PropertyGroup } from "./PropertyGroup.js";
 export class RdfjsPropertyGroup implements PropertyGroup {
   constructor(private readonly resource: Resource) {}
 
+  get comment(): Maybe<Literal> {
+    return this.resource
+      .value(rdfs.comment)
+      .chain((value) => value.toLiteral())
+      .toMaybe();
+  }
+
   get identifier(): Resource.Identifier {
     return this.resource.identifier;
   }

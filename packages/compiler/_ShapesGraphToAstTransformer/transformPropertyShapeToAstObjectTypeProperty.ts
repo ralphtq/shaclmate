@@ -29,6 +29,8 @@ export function transformPropertyShapeToAstObjectTypeProperty(
   }
 
   const property: ast.ObjectType.Property = {
+    comment: propertyShape.comment.map((literal) => literal.value),
+    description: propertyShape.description.map((literal) => literal.value),
     name: this.shapeAstName(propertyShape),
     path,
     type: type.extract() as ast.Type,

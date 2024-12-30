@@ -4,6 +4,7 @@ import type { Maybe } from "purify-ts";
 export interface Name {
   readonly curie: Maybe<string>;
   readonly identifier: BlankNode | NamedNode;
+  readonly label: Maybe<string>;
   readonly propertyPath: Maybe<{
     curie: Maybe<string>;
     identifier: NamedNode;

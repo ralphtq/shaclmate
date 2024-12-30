@@ -10,6 +10,7 @@ import {
   StructureKind,
 } from "ts-morph";
 import type { ObjectType } from "../ObjectType.js";
+import { tsComment } from "../tsComment.js";
 import { equalsFunctionOrMethodDeclaration } from "./equalsFunctionOrMethodDeclaration.js";
 import { hashFunctionOrMethodDeclaration } from "./hashFunctionOrMethodDeclaration.js";
 import { toJsonFunctionOrMethodDeclaration } from "./toJsonFunctionOrMethodDeclaration.js";
@@ -108,8 +109,9 @@ export function classDeclaration(
         : undefined,
     getAccessors,
     isAbstract: this.abstract,
-    kind: StructureKind.Class,
     isExported: this.export,
+    kind: StructureKind.Class,
+    leadingTrivia: this.comment.map(tsComment).extract(),
     methods: [
       ...equalsMethodDeclaration.bind(this)().toList(),
       ...hashMethodDeclaration.bind(this)().toList(),

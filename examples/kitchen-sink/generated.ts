@@ -8,6 +8,9 @@ import * as rdfLiteral from "rdf-literal";
 import * as rdfjsResource from "rdfjs-resource";
 import * as uuid from "uuid";
 import { ExternObjectType } from "./ExternObjectType.js";
+/**
+ * A node shape that mints its identifier by generating a v4 UUID, if no identifier is supplied.
+ */
 export class UuidV4IriNodeShape {
   private _identifier: rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
@@ -161,6 +164,9 @@ export namespace UuidV4IriNodeShape {
     }
   }
 }
+/**
+ * A node shape that mints its identifier by hashing (other) contents, if no identifier is supplied.
+ */
 export class Sha256IriNodeShape {
   private _identifier: rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
@@ -620,6 +626,9 @@ export namespace OrNodeShapeMember1 {
     }
   }
 }
+/**
+ * Node shape that isn't an rdfs:Class.
+ */
 export class NonClassNodeShape {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
@@ -773,6 +782,9 @@ export namespace NonClassNodeShape {
     }
   }
 }
+/**
+ * Shape with properties that have visibility modifiers (private, protected, public)
+ */
 export class NodeShapeWithPropertyVisibilities {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   private readonly privateProperty: string;
@@ -1022,6 +1034,9 @@ export namespace NodeShapeWithPropertyVisibilities {
     }
   }
 }
+/**
+ * Shape that has properties with different cardinalities
+ */
 export class NodeShapeWithPropertyCardinalities {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   readonly optionalStringProperty: purify.Maybe<string>;
@@ -1314,6 +1329,9 @@ export namespace NodeShapeWithPropertyCardinalities {
     }
   }
 }
+/**
+ * Shape with sh:or properties.
+ */
 export class NodeShapeWithOrProperties {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   readonly orLiteralsProperty: purify.Maybe<rdfjs.Literal>;
@@ -1884,6 +1902,9 @@ export namespace NodeShapeWithOrProperties {
     }
   }
 }
+/**
+ * Shape that uses the ListShape in a property.
+ */
 export class NodeShapeWithListProperty {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   readonly listProperty: readonly string[];
@@ -2150,6 +2171,9 @@ export namespace NodeShapeWithListProperty {
     }
   }
 }
+/**
+ * Shape with sh:in properties.
+ */
 export class NodeShapeWithInProperties {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   readonly inBooleansProperty: purify.Maybe<true>;
@@ -2722,6 +2746,9 @@ export namespace NodeShapeWithInProperties {
     }
   }
 }
+/**
+ * Shape with sh:hasValue properties.
+ */
 export class NodeShapeWithHasValueProperties {
   readonly hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
   readonly hasLiteralProperty: purify.Maybe<string>;
@@ -3282,6 +3309,9 @@ export namespace ExternNodeShape {
     }
   }
 }
+/**
+ * Node shape that inlines/nests another node shape and externs/references another.
+ */
 export class NodeShapeWithExternProperties {
   readonly externObjectTypeProperty: purify.Maybe<ExternObjectType>;
   readonly externProperty: purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode>;
@@ -3625,6 +3655,12 @@ export namespace NodeShapeWithExternProperties {
     }
   }
 }
+/**
+ * Shape with custom rdf:type's.
+ *
+ * The shaclmate:fromRdfType is expected on deserialization.
+ * shaclmate:toRdfType's are added an serialization.
+ */
 export class NodeShapeWithExplicitRdfTypes {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
@@ -3823,6 +3859,9 @@ export namespace NodeShapeWithExplicitRdfTypes {
     }
   }
 }
+/**
+ * Shape with sh:defaultValue properties.
+ */
 export class NodeShapeWithDefaultValueProperties {
   readonly dateTimeProperty: Date;
   readonly falseBooleanProperty: boolean;
@@ -4281,6 +4320,9 @@ export namespace NodeShapeWithDefaultValueProperties {
     }
   }
 }
+/**
+ * A node shape that only allows IRI identifiers.
+ */
 export class IriNodeShape {
   private _identifier: rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
@@ -4432,6 +4474,9 @@ export namespace IriNodeShape {
     }
   }
 }
+/**
+ * A node shape that's generated as a TypeScript interface instead of a class.
+ */
 export interface InterfaceNodeShape {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly stringProperty: string;
@@ -4576,6 +4621,13 @@ export namespace InterfaceNodeShape {
     return _resource;
   }
 }
+/**
+ * Node shape that serves as an abstract base class for child node shapes.
+ *
+ * It's marked abstract in TypeScript and not exported from the module.
+ *
+ * Common pattern: put the minting strategy and nodeKind on an ABC.
+ */
 abstract class AbstractBaseClassWithPropertiesNodeShape {
   readonly abcStringProperty: string;
   abstract readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4723,6 +4775,9 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     }
   }
 }
+/**
+ * Abstract base for other node shapes. Put the ABC with properties above the ABC without.
+ */
 abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseClassWithPropertiesNodeShape {
   abstract override readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   abstract override readonly type:
@@ -4795,6 +4850,9 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     }
   }
 }
+/**
+ * Class node shape that inherits the abstract base class and is the parent of the ChildClassNodeShape.
+ */
 export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutPropertiesNodeShape {
   protected _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   readonly parentStringProperty: string;
@@ -4988,6 +5046,9 @@ export namespace ConcreteParentClassNodeShape {
     }
   }
 }
+/**
+ * Child (class) of ParentClassNodeShape. Should inherit properties, node kinds, and minting strategy.
+ */
 export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   readonly childStringProperty: string;
   override readonly type = "ConcreteChildClassNodeShape";
@@ -5176,6 +5237,9 @@ export namespace ConcreteChildClassNodeShape {
     }
   }
 }
+/**
+ * An abstract base class that will be inherited by the extern object type, showing how to mix generated and hand-written code.
+ */
 export abstract class AbstractBaseClassForExternObjectType {
   readonly abcStringProperty: string;
   abstract readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -5319,6 +5383,9 @@ export namespace AbstractBaseClassForExternObjectType {
     }
   }
 }
+/**
+ * Node that that sh:or's other node shapes. This will usually be generated as a discriminated union.
+ */
 export type OrNodeShape =
   | OrNodeShapeMember1
   | OrNodeShapeMember2

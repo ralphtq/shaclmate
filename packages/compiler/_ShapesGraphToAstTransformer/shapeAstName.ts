@@ -8,15 +8,18 @@ export function shapeAstName(
   shape: input.Shape,
 ): ast.Name {
   let propertyPath: ast.Name["propertyPath"] = Maybe.empty();
-  if (
-    shape instanceof input.PropertyShape &&
-    shape.path.kind === "PredicatePath"
-  ) {
-    const pathIri = shape.path.iri;
-    propertyPath = Maybe.of({
-      curie: Maybe.fromNullable(this.iriPrefixMap.shrink(pathIri)?.value),
-      identifier: pathIri,
-    });
+  let shName: Maybe<string> = Maybe.empty();
+
+  if (shape instanceof input.PropertyShape) {
+    if (shape.path.kind === "PredicatePath") {
+      const pathIri = shape.path.iri;
+      propertyPath = Maybe.of({
+        curie: Maybe.fromNullable(this.iriPrefixMap.shrink(pathIri)?.value),
+        identifier: pathIri,
+      });
+    }
+
+    shName = shape.name.map((literal) => literal.value);
   }
 
   return {
@@ -27,8 +30,9 @@ export function shapeAstName(
           )
         : Maybe.empty(),
     identifier: shape.resource.identifier,
+    label: shape.label.map((literal) => literal.value),
     propertyPath,
-    shName: shape.name.map((name) => name.value),
+    shName: shName,
     shaclmateName: shape.shaclmateName,
   };
 }
