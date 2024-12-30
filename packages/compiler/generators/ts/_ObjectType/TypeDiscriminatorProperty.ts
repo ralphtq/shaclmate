@@ -118,6 +118,7 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
 
 export namespace TypeDiscriminatorProperty {
   export interface Type {
+    readonly mutable: boolean;
     readonly name: string;
   }
 }

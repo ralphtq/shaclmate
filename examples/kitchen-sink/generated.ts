@@ -1928,12 +1928,11 @@ export class NodeShapeWithMutableProperties {
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
+    return typeof this._identifier !== "undefined"
+      ? this._identifier
+      : dataFactory.namedNode(
+          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
+        );
   }
 
   equals(
@@ -2438,12 +2437,11 @@ export class NodeShapeWithInProperties {
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
+    return typeof this._identifier !== "undefined"
+      ? this._identifier
+      : dataFactory.namedNode(
+          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
+        );
   }
 
   equals(
@@ -4096,12 +4094,11 @@ export class NodeShapeWithDefaultValueProperties {
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
+    return typeof this._identifier !== "undefined"
+      ? this._identifier
+      : dataFactory.namedNode(
+          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
+        );
   }
 
   equals(

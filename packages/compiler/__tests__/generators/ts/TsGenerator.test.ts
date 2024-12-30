@@ -627,7 +627,9 @@ describe("TsGenerator", () => {
     );
     instance.mutableStringProperty = "test2";
     // Hash-based identifier should change when the property does
-    expect(instance.identifier.value).toStrictEqual("test3");
+    expect(instance.identifier.value).toStrictEqual(
+      "urn:shaclmate:object:NodeShapeWithMutableProperties:60303ae22b998861bce3b28f33eec1be758a213c86c93c076dbe9f558c11c752",
+    );
   });
 
   it("toJson: or properties", ({ expect }) => {
