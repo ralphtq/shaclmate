@@ -21,7 +21,7 @@
   shaclmate:export false ;
   # Common pattern: put the minting strategy and nodeKind on an ABC
   shaclmate:mintingStrategy shaclmate:_MintingStrategy_SHA256 ;
-  sh:name "AbstractBaseClassWithPropertiesNodeShape" ;
+  shaclmate:name "AbstractBaseClassWithPropertiesNodeShape" ;
   sh:nodeKind sh:BlankNodeOrIRI ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "abcStringProperty" ; sh:path :abcStringProperty ] ;
 .
@@ -31,7 +31,7 @@
   a owl:Class ;
   a sh:NodeShape ;
   shaclmate:abstract true;
-  sh:name "AbstractBaseClassForExternObjectType" ;
+  shaclmate:name "AbstractBaseClassForExternObjectType" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "abcStringProperty" ; sh:path :abcStringProperty ] ;
 .
 
@@ -42,7 +42,7 @@
   rdfs:subClassOf :AbstractBaseClassWithPropertiesNodeShape ;
   shaclmate:abstract true;
   shaclmate:export false ;
-  sh:name "AbstractBaseClassWithoutPropertiesNodeShape" ;
+  shaclmate:name "AbstractBaseClassWithoutPropertiesNodeShape" ;
 .
 
 # Child (class) of ParentClassNodeShape. Should inherit properties, node kinds, and minting strategy.
@@ -50,7 +50,7 @@
   a owl:Class ;
   a sh:NodeShape ;
   rdfs:subClassOf :ConcreteParentClassNodeShape ;
-  sh:name "ConcreteChildClassNodeShape" ;
+  shaclmate:name "ConcreteChildClassNodeShape" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "childStringProperty" ; sh:path :childStringProperty ] ;
 .
 
@@ -59,14 +59,14 @@
   a owl:Class ;
   a sh:NodeShape ;
   rdfs:subClassOf :AbstractBaseClassWithoutPropertiesNodeShape ;
-  sh:name "ConcreteParentClassNodeShape" ;
+  shaclmate:name "ConcreteParentClassNodeShape" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "parentStringProperty" ; sh:path :parentStringProperty ] ;
 .
 
 # An extern object type in TypeScript
 :ExternObjectType
   a sh:NodeShape ;
-  sh:name "ExternObjectType" ;
+  shaclmate:name "ExternObjectType" ;
   rdfs:subClassOf :AbstractBaseClassForExternObjectType ;
   shaclmate:extern true ;
   shaclmate:tsImport "import { ExternObjectType } from \"./ExternObjectType.js\";"
@@ -76,14 +76,14 @@
 :InterfaceNodeShape
   a sh:NodeShape ;
   shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
-  sh:name "InterfaceNodeShape" ;
+  shaclmate:name "InterfaceNodeShape" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty" ; sh:path :stringProperty ] ;
 .
 
 # A node shape that only allows IRI identifiers.
 :IriNodeShape
   a sh:NodeShape ;
-  sh:name "IriNodeShape" ;
+  shaclmate:name "IriNodeShape" ;
   sh:nodeKind sh:IRI ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty" ; sh:path :stringProperty ] ;
 .
@@ -93,7 +93,7 @@
 :ListShape
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf rdf:List ;
-    sh:name "ListShape" ;
+    shaclmate:name "ListShape" ;
     sh:nodeKind sh:BlankNodeOrIRI ;
     sh:property :ListShape-first, :ListShape-rest .
 
@@ -122,7 +122,7 @@
 # Shape with sh:defaultValue properties
 :NodeShapeWithDefaultValueProperties
   a sh:NodeShape ;
-  sh:name "NodeShapeWithDefaultValueProperties" ;
+  shaclmate:name "NodeShapeWithDefaultValueProperties" ;
   sh:property [ sh:defaultValue false ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "falseBooleanProperty" ; sh:path :falseBooleanProperty ] ;
   sh:property [ sh:defaultValue "2018-04-09T10:00:00Z"^^xsd:dateTime ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "dateTimeProperty" ; sh:path :dateTimeProperty ] ;
   sh:property [ sh:defaultValue 0 ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "numberProperty" ; sh:path :numberProperty ] ;
@@ -136,15 +136,15 @@
 :NodeShapeWithExplicitRdfTypes
   a owl:Class, sh:NodeShape ;
   shaclmate:fromRdfType :FromRdfType ;
+  shaclmate:name "NodeShapeWithExplicitRdfTypes" ;
   shaclmate:toRdfType :ToRdfType ;
-  sh:name "NodeShapeWithExplicitRdfTypes" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty" ; sh:path :stringProperty ] ;
 .
 
 # Node shape that inlines/nests another node shape and externs/references another.
 :NodeShapeWithExternProperties
   a sh:NodeShape ;
-  sh:name "NodeShapeWithExternProperties" ;
+  shaclmate:name "NodeShapeWithExternProperties" ;
   sh:property [ sh:maxCount 1 ; sh:minCount 0 ; sh:name "externObjectTypeProperty" ; sh:node :ExternObjectType ; sh:path :externObjectTypeProperty ] ;
   sh:property [
     shaclmate:extern true ;
@@ -166,20 +166,20 @@
 
 :NodeShapeWithExternProperties-ExternNodeShape
   a sh:NodeShape ;
-  sh:name "ExternNodeShape" ;
+  shaclmate:name "ExternNodeShape" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty" ; sh:path :stringProperty ]
 .
 
 :NodeShapeWithExternProperties-InlineNodeShape
   a sh:NodeShape ;
-  sh:name "InlineNodeShape" ;
+  shaclmate:name "InlineNodeShape" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty" ; sh:path :stringProperty ]
 .
 
 # Shape with sh:hasValue properties
 :NodeShapeWithHasValueProperties
   a sh:NodeShape ;
-  sh:name "NodeShapeWithHasValueProperties" ;
+  shaclmate:name "NodeShapeWithHasValueProperties" ;
   sh:property [ sh:maxCount 1 ; sh:name "hasIriProperty" ; sh:hasValue :NodeShapeWithHasValuePropertiesIri1 ; sh:path :hasIriProperty ] ;
   sh:property [ sh:maxCount 1 ; sh:name "hasLiteralProperty" ; sh:hasValue "test" ; sh:path :hasLiteralProperty ] ;
 .
@@ -187,7 +187,7 @@
 # Shape with sh:in properties
 :NodeShapeWithInProperties
   a sh:NodeShape ;
-  sh:name "NodeShapeWithInProperties" ;
+  shaclmate:name "NodeShapeWithInProperties" ;
   sh:property [ sh:maxCount 1 ; sh:name "inBooleansProperty" ; sh:in ( true ) ; sh:path :inBooleansProperty ] ;
   sh:property [ sh:maxCount 1 ; sh:name "inDateTimesProperty" ; sh:in ( "2018-04-09T10:00:00Z"^^xsd:dateTime ) ; sh:path :inDateTimesProperty ] ;
   sh:property [ sh:maxCount 1 ; sh:name "inIrisProperty" ; sh:in ( :NodeShapeWithInPropertiesIri1 :NodeShapeWithInPropertiesIri2 ) ; sh:path :inIrisProperty ] ;
@@ -198,14 +198,14 @@
 # Shape that uses the ListShape in a property.
 :NodeShapeWithListProperty
   a sh:NodeShape ;
-  sh:name "NodeShapeWithListProperty" ;
+  shaclmate:name "NodeShapeWithListProperty" ;
   sh:property [ sh:maxCount 1 ; sh:minCount 1 ; sh:node :ListShape ; sh:name "listProperty" ; sh:path :listProperty ]
 .
 
 # Shape with sh:or properties
 :NodeShapeWithOrProperties
   a sh:NodeShape ;
-  sh:name "NodeShapeWithOrProperties" ;
+  shaclmate:name "NodeShapeWithOrProperties" ;
   sh:property [ sh:maxCount 1 ; sh:name "orLiteralsProperty" ; sh:or ( [ sh:datatype xsd:integer ] [ sh:datatype xsd:string ] ) ; sh:path :orLiteralsProperty ] ;
   sh:property [ sh:maxCount 1 ; sh:name "orTermsProperty" ; sh:or ( [ sh:nodeKind sh:Literal ] [ sh:nodeKind sh:IRI ] ) ; sh:path :orTermsProperty ] ;
   sh:property [ sh:maxCount 1 ; sh:name "orUnrelatedProperty" ; sh:or ( [ sh:datatype xsd:integer ] [ sh:nodeKind sh:IRI ] ) ; sh:path :orUnrelatedProperty ] ;
@@ -214,7 +214,7 @@
 # Shape that has properties with different cardinalities
 :NodeShapeWithPropertyCardinalities
   a sh:NodeShape ;
-  sh:name "NodeShapeWithPropertyCardinalities" ;
+  shaclmate:name "NodeShapeWithPropertyCardinalities" ;
   # Required: maxCount=minCount=1
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "requiredStringProperty" ; sh:path :requiredStringProperty ; ] ;
   # Option: maxCount=1 minCount=0
@@ -226,7 +226,7 @@
 # Shape with properties that have visibility modifiers (private, protected, public)
 :NodeShapeWithPropertyVisibilities
   a sh:NodeShape ;
-  sh:name "NodeShapeWithPropertyVisibilities" ;
+  shaclmate:name "NodeShapeWithPropertyVisibilities" ;
   sh:property [ shaclmate:visibility shaclmate:_Visibility_Protected ; sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "protectedProperty" ; sh:path :protectedProperty ] ;
   sh:property [ shaclmate:visibility shaclmate:_Visibility_Private ; sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "privateProperty" ; sh:path :privateProperty ] ;
   sh:property [ shaclmate:visibility shaclmate:_Visibility_Public ; sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "publicProperty" ; sh:path :publicProperty ] ;
@@ -235,35 +235,35 @@
 # Node shape that isn't an rdfs:Class.
 :NonClassNodeShape
   a sh:NodeShape ;
-  sh:name "NonClassNodeShape" ;
+  shaclmate:name "NonClassNodeShape" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty" ; sh:path :stringProperty ] ;
 .
 
 # Node that that sh:or's other node shapes. This will usually be generated as a discriminated union.
 :OrNodeShape
   a sh:NodeShape ;
-  sh:name "OrNodeShape" ;
+  shaclmate:name "OrNodeShape" ;
   sh:or ( :OrNodeShapeMember1 :OrNodeShapeMember2 :ExternObjectType ) ;
 .
 
 :OrNodeShapeMember1
   a sh:NodeShape ;
-  sh:name "OrNodeShapeMember1" ;
+  shaclmate:name "OrNodeShapeMember1" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty1" ; sh:path :stringProperty1 ] ;
 .
 
 :OrNodeShapeMember2
   a sh:NodeShape ;
-  sh:name "OrNodeShapeMember2" ;
+  shaclmate:name "OrNodeShapeMember2" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty2" ; sh:path :stringProperty2 ] ;
 .
 
 # A node shape that mints its identifier by hashing (other) contents, if no identifier is supplied
 :Sha256IriNodeShape
   a sh:NodeShape ;
+  shaclmate:name "Sha256IriNodeShape" ;
   shaclmate:mintingStrategy shaclmate:_MintingStrategy_SHA256 ;
   sh:nodeKind sh:IRI ;
-  sh:name "Sha256IriNodeShape" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty" ; sh:path :stringProperty ] ;
 .
 
@@ -271,7 +271,7 @@
 :UuidV4IriNodeShape
   a sh:NodeShape ;
   shaclmate:mintingStrategy shaclmate:_MintingStrategy_UUIDv4 ;
+  shaclmate:name "UuidV4IriNodeShape" ;
   sh:nodeKind sh:IRI ;
-  sh:name "UuidV4IriNodeShape" ;
   sh:property [ sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ; sh:name "stringProperty" ; sh:path :stringProperty ] ;
 .
