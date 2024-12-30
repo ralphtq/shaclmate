@@ -73,12 +73,26 @@ export class RdfjsPropertyShape<
       .toMaybe();
   }
 
+  get description(): Maybe<Literal> {
+    return this.resource
+      .value(sh.description)
+      .chain((value) => value.toLiteral())
+      .toMaybe();
+  }
+
   get group(): Maybe<PropertyGroupT> {
     return this.resource
       .value(sh.group)
       .chain((value) => value.toIri())
       .toMaybe()
       .chain((node) => this.shapesGraph.propertyGroupByIdentifier(node));
+  }
+
+  get name(): Maybe<Literal> {
+    return this.resource
+      .value(sh.name)
+      .chain((value) => value.toLiteral())
+      .toMaybe();
   }
 
   get order(): Maybe<number> {

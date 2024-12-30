@@ -61,9 +61,9 @@ export abstract class RdfjsShape<
     this.targets = new RdfjsShape.Targets(resource);
   }
 
-  get description(): Maybe<Literal> {
+  get comment(): Maybe<Literal> {
     return this.resource
-      .value(sh.description)
+      .value(rdfs.comment)
       .chain((value) => value.toLiteral())
       .toMaybe();
   }
@@ -107,9 +107,9 @@ export abstract class RdfjsShape<
     return Maybe.empty();
   }
 
-  get name(): Maybe<Literal> {
+  get label(): Maybe<Literal> {
     return this.resource
-      .value(sh.name)
+      .value(rdfs.label)
       .chain((value) => value.toLiteral())
       .toMaybe();
   }
