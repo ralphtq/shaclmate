@@ -1039,8 +1039,17 @@ export namespace NodeShapeWithPropertyVisibilities {
  */
 export class NodeShapeWithPropertyCardinalities {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
+  /**
+   * Option: maxCount=1 minCount=0
+   */
   readonly optionalStringProperty: purify.Maybe<string>;
+  /**
+   * Required: maxCount=minCount=1
+   */
   readonly requiredStringProperty: string;
+  /**
+   * Set: minCount implicitly=0, no maxCount or maxCount > 1
+   */
   readonly setStringProperty: readonly string[];
   readonly type = "NodeShapeWithPropertyCardinalities";
 

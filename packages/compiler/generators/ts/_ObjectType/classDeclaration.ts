@@ -111,7 +111,7 @@ export function classDeclaration(
     isAbstract: this.abstract,
     isExported: this.export,
     kind: StructureKind.Class,
-    leadingTrivia: this.comment.map(tsComment).extract(),
+    leadingTrivia: this.comment.alt(this.label).map(tsComment).extract(),
     methods: [
       ...equalsMethodDeclaration.bind(this)().toList(),
       ...hashMethodDeclaration.bind(this)().toList(),

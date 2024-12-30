@@ -201,10 +201,11 @@ export class TypeFactory {
           dataFactoryVariable: this.dataFactoryVariable,
           export_: astType.export,
           features: astType.tsFeatures,
-          name: tsName((astType as ast.ObjectUnionType).name),
+          label: astType.label,
           memberTypes: astType.memberTypes
             .map((astType) => this.createTypeFromAstType(astType))
             .filter((memberType) => memberType instanceof ObjectType),
+          name: tsName((astType as ast.ObjectUnionType).name),
         });
       }
       case "OptionType":
@@ -259,6 +260,7 @@ export class TypeFactory {
       features: astType.tsFeatures,
       fromRdfType: astType.fromRdfType,
       import_: astType.tsImport,
+      label: astType.label,
       lazyAncestorObjectTypes: () =>
         astType.ancestorObjectTypes.map((astType) =>
           this.createObjectTypeFromAstType(astType),
@@ -371,7 +373,10 @@ export class TypeFactory {
     }
 
     const property = new ObjectType.ShaclProperty({
+      comment: astObjectTypeProperty.comment,
       dataFactoryVariable: this.dataFactoryVariable,
+      description: astObjectTypeProperty.description,
+      label: astObjectTypeProperty.label,
       name: tsName(astObjectTypeProperty.name),
       path: astObjectTypeProperty.path.iri,
       type: this.createTypeFromAstType(astObjectTypeProperty.type),

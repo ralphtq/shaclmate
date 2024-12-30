@@ -27,24 +27,28 @@ import { tsComment } from "./tsComment.js";
  * It also generates SPARQL graph patterns that UNION the member object types.
  */
 export class ObjectUnionType extends DeclaredType {
-  private readonly comment: Maybe<string>;
-  readonly fromRdfFunctionName = "fromRdf";
   readonly kind = "ObjectUnionType";
-  readonly memberTypes: readonly ObjectType[];
+  private readonly comment: Maybe<string>;
+  private readonly fromRdfFunctionName = "fromRdf";
+  private readonly label: Maybe<string>;
+  private readonly memberTypes: readonly ObjectType[];
   private readonly _discriminatorProperty: Type.DiscriminatorProperty;
 
   constructor({
     comment,
+    label,
     memberTypes,
     ...superParameters
   }: ConstructorParameters<typeof DeclaredType>[0] & {
     comment: Maybe<string>;
     export_: boolean;
+    label: Maybe<string>;
     memberTypes: readonly ObjectType[];
     name: string;
   }) {
     super(superParameters);
     this.comment = comment;
+    this.label = label;
     invariant(memberTypes.length > 0);
     this.memberTypes = memberTypes;
     const discriminatorPropertyName =
@@ -308,7 +312,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
   private get typeAliasDeclaration(): TypeAliasDeclarationStructure {
     return {
       isExported: true,
-      leadingTrivia: this.comment.map(tsComment).extract(),
+      leadingTrivia: this.comment.alt(this.label).map(tsComment).extract(),
       kind: StructureKind.TypeAlias,
       name: this.name,
       type: this.memberTypes.map((memberType) => memberType.name).join(" | "),

@@ -28,7 +28,7 @@ export function interfaceDeclaration(
     ),
     isExported: true,
     kind: StructureKind.Interface,
-    leadingTrivia: this.comment.map(tsComment).extract(),
+    leadingTrivia: this.comment.alt(this.label).map(tsComment).extract(),
     name: this.name,
     properties,
   });

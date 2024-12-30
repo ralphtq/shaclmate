@@ -8,9 +8,14 @@ import type { ObjectType } from "./ObjectType.js";
  */
 export interface ObjectCompositeType extends CompositeType<ObjectType> {
   /**
-   * Documentation comment.
+   * Documentation comment from rdfs:comment.
    */
   readonly comment: Maybe<string>;
+
+  /**
+   * Human-readable label from rdfs:label.
+   */
+  readonly label: Maybe<string>;
 
   /**
    * Name of this type, usually derived from sh:name or shaclmate:name.

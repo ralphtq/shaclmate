@@ -14,7 +14,7 @@ import type { Type } from "./Type.js";
  */
 export interface ListType {
   /**
-   * Documentation comment.
+   * Documentation comment from rdfs:comment.
    */
   readonly comment: Maybe<string>;
 
@@ -30,6 +30,11 @@ export interface ListType {
    * Type of identifier (blank or named node) to use for lists and sub-lists.
    */
   readonly identifierNodeKind: NodeKind.BLANK_NODE | NodeKind.IRI;
+
+  /**
+   * Human-readable label from rdfs:label.
+   */
+  readonly label: Maybe<string>;
 
   /**
    * List item type.
