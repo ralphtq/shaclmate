@@ -667,6 +667,7 @@
             },
             "shName": "mutableStringProperty"
           },
+          "mutable": true,
           "path": "http://example.com/mutableStringProperty",
           "type": {
             "datatype": {
@@ -693,7 +694,8 @@
               },
               "kind": "LiteralType"
             },
-            "kind": "ListType"
+            "kind": "ListType",
+            "mutable": true
           }
         }
       ]

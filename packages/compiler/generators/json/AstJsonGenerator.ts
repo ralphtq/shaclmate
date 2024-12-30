@@ -80,6 +80,7 @@ function typeToJson(type: ast.Type): AstJson.Type {
       return {
         itemType: typeToJson(type.itemType),
         kind: type.kind,
+        mutable: type.mutable.extract(),
       };
     }
     case "LiteralType": {
@@ -139,6 +140,7 @@ export class AstJsonGenerator implements Generator {
           name: nameToJson(objectType.name),
           properties: objectType.properties.map((property) => ({
             name: nameToJson(property.name),
+            mutable: property.mutable.extract(),
             path: property.path.iri.value,
             type: typeToJson(property.type),
           })),
