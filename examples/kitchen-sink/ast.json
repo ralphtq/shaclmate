@@ -3,12 +3,12 @@
     {
       "kind": "ObjectType",
       "name": {
-        "curie": ":AbstractBaseClassWithPropertiesNodeShape",
+        "curie": ":AbstractBaseClassForExternObjectType",
         "identifier": {
           "termType": "NamedNode",
-          "value": "http://example.com/AbstractBaseClassWithPropertiesNodeShape"
+          "value": "http://example.com/AbstractBaseClassForExternObjectType"
         },
-        "shaclmateName": "AbstractBaseClassWithPropertiesNodeShape"
+        "shaclmateName": "AbstractBaseClassForExternObjectType"
       },
       "properties": [
         {
@@ -33,12 +33,12 @@
     {
       "kind": "ObjectType",
       "name": {
-        "curie": ":AbstractBaseClassForExternObjectType",
+        "curie": ":AbstractBaseClassWithPropertiesNodeShape",
         "identifier": {
           "termType": "NamedNode",
-          "value": "http://example.com/AbstractBaseClassForExternObjectType"
+          "value": "http://example.com/AbstractBaseClassWithPropertiesNodeShape"
         },
-        "shaclmateName": "AbstractBaseClassForExternObjectType"
+        "shaclmateName": "AbstractBaseClassWithPropertiesNodeShape"
       },
       "properties": [
         {
