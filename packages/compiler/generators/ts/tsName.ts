@@ -6,6 +6,7 @@ export function tsName(astName: ast.Name): string {
   for (const tsNameAlternative of [
     astName.shaclmateName.extract(),
     astName.shName.extract()?.replace(" ", "_"),
+    astName.label.extract()?.replace(" ", "_"),
     astName.curie.map((curie) => curie.replace(":", "_")).extract(),
     astName.propertyPath
       .chain((propertyPath) =>
