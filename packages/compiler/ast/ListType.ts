@@ -14,6 +14,11 @@ import type { Type } from "./Type.js";
  */
 export interface ListType {
   /**
+   * Documentation comment.
+   */
+  readonly comment: Maybe<string>;
+
+  /**
    * The expected rdf:type of instances of this ListType and its sub-lists.
    *
    * This is usually the identifier of an sh:NodeShape that is also an rdfs:Class (i.e., a node shape with implicit

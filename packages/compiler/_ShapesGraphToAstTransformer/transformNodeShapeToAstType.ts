@@ -30,6 +30,7 @@ function transformNodeShapeToListType(
 
   // Put a placeholder in the cache to deal with cyclic references
   const listType: ast.ListType = {
+    comment: nodeShape.comment.map((literal) => literal.value),
     fromRdfType: nodeShape.fromRdfType,
     identifierNodeKind: nodeShape.nodeKinds.has(NodeKind.BLANK_NODE)
       ? NodeKind.BLANK_NODE
@@ -171,6 +172,7 @@ export function transformNodeShapeToAstType(
 
     // Put a placeholder in the cache to deal with cyclic references
     const compositeType = {
+      comment: nodeShape.comment.map((literal) => literal.value),
       export: export_,
       kind: compositeTypeKind,
       memberTypes: [] as ast.ObjectType[],
@@ -207,6 +209,7 @@ export function transformNodeShapeToAstType(
     abstract: nodeShape.abstract.orDefault(false),
     ancestorObjectTypes: [],
     childObjectTypes: [],
+    comment: nodeShape.comment.map((literal) => literal.value),
     descendantObjectTypes: [],
     export: export_,
     extern: nodeShape.extern.orDefault(false),
