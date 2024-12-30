@@ -143,6 +143,36 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     ) ;
     sh:path rdf:rest .
 
+:MutableListShape
+    shaclmate:mutable true ;
+    shaclmate:name "MutableListShape" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:subClassOf rdf:List ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:property :MutableListShape-first, :MutableListShape-rest .
+
+:MutableListShape-first
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "first" ;
+    sh:path rdf:first .
+
+:MutableListShape-rest
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "rest" ;
+    sh:or ([
+            sh:class :MutableListShape
+        ]
+        [
+            sh:hasValue ( )
+        ]
+    ) ;
+    sh:path rdf:rest .
+
 :NodeShapeWithDefaultValueProperties
     shaclmate:name "NodeShapeWithDefaultValueProperties" ;
     a sh:NodeShape ;
@@ -318,10 +348,16 @@ shaclmate:toRdfType's are added an serialization.""" ;
     sh:property [
         shaclmate:mutable true ;
         sh:datatype xsd:string ;
+        sh:description "String-valued property that can be re-assigned" ;
         sh:maxCount 1 ;
-        sh:minCount 1 ;
         sh:name "mutableStringProperty" ;
         sh:path :mutableStringProperty
+    ], [
+        sh:description "List-valued property that can't be reassigned but whose value can be mutated" ;
+        sh:maxCount 1 ;
+        sh:name "mutableListProperty" ;
+        sh:node :MutableListShape ;
+        sh:path :mutableListProperty
     ] .
 
 :NodeShapeWithOrProperties

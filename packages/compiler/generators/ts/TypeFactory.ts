@@ -55,6 +55,7 @@ export class TypeFactory {
           fromRdfType: astType.fromRdfType,
           identifierNodeKind: astType.identifierNodeKind,
           itemType: this.createTypeFromAstType(astType.itemType),
+          mutable: astType.mutable.orDefault(false),
           mintingStrategy: astType.mintingStrategy,
           toRdfTypes: astType.toRdfTypes,
         });

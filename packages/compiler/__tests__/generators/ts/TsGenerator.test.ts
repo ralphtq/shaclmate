@@ -2,7 +2,7 @@ import type { BlankNode, NamedNode } from "@rdfjs/types";
 import { rdf } from "@tpluscode/rdf-ns-builders";
 import { sha256 } from "js-sha256";
 import N3, { DataFactory as dataFactory } from "n3";
-import type { Either } from "purify-ts";
+import { type Either, Maybe } from "purify-ts";
 import type { Equatable } from "purify-ts-helpers";
 import {
   type MutableResource,
@@ -213,6 +213,7 @@ describe("TsGenerator", () => {
     nodeShapeWithMutableProperties: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithMutableProperties.fromRdf,
       instance: new kitchenSink.NodeShapeWithMutableProperties({
+        mutableListProperty: ["test1", "test2"],
         mutableStringProperty: "test",
       }),
     }),
@@ -617,15 +618,33 @@ describe("TsGenerator", () => {
     );
   });
 
+  it("mutable list", ({ expect }) => {
+    const instance = new kitchenSink.NodeShapeWithMutableProperties({
+      mutableListProperty: ["test1", "test2"],
+    });
+    expect(instance.mutableListProperty.unsafeCoerce()).toStrictEqual([
+      "test1",
+      "test2",
+    ]);
+    expect(instance.identifier.value).toStrictEqual(
+      "urn:shaclmate:object:NodeShapeWithMutableProperties:4f980b6f9baa6965f760d0bf2b2ccbee483032e5df01d77bbd9e25f7517a06b9",
+    );
+    instance.mutableListProperty.unsafeCoerce().push("test3");
+    // Hash-based identifier should change when the property does
+    expect(instance.identifier.value).toStrictEqual(
+      "urn:shaclmate:object:NodeShapeWithMutableProperties:0708b4ca464c40390706888030555d860e4a0d2bc6c487392c1655b082131629",
+    );
+  });
+
   it("mutable property", ({ expect }) => {
     const instance = new kitchenSink.NodeShapeWithMutableProperties({
       mutableStringProperty: "test",
     });
-    expect(instance.mutableStringProperty).toStrictEqual("test");
+    expect(instance.mutableStringProperty.unsafeCoerce()).toStrictEqual("test");
     expect(instance.identifier.value).toStrictEqual(
       "urn:shaclmate:object:NodeShapeWithMutableProperties:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
     );
-    instance.mutableStringProperty = "test2";
+    instance.mutableStringProperty = Maybe.of("test2");
     // Hash-based identifier should change when the property does
     expect(instance.identifier.value).toStrictEqual(
       "urn:shaclmate:object:NodeShapeWithMutableProperties:60303ae22b998861bce3b28f33eec1be758a213c86c93c076dbe9f558c11c752",

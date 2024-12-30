@@ -38,8 +38,9 @@ function transformNodeShapeToListType(
     itemType: {
       kind: "PlaceholderType" as const,
     },
-    label: nodeShape.label.map((literal) => literal.value),
     kind: "ListType" as const,
+    label: nodeShape.label.map((literal) => literal.value),
+    mutable: nodeShape.mutable,
     name: this.shapeAstName(nodeShape),
     mintingStrategy: nodeShape.mintingStrategy.toMaybe(),
     toRdfTypes: nodeShape.toRdfTypes,

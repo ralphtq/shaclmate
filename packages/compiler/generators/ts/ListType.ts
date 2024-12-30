@@ -9,7 +9,7 @@ import { Type } from "./Type.js";
 export class ListType extends Type {
   readonly itemType: Type;
   readonly kind = "ListType";
-  override readonly mutable = false;
+  override readonly mutable: boolean;
   private readonly fromRdfType: Maybe<NamedNode>;
   private readonly identifierNodeKind: NodeKind.BLANK_NODE | NodeKind.IRI;
   private readonly mintingStrategy: MintingStrategy;
@@ -19,6 +19,7 @@ export class ListType extends Type {
     identifierNodeKind,
     itemType,
     mintingStrategy,
+    mutable,
     fromRdfType,
     toRdfTypes,
     ...superParameters
@@ -27,12 +28,14 @@ export class ListType extends Type {
     identifierNodeKind: ListType["identifierNodeKind"];
     itemType: Type;
     mintingStrategy: Maybe<MintingStrategy>;
+    mutable: boolean;
     toRdfTypes: readonly NamedNode[];
   } & ConstructorParameters<typeof Type>[0]) {
     super(superParameters);
     this.identifierNodeKind = identifierNodeKind;
     this.itemType = itemType;
     this.mintingStrategy = mintingStrategy.orDefault("sha256");
+    this.mutable = mutable;
     this.fromRdfType = fromRdfType;
     this.toRdfTypes = toRdfTypes;
   }
@@ -56,7 +59,7 @@ export class ListType extends Type {
   }
 
   override get name(): string {
-    return `readonly ${this.itemType.name}[]`;
+    return `${this.mutable ? "" : "readonly "}${this.itemType.name}[]`;
   }
 
   override get useImports(): readonly Import[] {
