@@ -119,6 +119,10 @@ export class ObjectUnionType extends DeclaredType {
       .join(" | ");
   }
 
+  get mutable(): boolean {
+    return this.memberTypes.some((memberType) => memberType.mutable);
+  }
+
   get useImports(): readonly Import[] {
     return [];
   }

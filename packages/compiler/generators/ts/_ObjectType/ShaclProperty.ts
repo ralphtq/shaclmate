@@ -17,7 +17,7 @@ export class ShaclProperty extends Property<Type> {
   private readonly comment: Maybe<string>;
   private readonly description: Maybe<string>;
   private readonly label: Maybe<string>;
-  private readonly mutable: boolean;
+  override readonly mutable: boolean;
   private readonly path: rdfjs.NamedNode;
 
   constructor({

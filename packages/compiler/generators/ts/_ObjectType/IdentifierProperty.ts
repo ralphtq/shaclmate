@@ -19,6 +19,7 @@ import { Property } from "./Property.js";
 export class IdentifierProperty extends Property<IdentifierType> {
   readonly abstract: boolean;
   readonly equalsFunction = "purifyHelpers.Equatable.booleanEquals";
+  readonly mutable = false;
   private readonly classDeclarationVisibility: Maybe<PropertyVisibility>;
   private readonly mintingStrategy: Maybe<MintingStrategy>;
   private readonly objectTypeDeclarationType: TsObjectDeclarationType;

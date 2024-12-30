@@ -23,6 +23,7 @@ export abstract class Property<TypeT extends { readonly name: string }> {
   abstract readonly equalsFunction: string;
   abstract readonly interfacePropertySignature: OptionalKind<PropertySignatureStructure>;
   abstract readonly jsonPropertySignature: OptionalKind<PropertySignatureStructure>;
+  abstract readonly mutable: boolean;
   readonly name: string;
   readonly type: TypeT;
   readonly visibility: PropertyVisibility;

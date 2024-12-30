@@ -19,6 +19,7 @@ export abstract class RdfjsTermType<
     | "LiteralType"
     | "NumberType"
     | "StringType";
+  readonly mutable: boolean = false;
 
   constructor({
     defaultValue,

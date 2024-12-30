@@ -11,6 +11,7 @@ import { Property } from "./Property.js";
 
 export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorProperty.Type> {
   readonly equalsFunction = "purifyHelpers.Equatable.strictEquals";
+  readonly mutable = false;
   readonly value: string;
   private readonly abstract: boolean;
   private readonly objectTypeDeclarationType: TsObjectDeclarationType;

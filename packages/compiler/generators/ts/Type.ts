@@ -29,6 +29,11 @@ export abstract class Type {
     | "StringType";
 
   /**
+   * Is a value of this type mutable?
+   */
+  abstract readonly mutable: boolean;
+
+  /**
    * Name of the type.
    */
   abstract readonly name: string;

@@ -4,6 +4,7 @@ import type { Type } from "./Type.js";
 export class DateTimeType extends PrimitiveType<Date> {
   override readonly jsonName = "string";
   readonly kind = "DateTimeType";
+  override readonly mutable = true;
 
   override get conversions(): readonly Type.Conversion[] {
     const conversions: Type.Conversion[] = [
