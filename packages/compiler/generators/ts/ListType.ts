@@ -59,7 +59,7 @@ export class ListType extends Type {
   }
 
   override get name(): string {
-    return `${this.mutable ? "readonly " : ""}${this.itemType.name}[]`;
+    return `${this.mutable ? "" : "readonly "}${this.itemType.name}[]`;
   }
 
   override get useImports(): readonly Import[] {

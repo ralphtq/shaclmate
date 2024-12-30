@@ -670,11 +670,14 @@
           "mutable": true,
           "path": "http://example.com/mutableStringProperty",
           "type": {
-            "datatype": {
-              "termType": "NamedNode",
-              "value": "http://www.w3.org/2001/XMLSchema#string"
+            "itemType": {
+              "datatype": {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string"
+              },
+              "kind": "LiteralType"
             },
-            "kind": "LiteralType"
+            "kind": "OptionType"
           }
         },
         {
@@ -688,14 +691,17 @@
           "path": "http://example.com/mutableListProperty",
           "type": {
             "itemType": {
-              "datatype": {
-                "termType": "NamedNode",
-                "value": "http://www.w3.org/2001/XMLSchema#string"
+              "itemType": {
+                "datatype": {
+                  "termType": "NamedNode",
+                  "value": "http://www.w3.org/2001/XMLSchema#string"
+                },
+                "kind": "LiteralType"
               },
-              "kind": "LiteralType"
+              "kind": "ListType",
+              "mutable": true
             },
-            "kind": "ListType",
-            "mutable": true
+            "kind": "OptionType"
           }
         }
       ]

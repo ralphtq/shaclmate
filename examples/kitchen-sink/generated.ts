@@ -1919,21 +1919,42 @@ export class NodeShapeWithMutableProperties {
   /**
    * List-valued property that can't be reassigned but whose value can be mutated
    */
-  readonly mutableListProperty: readonly string[];
+  readonly mutableListProperty: purify.Maybe<string[]>;
   /**
    * String-valued property that can be re-assigned
    */
-  mutableStringProperty: string;
+  mutableStringProperty: purify.Maybe<string>;
   readonly type = "NodeShapeWithMutableProperties";
 
   constructor(parameters: {
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
-    readonly mutableListProperty: readonly string[];
-    readonly mutableStringProperty: string;
+    readonly mutableListProperty?: purify.Maybe<string[]> | string[];
+    readonly mutableStringProperty?: purify.Maybe<string> | string;
   }) {
     this._identifier = parameters.identifier;
-    this.mutableListProperty = parameters.mutableListProperty;
-    this.mutableStringProperty = parameters.mutableStringProperty;
+    if (purify.Maybe.isMaybe(parameters.mutableListProperty)) {
+      this.mutableListProperty = parameters.mutableListProperty;
+    } else if (Array.isArray(parameters.mutableListProperty)) {
+      this.mutableListProperty = purify.Maybe.of(
+        parameters.mutableListProperty,
+      );
+    } else if (typeof parameters.mutableListProperty === "undefined") {
+      this.mutableListProperty = purify.Maybe.empty();
+    } else {
+      this.mutableListProperty = parameters.mutableListProperty; // never
+    }
+
+    if (purify.Maybe.isMaybe(parameters.mutableStringProperty)) {
+      this.mutableStringProperty = parameters.mutableStringProperty;
+    } else if (typeof parameters.mutableStringProperty === "string") {
+      this.mutableStringProperty = purify.Maybe.of(
+        parameters.mutableStringProperty,
+      );
+    } else if (typeof parameters.mutableStringProperty === "undefined") {
+      this.mutableStringProperty = purify.Maybe.empty();
+    } else {
+      this.mutableStringProperty = parameters.mutableStringProperty; // never
+    }
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
@@ -1960,10 +1981,12 @@ export class NodeShapeWithMutableProperties {
       }))
       .chain(() =>
         ((left, right) =>
-          purifyHelpers.Arrays.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.strictEquals,
+          purifyHelpers.Maybes.equals(left, right, (left, right) =>
+            purifyHelpers.Arrays.equals(
+              left,
+              right,
+              purifyHelpers.Equatable.strictEquals,
+            ),
           ))(this.mutableListProperty, other.mutableListProperty).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
@@ -1975,7 +1998,7 @@ export class NodeShapeWithMutableProperties {
         ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
+        purifyHelpers.Equatable.booleanEquals(
           this.mutableStringProperty,
           other.mutableStringProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -2004,25 +2027,32 @@ export class NodeShapeWithMutableProperties {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
-    for (const _element0 of this.mutableListProperty) {
-      _hasher.update(_element0);
-    }
-
-    _hasher.update(this.mutableStringProperty);
+    this.mutableListProperty.ifJust((_value0) => {
+      for (const _element1 of _value0) {
+        _hasher.update(_element1);
+      }
+    });
+    this.mutableStringProperty.ifJust((_value0) => {
+      _hasher.update(_value0);
+    });
     return _hasher;
   }
 
   toJson(): {
     readonly "@id": string;
-    readonly mutableListProperty: readonly string[];
-    readonly mutableStringProperty: string;
+    readonly mutableListProperty: readonly string[] | undefined;
+    readonly mutableStringProperty: string | undefined;
     readonly type: string;
   } {
     return JSON.parse(
       JSON.stringify({
         "@id": this.identifier.value,
-        mutableListProperty: this.mutableListProperty.map((_item) => _item),
-        mutableStringProperty: this.mutableStringProperty,
+        mutableListProperty: this.mutableListProperty
+          .map((_item) => _item.map((_item) => _item))
+          .extract(),
+        mutableStringProperty: this.mutableStringProperty
+          .map((_item) => _item)
+          .extract(),
         type: this.type,
       } satisfies ReturnType<NodeShapeWithMutableProperties["toJson"]>),
     );
@@ -2042,62 +2072,70 @@ export class NodeShapeWithMutableProperties {
     });
     _resource.add(
       dataFactory.namedNode("http://example.com/mutableListProperty"),
-      this.mutableListProperty.reduce(
-        ({ currentSubListResource, listResource }, item, itemIndex, list) => {
-          if (itemIndex === 0) {
-            currentSubListResource = listResource;
-          } else {
-            const newSubListResource = resourceSet.mutableResource({
-              identifier: dataFactory.blankNode(),
-              mutateGraph: mutateGraph,
-            });
-            currentSubListResource!.add(
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-              ),
-              newSubListResource.identifier,
-            );
-            currentSubListResource = newSubListResource;
-          }
+      this.mutableListProperty.map(
+        (_value) =>
+          _value.reduce(
+            (
+              { currentSubListResource, listResource },
+              item,
+              itemIndex,
+              list,
+            ) => {
+              if (itemIndex === 0) {
+                currentSubListResource = listResource;
+              } else {
+                const newSubListResource = resourceSet.mutableResource({
+                  identifier: dataFactory.blankNode(),
+                  mutateGraph: mutateGraph,
+                });
+                currentSubListResource!.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  newSubListResource.identifier,
+                );
+                currentSubListResource = newSubListResource;
+              }
 
-          currentSubListResource.add(
-            dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-            ),
-            dataFactory.namedNode("http://example.com/MutableListShape"),
-          );
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                ),
+                dataFactory.namedNode("http://example.com/MutableListShape"),
+              );
 
-          currentSubListResource.add(
-            dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-            ),
-            item,
-          );
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                item,
+              );
 
-          if (itemIndex + 1 === list.length) {
-            currentSubListResource.add(
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-              ),
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
-              ),
-            );
-          }
+              if (itemIndex + 1 === list.length) {
+                currentSubListResource.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+                  ),
+                );
+              }
 
-          return { currentSubListResource, listResource };
-        },
-        {
-          currentSubListResource: null,
-          listResource: resourceSet.mutableResource({
-            identifier: dataFactory.blankNode(),
-            mutateGraph: mutateGraph,
-          }),
-        } as {
-          currentSubListResource: rdfjsResource.MutableResource | null;
-          listResource: rdfjsResource.MutableResource;
-        },
-      ).listResource.identifier,
+              return { currentSubListResource, listResource };
+            },
+            {
+              currentSubListResource: null,
+              listResource: resourceSet.mutableResource({
+                identifier: dataFactory.blankNode(),
+                mutateGraph: mutateGraph,
+              }),
+            } as {
+              currentSubListResource: rdfjsResource.MutableResource | null;
+              listResource: rdfjsResource.MutableResource;
+            },
+          ).listResource.identifier,
+      ),
     );
     _resource.add(
       dataFactory.namedNode("http://example.com/mutableStringProperty"),
@@ -2128,49 +2166,53 @@ export namespace NodeShapeWithMutableProperties {
     const identifier = _resource.identifier;
     const _mutableListPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly string[]
-    > = _resource
-      .values(dataFactory.namedNode("http://example.com/mutableListProperty"), {
-        unique: true,
-      })
-      .head()
-      .chain((value) =>
-        value
-          .toResource()
-          .map((resource) =>
-            resource.isInstanceOf(
-              dataFactory.namedNode("http://example.com/MutableListShape"),
-            ),
-          )
-          .orDefault(false)
-          ? purify.Right<
-              rdfjsResource.Resource.Value,
-              rdfjsResource.Resource.ValueError
-            >(value)
-          : purify.Left<
-              rdfjsResource.Resource.ValueError,
-              rdfjsResource.Resource.Value
-            >(
-              new rdfjsResource.Resource.ValueError({
-                focusResource: _resource,
-                message: "unexpected RDF type",
-                predicate: dataFactory.namedNode(
-                  "http://example.com/MutableListShape",
-                ),
-              }),
-            ),
-      )
-      .chain((value) => value.toList())
-      .map((values) =>
-        values.flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toString())
-            .toMaybe()
-            .toList(),
-        ),
-      );
+      purify.Maybe<string[]>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://example.com/mutableListProperty"),
+          { unique: true },
+        )
+        .head()
+        .chain((value) =>
+          value
+            .toResource()
+            .map((resource) =>
+              resource.isInstanceOf(
+                dataFactory.namedNode("http://example.com/MutableListShape"),
+              ),
+            )
+            .orDefault(false)
+            ? purify.Right<
+                rdfjsResource.Resource.Value,
+                rdfjsResource.Resource.ValueError
+              >(value)
+            : purify.Left<
+                rdfjsResource.Resource.ValueError,
+                rdfjsResource.Resource.Value
+              >(
+                new rdfjsResource.Resource.ValueError({
+                  focusResource: _resource,
+                  message: "unexpected RDF type",
+                  predicate: dataFactory.namedNode(
+                    "http://example.com/MutableListShape",
+                  ),
+                }),
+              ),
+        )
+        .chain((value) => value.toList())
+        .map((values) =>
+          values.flatMap((_value) =>
+            _value
+              .toValues()
+              .head()
+              .chain((_value) => _value.toString())
+              .toMaybe()
+              .toList(),
+          ),
+        )
+        .toMaybe(),
+    );
     if (_mutableListPropertyEither.isLeft()) {
       return _mutableListPropertyEither;
     }
@@ -2178,14 +2220,17 @@ export namespace NodeShapeWithMutableProperties {
     const mutableListProperty = _mutableListPropertyEither.unsafeCoerce();
     const _mutableStringPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      string
-    > = _resource
-      .values(
-        dataFactory.namedNode("http://example.com/mutableStringProperty"),
-        { unique: true },
-      )
-      .head()
-      .chain((_value) => _value.toString());
+      purify.Maybe<string>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://example.com/mutableStringProperty"),
+          { unique: true },
+        )
+        .head()
+        .chain((_value) => _value.toString())
+        .toMaybe(),
+    );
     if (_mutableStringPropertyEither.isLeft()) {
       return _mutableStringPropertyEither;
     }
@@ -2207,27 +2252,31 @@ export namespace NodeShapeWithMutableProperties {
     ) {
       super(subject);
       this.add(
-        sparqlBuilder.GraphPattern.group(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/mutableListProperty"),
-            this.variable("MutableListProperty"),
-          ).chainObject(
-            (_object) =>
-              new sparqlBuilder.RdfListGraphPatterns({
-                rdfListType: dataFactory.namedNode(
-                  "http://example.com/MutableListShape",
-                ),
-                rdfList: _object,
-              }),
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.group(
+            sparqlBuilder.GraphPattern.basic(
+              this.subject,
+              dataFactory.namedNode("http://example.com/mutableListProperty"),
+              this.variable("MutableListProperty"),
+            ).chainObject(
+              (_object) =>
+                new sparqlBuilder.RdfListGraphPatterns({
+                  rdfListType: dataFactory.namedNode(
+                    "http://example.com/MutableListShape",
+                  ),
+                  rdfList: _object,
+                }),
+            ),
           ),
         ),
       );
       this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/mutableStringProperty"),
-          this.variable("MutableStringProperty"),
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/mutableStringProperty"),
+            this.variable("MutableStringProperty"),
+          ),
         ),
       );
     }
@@ -2238,12 +2287,12 @@ export namespace NodeShapeWithMutableProperties {
  */
 export class NodeShapeWithListProperty {
   private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
-  readonly listProperty: string[];
+  readonly listProperty: readonly string[];
   readonly type = "NodeShapeWithListProperty";
 
   constructor(parameters: {
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
-    readonly listProperty: string[];
+    readonly listProperty: readonly string[];
   }) {
     this._identifier = parameters.identifier;
     this.listProperty = parameters.listProperty;
@@ -2423,7 +2472,7 @@ export namespace NodeShapeWithListProperty {
     const identifier = _resource.identifier;
     const _listPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      string[]
+      readonly string[]
     > = _resource
       .values(dataFactory.namedNode("http://example.com/listProperty"), {
         unique: true,

@@ -350,13 +350,11 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:datatype xsd:string ;
         sh:description "String-valued property that can be re-assigned" ;
         sh:maxCount 1 ;
-        sh:minCount 1 ;
         sh:name "mutableStringProperty" ;
         sh:path :mutableStringProperty
     ], [
         sh:description "List-valued property that can't be reassigned but whose value can be mutated" ;
         sh:maxCount 1 ;
-        sh:minCount 1 ;
         sh:name "mutableListProperty" ;
         sh:node :MutableListShape ;
         sh:path :mutableListProperty
