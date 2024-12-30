@@ -10,19 +10,32 @@ import type {
 import { Memoize } from "typescript-memoize";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
+import { tsComment } from "../tsComment.js";
 import { Property } from "./Property.js";
 
 export class ShaclProperty extends Property<Type> {
+  private readonly comment: Maybe<string>;
+  private readonly description: Maybe<string>;
+  private readonly label: Maybe<string>;
   private readonly path: rdfjs.NamedNode;
 
   constructor({
+    comment,
+    description,
+    label,
     path,
     ...superParameters
   }: {
+    comment: Maybe<string>;
+    description: Maybe<string>;
+    label: Maybe<string>;
     path: rdfjs.NamedNode;
     type: Type;
   } & ConstructorParameters<typeof Property>[0]) {
     super(superParameters);
+    this.comment = comment;
+    this.description = description;
+    this.label = label;
     this.path = path;
   }
 
@@ -42,6 +55,7 @@ export class ShaclProperty extends Property<Type> {
     return Maybe.of({
       hasQuestionToken,
       isReadonly: true,
+      leadingTrivia: this.declarationComment,
       name: this.name,
       type: [...typeNames].sort().join(" | "),
     });
@@ -58,6 +72,7 @@ export class ShaclProperty extends Property<Type> {
   > {
     return Maybe.of({
       isReadonly: true,
+      leadingTrivia: this.declarationComment,
       name: this.name,
       scope: Property.visibilityToScope(this.visibility),
       type: this.type.name,
@@ -75,6 +90,7 @@ export class ShaclProperty extends Property<Type> {
   override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {
     return {
       isReadonly: true,
+      leadingTrivia: this.declarationComment,
       name: this.name,
       type: this.type.name,
     };
@@ -181,5 +197,13 @@ export class ShaclProperty extends Property<Type> {
         },
       )});`,
     ];
+  }
+
+  private get declarationComment(): string | undefined {
+    return this.comment
+      .alt(this.description)
+      .alt(this.label)
+      .map(tsComment)
+      .extract();
   }
 }

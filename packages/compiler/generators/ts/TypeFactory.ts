@@ -373,7 +373,10 @@ export class TypeFactory {
     }
 
     const property = new ObjectType.ShaclProperty({
+      comment: astObjectTypeProperty.comment,
       dataFactoryVariable: this.dataFactoryVariable,
+      description: astObjectTypeProperty.description,
+      label: astObjectTypeProperty.label,
       name: tsName(astObjectTypeProperty.name),
       path: astObjectTypeProperty.path.iri,
       type: this.createTypeFromAstType(astObjectTypeProperty.type),
