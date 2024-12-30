@@ -36,7 +36,7 @@ export interface ObjectType {
   readonly childObjectTypes: ObjectType[];
 
   /**
-   * Documentation comment.
+   * Documentation comment from rdfs:comment.
    */
   readonly comment: Maybe<string>;
 
@@ -73,6 +73,11 @@ export interface ObjectType {
    * Type discriminator.
    */
   readonly kind: "ObjectType";
+
+  /**
+   * Human-readable label from rdfs:label.
+   */
+  readonly label: Maybe<string>;
 
   /**
    * Strategy for minting new object identifiers.
@@ -155,6 +160,11 @@ export namespace ObjectType {
      * Description from sh:description.
      */
     readonly description: Maybe<string>;
+
+    /**
+     * Human-readable label from rdfs:label.
+     */
+    readonly label: Maybe<string>;
 
     /**
      * Name of this property.

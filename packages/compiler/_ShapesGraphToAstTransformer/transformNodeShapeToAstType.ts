@@ -38,6 +38,7 @@ function transformNodeShapeToListType(
     itemType: {
       kind: "PlaceholderType" as const,
     },
+    label: nodeShape.label.map((literal) => literal.value),
     kind: "ListType" as const,
     name: this.shapeAstName(nodeShape),
     mintingStrategy: nodeShape.mintingStrategy.toMaybe(),
@@ -175,6 +176,7 @@ export function transformNodeShapeToAstType(
       comment: nodeShape.comment.map((literal) => literal.value),
       export: export_,
       kind: compositeTypeKind,
+      label: nodeShape.label.map((literal) => literal.value),
       memberTypes: [] as ast.ObjectType[],
       name: this.shapeAstName(nodeShape),
       tsFeatures: nodeShape.tsFeatures.orDefault(tsFeaturesDefault),
@@ -214,6 +216,7 @@ export function transformNodeShapeToAstType(
     export: export_,
     extern: nodeShape.extern.orDefault(false),
     fromRdfType: nodeShape.fromRdfType,
+    label: nodeShape.label.map((literal) => literal.value),
     kind: "ObjectType",
     mintingStrategy: nodeShape.mintingStrategy.toMaybe(),
     name: this.shapeAstName(nodeShape),

@@ -31,6 +31,7 @@ export class ObjectType extends DeclaredType {
   protected readonly extern: boolean;
   protected readonly comment: Maybe<string>;
   protected readonly fromRdfType: Maybe<NamedNode>;
+  protected readonly label: Maybe<string>;
   protected readonly mintingStrategy: Maybe<MintingStrategy>;
   protected readonly toRdfTypes: readonly NamedNode[];
   private readonly import_: Maybe<string>;
@@ -45,6 +46,7 @@ export class ObjectType extends DeclaredType {
     declarationType,
     extern,
     fromRdfType,
+    label,
     lazyAncestorObjectTypes,
     lazyDescendantObjectTypes,
     lazyParentObjectTypes,
@@ -60,6 +62,7 @@ export class ObjectType extends DeclaredType {
     extern: boolean;
     fromRdfType: Maybe<NamedNode>;
     import_: Maybe<string>;
+    label: Maybe<string>;
     lazyAncestorObjectTypes: () => readonly ObjectType[];
     lazyDescendantObjectTypes: () => readonly ObjectType[];
     lazyParentObjectTypes: () => readonly ObjectType[];
@@ -74,6 +77,7 @@ export class ObjectType extends DeclaredType {
     this.extern = extern;
     this.fromRdfType = fromRdfType;
     this.import_ = import_;
+    this.label = label;
     // Lazily initialize some members in getters to avoid recursive construction
     this.lazyAncestorObjectTypes = lazyAncestorObjectTypes;
     this.lazyDescendantObjectTypes = lazyDescendantObjectTypes;
