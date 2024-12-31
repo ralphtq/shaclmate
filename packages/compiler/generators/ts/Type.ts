@@ -89,6 +89,7 @@ export abstract class Type {
   abstract propertyFromRdfExpression(parameters: {
     variables: {
       context: string;
+      languageIn: string;
       predicate: string;
       resource: string;
       resourceValues: string;

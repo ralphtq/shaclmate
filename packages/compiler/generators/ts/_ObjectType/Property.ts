@@ -74,6 +74,7 @@ export abstract class Property<
   abstract fromRdfStatements(parameters: {
     variables: {
       context: string;
+      languageIn: string;
       resource: string;
     };
   }): readonly string[];

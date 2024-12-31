@@ -120,12 +120,14 @@ export class UuidV4IriNodeShape {
 export namespace UuidV4IriNodeShape {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource<rdfjs.NamedNode>;
   }): purify.Either<rdfjsResource.Resource.ValueError, UuidV4IriNodeShape> {
     const identifier = _resource.identifier;
@@ -276,12 +278,14 @@ export class Sha256IriNodeShape {
 export namespace Sha256IriNodeShape {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource<rdfjs.NamedNode>;
   }): purify.Either<rdfjsResource.Resource.ValueError, Sha256IriNodeShape> {
     const identifier = _resource.identifier;
@@ -429,12 +433,14 @@ export class OrNodeShapeMember2 {
 export namespace OrNodeShapeMember2 {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, OrNodeShapeMember2> {
     const identifier = _resource.identifier;
@@ -582,12 +588,14 @@ export class OrNodeShapeMember1 {
 export namespace OrNodeShapeMember1 {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, OrNodeShapeMember1> {
     const identifier = _resource.identifier;
@@ -738,12 +746,14 @@ export class NonClassNodeShape {
 export namespace NonClassNodeShape {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, NonClassNodeShape> {
     const identifier = _resource.identifier;
@@ -940,12 +950,14 @@ export class NodeShapeWithPropertyVisibilities {
 export namespace NodeShapeWithPropertyVisibilities {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -1223,12 +1235,14 @@ export class NodeShapeWithPropertyCardinalities {
 export namespace NodeShapeWithPropertyCardinalities {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -1727,12 +1741,14 @@ export class NodeShapeWithOrProperties {
 export namespace NodeShapeWithOrProperties {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -2146,12 +2162,14 @@ export class NodeShapeWithMutableProperties {
 export namespace NodeShapeWithMutableProperties {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -2452,12 +2470,14 @@ export class NodeShapeWithListProperty {
 export namespace NodeShapeWithListProperty {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -2843,12 +2863,14 @@ export class NodeShapeWithInProperties {
 export namespace NodeShapeWithInProperties {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -3283,12 +3305,14 @@ export class NodeShapeWithHasValueProperties {
 export namespace NodeShapeWithHasValueProperties {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -3485,12 +3509,14 @@ export class InlineNodeShape {
 export namespace InlineNodeShape {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, InlineNodeShape> {
     const identifier = _resource.identifier;
@@ -3638,12 +3664,14 @@ export class ExternNodeShape {
 export namespace ExternNodeShape {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, ExternNodeShape> {
     const identifier = _resource.identifier;
@@ -3901,12 +3929,14 @@ export class NodeShapeWithExternProperties {
 export namespace NodeShapeWithExternProperties {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -4161,12 +4191,14 @@ export class NodeShapeWithExplicitRdfTypes {
 export namespace NodeShapeWithExplicitRdfTypes {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -4483,12 +4515,14 @@ export class NodeShapeWithDefaultValueProperties {
 export namespace NodeShapeWithDefaultValueProperties {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -4813,12 +4847,14 @@ export class IriNodeShape {
 export namespace IriNodeShape {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource<rdfjs.NamedNode>;
   }): purify.Either<rdfjsResource.Resource.ValueError, IriNodeShape> {
     const identifier = _resource.identifier;
@@ -4907,12 +4943,14 @@ export namespace InterfaceNodeShape {
 
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -5111,12 +5149,14 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
 namespace AbstractBaseClassWithPropertiesNodeShape {
   export function interfaceFromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -5198,12 +5238,14 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
 namespace AbstractBaseClassWithoutPropertiesNodeShape {
   export function interfaceFromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -5341,12 +5383,14 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 export namespace ConcreteParentClassNodeShape {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -5531,12 +5575,14 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 export namespace ConcreteChildClassNodeShape {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
@@ -5719,12 +5765,14 @@ export abstract class AbstractBaseClassForExternObjectType {
 export namespace AbstractBaseClassForExternObjectType {
   export function interfaceFromRdf({
     ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
     resource: _resource,
     // @ts-ignore
     ..._context
   }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,

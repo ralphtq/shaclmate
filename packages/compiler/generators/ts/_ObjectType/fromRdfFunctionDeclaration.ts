@@ -5,6 +5,7 @@ import type { ObjectType } from "../ObjectType.js";
 const variables = {
   context: "_context",
   ignoreRdfType: "_ignoreRdfType",
+  languageIn: "_languageIn",
   resource: "_resource",
 };
 
@@ -48,8 +49,9 @@ export function fromRdfFunctionDeclaration(
   }
 
   const propertyFromRdfVariables = {
-    context: `${variables.context}`,
-    resource: `${variables.resource}`,
+    context: variables.context,
+    languageIn: variables.languageIn,
+    resource: variables.resource,
   };
   for (const property of this.properties) {
     const propertyFromRdfStatements = property.fromRdfStatements({
@@ -90,8 +92,8 @@ export function fromRdfFunctionDeclaration(
     name: this.fromRdfFunctionName,
     parameters: [
       {
-        name: `{ ignoreRdfType: ${variables.ignoreRdfType}, resource: ${variables.resource},\n// @ts-ignore\n...${variables.context} }`,
-        type: `{ [_index: string]: any; ignoreRdfType?: boolean; resource: ${this.rdfjsResourceType().name}; }`,
+        name: `{ ignoreRdfType: ${variables.ignoreRdfType}, languageIn: ${variables.languageIn}, resource: ${variables.resource},\n// @ts-ignore\n...${variables.context} }`,
+        type: `{ [_index: string]: any; ignoreRdfType?: boolean; languageIn?: readonly string[]; resource: ${this.rdfjsResourceType().name}; }`,
       },
     ],
     returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${returnType}>`,
