@@ -255,6 +255,16 @@ describe("TsGenerator", () => {
       sparqlGraphPatternsClass:
         kitchenSink.NodeShapeWithInProperties.SparqlGraphPatterns,
     }),
+    nodeShapeWithLanguageInProperties: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithLanguageInProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithLanguageInProperties({
+        identifier: dataFactory.blankNode(),
+        literalProperty: dataFactory.literal("envalue", "en"),
+        languageInProperty: dataFactory.literal("frvalue", "fr"),
+      }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithLanguageInProperties.SparqlGraphPatterns,
+    }),
     nodeShapeWithListProperty: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithListProperty.fromRdf,
       instance: new kitchenSink.NodeShapeWithListProperty({
