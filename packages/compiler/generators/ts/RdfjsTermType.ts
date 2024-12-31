@@ -41,7 +41,10 @@ export abstract class RdfjsTermType<
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    const chain: string[] = [`${variables.resourceValues}`];
+    const chain: string[] = [
+      this.propertyFilterRdfResourceValuesExpression({ variables }),
+    ];
+    // Have an rdfjsResource.Resource.Values here
     this.hasValue
       .ifJust((hasValue) => {
         chain.push(
@@ -49,11 +52,14 @@ export abstract class RdfjsTermType<
         );
       })
       .ifNothing(() => chain.push("head()"));
+    // Have an rdfjsResource.Resource.Value here
     this.defaultValue.ifJust((defaultValue) => {
+      // alt the default value before trying to convert the rdfjsResource.Resource.Value to the type
       chain.push(
         `alt(purify.Either.of(new rdfjsResource.Resource.Value({ subject: ${variables.resource}, predicate: ${variables.predicate}, object: ${this.rdfjsTermExpression(defaultValue)} })))`,
       );
     });
+    // Last step: convert the rdfjsResource.Resource.Value to the type
     chain.push(
       `chain(_value => ${this.propertyFromRdfResourceValueExpression({
         variables: {
@@ -94,6 +100,22 @@ export abstract class RdfjsTermType<
       .orDefault(variables.value);
   }
 
+  /**
+   * Filter the rdfjsResource.Resource.Values to those that are relevant to the type.
+   *
+   * This is done before
+   */
+  protected propertyFilterRdfResourceValuesExpression({
+    variables,
+  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
+    return variables.resourceValues;
+  }
+
+  /**
+   * Convert an rdfjsResource.Resource.Value to a value of this type.
+   * @param variables
+   * @protected
+   */
   protected abstract propertyFromRdfResourceValueExpression({
     variables,
   }: {

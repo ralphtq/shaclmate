@@ -43,6 +43,14 @@ export abstract class PrimitiveType<
     return [`${variables.hasher}.update(${variables.value}.toString());`];
   }
 
+  protected override propertyFilterRdfResourceValuesExpression({
+    variables,
+  }: Parameters<
+    LiteralType["propertyFilterRdfResourceValuesExpression"]
+  >[0]): string {
+    return variables.resourceValues;
+  }
+
   override propertyToJsonExpression({
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {

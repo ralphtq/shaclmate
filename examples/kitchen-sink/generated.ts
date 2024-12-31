@@ -1764,6 +1764,19 @@ export namespace NodeShapeWithOrProperties {
           dataFactory.namedNode("http://example.com/orLiteralsProperty"),
           { unique: true },
         )
+        .filter((_value) => {
+          const _languageInOrDefault = _languageIn ?? [];
+          if (_languageInOrDefault.length === 0) {
+            return true;
+          }
+          const _valueLiteral = _value.toLiteral().toMaybe().extract();
+          if (typeof _valueLiteral === "undefined") {
+            return false;
+          }
+          return _languageInOrDefault.some(
+            (_languageIn) => _languageIn === _valueLiteral.language,
+          );
+        })
         .head()
         .chain((_value) => _value.toLiteral())
         .toMaybe(),
@@ -1781,6 +1794,19 @@ export namespace NodeShapeWithOrProperties {
         _resource
           .values(dataFactory.namedNode("http://example.com/orTermsProperty"), {
             unique: true,
+          })
+          .filter((_value) => {
+            const _languageInOrDefault = _languageIn ?? [];
+            if (_languageInOrDefault.length === 0) {
+              return true;
+            }
+            const _valueLiteral = _value.toLiteral().toMaybe().extract();
+            if (typeof _valueLiteral === "undefined") {
+              return false;
+            }
+            return _languageInOrDefault.some(
+              (_languageIn) => _languageIn === _valueLiteral.language,
+            );
           })
           .head()
           .chain((_value) => _value.toLiteral()) as purify.Either<

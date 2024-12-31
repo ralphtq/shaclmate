@@ -16,6 +16,18 @@ export class LiteralType extends RdfjsTermType<Literal, Literal> {
     | "NumberType"
     | "StringType" = "LiteralType";
 
+  private readonly languageIn: readonly string[];
+
+  constructor({
+    languageIn,
+    ...superParameters
+  }: { languageIn: readonly string[] } & ConstructorParameters<
+    typeof RdfjsTermType<Literal, Literal>
+  >[0]) {
+    super(superParameters);
+    this.languageIn = languageIn;
+  }
+
   override get conversions(): readonly Type.Conversion[] {
     const conversions: Type.Conversion[] = [];
 
@@ -76,6 +88,24 @@ export class LiteralType extends RdfjsTermType<Literal, Literal> {
 
   override get useImports(): readonly Import[] {
     return [Import.RDF_LITERAL, Import.RDFJS_TYPES];
+  }
+
+  protected override propertyFilterRdfResourceValuesExpression({
+    variables,
+  }: Parameters<
+    RdfjsTermType<Literal, Literal>["propertyFilterRdfResourceValuesExpression"]
+  >[0]): string {
+    return `${variables.resourceValues}.filter(_value => {
+  const _languageInOrDefault = ${variables.languageIn} ?? ${this.languageIn.length > 0 ? JSON.stringify(this.languageIn) : "[]"};
+  if (_languageInOrDefault.length === 0) {
+    return true;
+  }
+  const _valueLiteral = _value.toLiteral().toMaybe().extract();
+  if (typeof _valueLiteral === "undefined") {
+    return false;
+  }
+  return _languageInOrDefault.some(_languageIn => _languageIn === _valueLiteral.language);
+})`;
   }
 
   override propertyFromRdfResourceValueExpression({
