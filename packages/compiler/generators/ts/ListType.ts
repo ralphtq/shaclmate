@@ -54,11 +54,11 @@ export class ListType extends Type {
     return Maybe.empty();
   }
 
-  get equalsFunction(): string {
+  override get equalsFunction(): string {
     return `((left, right) => purifyHelpers.Arrays.equals(left, right, ${this.itemType.equalsFunction}))`;
   }
 
-  get jsonName(): string {
+  override get jsonName(): string {
     return `readonly (${this.itemType.jsonName})[]`;
   }
 

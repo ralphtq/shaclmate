@@ -38,7 +38,7 @@ export class SetType extends Type {
     return conversions;
   }
 
-  get equalsFunction(): string {
+  override get equalsFunction(): string {
     const itemTypeEqualsFunction = this.itemType.equalsFunction;
     if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
       return "purifyHelpers.Equatable.arrayEquals";
@@ -46,16 +46,16 @@ export class SetType extends Type {
     return `(left, right) => purifyHelpers.Arrays.equals(left, right, ${itemTypeEqualsFunction})`;
   }
 
-  get jsonName(): string {
+  override get jsonName(): string {
     return `readonly (${this.itemType.jsonName})[]`;
   }
 
-  get mutable(): boolean {
+  override get mutable(): boolean {
     return this.itemType.mutable;
   }
 
   @Memoize()
-  get name(): string {
+  override get name(): string {
     return `readonly (${this.itemType.name})[]`;
   }
 

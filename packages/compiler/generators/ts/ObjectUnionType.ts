@@ -79,7 +79,7 @@ export class ObjectUnionType extends DeclaredType {
     ];
   }
 
-  get declarationImports(): readonly Import[] {
+  override get declarationImports(): readonly Import[] {
     return this.memberTypes.flatMap((memberType) => memberType.useImports);
   }
 
@@ -113,21 +113,21 @@ export class ObjectUnionType extends DeclaredType {
     return Maybe.of(this._discriminatorProperty);
   }
 
-  get jsonName(): string {
+  override get jsonName(): string {
     return this.memberTypes
       .map((memberType) => memberType.jsonName)
       .join(" | ");
   }
 
-  get mutable(): boolean {
+  override get mutable(): boolean {
     return this.memberTypes.some((memberType) => memberType.mutable);
   }
 
-  get useImports(): readonly Import[] {
+  override get useImports(): readonly Import[] {
     return [];
   }
 
-  get equalsFunction(): string {
+  override get equalsFunction(): string {
     return `${this.name}.equals`;
   }
 

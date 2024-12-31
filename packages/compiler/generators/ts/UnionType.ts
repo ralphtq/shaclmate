@@ -119,7 +119,7 @@ export class UnionType extends Type {
     return Maybe.of(this._discriminatorProperty);
   }
 
-  get equalsFunction(): string {
+  override get equalsFunction(): string {
     return `
 (left: ${this.name}, right: ${this.name}) => {
 ${this.memberTypeTraits
@@ -138,7 +138,7 @@ ${this.memberTypeTraits
 }`;
   }
 
-  get jsonName(): string {
+  override get jsonName(): string {
     if (this._discriminatorProperty.synthetic) {
       return `(${this.memberTypeTraits.map((memberTypeTraits) => `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}", value: ${memberTypeTraits.memberType.jsonName} }`).join(" | ")})`;
     }
@@ -148,7 +148,7 @@ ${this.memberTypeTraits
       .join(" | ");
   }
 
-  get mutable(): boolean {
+  override get mutable(): boolean {
     return this.memberTypes.some((memberType) => memberType.mutable);
   }
 

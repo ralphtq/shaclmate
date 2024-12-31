@@ -42,7 +42,7 @@ export class OptionType extends Type {
     return conversions;
   }
 
-  get equalsFunction(): string {
+  override get equalsFunction(): string {
     const itemTypeEqualsFunction = this.itemType.equalsFunction;
     if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
       return "purifyHelpers.Equatable.maybeEquals";
@@ -53,16 +53,16 @@ export class OptionType extends Type {
     return `(left, right) => purifyHelpers.Maybes.equals(left, right, ${itemTypeEqualsFunction})`;
   }
 
-  get jsonName(): string {
+  override get jsonName(): string {
     return `(${this.itemType.jsonName}) | undefined`;
   }
 
-  get mutable(): boolean {
+  override get mutable(): boolean {
     return this.itemType.mutable;
   }
 
   @Memoize()
-  get name(): string {
+  override get name(): string {
     return `purify.Maybe<${this.itemType.name}>`;
   }
 
@@ -123,7 +123,7 @@ export class OptionType extends Type {
     return `${variables.value}.map((_value) => ${itemTypeToRdfExpression})`;
   }
 
-  get useImports(): readonly Import[] {
+  override get useImports(): readonly Import[] {
     return [...this.itemType.useImports, Import.PURIFY];
   }
 }

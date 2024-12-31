@@ -178,7 +178,7 @@ export class ObjectType extends DeclaredType {
     return this.name;
   }
 
-  get equalsFunction(): string {
+  override get equalsFunction(): string {
     switch (this.declarationType) {
       case "class":
         return "purifyHelpers.Equatable.equals";
