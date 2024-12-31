@@ -686,6 +686,83 @@ describe("TsGenerator", () => {
     expect(instance.inStringsProperty.isNothing()).toStrictEqual(true);
   });
 
+  it("fromRdf: runtime languageIn", ({ expect }) => {
+    const dataset = new N3.Store();
+    const identifier = dataFactory.blankNode();
+    const resource = new MutableResourceSet({
+      dataFactory,
+      dataset: dataset,
+    }).resource(identifier);
+    const predicate = dataFactory.namedNode(
+      "http://example.com/literalProperty",
+    );
+    dataset.add(
+      dataFactory.quad(
+        identifier,
+        predicate,
+        dataFactory.literal("arvalue", "ar"),
+      ),
+    );
+
+    {
+      const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+        languageIn: ["en"],
+        resource,
+      }).unsafeCoerce();
+      expect(instance.literalProperty.isNothing()).toStrictEqual(true);
+    }
+
+    dataset.add(
+      dataFactory.quad(
+        identifier,
+        predicate,
+        dataFactory.literal("envalue", "en"),
+      ),
+    );
+
+    {
+      const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+        languageIn: ["en"],
+        resource,
+      }).unsafeCoerce();
+      expect(instance.literalProperty.unsafeCoerce().value).toStrictEqual(
+        "envalue",
+      );
+    }
+  });
+
+  it("fromRdf: sh:languageIn", ({ expect }) => {
+    const dataset = new N3.Store();
+    const identifier = dataFactory.blankNode();
+    const resource = new MutableResourceSet({
+      dataFactory,
+      dataset: dataset,
+    }).resource(identifier);
+    const predicate = dataFactory.namedNode(
+      "http://example.com/languageInProperty",
+    );
+    dataset.add(
+      dataFactory.quad(
+        identifier,
+        predicate,
+        dataFactory.literal("arvalue", "ar"),
+      ),
+    );
+    dataset.add(
+      dataFactory.quad(
+        identifier,
+        predicate,
+        dataFactory.literal("envalue", "en"),
+      ),
+    );
+    const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+      resource,
+    }).unsafeCoerce();
+    expect(instance.languageInProperty.unsafeCoerce().value).toStrictEqual(
+      "envalue",
+    );
+  });
+
   it("hash: known hash", ({ expect }) => {
     expect(
       harnesses.nonClassNodeShape.instance.hash(sha256.create()).hex(),
