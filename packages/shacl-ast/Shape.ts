@@ -1,5 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import type { Maybe } from "purify-ts";
+import type { Maybe, NonEmptyList } from "purify-ts";
 import type { NodeKind } from "./NodeKind.js";
 import type { NodeShape } from "./NodeShape.js";
 import type { Ontology } from "./Ontology.js";
@@ -76,29 +76,29 @@ export namespace Shape {
       any
     >,
   > {
-    readonly and: readonly ShapeT[];
-    readonly classes: readonly NamedNode[];
+    readonly and: Maybe<NonEmptyList<ShapeT>>;
+    readonly classes: Maybe<NonEmptyList<NamedNode>>;
     readonly datatype: Maybe<NamedNode>;
     readonly hasValue: Maybe<BlankNode | Literal | NamedNode>;
-    readonly in_: Maybe<readonly (BlankNode | Literal | NamedNode)[]>;
-    readonly languageIn: readonly string[];
+    readonly in_: Maybe<NonEmptyList<BlankNode | Literal | NamedNode>>;
+    readonly languageIn: Maybe<NonEmptyList<string>>;
     readonly maxCount: Maybe<number>;
     readonly maxExclusive: Maybe<Literal>;
     readonly maxInclusive: Maybe<Literal>;
     readonly minCount: Maybe<number>;
     readonly minExclusive: Maybe<Literal>;
     readonly minInclusive: Maybe<Literal>;
-    readonly nodeKinds: Set<NodeKind>;
-    readonly nodes: readonly NodeShapeT[];
-    readonly not: readonly ShapeT[];
-    readonly or: readonly ShapeT[];
-    readonly xone: readonly ShapeT[];
+    readonly nodeKinds: Maybe<Set<NodeKind>>;
+    readonly nodes: Maybe<NonEmptyList<NodeShapeT>>;
+    readonly not: Maybe<NonEmptyList<ShapeT>>;
+    readonly or: Maybe<NonEmptyList<ShapeT>>;
+    readonly xone: Maybe<NonEmptyList<ShapeT>>;
   }
 
   export interface Targets {
-    readonly targetClasses: readonly NamedNode[];
-    readonly targetNodes: readonly (Literal | NamedNode)[];
-    readonly targetObjectsOf: readonly NamedNode[];
-    readonly targetSubjectsOf: readonly NamedNode[];
+    readonly targetClasses: Maybe<NonEmptyList<NamedNode>>;
+    readonly targetNodes: Maybe<NonEmptyList<Literal | NamedNode>>;
+    readonly targetObjectsOf: Maybe<NonEmptyList<NamedNode>>;
+    readonly targetSubjectsOf: Maybe<NonEmptyList<NamedNode>>;
   }
 }

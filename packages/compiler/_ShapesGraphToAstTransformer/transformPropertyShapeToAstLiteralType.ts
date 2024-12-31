@@ -33,12 +33,12 @@ export function transformPropertyShapeToAstLiteralType(
     [
       // Treat any shape with the constraints in the list as a literal type
       shape.constraints.datatype,
+      shape.constraints.languageIn,
       shape.constraints.maxExclusive,
       shape.constraints.maxInclusive,
       shape.constraints.minExclusive,
       shape.constraints.minInclusive,
     ].some((constraint) => constraint.isJust()) ||
-    shape.constraints.languageIn.length > 0 ||
     literalDefaultValue.isJust() ||
     literalHasValue.isJust() ||
     literalIn.isJust() ||

@@ -147,19 +147,16 @@ export function transformNodeShapeToAstType(
 
   const export_ = nodeShape.export.orDefault(true);
 
-  if (
-    nodeShape.constraints.and.length > 0 ||
-    nodeShape.constraints.or.length > 0
-  ) {
+  if (nodeShape.constraints.and.isJust() || nodeShape.constraints.or.isJust()) {
     let compositeTypeShapes: readonly input.Shape[];
     let compositeTypeKind:
       | ast.ObjectIntersectionType["kind"]
       | ast.ObjectUnionType["kind"];
-    if (nodeShape.constraints.and.length > 0) {
-      compositeTypeShapes = nodeShape.constraints.and;
+    if (nodeShape.constraints.and.isJust()) {
+      compositeTypeShapes = nodeShape.constraints.and.unsafeCoerce();
       compositeTypeKind = "ObjectIntersectionType";
     } else {
-      compositeTypeShapes = nodeShape.constraints.or;
+      compositeTypeShapes = nodeShape.constraints.or.unsafeCoerce();
       compositeTypeKind = "ObjectUnionType";
     }
 

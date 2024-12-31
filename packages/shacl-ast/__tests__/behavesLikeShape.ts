@@ -88,8 +88,10 @@ export function behavesLikeShape<
   // No shape in the test data with a clean sh:and
 
   it("constraints: should have an sh:class", ({ expect }) => {
-    const classes = findPropertyShape(schema.Person, schema.parent).constraints
-      .classes;
+    const classes = findPropertyShape(
+      schema.Person,
+      schema.parent,
+    ).constraints.classes.unsafeCoerce();
     expect(classes).toHaveLength(1);
     expect(classes[0].equals(schema.Person)).toStrictEqual(true);
   });
@@ -123,7 +125,7 @@ export function behavesLikeShape<
 
   it("constraints: should have an sh:in", ({ expect }) => {
     const propertyShape = findPropertyShape(schema.Person, schema.gender);
-    const in_ = propertyShape.constraints.in_.orDefault([]);
+    const in_ = propertyShape.constraints.in_.extract() ?? [];
     expect(in_).toHaveLength(2);
     expect(
       in_.find(
@@ -192,14 +194,18 @@ export function behavesLikeShape<
   });
 
   it("constraints: should have an sh:node", ({ expect }) => {
-    const nodeShapes = findPropertyShape(schema.Vehicle, schema.fuelConsumption)
-      .constraints.nodes;
+    const nodeShapes = findPropertyShape(
+      schema.Vehicle,
+      schema.fuelConsumption,
+    ).constraints.nodes.unsafeCoerce();
     expect(nodeShapes).toHaveLength(1);
   });
 
   it("constraints: should have an sh:nodeKind", ({ expect }) => {
-    const nodeKinds = findPropertyShape(schema.Person, schema.parent)
-      .constraints.nodeKinds;
+    const nodeKinds = findPropertyShape(
+      schema.Person,
+      schema.parent,
+    ).constraints.nodeKinds.orDefault(new Set());
     expect(nodeKinds.size).toStrictEqual(1);
     expect(nodeKinds.has(NodeKind.IRI)).toStrictEqual(true);
   });
@@ -211,7 +217,7 @@ export function behavesLikeShape<
       schema.DatedMoneySpecification,
       schema.endDate,
     );
-    const or = propertyShape.constraints.or;
+    const or = propertyShape.constraints.or.unsafeCoerce();
     expect(or).toHaveLength(2);
     expect(
       or.some((propertyShape) =>

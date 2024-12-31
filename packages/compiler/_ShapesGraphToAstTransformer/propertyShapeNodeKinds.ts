@@ -3,7 +3,9 @@ import * as input from "../input/index.js";
 import { termTypeToNodeKind } from "./termTypeToNodeKind.js";
 
 export function propertyShapeNodeKinds(shape: input.Shape): Set<NodeKind> {
-  const nodeKinds = new Set<NodeKind>([...shape.constraints.nodeKinds]);
+  const nodeKinds = new Set<NodeKind>([
+    ...shape.constraints.nodeKinds.orDefault(new Set()),
+  ]);
   if (nodeKinds.size > 0) {
     return nodeKinds;
   }
