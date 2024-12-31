@@ -106,13 +106,13 @@ export class IdentifierType extends RdfjsTermType<
     return `{ "@id": ${variables.value}.value }`;
   }
 
-  protected override fromRdfResourceValueExpression({
+  protected override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
     RdfjsTermType<
       BlankNode | NamedNode,
       NamedNode
-    >["fromRdfResourceValueExpression"]
+    >["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     if (this.nodeKinds.size === 2) {
       return `${variables.resourceValue}.toIdentifier()`;

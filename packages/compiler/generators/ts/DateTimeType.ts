@@ -33,10 +33,10 @@ export class DateTimeType extends PrimitiveType<Date> {
     return "Date";
   }
 
-  override fromRdfResourceValueExpression({
+  override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    PrimitiveType<number>["fromRdfResourceValueExpression"]
+    PrimitiveType<number>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     let expression = `${variables.resourceValue}.toDate()`;
     this.primitiveIn.ifJust((in_) => {

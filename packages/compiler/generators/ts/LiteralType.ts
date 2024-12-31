@@ -78,10 +78,10 @@ export class LiteralType extends RdfjsTermType<Literal, Literal> {
     return [Import.RDF_LITERAL, Import.RDFJS_TYPES];
   }
 
-  override fromRdfResourceValueExpression({
+  override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    RdfjsTermType<Literal, Literal>["fromRdfResourceValueExpression"]
+    RdfjsTermType<Literal, Literal>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     return `${variables.resourceValue}.toLiteral()`;
   }

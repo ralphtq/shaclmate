@@ -31,10 +31,10 @@ export class NumberType extends PrimitiveType<number> {
       .orDefault("number");
   }
 
-  override fromRdfResourceValueExpression({
+  override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    PrimitiveType<number>["fromRdfResourceValueExpression"]
+    PrimitiveType<number>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     let expression = `${variables.resourceValue}.toNumber()`;
     this.primitiveIn.ifJust((in_) => {

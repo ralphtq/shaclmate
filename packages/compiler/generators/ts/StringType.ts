@@ -31,10 +31,10 @@ export class StringType extends PrimitiveType<string> {
       .orDefault("string");
   }
 
-  override fromRdfResourceValueExpression({
+  override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    PrimitiveType<string>["fromRdfResourceValueExpression"]
+    PrimitiveType<string>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     let expression = `${variables.resourceValue}.toString()`;
     this.primitiveIn.ifJust((in_) => {

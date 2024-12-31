@@ -55,7 +55,7 @@ export abstract class RdfjsTermType<
       );
     });
     chain.push(
-      `chain(_value => ${this.fromRdfResourceValueExpression({
+      `chain(_value => ${this.propertyFromRdfResourceValueExpression({
         variables: {
           predicate: variables.predicate,
           resource: variables.resource,
@@ -94,7 +94,7 @@ export abstract class RdfjsTermType<
       .orDefault(variables.value);
   }
 
-  protected abstract fromRdfResourceValueExpression({
+  protected abstract propertyFromRdfResourceValueExpression({
     variables,
   }: {
     variables: { predicate: string; resource: string; resourceValue: string };
