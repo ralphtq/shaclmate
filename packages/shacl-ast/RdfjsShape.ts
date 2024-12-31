@@ -244,6 +244,16 @@ export namespace RdfjsShape {
         .toMaybe();
     }
 
+    get languageIn(): readonly string[] {
+      return this.resource
+        .value(sh.languageIn)
+        .chain((value) => value.toList())
+        .map((values) =>
+          values.flatMap((value) => value.toString().toMaybe().toList()),
+        )
+        .orDefault([]);
+    }
+
     get nodeKinds(): Set<NodeKind> {
       const nodeKinds = new Set<NodeKind>();
       for (const nodeKindValue of this.resource.values(sh.nodeKind)) {

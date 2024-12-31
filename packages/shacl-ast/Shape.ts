@@ -81,6 +81,7 @@ export namespace Shape {
     readonly datatype: Maybe<NamedNode>;
     readonly hasValue: Maybe<BlankNode | Literal | NamedNode>;
     readonly in_: Maybe<readonly (BlankNode | Literal | NamedNode)[]>;
+    readonly languageIn: readonly string[];
     readonly maxCount: Maybe<number>;
     readonly maxExclusive: Maybe<Literal>;
     readonly maxInclusive: Maybe<Literal>;
