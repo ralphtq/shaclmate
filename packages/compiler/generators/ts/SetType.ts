@@ -21,18 +21,21 @@ export class SetType extends Type {
   }
 
   override get conversions(): readonly Type.Conversion[] {
-    return [
+    const conversions: Type.Conversion[] = [
       {
         conversionExpression: (value) => value,
         sourceTypeCheckExpression: (value) => `Array.isArray(${value})`,
         sourceTypeName: this.name,
       },
-      {
+    ];
+    if (this.minCount === 0) {
+      conversions.push({
         conversionExpression: () => "[]",
         sourceTypeCheckExpression: (value) => `typeof ${value} === "undefined"`,
         sourceTypeName: "undefined",
-      },
-    ];
+      });
+    }
+    return conversions;
   }
 
   get jsonName(): string {

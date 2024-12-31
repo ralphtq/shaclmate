@@ -1057,7 +1057,7 @@ export class NodeShapeWithPropertyCardinalities {
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
     readonly optionalStringProperty?: purify.Maybe<string> | string;
     readonly requiredStringProperty: string;
-    readonly setStringProperty?: readonly string[];
+    readonly setStringProperty: readonly string[];
   }) {
     this._identifier = parameters.identifier;
     if (purify.Maybe.isMaybe(parameters.optionalStringProperty)) {
@@ -1073,13 +1073,7 @@ export class NodeShapeWithPropertyCardinalities {
     }
 
     this.requiredStringProperty = parameters.requiredStringProperty;
-    if (Array.isArray(parameters.setStringProperty)) {
-      this.setStringProperty = parameters.setStringProperty;
-    } else if (typeof parameters.setStringProperty === "undefined") {
-      this.setStringProperty = [];
-    } else {
-      this.setStringProperty = parameters.setStringProperty; // never
-    }
+    this.setStringProperty = parameters.setStringProperty;
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
