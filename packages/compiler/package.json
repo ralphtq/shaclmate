@@ -20,7 +20,10 @@
     "typescript-memoize": "^1.1.1"
   },
   "devDependencies": {
-    "@shaclmate/runtime": "2.0.13"
+    "@shaclmate/runtime": "2.0.13",
+    "@kos-kit/sparql-client": "2.0.107",
+    "oxigraph": "^0.4.0",
+    "rdf-isomorphic": "1.3.1"
   },
   "files": [
     "*.d.ts",
@@ -29,6 +32,8 @@
     "_ShapesGraphToAstTransformer/*.js",
     "ast/*.d.ts",
     "ast/*.js",
+    "enums/*.d.ts",
+    "enums/*.js",
     "generators/*.d.ts",
     "generators/*.js",
     "generators/json/*.d.ts",

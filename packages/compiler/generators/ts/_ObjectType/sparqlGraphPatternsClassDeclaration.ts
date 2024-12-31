@@ -1,3 +1,4 @@
+import { rdf } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { type ClassDeclarationStructure, StructureKind } from "ts-morph";
 import { logger } from "../../../logger.js";
@@ -37,11 +38,27 @@ export function sparqlGraphPatternsClassDeclaration(
     constructorStatements.push(`super(${subjectVariable});`);
   }
 
-  this.fromRdfType.ifJust((fromRdfType) =>
+  const addRdfTypeGraphPatternStatements: string[] = [];
+  this.fromRdfType.ifJust((fromRdfType) => {
+    addRdfTypeGraphPatternStatements.push(
+      `this.add(...new sparqlBuilder.RdfTypeGraphPatterns(this.subject, ${this.rdfjsTermExpression(fromRdfType)}));`,
+    );
+  });
+  for (const toRdfType of this.toRdfTypes) {
+    if (
+      !this.fromRdfType.isJust() ||
+      !this.fromRdfType.unsafeCoerce().equals(toRdfType)
+    ) {
+      addRdfTypeGraphPatternStatements.push(
+        `this.add(sparqlBuilder.GraphPattern.basic(this.subject, ${this.rdfjsTermExpression(rdf.type)}, ${this.rdfjsTermExpression(toRdfType)}));`,
+      );
+    }
+  }
+  if (addRdfTypeGraphPatternStatements.length > 0) {
     constructorStatements.push(
-      `if (!${optionsVariable}?.${ignoreRdfTypeVariable}) { this.add(...new sparqlBuilder.RdfTypeGraphPatterns(${subjectVariable}, ${this.rdfjsTermExpression(fromRdfType)})); }`,
-    ),
-  );
+      `if (!${optionsVariable}?.${ignoreRdfTypeVariable}) { ${addRdfTypeGraphPatternStatements.join(" ")} }`,
+    );
+  }
 
   for (const property of this.properties) {
     property

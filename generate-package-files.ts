@@ -22,6 +22,7 @@ interface Package {
 }
 
 const externalDependencyVersions = {
+  "@kos-kit": "2.0.107",
   "@rdfjs/term-map": "^2.0.2",
   "@rdfjs/term-set": "^2.0.3",
   "@rdfjs/types": "^1.1.0",
@@ -80,15 +81,24 @@ const packages: readonly Package[] = [
       internal: ["shacl-ast"],
     },
     devDependencies: {
+      external: {
+        "@kos-kit/sparql-client": externalDependencyVersions["@kos-kit"],
+        oxigraph: "^0.4.0",
+        "rdf-isomorphic": "1.3.1",
+      },
       internal: ["runtime"],
     },
-    linkableDependencies: ["purify-ts-helpers", "rdfjs-resource"],
+    linkableDependencies: [
+      "@kos-kit/sparql-client",
+      "purify-ts-helpers",
+      "rdfjs-resource",
+    ],
     name: "compiler",
   },
   {
     dependencies: {
       external: {
-        "@kos-kit/sparql-builder": "2.0.107",
+        "@kos-kit/sparql-builder": externalDependencyVersions["@kos-kit"],
         "@rdfjs/types": externalDependencyVersions["@rdfjs/types"],
         "@types/n3": externalDependencyVersions["@types/n3"],
         "@types/uuid": "^9.0.1",
@@ -103,6 +113,7 @@ const packages: readonly Package[] = [
     },
     linkableDependencies: [
       "@kos-kit/sparql-builder",
+      "@kos-kit/sparql-client",
       "purify-ts-helpers",
       "rdfjs-resource",
     ],

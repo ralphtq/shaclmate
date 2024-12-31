@@ -1,9 +1,13 @@
-import type { BlankNode, NamedNode } from "@rdfjs/types";
+import * as sparqlBuilder from "@kos-kit/sparql-builder";
+import { OxigraphSparqlClient } from "@kos-kit/sparql-client";
+import type { BlankNode, NamedNode, Quad } from "@rdfjs/types";
 import { rdf } from "@tpluscode/rdf-ns-builders";
 import { sha256 } from "js-sha256";
 import N3, { DataFactory as dataFactory } from "n3";
+import * as oxigraph from "oxigraph";
 import { type Either, Maybe } from "purify-ts";
 import type { Equatable } from "purify-ts-helpers";
+import { isomorphic } from "rdf-isomorphic";
 import {
   type MutableResource,
   MutableResourceSet,
@@ -12,6 +16,22 @@ import {
 import { describe, it } from "vitest";
 import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObjectType.js";
 import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
+
+// function quadsToTurtle(quads: readonly Quad[]): Promise<string> {
+//   return new Promise((resolve, reject) => {
+//     const writer = new N3.Writer({ format: "text/turtle" });
+//     for (const quad of quads) {
+//       writer.addQuad(quad);
+//     }
+//     writer.end((error, result) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve(result);
+//       }
+//     });
+//   });
+// }
 
 abstract class Harness<
   T extends { readonly identifier: IdentifierT },
@@ -22,16 +42,25 @@ abstract class Harness<
     resource: Resource<IdentifierT>;
   }) => Either<Resource.ValueError, T>;
   readonly instance: T;
+  readonly sparqlGraphPatternsClass: new (
+    subject: sparqlBuilder.ResourceGraphPatterns.Subject,
+  ) => sparqlBuilder.ResourceGraphPatterns;
 
   constructor({
     fromRdf,
     instance,
+    sparqlGraphPatternsClass,
   }: {
     fromRdf: Harness<T, IdentifierT>["fromRdf"];
     instance: T;
+    sparqlGraphPatternsClass: Harness<
+      T,
+      IdentifierT
+    >["sparqlGraphPatternsClass"];
   }) {
     this.fromRdf = fromRdf;
     this.instance = instance;
+    this.sparqlGraphPatternsClass = sparqlGraphPatternsClass;
   }
 
   abstract equals(other: T): Equatable.EqualsResult;
@@ -105,6 +134,8 @@ describe("TsGenerator", () => {
         childStringProperty: "child",
         parentStringProperty: "parent",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.ConcreteChildClassNodeShape.SparqlGraphPatterns,
     }),
     concreteParentClassNodeShape: new ClassHarness({
       fromRdf: kitchenSink.ConcreteParentClassNodeShape.fromRdf,
@@ -113,6 +144,8 @@ describe("TsGenerator", () => {
         abcStringProperty: "abc",
         parentStringProperty: "parent",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.ConcreteParentClassNodeShape.SparqlGraphPatterns,
     }),
     interfaceNodeShape: new InterfaceHarness<
       kitchenSink.InterfaceNodeShape,
@@ -125,6 +158,8 @@ describe("TsGenerator", () => {
         stringProperty: "Test",
         type: "InterfaceNodeShape",
       },
+      sparqlGraphPatternsClass:
+        kitchenSink.InterfaceNodeShape.SparqlGraphPatterns,
       toRdf: kitchenSink.InterfaceNodeShape.toRdf,
     }),
     iriNodeShape: new ClassHarness({
@@ -133,10 +168,13 @@ describe("TsGenerator", () => {
         identifier: dataFactory.namedNode("http://example.com/test"),
         stringProperty: "test",
       }),
+      sparqlGraphPatternsClass: kitchenSink.IriNodeShape.SparqlGraphPatterns,
     }),
     nodeShapeWithDefaultValueProperties: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
       instance: new kitchenSink.NodeShapeWithDefaultValueProperties({}),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithDefaultValuePropertiesOverriddenDifferent: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
@@ -147,6 +185,8 @@ describe("TsGenerator", () => {
         stringProperty: "test",
         trueBooleanProperty: false,
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithDefaultValuePropertiesOverriddenSame: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
@@ -158,6 +198,8 @@ describe("TsGenerator", () => {
         stringProperty: "",
         trueBooleanProperty: true,
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithExplicitRdfTypes: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithExplicitRdfTypes.fromRdf,
@@ -165,6 +207,8 @@ describe("TsGenerator", () => {
         identifier: dataFactory.blankNode(),
         stringProperty: "test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithExplicitRdfTypes.SparqlGraphPatterns,
     }),
     nodeShapeWithExternProperties: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithExternProperties.fromRdf,
@@ -177,6 +221,8 @@ describe("TsGenerator", () => {
           stringProperty: "Test",
         }),
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithExternProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithHasValueProperties: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithHasValueProperties.fromRdf,
@@ -186,6 +232,8 @@ describe("TsGenerator", () => {
           "http://example.com/NodeShapeWithHasValuePropertiesIri1",
         ),
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithHasValueProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithInIrisProperty: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
@@ -195,6 +243,8 @@ describe("TsGenerator", () => {
           "http://example.com/NodeShapeWithInPropertiesIri1",
         ),
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithInProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithInLiteralsProperty: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
@@ -202,6 +252,8 @@ describe("TsGenerator", () => {
         identifier: dataFactory.blankNode(),
         inStringsProperty: "text",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithInProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithListProperty: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithListProperty.fromRdf,
@@ -209,6 +261,8 @@ describe("TsGenerator", () => {
         identifier: dataFactory.blankNode(),
         listProperty: ["Test1", "Test2"],
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithListProperty.SparqlGraphPatterns,
     }),
     nodeShapeWithMutableProperties: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithMutableProperties.fromRdf,
@@ -216,6 +270,8 @@ describe("TsGenerator", () => {
         mutableListProperty: ["test1", "test2"],
         mutableStringProperty: "test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithMutableProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithOrProperties: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithOrProperties.fromRdf,
@@ -225,6 +281,8 @@ describe("TsGenerator", () => {
         orUnrelatedProperty: { type: "0-number", value: 1 },
         orTermsProperty: dataFactory.literal("test"),
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithOrProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithPropertyCardinalities: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithPropertyCardinalities.fromRdf,
@@ -232,8 +290,10 @@ describe("TsGenerator", () => {
         identifier: dataFactory.blankNode(),
         optionalStringProperty: undefined,
         requiredStringProperty: "test",
-        setStringProperty: undefined,
+        setStringProperty: ["test1"], // Has minCount 1
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithPropertyCardinalities.SparqlGraphPatterns,
     }),
     nodeShapeWithPropertyVisibilities: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithPropertyVisibilities.fromRdf,
@@ -242,6 +302,8 @@ describe("TsGenerator", () => {
         protectedProperty: "protected",
         publicProperty: "public",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithPropertyVisibilities.SparqlGraphPatterns,
     }),
     nonClassNodeShape: new ClassHarness({
       fromRdf: kitchenSink.NonClassNodeShape.fromRdf,
@@ -249,6 +311,8 @@ describe("TsGenerator", () => {
         identifier: dataFactory.blankNode(),
         stringProperty: "Test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NonClassNodeShape.SparqlGraphPatterns,
     }),
     orNodeShapeMember1: new ClassHarness({
       fromRdf: kitchenSink.OrNodeShapeMember1.fromRdf,
@@ -256,6 +320,8 @@ describe("TsGenerator", () => {
         identifier: dataFactory.blankNode(),
         stringProperty1: "test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.OrNodeShapeMember1.SparqlGraphPatterns,
     }),
     orNodeShapeMember2: new ClassHarness({
       fromRdf: kitchenSink.OrNodeShapeMember2.fromRdf,
@@ -263,6 +329,8 @@ describe("TsGenerator", () => {
         identifier: dataFactory.blankNode(),
         stringProperty2: "test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.OrNodeShapeMember2.SparqlGraphPatterns,
     }),
     sha256IriNodeShapeWithExplicitIdentifier: new ClassHarness({
       fromRdf: kitchenSink.Sha256IriNodeShape.fromRdf,
@@ -270,12 +338,16 @@ describe("TsGenerator", () => {
         identifier: dataFactory.namedNode("http://example.com/instance"),
         stringProperty: "test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.Sha256IriNodeShape.SparqlGraphPatterns,
     }),
     sha256IriNodeShapeWithoutExplicitIdentifier: new ClassHarness({
       fromRdf: kitchenSink.Sha256IriNodeShape.fromRdf,
       instance: new kitchenSink.Sha256IriNodeShape({
         stringProperty: "test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.Sha256IriNodeShape.SparqlGraphPatterns,
     }),
     uuidv4IriNodeShapeWithExplicitIdentifier: new ClassHarness({
       fromRdf: kitchenSink.UuidV4IriNodeShape.fromRdf,
@@ -283,12 +355,16 @@ describe("TsGenerator", () => {
         identifier: dataFactory.namedNode("http://example.com/instance"),
         stringProperty: "test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.UuidV4IriNodeShape.SparqlGraphPatterns,
     }),
     uuidv4IriNodeShapeWithoutExplicitIdentifier: new ClassHarness({
       fromRdf: kitchenSink.UuidV4IriNodeShape.fromRdf,
       instance: new kitchenSink.UuidV4IriNodeShape({
         stringProperty: "test",
       }),
+      sparqlGraphPatternsClass:
+        kitchenSink.UuidV4IriNodeShape.SparqlGraphPatterns,
     }),
   };
 
@@ -305,7 +381,7 @@ describe("TsGenerator", () => {
   }) => {
     const instance = harnesses.nodeShapeWithPropertyCardinalities.instance;
     expect(instance.optionalStringProperty.isNothing()).toStrictEqual(true);
-    expect(instance.setStringProperty).toStrictEqual([]);
+    expect(instance.setStringProperty).toStrictEqual(["test1"]);
     expect(instance.requiredStringProperty).toStrictEqual("test");
   });
 
@@ -650,6 +726,53 @@ describe("TsGenerator", () => {
       "urn:shaclmate:object:NodeShapeWithMutableProperties:60303ae22b998861bce3b28f33eec1be758a213c86c93c076dbe9f558c11c752",
     );
   });
+
+  for (const [id, harness] of Object.entries(harnesses)) {
+    it(`SPARQL graph patterns: ${id}`, async ({ expect }) => {
+      const toRdfDataset = new N3.Store();
+      harness.toRdf({
+        resourceSet: new MutableResourceSet({
+          dataFactory,
+          dataset: toRdfDataset,
+        }),
+        mutateGraph: dataFactory.defaultGraph(),
+      });
+      const toRdfQuads: Quad[] = [];
+
+      const oxigraphStore = new oxigraph.Store();
+      for (const quad of toRdfDataset) {
+        oxigraphStore.add(quad);
+        toRdfQuads.push(quad);
+      }
+
+      const constructQuery = new sparqlBuilder.ConstructQueryBuilder()
+        .addGraphPatterns(
+          new harness.sparqlGraphPatternsClass(
+            sparqlBuilder.GraphPattern.variable("subject"),
+          ),
+        )
+        .build();
+
+      const sparqlQueryClient = new OxigraphSparqlClient({
+        dataFactory: oxigraph,
+        store: oxigraphStore,
+      });
+      // Add to a Dataset to deduplicate the quads
+      const constructResultDataset = new N3.Store(
+        (await sparqlQueryClient.queryQuads(constructQuery)).concat(),
+      );
+      const constructResultQuads = [...constructResultDataset];
+      // if (constructResultQuads.length !== toRdfQuads.length) {
+      //   console.info("not equal");
+      //   const toRdfTurtle = await quadsToTurtle(toRdfQuads);
+      //   const constructResultTurtle = await quadsToTurtle(constructResultQuads);
+      //   const combinedTurtle = `Expected:\n${toRdfTurtle}\n\nvs.\n\nActual:\n${constructResultTurtle}`;
+      //   console.info(combinedTurtle);
+      // }
+      expect(constructResultQuads.length).toStrictEqual(toRdfQuads.length);
+      expect(isomorphic(constructResultQuads, toRdfQuads)).toStrictEqual(true);
+    });
+  }
 
   it("toJson: or properties", ({ expect }) => {
     const jsonObject = harnesses.nodeShapeWithOrProperties.instance.toJson();

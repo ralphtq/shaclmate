@@ -1057,7 +1057,7 @@ export class NodeShapeWithPropertyCardinalities {
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
     readonly optionalStringProperty?: purify.Maybe<string> | string;
     readonly requiredStringProperty: string;
-    readonly setStringProperty?: readonly string[];
+    readonly setStringProperty: readonly string[];
   }) {
     this._identifier = parameters.identifier;
     if (purify.Maybe.isMaybe(parameters.optionalStringProperty)) {
@@ -1073,13 +1073,7 @@ export class NodeShapeWithPropertyCardinalities {
     }
 
     this.requiredStringProperty = parameters.requiredStringProperty;
-    if (Array.isArray(parameters.setStringProperty)) {
-      this.setStringProperty = parameters.setStringProperty;
-    } else if (typeof parameters.setStringProperty === "undefined") {
-      this.setStringProperty = [];
-    } else {
-      this.setStringProperty = parameters.setStringProperty; // never
-    }
+    this.setStringProperty = parameters.setStringProperty;
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
@@ -4222,8 +4216,17 @@ export namespace NodeShapeWithExplicitRdfTypes {
       if (!_options?.ignoreRdfType) {
         this.add(
           ...new sparqlBuilder.RdfTypeGraphPatterns(
-            subject,
+            this.subject,
             dataFactory.namedNode("http://example.com/FromRdfType"),
+          ),
+        );
+        this.add(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode(
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            ),
+            dataFactory.namedNode("http://example.com/ToRdfType"),
           ),
         );
       }
@@ -5406,7 +5409,7 @@ export namespace ConcreteParentClassNodeShape {
       if (!_options?.ignoreRdfType) {
         this.add(
           ...new sparqlBuilder.RdfTypeGraphPatterns(
-            subject,
+            this.subject,
             dataFactory.namedNode(
               "http://example.com/ConcreteParentClassNodeShape",
             ),
@@ -5597,7 +5600,7 @@ export namespace ConcreteChildClassNodeShape {
       if (!_options?.ignoreRdfType) {
         this.add(
           ...new sparqlBuilder.RdfTypeGraphPatterns(
-            subject,
+            this.subject,
             dataFactory.namedNode(
               "http://example.com/ConcreteChildClassNodeShape",
             ),
