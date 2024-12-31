@@ -741,9 +741,11 @@ describe("TsGenerator", () => {
         dataFactory: oxigraph,
         store: oxigraphStore,
       });
-      const constructResultQuads = (
-        await sparqlQueryClient.queryQuads(constructQuery)
-      ).concat();
+      // Add to a Dataset to deduplicate the quads
+      const constructResultDataset = new N3.Store(
+        (await sparqlQueryClient.queryQuads(constructQuery)).concat(),
+      );
+      const constructResultQuads = [...constructResultDataset];
       if (constructResultQuads.length !== toRdfQuads.length) {
         console.info("not equal");
       }
