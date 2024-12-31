@@ -17,21 +17,21 @@ import { describe, it } from "vitest";
 import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObjectType.js";
 import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
 
-// function quadsToTurtle(quads: readonly Quad[]): Promise<string> {
-//   return new Promise((resolve, reject) => {
-//     const writer = new N3.Writer({ format: "text/turtle" });
-//     for (const quad of quads) {
-//       writer.addQuad(quad);
-//     }
-//     writer.end((error, result) => {
-//       if (error) {
-//         reject(error);
-//       } else {
-//         resolve(result);
-//       }
-//     });
-//   });
-// }
+function quadsToTurtle(quads: readonly Quad[]): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const writer = new N3.Writer({ format: "text/turtle" });
+    for (const quad of quads) {
+      writer.addQuad(quad);
+    }
+    writer.end((error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
 
 abstract class Harness<
   T extends { readonly identifier: IdentifierT },
@@ -254,6 +254,16 @@ describe("TsGenerator", () => {
       }),
       sparqlGraphPatternsClass:
         kitchenSink.NodeShapeWithInProperties.SparqlGraphPatterns,
+    }),
+    nodeShapeWithLanguageInProperties: new ClassHarness({
+      fromRdf: kitchenSink.NodeShapeWithLanguageInProperties.fromRdf,
+      instance: new kitchenSink.NodeShapeWithLanguageInProperties({
+        identifier: dataFactory.blankNode(),
+        literalProperty: dataFactory.literal("envalue", "en"),
+        languageInProperty: dataFactory.literal("frvalue", "fr"),
+      }),
+      sparqlGraphPatternsClass:
+        kitchenSink.NodeShapeWithLanguageInProperties.SparqlGraphPatterns,
     }),
     nodeShapeWithListProperty: new ClassHarness({
       fromRdf: kitchenSink.NodeShapeWithListProperty.fromRdf,
@@ -686,6 +696,83 @@ describe("TsGenerator", () => {
     expect(instance.inStringsProperty.isNothing()).toStrictEqual(true);
   });
 
+  it("fromRdf: runtime languageIn", ({ expect }) => {
+    const dataset = new N3.Store();
+    const identifier = dataFactory.blankNode();
+    const resource = new MutableResourceSet({
+      dataFactory,
+      dataset: dataset,
+    }).resource(identifier);
+    const predicate = dataFactory.namedNode(
+      "http://example.com/literalProperty",
+    );
+    dataset.add(
+      dataFactory.quad(
+        identifier,
+        predicate,
+        dataFactory.literal("arvalue", "ar"),
+      ),
+    );
+
+    {
+      const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+        languageIn: ["en"],
+        resource,
+      }).unsafeCoerce();
+      expect(instance.literalProperty.isNothing()).toStrictEqual(true);
+    }
+
+    dataset.add(
+      dataFactory.quad(
+        identifier,
+        predicate,
+        dataFactory.literal("envalue", "en"),
+      ),
+    );
+
+    {
+      const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+        languageIn: ["en"],
+        resource,
+      }).unsafeCoerce();
+      expect(instance.literalProperty.unsafeCoerce().value).toStrictEqual(
+        "envalue",
+      );
+    }
+  });
+
+  it("fromRdf: sh:languageIn", ({ expect }) => {
+    const dataset = new N3.Store();
+    const identifier = dataFactory.blankNode();
+    const resource = new MutableResourceSet({
+      dataFactory,
+      dataset: dataset,
+    }).resource(identifier);
+    const predicate = dataFactory.namedNode(
+      "http://example.com/languageInProperty",
+    );
+    dataset.add(
+      dataFactory.quad(
+        identifier,
+        predicate,
+        dataFactory.literal("arvalue", "ar"),
+      ),
+    );
+    dataset.add(
+      dataFactory.quad(
+        identifier,
+        predicate,
+        dataFactory.literal("envalue", "en"),
+      ),
+    );
+    const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+      resource,
+    }).unsafeCoerce();
+    expect(instance.languageInProperty.unsafeCoerce().value).toStrictEqual(
+      "envalue",
+    );
+  });
+
   it("hash: known hash", ({ expect }) => {
     expect(
       harnesses.nonClassNodeShape.instance.hash(sha256.create()).hex(),
@@ -762,13 +849,13 @@ describe("TsGenerator", () => {
         (await sparqlQueryClient.queryQuads(constructQuery)).concat(),
       );
       const constructResultQuads = [...constructResultDataset];
-      // if (constructResultQuads.length !== toRdfQuads.length) {
-      //   console.info("not equal");
-      //   const toRdfTurtle = await quadsToTurtle(toRdfQuads);
-      //   const constructResultTurtle = await quadsToTurtle(constructResultQuads);
-      //   const combinedTurtle = `Expected:\n${toRdfTurtle}\n\nvs.\n\nActual:\n${constructResultTurtle}`;
-      //   console.info(combinedTurtle);
-      // }
+      if (constructResultQuads.length !== toRdfQuads.length) {
+        console.info("not equal");
+        const toRdfTurtle = await quadsToTurtle(toRdfQuads);
+        const constructResultTurtle = await quadsToTurtle(constructResultQuads);
+        const combinedTurtle = `Expected:\n${toRdfTurtle}\n\nvs.\n\nActual:\n${constructResultTurtle}`;
+        console.info(combinedTurtle);
+      }
       expect(constructResultQuads.length).toStrictEqual(toRdfQuads.length);
       expect(isomorphic(constructResultQuads, toRdfQuads)).toStrictEqual(true);
     });

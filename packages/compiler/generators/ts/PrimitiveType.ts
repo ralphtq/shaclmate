@@ -6,6 +6,8 @@ import type { Type } from "./Type.js";
 export abstract class PrimitiveType<
   ValueT extends boolean | Date | string | number,
 > extends LiteralType {
+  override readonly equalsFunction: string =
+    "purifyHelpers.Equatable.strictEquals";
   abstract override readonly kind:
     | "BooleanType"
     | "DateTimeType"
@@ -35,14 +37,18 @@ export abstract class PrimitiveType<
     return [];
   }
 
-  override propertyEqualsFunction(): string {
-    return "purifyHelpers.Equatable.strictEquals";
-  }
-
   override propertyHashStatements({
     variables,
   }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
     return [`${variables.hasher}.update(${variables.value}.toString());`];
+  }
+
+  protected override propertyFilterRdfResourceValuesExpression({
+    variables,
+  }: Parameters<
+    LiteralType["propertyFilterRdfResourceValuesExpression"]
+  >[0]): string {
+    return variables.resourceValues;
   }
 
   override propertyToJsonExpression({

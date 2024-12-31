@@ -16,6 +16,12 @@ export abstract class Type {
   abstract readonly conversions: readonly Type.Conversion[];
 
   /**
+   * A function (reference or declaration) that compares two property values of this type, returning a
+   * purifyHelpers.Equatable.EqualsResult.
+   */
+  abstract readonly equalsFunction: string;
+
+  /**
    * JSON-compatible returned by propertyToJsonExpression.
    */
   abstract readonly jsonName: string;
@@ -77,18 +83,13 @@ export abstract class Type {
   }
 
   /**
-   * A function (reference or declaration) that compares two property values of this type, returning a
-   * purifyHelpers.Equatable.EqualsResult.
-   */
-  abstract propertyEqualsFunction(): string;
-
-  /**
    * An expression that converts a rdfjsResource.Resource.Values to an Either of value/values
    * of this type for a property.
    */
   abstract propertyFromRdfExpression(parameters: {
     variables: {
       context: string;
+      languageIn: string;
       predicate: string;
       resource: string;
       resourceValues: string;

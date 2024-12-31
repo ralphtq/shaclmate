@@ -38,21 +38,25 @@ export class SetType extends Type {
     return conversions;
   }
 
-  get jsonName(): string {
+  override get equalsFunction(): string {
+    const itemTypeEqualsFunction = this.itemType.equalsFunction;
+    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
+      return "purifyHelpers.Equatable.arrayEquals";
+    }
+    return `(left, right) => purifyHelpers.Arrays.equals(left, right, ${itemTypeEqualsFunction})`;
+  }
+
+  override get jsonName(): string {
     return `readonly (${this.itemType.jsonName})[]`;
   }
 
-  get mutable(): boolean {
+  override get mutable(): boolean {
     return this.itemType.mutable;
   }
 
   @Memoize()
-  get name(): string {
+  override get name(): string {
     return `readonly (${this.itemType.name})[]`;
-  }
-
-  override get useImports(): readonly Import[] {
-    return this.itemType.useImports;
   }
 
   override propertyChainSparqlGraphPatternExpression(
@@ -61,14 +65,6 @@ export class SetType extends Type {
     >[0],
   ): ReturnType<Type["propertyChainSparqlGraphPatternExpression"]> {
     return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
-  }
-
-  override propertyEqualsFunction(): string {
-    const itemTypeEqualsFunction = this.itemType.propertyEqualsFunction();
-    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
-      return "purifyHelpers.Equatable.arrayEquals";
-    }
-    return `(left, right) => purifyHelpers.Arrays.equals(left, right, ${itemTypeEqualsFunction})`;
   }
 
   override propertyFromRdfExpression({
@@ -121,5 +117,9 @@ export class SetType extends Type {
       return variables.value;
     }
     return `${variables.value}.map((_value) => ${itemTypeToRdfExpression})`;
+  }
+
+  override get useImports(): readonly Import[] {
+    return this.itemType.useImports;
   }
 }

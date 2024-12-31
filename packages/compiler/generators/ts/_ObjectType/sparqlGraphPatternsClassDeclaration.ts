@@ -4,9 +4,12 @@ import { type ClassDeclarationStructure, StructureKind } from "ts-morph";
 import { logger } from "../../../logger.js";
 import type { ObjectType } from "../ObjectType.js";
 
-const ignoreRdfTypeVariable = "ignoreRdfType";
-const optionsVariable = "_options";
-const subjectVariable = "subject";
+const variables = {
+  ignoreRdfType: "ignoreRdfType",
+  languageIn: "languageIn",
+  options: "_options",
+  subject: "subject",
+};
 
 export function sparqlGraphPatternsClassDeclaration(
   this: ObjectType,
@@ -31,11 +34,11 @@ export function sparqlGraphPatternsClassDeclaration(
   let extends_ = "sparqlBuilder.ResourceGraphPatterns";
   if (this.parentObjectTypes.length > 0) {
     constructorStatements.push(
-      `super(${subjectVariable}, { ignoreRdfType: true });`,
+      `super(${variables.subject}, { ignoreRdfType: true });`,
     );
     extends_ = `${this.parentObjectTypes[0].name}.SparqlGraphPatterns`;
   } else {
-    constructorStatements.push(`super(${subjectVariable});`);
+    constructorStatements.push(`super(${variables.subject});`);
   }
 
   const addRdfTypeGraphPatternStatements: string[] = [];
@@ -56,7 +59,7 @@ export function sparqlGraphPatternsClassDeclaration(
   }
   if (addRdfTypeGraphPatternStatements.length > 0) {
     constructorStatements.push(
-      `if (!${optionsVariable}?.${ignoreRdfTypeVariable}) { ${addRdfTypeGraphPatternStatements.join(" ")} }`,
+      `if (!${variables.options}?.${variables.ignoreRdfType}) { ${addRdfTypeGraphPatternStatements.join(" ")} }`,
     );
   }
 
@@ -73,13 +76,13 @@ export function sparqlGraphPatternsClassDeclaration(
       {
         parameters: [
           {
-            name: subjectVariable,
+            name: variables.subject,
             type: "sparqlBuilder.ResourceGraphPatterns.SubjectParameter",
           },
           {
             hasQuestionToken: true,
-            name: optionsVariable,
-            type: `{ ${ignoreRdfTypeVariable}?: boolean }`,
+            name: variables.options,
+            type: `{ ${variables.ignoreRdfType}?: boolean }`,
           },
         ],
         statements: constructorStatements,

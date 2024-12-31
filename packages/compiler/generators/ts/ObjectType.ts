@@ -178,6 +178,17 @@ export class ObjectType extends DeclaredType {
     return this.name;
   }
 
+  override get equalsFunction(): string {
+    switch (this.declarationType) {
+      case "class":
+        return "purifyHelpers.Equatable.equals";
+      case "interface":
+        return `${this.name}.equals`;
+      default:
+        throw new RangeError(this.declarationType);
+    }
+  }
+
   @Memoize()
   get fromRdfFunctionName(): string {
     if (this.declarationType === "class" && this.abstract) {
@@ -285,15 +296,6 @@ export class ObjectType extends DeclaredType {
         `new ${this.name}.SparqlGraphPatterns(${variables.subject})`,
       ),
     );
-  }
-
-  override propertyEqualsFunction(): string {
-    switch (this.declarationType) {
-      case "class":
-        return "purifyHelpers.Equatable.equals";
-      case "interface":
-        return `${this.name}.equals`;
-    }
   }
 
   override propertyFromRdfExpression({

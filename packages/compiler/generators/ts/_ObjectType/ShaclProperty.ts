@@ -88,7 +88,7 @@ export class ShaclProperty extends Property<Type> {
   }
 
   override get equalsFunction(): string {
-    return this.type.propertyEqualsFunction();
+    return this.type.equalsFunction;
   }
 
   override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {

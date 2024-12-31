@@ -31,10 +31,10 @@ export class BooleanType extends PrimitiveType<boolean> {
       .orDefault("boolean");
   }
 
-  override fromRdfResourceValueExpression({
+  override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    PrimitiveType<boolean>["fromRdfResourceValueExpression"]
+    PrimitiveType<boolean>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     let expression = `${variables.resourceValue}.toBoolean()`;
     this.primitiveIn.ifJust((in_) => {

@@ -119,7 +119,26 @@ export class UnionType extends Type {
     return Maybe.of(this._discriminatorProperty);
   }
 
-  get jsonName(): string {
+  override get equalsFunction(): string {
+    return `
+(left: ${this.name}, right: ${this.name}) => {
+${this.memberTypeTraits
+  .flatMap((memberTypeTraits) =>
+    memberTypeTraits.discriminatorPropertyValues.map(
+      (
+        value,
+      ) => `if (left.${this._discriminatorProperty.name} === "${value}" && right.${this._discriminatorProperty.name} === "${value}") {
+  return ${memberTypeTraits.memberType.equalsFunction}(${memberTypeTraits.payload("left")}, ${memberTypeTraits.payload("right")});
+}`,
+    ),
+  )
+  .join("\n")}
+
+  return purify.Left({ left, right, propertyName: "type", propertyValuesUnequal: { left: typeof left, right: typeof right, type: "BooleanEquals" as const }, type: "Property" as const });
+}`;
+  }
+
+  override get jsonName(): string {
     if (this._discriminatorProperty.synthetic) {
       return `(${this.memberTypeTraits.map((memberTypeTraits) => `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}", value: ${memberTypeTraits.memberType.jsonName} }`).join(" | ")})`;
     }
@@ -129,27 +148,8 @@ export class UnionType extends Type {
       .join(" | ");
   }
 
-  get mutable(): boolean {
+  override get mutable(): boolean {
     return this.memberTypes.some((memberType) => memberType.mutable);
-  }
-
-  override propertyEqualsFunction(): string {
-    return `
-(left: ${this.name}, right: ${this.name}) => {
-${this.memberTypeTraits
-  .flatMap((memberTypeTraits) =>
-    memberTypeTraits.discriminatorPropertyValues.map(
-      (
-        value,
-      ) => `if (left.${this._discriminatorProperty.name} === "${value}" && right.${this._discriminatorProperty.name} === "${value}") {
-  return ${memberTypeTraits.memberType.propertyEqualsFunction()}(${memberTypeTraits.payload("left")}, ${memberTypeTraits.payload("right")});
-}`,
-    ),
-  )
-  .join("\n")}
-
-  return purify.Left({ left, right, propertyName: "type", propertyValuesUnequal: { left: typeof left, right: typeof right, type: "BooleanEquals" as const }, type: "Property" as const });
-}`;
   }
 
   override propertyFromRdfExpression(

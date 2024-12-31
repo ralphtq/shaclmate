@@ -84,6 +84,7 @@ export class TypeFactory {
               dataFactoryVariable: this.dataFactoryVariable,
               defaultValue: astType.defaultValue,
               hasValue: astType.hasValue,
+              languageIn: [],
               in_: astType.in_,
               primitiveDefaultValue: astType.defaultValue
                 .map((value) => fromRdf(value, true))
@@ -102,6 +103,7 @@ export class TypeFactory {
               defaultValue: astType.defaultValue,
               hasValue: astType.hasValue,
               in_: astType.in_,
+              languageIn: [],
               primitiveDefaultValue: astType.defaultValue
                 .map((value) => fromRdf(value, true))
                 .filter(
@@ -144,6 +146,7 @@ export class TypeFactory {
                 defaultValue: astType.defaultValue,
                 hasValue: astType.hasValue,
                 in_: astType.in_,
+                languageIn: [],
                 primitiveDefaultValue: astType.defaultValue
                   .map((value) => fromRdf(value, true))
                   .filter((value) => typeof value === "number"),
@@ -161,6 +164,7 @@ export class TypeFactory {
               dataFactoryVariable: this.dataFactoryVariable,
               defaultValue: astType.defaultValue,
               hasValue: astType.hasValue,
+              languageIn: [],
               in_: astType.in_,
               primitiveDefaultValue: astType.defaultValue.map(
                 (value) => value.value,
@@ -189,6 +193,7 @@ export class TypeFactory {
           dataFactoryVariable: this.dataFactoryVariable,
           defaultValue: astType.defaultValue,
           in_: astType.in_,
+          languageIn: astType.languageIn,
           hasValue: astType.hasValue,
         });
       }

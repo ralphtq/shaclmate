@@ -54,7 +54,11 @@ export class ListType extends Type {
     return Maybe.empty();
   }
 
-  get jsonName(): string {
+  override get equalsFunction(): string {
+    return `((left, right) => purifyHelpers.Arrays.equals(left, right, ${this.itemType.equalsFunction}))`;
+  }
+
+  override get jsonName(): string {
     return `readonly (${this.itemType.jsonName})[]`;
   }
 
@@ -92,10 +96,6 @@ export class ListType extends Type {
           )} ${this.fromRdfType.map((fromRdfType) => `rdfListType: ${this.rdfjsTermExpression(fromRdfType)}, `).orDefault("")} rdfList: ${variables.subject} })`,
       ),
     );
-  }
-
-  override propertyEqualsFunction(): string {
-    return `((left, right) => purifyHelpers.Arrays.equals(left, right, ${this.itemType.propertyEqualsFunction()}))`;
   }
 
   override propertyFromRdfExpression({

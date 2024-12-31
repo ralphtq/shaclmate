@@ -329,6 +329,25 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :inStringsProperty
     ] .
 
+:NodeShapeWithLanguageInProperties
+    shaclmate:name "NodeShapeWithLanguageInProperties" ;
+    a sh:NodeShape ;
+    rdfs:comment "Shape that uses the ListShape in a property." ;
+    sh:property [
+        sh:languageIn ("en"
+            "fr"
+        ) ;
+        sh:maxCount 1 ;
+        sh:name "languageInProperty" ;
+        sh:path :languageInProperty
+    ], [
+        rdfs:comment "literal property for testing runtime languageIn" ;
+        sh:maxCount 1 ;
+        sh:name "literalProperty" ;
+        sh:nodeKind sh:Literal ;
+        sh:path :literalProperty
+    ] .
+
 :NodeShapeWithListProperty
     shaclmate:name "NodeShapeWithListProperty" ;
     a sh:NodeShape ;

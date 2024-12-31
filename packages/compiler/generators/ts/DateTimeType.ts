@@ -2,6 +2,8 @@ import { PrimitiveType } from "./PrimitiveType.js";
 import type { Type } from "./Type.js";
 
 export class DateTimeType extends PrimitiveType<Date> {
+  override readonly equalsFunction =
+    "(left, right) => purifyHelpers.Equatable.EqualsResult.fromBooleanEqualsResult(left, right, left.getTime() === right.getTime())";
   override readonly jsonName = "string";
   readonly kind = "DateTimeType";
   override readonly mutable = true;
@@ -31,20 +33,16 @@ export class DateTimeType extends PrimitiveType<Date> {
     return "Date";
   }
 
-  override fromRdfResourceValueExpression({
+  override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    PrimitiveType<number>["fromRdfResourceValueExpression"]
+    PrimitiveType<number>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     let expression = `${variables.resourceValue}.toDate()`;
     this.primitiveIn.ifJust((in_) => {
       expression = `${expression}.chain(value => { ${in_.map((value) => `if (value.getTime() === ${value.getTime()}) { return purify.Either.of(value); }`).join(" ")} return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); })`;
     });
     return expression;
-  }
-
-  override propertyEqualsFunction(): string {
-    return "(left, right) => purifyHelpers.Equatable.EqualsResult.fromBooleanEqualsResult(left, right, left.getTime() === right.getTime())";
   }
 
   override propertyHashStatements({

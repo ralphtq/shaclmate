@@ -10,6 +10,7 @@ export abstract class RdfjsTermType<
   ValueRdfjsTermT extends Literal | NamedNode,
 > extends Type {
   readonly defaultValue: Maybe<ValueRdfjsTermT>;
+  readonly equalsFunction: string = "purifyHelpers.Equatable.booleanEquals";
   readonly hasValue: Maybe<ValueRdfjsTermT>;
   readonly in_: Maybe<readonly ValueRdfjsTermT[]>;
   abstract override readonly kind:
@@ -37,14 +38,13 @@ export abstract class RdfjsTermType<
     this.in_ = in_;
   }
 
-  override propertyEqualsFunction(): string {
-    return "purifyHelpers.Equatable.booleanEquals";
-  }
-
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    const chain: string[] = [`${variables.resourceValues}`];
+    const chain: string[] = [
+      this.propertyFilterRdfResourceValuesExpression({ variables }),
+    ];
+    // Have an rdfjsResource.Resource.Values here
     this.hasValue
       .ifJust((hasValue) => {
         chain.push(
@@ -52,13 +52,16 @@ export abstract class RdfjsTermType<
         );
       })
       .ifNothing(() => chain.push("head()"));
+    // Have an rdfjsResource.Resource.Value here
     this.defaultValue.ifJust((defaultValue) => {
+      // alt the default value before trying to convert the rdfjsResource.Resource.Value to the type
       chain.push(
         `alt(purify.Either.of(new rdfjsResource.Resource.Value({ subject: ${variables.resource}, predicate: ${variables.predicate}, object: ${this.rdfjsTermExpression(defaultValue)} })))`,
       );
     });
+    // Last step: convert the rdfjsResource.Resource.Value to the type
     chain.push(
-      `chain(_value => ${this.fromRdfResourceValueExpression({
+      `chain(_value => ${this.propertyFromRdfResourceValueExpression({
         variables: {
           predicate: variables.predicate,
           resource: variables.resource,
@@ -97,7 +100,23 @@ export abstract class RdfjsTermType<
       .orDefault(variables.value);
   }
 
-  protected abstract fromRdfResourceValueExpression({
+  /**
+   * Filter the rdfjsResource.Resource.Values to those that are relevant to the type.
+   *
+   * This is done before
+   */
+  protected propertyFilterRdfResourceValuesExpression({
+    variables,
+  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
+    return variables.resourceValues;
+  }
+
+  /**
+   * Convert an rdfjsResource.Resource.Value to a value of this type.
+   * @param variables
+   * @protected
+   */
+  protected abstract propertyFromRdfResourceValueExpression({
     variables,
   }: {
     variables: { predicate: string; resource: string; resourceValue: string };

@@ -42,21 +42,28 @@ export class OptionType extends Type {
     return conversions;
   }
 
-  get jsonName(): string {
+  override get equalsFunction(): string {
+    const itemTypeEqualsFunction = this.itemType.equalsFunction;
+    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
+      return "purifyHelpers.Equatable.maybeEquals";
+    }
+    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.strictEquals") {
+      return "purifyHelpers.Equatable.booleanEquals"; // Use Maybe.equals
+    }
+    return `(left, right) => purifyHelpers.Maybes.equals(left, right, ${itemTypeEqualsFunction})`;
+  }
+
+  override get jsonName(): string {
     return `(${this.itemType.jsonName}) | undefined`;
   }
 
-  get mutable(): boolean {
+  override get mutable(): boolean {
     return this.itemType.mutable;
   }
 
   @Memoize()
-  get name(): string {
+  override get name(): string {
     return `purify.Maybe<${this.itemType.name}>`;
-  }
-
-  override get useImports(): readonly Import[] {
-    return [...this.itemType.useImports, Import.PURIFY];
   }
 
   override propertyChainSparqlGraphPatternExpression(
@@ -65,17 +72,6 @@ export class OptionType extends Type {
     >[0],
   ): ReturnType<Type["propertyChainSparqlGraphPatternExpression"]> {
     return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
-  }
-
-  override propertyEqualsFunction(): string {
-    const itemTypeEqualsFunction = this.itemType.propertyEqualsFunction();
-    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
-      return "purifyHelpers.Equatable.maybeEquals";
-    }
-    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.strictEquals") {
-      return "purifyHelpers.Equatable.booleanEquals"; // Use Maybe.equals
-    }
-    return `(left, right) => purifyHelpers.Maybes.equals(left, right, ${itemTypeEqualsFunction})`;
   }
 
   override propertyFromRdfExpression(
@@ -125,5 +121,9 @@ export class OptionType extends Type {
       return variables.value;
     }
     return `${variables.value}.map((_value) => ${itemTypeToRdfExpression})`;
+  }
+
+  override get useImports(): readonly Import[] {
+    return [...this.itemType.useImports, Import.PURIFY];
   }
 }
