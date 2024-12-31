@@ -4222,8 +4222,17 @@ export namespace NodeShapeWithExplicitRdfTypes {
       if (!_options?.ignoreRdfType) {
         this.add(
           ...new sparqlBuilder.RdfTypeGraphPatterns(
-            subject,
+            this.subject,
             dataFactory.namedNode("http://example.com/FromRdfType"),
+          ),
+        );
+        this.add(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode(
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            ),
+            dataFactory.namedNode("http://example.com/ToRdfType"),
           ),
         );
       }
@@ -5406,7 +5415,7 @@ export namespace ConcreteParentClassNodeShape {
       if (!_options?.ignoreRdfType) {
         this.add(
           ...new sparqlBuilder.RdfTypeGraphPatterns(
-            subject,
+            this.subject,
             dataFactory.namedNode(
               "http://example.com/ConcreteParentClassNodeShape",
             ),
@@ -5597,7 +5606,7 @@ export namespace ConcreteChildClassNodeShape {
       if (!_options?.ignoreRdfType) {
         this.add(
           ...new sparqlBuilder.RdfTypeGraphPatterns(
-            subject,
+            this.subject,
             dataFactory.namedNode(
               "http://example.com/ConcreteChildClassNodeShape",
             ),

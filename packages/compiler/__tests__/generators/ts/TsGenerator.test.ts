@@ -744,6 +744,9 @@ describe("TsGenerator", () => {
       const constructResultQuads = (
         await sparqlQueryClient.queryQuads(constructQuery)
       ).concat();
+      if (constructResultQuads.length !== toRdfQuads.length) {
+        console.info("not equal");
+      }
       expect(constructResultQuads.length).toStrictEqual(toRdfQuads.length);
       expect(isomorphic(constructResultQuads, toRdfQuads)).toStrictEqual(true);
     });
