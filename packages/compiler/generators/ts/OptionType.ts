@@ -42,6 +42,17 @@ export class OptionType extends Type {
     return conversions;
   }
 
+  get equalsFunction(): string {
+    const itemTypeEqualsFunction = this.itemType.equalsFunction;
+    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
+      return "purifyHelpers.Equatable.maybeEquals";
+    }
+    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.strictEquals") {
+      return "purifyHelpers.Equatable.booleanEquals"; // Use Maybe.equals
+    }
+    return `(left, right) => purifyHelpers.Maybes.equals(left, right, ${itemTypeEqualsFunction})`;
+  }
+
   get jsonName(): string {
     return `(${this.itemType.jsonName}) | undefined`;
   }
@@ -55,27 +66,12 @@ export class OptionType extends Type {
     return `purify.Maybe<${this.itemType.name}>`;
   }
 
-  override get useImports(): readonly Import[] {
-    return [...this.itemType.useImports, Import.PURIFY];
-  }
-
   override propertyChainSparqlGraphPatternExpression(
     parameters: Parameters<
       Type["propertyChainSparqlGraphPatternExpression"]
     >[0],
   ): ReturnType<Type["propertyChainSparqlGraphPatternExpression"]> {
     return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
-  }
-
-  override propertyEqualsFunction(): string {
-    const itemTypeEqualsFunction = this.itemType.propertyEqualsFunction();
-    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
-      return "purifyHelpers.Equatable.maybeEquals";
-    }
-    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.strictEquals") {
-      return "purifyHelpers.Equatable.booleanEquals"; // Use Maybe.equals
-    }
-    return `(left, right) => purifyHelpers.Maybes.equals(left, right, ${itemTypeEqualsFunction})`;
   }
 
   override propertyFromRdfExpression(
@@ -125,5 +121,9 @@ export class OptionType extends Type {
       return variables.value;
     }
     return `${variables.value}.map((_value) => ${itemTypeToRdfExpression})`;
+  }
+
+  get useImports(): readonly Import[] {
+    return [...this.itemType.useImports, Import.PURIFY];
   }
 }

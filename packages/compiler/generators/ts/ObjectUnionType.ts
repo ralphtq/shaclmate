@@ -127,6 +127,10 @@ export class ObjectUnionType extends DeclaredType {
     return [];
   }
 
+  get equalsFunction(): string {
+    return `${this.name}.equals`;
+  }
+
   private get equalsFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
     if (!this.features.has("equals")) {
       return Maybe.empty();
@@ -333,10 +337,6 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         `new ${this.name}.SparqlGraphPatterns(${variables.subject})`,
       ),
     );
-  }
-
-  override propertyEqualsFunction(): string {
-    return `${this.name}.equals`;
   }
 
   override propertyFromRdfExpression({

@@ -10,6 +10,7 @@ export abstract class RdfjsTermType<
   ValueRdfjsTermT extends Literal | NamedNode,
 > extends Type {
   readonly defaultValue: Maybe<ValueRdfjsTermT>;
+  readonly equalsFunction: string = "purifyHelpers.Equatable.booleanEquals";
   readonly hasValue: Maybe<ValueRdfjsTermT>;
   readonly in_: Maybe<readonly ValueRdfjsTermT[]>;
   abstract override readonly kind:
@@ -35,10 +36,6 @@ export abstract class RdfjsTermType<
     this.defaultValue = defaultValue;
     this.hasValue = hasValue;
     this.in_ = in_;
-  }
-
-  override propertyEqualsFunction(): string {
-    return "purifyHelpers.Equatable.booleanEquals";
   }
 
   override propertyFromRdfExpression({

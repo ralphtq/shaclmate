@@ -6,6 +6,8 @@ import type { Type } from "./Type.js";
 export abstract class PrimitiveType<
   ValueT extends boolean | Date | string | number,
 > extends LiteralType {
+  override readonly equalsFunction: string =
+    "purifyHelpers.Equatable.strictEquals";
   abstract override readonly kind:
     | "BooleanType"
     | "DateTimeType"
@@ -33,10 +35,6 @@ export abstract class PrimitiveType<
 
   override get useImports(): readonly Import[] {
     return [];
-  }
-
-  override propertyEqualsFunction(): string {
-    return "purifyHelpers.Equatable.strictEquals";
   }
 
   override propertyHashStatements({
