@@ -1,6 +1,6 @@
 import type { Literal } from "@rdfjs/types";
 import { xsd } from "@tpluscode/rdf-ns-builders";
-import { Maybe } from "purify-ts";
+import { Maybe, type NonEmptyList } from "purify-ts";
 import { Import } from "./Import.js";
 import { RdfjsTermType } from "./RdfjsTermType.js";
 import type { Type } from "./Type.js";
@@ -16,12 +16,12 @@ export class LiteralType extends RdfjsTermType<Literal, Literal> {
     | "NumberType"
     | "StringType" = "LiteralType";
 
-  private readonly languageIn: readonly string[];
+  private readonly languageIn: Maybe<NonEmptyList<string>>;
 
   constructor({
     languageIn,
     ...superParameters
-  }: { languageIn: readonly string[] } & ConstructorParameters<
+  }: { languageIn: Maybe<NonEmptyList<string>> } & ConstructorParameters<
     typeof RdfjsTermType<Literal, Literal>
   >[0]) {
     super(superParameters);
@@ -96,7 +96,7 @@ export class LiteralType extends RdfjsTermType<Literal, Literal> {
     RdfjsTermType<Literal, Literal>["propertyFilterRdfResourceValuesExpression"]
   >[0]): string {
     return `${variables.resourceValues}.filter(_value => {
-  const _languageInOrDefault = ${variables.languageIn} ?? ${this.languageIn.length > 0 ? JSON.stringify(this.languageIn) : "[]"};
+  const _languageInOrDefault = ${variables.languageIn} ?? ${this.languageIn.isJust() ? JSON.stringify(this.languageIn.unsafeCoerce()) : "[]"};
   if (_languageInOrDefault.length === 0) {
     return true;
   }

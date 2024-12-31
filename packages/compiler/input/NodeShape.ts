@@ -167,7 +167,7 @@ export class NodeShape
 
   get nodeKinds(): Set<NodeKind.BLANK_NODE | NodeKind.IRI> {
     const thisNodeKinds = new Set<NodeKind.BLANK_NODE | NodeKind.IRI>(
-      [...this.constraints.nodeKinds].filter(
+      [...this.constraints.nodeKinds.orDefault(new Set())].filter(
         (nodeKind) => nodeKind !== NodeKind.LITERAL,
       ),
     );

@@ -1,7 +1,7 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
 import { shaclmate } from "@shaclmate/compiler/vocabularies/index";
 import { rdfs, sh } from "@tpluscode/rdf-ns-builders";
-import { Maybe } from "purify-ts";
+import { Maybe, NonEmptyList } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import { NodeKind } from "./NodeKind.js";
 import type { NodeShape } from "./NodeShape.js";
@@ -170,13 +170,15 @@ export namespace RdfjsShape {
       >,
     ) {}
 
-    get and(): readonly ShapeT[] {
+    get and(): Maybe<NonEmptyList<ShapeT>> {
       return this.listTakingLogicalConstraint(sh.and);
     }
 
-    get classes(): readonly NamedNode[] {
-      return [...this.resource.values(sh.class)].flatMap((value) =>
-        value.toIri().toMaybe().toList(),
+    get classes(): Maybe<NonEmptyList<NamedNode>> {
+      return NonEmptyList.fromArray(
+        [...this.resource.values(sh.class)].flatMap((value) =>
+          value.toIri().toMaybe().toList(),
+        ),
       );
     }
 
@@ -194,12 +196,13 @@ export namespace RdfjsShape {
         .toMaybe();
     }
 
-    get in_(): Maybe<readonly (BlankNode | Literal | NamedNode)[]> {
+    get in_(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
       return this.resource
         .value(sh.in)
         .chain((value) => value.toList())
         .map((values) => values.map((value) => value.toTerm()))
-        .toMaybe();
+        .toMaybe()
+        .chain(NonEmptyList.fromArray);
     }
 
     get maxCount(): Maybe<number> {
@@ -244,17 +247,18 @@ export namespace RdfjsShape {
         .toMaybe();
     }
 
-    get languageIn(): readonly string[] {
+    get languageIn(): Maybe<NonEmptyList<string>> {
       return this.resource
         .value(sh.languageIn)
         .chain((value) => value.toList())
         .map((values) =>
           values.flatMap((value) => value.toString().toMaybe().toList()),
         )
-        .orDefault([]);
+        .toMaybe()
+        .chain(NonEmptyList.fromArray);
     }
 
-    get nodeKinds(): Set<NodeKind> {
+    get nodeKinds(): Maybe<Set<NodeKind>> {
       const nodeKinds = new Set<NodeKind>();
       for (const nodeKindValue of this.resource.values(sh.nodeKind)) {
         nodeKindValue.toIri().ifRight((nodeKindIri) => {
@@ -276,42 +280,48 @@ export namespace RdfjsShape {
           }
         });
       }
-      return nodeKinds;
+      return nodeKinds.size > 0 ? Maybe.of(nodeKinds) : Maybe.empty();
     }
 
-    get nodes(): readonly NodeShapeT[] {
-      return [...this.resource.values(sh.node)].flatMap((value) =>
-        value
-          .toIdentifier()
-          .toMaybe()
-          .chain((identifier) =>
-            this.shapesGraph.nodeShapeByIdentifier(identifier),
-          )
-          .toList(),
+    get nodes(): Maybe<NonEmptyList<NodeShapeT>> {
+      return NonEmptyList.fromArray(
+        [...this.resource.values(sh.node)].flatMap((value) =>
+          value
+            .toIdentifier()
+            .toMaybe()
+            .chain((identifier) =>
+              this.shapesGraph.nodeShapeByIdentifier(identifier),
+            )
+            .toList(),
+        ),
       );
     }
 
-    get not(): readonly ShapeT[] {
-      return [...this.resource.values(sh.not)].flatMap((value) =>
-        value
-          .toIdentifier()
-          .toMaybe()
-          .chain((identifier) => this.shapesGraph.shapeByIdentifier(identifier))
-          .toList(),
+    get not(): Maybe<NonEmptyList<ShapeT>> {
+      return NonEmptyList.fromArray(
+        [...this.resource.values(sh.not)].flatMap((value) =>
+          value
+            .toIdentifier()
+            .toMaybe()
+            .chain((identifier) =>
+              this.shapesGraph.shapeByIdentifier(identifier),
+            )
+            .toList(),
+        ),
       );
     }
 
-    get or(): readonly ShapeT[] {
+    get or(): Maybe<NonEmptyList<ShapeT>> {
       return this.listTakingLogicalConstraint(sh.or);
     }
 
-    get xone(): readonly ShapeT[] {
+    get xone(): Maybe<NonEmptyList<ShapeT>> {
       return this.listTakingLogicalConstraint(sh.xone);
     }
 
     private listTakingLogicalConstraint(
       predicate: NamedNode,
-    ): readonly ShapeT[] {
+    ): Maybe<NonEmptyList<ShapeT>> {
       return this.resource
         .value(predicate)
         .chain((value) => value.toList())
@@ -326,36 +336,45 @@ export namespace RdfjsShape {
               .toList(),
           ),
         )
-        .orDefault([]);
+        .toMaybe()
+        .chain(NonEmptyList.fromArray);
     }
   }
 
   export class Targets {
     constructor(protected readonly resource: Resource) {}
 
-    get targetClasses(): readonly NamedNode[] {
-      return [...this.resource.values(sh.targetClass)].flatMap((value) =>
-        value.toIri().toMaybe().toList(),
+    get targetClasses(): Maybe<NonEmptyList<NamedNode>> {
+      return NonEmptyList.fromArray(
+        [...this.resource.values(sh.targetClass)].flatMap((value) =>
+          value.toIri().toMaybe().toList(),
+        ),
       );
     }
 
-    get targetNodes(): readonly (Literal | NamedNode)[] {
-      return [...this.resource.values(sh.targetNode)].flatMap((value) =>
-        (value.toLiteral().toMaybe() as Maybe<Literal | NamedNode>)
-          .altLazy(() => value.toIri().toMaybe())
-          .toList(),
+    get targetNodes(): Maybe<NonEmptyList<Literal | NamedNode>> {
+      return NonEmptyList.fromArray(
+        [...this.resource.values(sh.targetNode)].flatMap((value) =>
+          (value.toLiteral().toMaybe() as Maybe<Literal | NamedNode>)
+            .altLazy(() => value.toIri().toMaybe())
+            .toList(),
+        ),
       );
     }
 
-    get targetObjectsOf(): readonly NamedNode[] {
-      return [...this.resource.values(sh.targetObjectsOf)].flatMap((value) =>
-        value.toIri().toMaybe().toList(),
+    get targetObjectsOf(): Maybe<NonEmptyList<NamedNode>> {
+      return NonEmptyList.fromArray(
+        [...this.resource.values(sh.targetObjectsOf)].flatMap((value) =>
+          value.toIri().toMaybe().toList(),
+        ),
       );
     }
 
-    get targetSubjectsOf(): readonly NamedNode[] {
-      return [...this.resource.values(sh.targetSubjectsOf)].flatMap((value) =>
-        value.toIri().toMaybe().toList(),
+    get targetSubjectsOf(): Maybe<NonEmptyList<NamedNode>> {
+      return NonEmptyList.fromArray(
+        [...this.resource.values(sh.targetSubjectsOf)].flatMap((value) =>
+          value.toIri().toMaybe().toList(),
+        ),
       );
     }
   }

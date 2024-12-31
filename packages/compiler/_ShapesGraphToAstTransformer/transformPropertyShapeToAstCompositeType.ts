@@ -76,35 +76,43 @@ export function transformPropertyShapeToAstCompositeType(
     return Either.of(astType);
   };
 
-  if (shape.constraints.and.length > 0) {
-    memberTypeEithers = shape.constraints.and.map((memberShape) =>
-      this.transformPropertyShapeToAstType(memberShape, {
-        defaultValue,
-        extern: extern,
-      }),
-    );
+  if (shape.constraints.and.isJust()) {
+    memberTypeEithers = shape.constraints.and
+      .unsafeCoerce()
+      .map((memberShape) =>
+        this.transformPropertyShapeToAstType(memberShape, {
+          defaultValue,
+          extern: extern,
+        }),
+      );
     compositeTypeKind = "IntersectionType";
-  } else if (shape.constraints.classes.length > 0) {
-    memberTypeEithers = shape.constraints.classes.map((classIri) => {
-      if (
-        classIri.equals(owl.Class) ||
-        classIri.equals(owl.Thing) ||
-        classIri.equals(rdfs.Class)
-      ) {
-        return Left(new Error(`class ${classIri.value} is not transformable`));
-      }
+  } else if (shape.constraints.classes.isJust()) {
+    memberTypeEithers = shape.constraints.classes
+      .unsafeCoerce()
+      .map((classIri) => {
+        if (
+          classIri.equals(owl.Class) ||
+          classIri.equals(owl.Thing) ||
+          classIri.equals(rdfs.Class)
+        ) {
+          return Left(
+            new Error(`class ${classIri.value} is not transformable`),
+          );
+        }
 
-      const classNodeShape = this.shapesGraph
-        .nodeShapeByIdentifier(classIri)
-        .extractNullable();
-      if (classNodeShape === null) {
-        return Left(
-          new Error(`class ${classIri.value} did not resolve to a node shape`),
-        );
-      }
+        const classNodeShape = this.shapesGraph
+          .nodeShapeByIdentifier(classIri)
+          .extractNullable();
+        if (classNodeShape === null) {
+          return Left(
+            new Error(
+              `class ${classIri.value} did not resolve to a node shape`,
+            ),
+          );
+        }
 
-      return transformNodeShapeToAstCompositeMemberType(classNodeShape);
-    });
+        return transformNodeShapeToAstCompositeMemberType(classNodeShape);
+      });
     compositeTypeKind = "IntersectionType";
 
     if (Either.rights(memberTypeEithers).length === 0) {
@@ -115,13 +123,15 @@ export function transformPropertyShapeToAstCompositeType(
       );
       return memberTypeEithers[0];
     }
-  } else if (shape.constraints.nodes.length > 0) {
-    memberTypeEithers = shape.constraints.nodes.map((nodeShape) =>
-      transformNodeShapeToAstCompositeMemberType(nodeShape),
-    );
+  } else if (shape.constraints.nodes.isJust()) {
+    memberTypeEithers = shape.constraints.nodes
+      .unsafeCoerce()
+      .map((nodeShape) =>
+        transformNodeShapeToAstCompositeMemberType(nodeShape),
+      );
     compositeTypeKind = "IntersectionType";
-  } else if (shape.constraints.or.length > 0) {
-    memberTypeEithers = shape.constraints.or.map((memberShape) =>
+  } else if (shape.constraints.or.isJust()) {
+    memberTypeEithers = shape.constraints.or.unsafeCoerce().map((memberShape) =>
       this.transformPropertyShapeToAstType(memberShape, {
         defaultValue,
         extern: extern,
@@ -178,7 +188,7 @@ export function transformPropertyShapeToAstCompositeType(
       hasValue: Maybe.empty(),
       in_: Maybe.empty(),
       kind: "LiteralType",
-      languageIn: [],
+      languageIn: Maybe.empty(),
       maxExclusive: Maybe.empty(),
       maxInclusive: Maybe.empty(),
       minExclusive: Maybe.empty(),
