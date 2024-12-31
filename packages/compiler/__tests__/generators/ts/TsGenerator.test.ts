@@ -17,21 +17,21 @@ import { describe, it } from "vitest";
 import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObjectType.js";
 import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
 
-function quadsToTurtle(quads: readonly Quad[]): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const writer = new N3.Writer({ format: "text/turtle" });
-    for (const quad of quads) {
-      writer.addQuad(quad);
-    }
-    writer.end((error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-}
+// function quadsToTurtle(quads: readonly Quad[]): Promise<string> {
+//   return new Promise((resolve, reject) => {
+//     const writer = new N3.Writer({ format: "text/turtle" });
+//     for (const quad of quads) {
+//       writer.addQuad(quad);
+//     }
+//     writer.end((error, result) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve(result);
+//       }
+//     });
+//   });
+// }
 
 abstract class Harness<
   T extends { readonly identifier: IdentifierT },
@@ -290,7 +290,7 @@ describe("TsGenerator", () => {
         identifier: dataFactory.blankNode(),
         optionalStringProperty: undefined,
         requiredStringProperty: "test",
-        setStringProperty: undefined,
+        setStringProperty: ["test1"], // Has minCount 1
       }),
       sparqlGraphPatternsClass:
         kitchenSink.NodeShapeWithPropertyCardinalities.SparqlGraphPatterns,
@@ -381,7 +381,7 @@ describe("TsGenerator", () => {
   }) => {
     const instance = harnesses.nodeShapeWithPropertyCardinalities.instance;
     expect(instance.optionalStringProperty.isNothing()).toStrictEqual(true);
-    expect(instance.setStringProperty).toStrictEqual([]);
+    expect(instance.setStringProperty).toStrictEqual(["test1"]);
     expect(instance.requiredStringProperty).toStrictEqual("test");
   });
 
@@ -762,13 +762,13 @@ describe("TsGenerator", () => {
         (await sparqlQueryClient.queryQuads(constructQuery)).concat(),
       );
       const constructResultQuads = [...constructResultDataset];
-      if (constructResultQuads.length !== toRdfQuads.length) {
-        console.info("not equal");
-        const toRdfTurtle = await quadsToTurtle(toRdfQuads);
-        const constructResultTurtle = await quadsToTurtle(constructResultQuads);
-        const combinedTurtle = `Expected:\n${toRdfTurtle}\n\nvs.\n\nActual:\n${constructResultTurtle}`;
-        console.info(combinedTurtle);
-      }
+      // if (constructResultQuads.length !== toRdfQuads.length) {
+      //   console.info("not equal");
+      //   const toRdfTurtle = await quadsToTurtle(toRdfQuads);
+      //   const constructResultTurtle = await quadsToTurtle(constructResultQuads);
+      //   const combinedTurtle = `Expected:\n${toRdfTurtle}\n\nvs.\n\nActual:\n${constructResultTurtle}`;
+      //   console.info(combinedTurtle);
+      // }
       expect(constructResultQuads.length).toStrictEqual(toRdfQuads.length);
       expect(isomorphic(constructResultQuads, toRdfQuads)).toStrictEqual(true);
     });
