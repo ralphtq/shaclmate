@@ -315,10 +315,11 @@ export class TypeFactory {
             dataFactoryVariable: this.dataFactoryVariable,
             mintingStrategy: astType.mintingStrategy,
             name: astType.tsIdentifierPropertyName,
+            lazyObjectTypeMutable: () =>
+              properties.some(
+                (property) => property.mutable || property.type.mutable,
+              ),
             objectTypeDeclarationType: astType.tsObjectDeclarationType,
-            objectTypeMutable: properties.some(
-              (property) => property.mutable || property.type.mutable,
-            ),
             override: astType.parentObjectTypes.length > 0,
             type: identifierType,
             visibility: "public",

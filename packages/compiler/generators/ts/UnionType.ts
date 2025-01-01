@@ -11,13 +11,8 @@ interface MemberTypeTraits {
 }
 
 export class UnionType extends Type {
-  readonly _discriminatorProperty: Type.DiscriminatorProperty & {
-    readonly synthetic: boolean;
-  };
   readonly kind = "UnionType";
   readonly memberTypes: readonly Type[];
-  readonly name: string;
-  private readonly memberTypeTraits: readonly MemberTypeTraits[];
 
   constructor({
     memberTypes,
@@ -30,78 +25,25 @@ export class UnionType extends Type {
     super(superParameters);
     invariant(memberTypes.length >= 2);
     this.memberTypes = memberTypes;
+    this._name = name;
+  }
 
-    const memberTypeTraits: MemberTypeTraits[] = [];
-    // Do all the composed types share a single discriminator property?
-    let memberTypesSharedDiscriminatorProperty:
-      | (Omit<Type.DiscriminatorProperty, "values"> & {
-          values: string[];
-        })
-      | undefined;
-    for (const memberType of this.memberTypes) {
-      const memberTypeDiscriminatorProperty =
-        memberType.discriminatorProperty.extract();
-      if (!memberTypeDiscriminatorProperty) {
-        memberTypesSharedDiscriminatorProperty = undefined;
-        break;
-      }
-      if (!memberTypesSharedDiscriminatorProperty) {
-        memberTypesSharedDiscriminatorProperty = {
-          name: memberTypeDiscriminatorProperty.name,
-          values: memberTypeDiscriminatorProperty.values.concat(),
-        };
-      } else if (
-        memberTypeDiscriminatorProperty.name ===
-        memberTypesSharedDiscriminatorProperty.name
-      ) {
-        memberTypesSharedDiscriminatorProperty.values =
-          memberTypesSharedDiscriminatorProperty.values.concat(
-            memberTypeDiscriminatorProperty.values,
-          );
-      } else {
-        memberTypesSharedDiscriminatorProperty = undefined;
-        break;
-      }
-      memberTypeTraits.push({
-        discriminatorPropertyValues: memberTypeDiscriminatorProperty.values,
-        memberType,
-        payload: (instance) => instance,
-      });
-    }
+  private _name?: string;
 
-    if (memberTypesSharedDiscriminatorProperty) {
-      this._discriminatorProperty = {
-        ...memberTypesSharedDiscriminatorProperty,
-        synthetic: false,
-      };
-      // If every type shares a discriminator (e.g., RDF/JS "termType" or generated ObjectType "type"),
-      // just join their names with "|"
-      this.memberTypeTraits = memberTypeTraits;
-      this.name =
-        name ??
-        `(${this.memberTypes.map((memberType) => memberType.name).join(" | ")})`;
-    } else {
-      this._discriminatorProperty = {
-        name: "type",
-        synthetic: true,
-        values: this.memberTypes.map(
-          (memberType, memberTypeIndex) =>
-            `${memberTypeIndex}-${memberType.name}`,
-        ),
-      };
-      this.memberTypeTraits = this.memberTypes.map(
-        (memberType, memberTypeIndex) => ({
-          discriminatorPropertyValues: [
-            `${memberTypeIndex}-${memberType.name}`,
-          ],
-          memberType,
-          payload: (instance) => `${instance}.value`,
-        }),
-      );
-      this.name =
-        name ??
-        `(${this.memberTypeTraits.map((memberTypeTraits) => `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}", value: ${memberTypeTraits.memberType.name} }`).join(" | ")})`;
+  override get name(): string {
+    if (typeof this._name === "undefined") {
+      switch (this._discriminatorProperty.kind) {
+        case "shared":
+          // If every type shares a discriminator (e.g., RDF/JS "termType" or generated ObjectType "type"),
+          // just join their names with "|"
+          this._name = `(${this.memberTypes.map((memberType) => memberType.name).join(" | ")})`;
+          break;
+        case "synthetic":
+          this._name = `(${this.memberTypeTraits.map((memberTypeTraits) => `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}", value: ${memberTypeTraits.memberType.name} }`).join(" | ")})`;
+          break;
+      }
     }
+    return this._name!;
   }
 
   override get conversions(): readonly Type.Conversion[] {
@@ -139,17 +81,99 @@ ${this.memberTypeTraits
   }
 
   override get jsonName(): string {
-    if (this._discriminatorProperty.synthetic) {
-      return `(${this.memberTypeTraits.map((memberTypeTraits) => `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}", value: ${memberTypeTraits.memberType.jsonName} }`).join(" | ")})`;
+    switch (this._discriminatorProperty.kind) {
+      case "shared":
+        return this.memberTypes
+          .map((memberType) => memberType.jsonName)
+          .join(" | ");
+      case "synthetic":
+        return `(${this.memberTypeTraits.map((memberTypeTraits) => `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}", value: ${memberTypeTraits.memberType.jsonName} }`).join(" | ")})`;
+      default:
+        throw new RangeError(this._discriminatorProperty.kind);
     }
-
-    return this.memberTypes
-      .map((memberType) => memberType.jsonName)
-      .join(" | ");
   }
 
   override get mutable(): boolean {
     return this.memberTypes.some((memberType) => memberType.mutable);
+  }
+
+  override get useImports(): readonly Import[] {
+    return this.memberTypes.flatMap((memberType) => memberType.useImports);
+  }
+
+  @Memoize()
+  private get _discriminatorProperty(): Type.DiscriminatorProperty & {
+    readonly kind: "shared" | "synthetic";
+  } {
+    let sharedDiscriminatorProperty:
+      | (Omit<Type.DiscriminatorProperty, "values"> & {
+          values: string[];
+        })
+      | undefined;
+    for (const memberType of this.memberTypes) {
+      const memberTypeDiscriminatorProperty =
+        memberType.discriminatorProperty.extract();
+      if (!memberTypeDiscriminatorProperty) {
+        sharedDiscriminatorProperty = undefined;
+        break;
+      }
+      if (!sharedDiscriminatorProperty) {
+        sharedDiscriminatorProperty = {
+          name: memberTypeDiscriminatorProperty.name,
+          values: memberTypeDiscriminatorProperty.values.concat(),
+        };
+      } else if (
+        memberTypeDiscriminatorProperty.name ===
+        sharedDiscriminatorProperty.name
+      ) {
+        sharedDiscriminatorProperty.values =
+          sharedDiscriminatorProperty.values.concat(
+            memberTypeDiscriminatorProperty.values,
+          );
+      } else {
+        sharedDiscriminatorProperty = undefined;
+        break;
+      }
+    }
+
+    if (sharedDiscriminatorProperty) {
+      return {
+        ...sharedDiscriminatorProperty,
+        kind: "shared",
+      };
+    }
+
+    return {
+      kind: "synthetic",
+      name: "type",
+      values: this.memberTypes.map(
+        (memberType, memberTypeIndex) =>
+          `${memberTypeIndex}-${memberType.name}`,
+      ),
+    };
+  }
+
+  @Memoize()
+  private get memberTypeTraits(): readonly MemberTypeTraits[] {
+    switch (this._discriminatorProperty.kind) {
+      case "shared":
+        return this.memberTypes.map((memberType) => ({
+          discriminatorPropertyValues:
+            memberType.discriminatorProperty.unsafeCoerce().values,
+          memberType,
+          payload: (instance) => instance,
+        }));
+      case "synthetic":
+        return this.memberTypes.map((memberType, memberTypeIndex) => ({
+          discriminatorPropertyValues: [
+            `${memberTypeIndex}-${memberType.name}`,
+          ],
+          memberType,
+          payload: (instance) => `${instance}.value`,
+        }));
+      default:
+        throw new RangeError(this._discriminatorProperty.kind);
+    }
   }
 
   override propertyFromRdfExpression(
@@ -159,7 +183,7 @@ ${this.memberTypeTraits
     for (const memberTypeTraits of this.memberTypeTraits) {
       let typeExpression =
         memberTypeTraits.memberType.propertyFromRdfExpression(parameters);
-      if (this._discriminatorProperty.synthetic) {
+      if (this._discriminatorProperty.kind === "synthetic") {
         typeExpression = `${typeExpression}.map(value => ({ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value }) as (${this.name}))`;
       }
       typeExpression = `(${typeExpression} as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
@@ -214,31 +238,32 @@ ${this.memberTypeTraits
   override propertyToJsonExpression({
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    if (this._discriminatorProperty.synthetic) {
-      return this.ternaryExpression({
-        memberTypeExpression: (memberTypeTraits) =>
-          `{ type: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${memberTypeTraits.memberType.propertyToJsonExpression(
-            {
+    switch (this._discriminatorProperty.kind) {
+      case "shared":
+        return this.ternaryExpression({
+          memberTypeExpression: (memberTypeTraits) =>
+            memberTypeTraits.memberType.propertyToJsonExpression({
               variables: {
                 ...variables,
                 value: memberTypeTraits.payload(variables.value),
               },
-            },
-          )} }`,
-        variables,
-      });
+            }),
+          variables,
+        });
+      case "synthetic":
+        return this.ternaryExpression({
+          memberTypeExpression: (memberTypeTraits) =>
+            `{ type: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${memberTypeTraits.memberType.propertyToJsonExpression(
+              {
+                variables: {
+                  ...variables,
+                  value: memberTypeTraits.payload(variables.value),
+                },
+              },
+            )} }`,
+          variables,
+        });
     }
-
-    return this.ternaryExpression({
-      memberTypeExpression: (memberTypeTraits) =>
-        memberTypeTraits.memberType.propertyToJsonExpression({
-          variables: {
-            ...variables,
-            value: memberTypeTraits.payload(variables.value),
-          },
-        }),
-      variables,
-    });
   }
 
   override propertyToRdfExpression({
@@ -254,10 +279,6 @@ ${this.memberTypeTraits
         }),
       variables,
     });
-  }
-
-  override get useImports(): readonly Import[] {
-    return this.memberTypes.flatMap((memberType) => memberType.useImports);
   }
 
   private ternaryExpression({
