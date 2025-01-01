@@ -4,7 +4,6 @@ import { sha256 } from "js-sha256";
 import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
 import * as purifyHelpers from "purify-ts-helpers";
-import * as rdfLiteral from "rdf-literal";
 import * as rdfjsResource from "rdfjs-resource";
 abstract class Resource {
   readonly altLabel: readonly rdfjs.Literal[];
@@ -1519,7 +1518,6 @@ namespace Resource {
   }
 }
 export class Collection extends Resource {
-  protected _identifier: rdfjs.NamedNode | undefined;
   readonly member: readonly (Collection | Concept)[];
   override readonly type: "Collection" | "OrderedCollection" = "Collection";
 
@@ -1539,6 +1537,8 @@ export class Collection extends Resource {
       this.member = parameters.member; // never
     }
   }
+
+  protected _identifier: rdfjs.NamedNode | undefined;
 
   override get identifier(): rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -2198,7 +2198,6 @@ export namespace OrderedCollection {
 }
 export class ConceptScheme extends Resource {
   readonly hasTopConcept: readonly Concept[];
-  private _identifier: rdfjs.NamedNode | undefined;
   override readonly type = "ConceptScheme";
 
   constructor(
@@ -2218,6 +2217,8 @@ export class ConceptScheme extends Resource {
 
     this._identifier = parameters.identifier;
   }
+
+  private _identifier: rdfjs.NamedNode | undefined;
 
   override get identifier(): rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -2431,7 +2432,6 @@ export namespace ConceptScheme {
   }
 }
 export class Label {
-  private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
   readonly literalForm: readonly rdfjs.Literal[];
   readonly type = "Label";
 
@@ -2442,6 +2442,8 @@ export class Label {
     this._identifier = parameters.identifier;
     this.literalForm = parameters.literalForm;
   }
+
+  private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -2676,17 +2678,16 @@ export namespace Label {
   }
 }
 export class Concept extends Resource {
+  readonly broadMatch: readonly Concept[];
   readonly broader: readonly Concept[];
   readonly broaderTransitive: readonly Concept[];
-  readonly broadMatch: readonly Concept[];
   readonly closeMatch: readonly Concept[];
   readonly exactMatch: readonly Concept[];
-  private _identifier: rdfjs.NamedNode | undefined;
   readonly inScheme: readonly ConceptScheme[];
   readonly mappingRelation: readonly Concept[];
+  readonly narrowMatch: readonly Concept[];
   readonly narrower: readonly Concept[];
   readonly narrowerTransitive: readonly Concept[];
-  readonly narrowMatch: readonly Concept[];
   readonly related: readonly Concept[];
   readonly relatedMatch: readonly Concept[];
   readonly semanticRelation: readonly Concept[];
@@ -2826,6 +2827,8 @@ export class Concept extends Resource {
       this.topConceptOf = parameters.topConceptOf; // never
     }
   }
+
+  private _identifier: rdfjs.NamedNode | undefined;
 
   override get identifier(): rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
