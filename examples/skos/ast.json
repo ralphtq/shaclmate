@@ -7,7 +7,8 @@
         "identifier": {
           "termType": "NamedNode",
           "value": "http://www.w3.org/2004/02/skos/core#Collection"
-        }
+        },
+        "shaclmateName": "Collection"
       },
       "properties": [
         {
@@ -34,7 +35,8 @@
                     "identifier": {
                       "termType": "NamedNode",
                       "value": "http://www.w3.org/2004/02/skos/core#Collection"
-                    }
+                    },
+                    "shaclmateName": "Collection"
                   },
                   "parentObjectTypes": [
                     {
@@ -42,7 +44,8 @@
                       "identifier": {
                         "termType": "NamedNode",
                         "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                      }
+                      },
+                      "shaclmateName": "Resource"
                     }
                   ],
                   "nodeKinds": [
@@ -66,7 +69,8 @@
                     "identifier": {
                       "termType": "NamedNode",
                       "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                    }
+                    },
+                    "shaclmateName": "Concept"
                   },
                   "parentObjectTypes": [
                     {
@@ -74,7 +78,8 @@
                       "identifier": {
                         "termType": "NamedNode",
                         "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                      }
+                      },
+                      "shaclmateName": "Resource"
                     }
                   ],
                   "nodeKinds": [
@@ -101,7 +106,8 @@
         "identifier": {
           "termType": "NamedNode",
           "value": "http://www.w3.org/2004/02/skos/core#Concept"
-        }
+        },
+        "shaclmateName": "Concept"
       },
       "properties": [
         {
@@ -125,7 +131,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -133,7 +140,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -170,7 +178,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -178,7 +187,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -215,7 +225,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -223,7 +234,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -260,7 +272,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -268,7 +281,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -305,7 +319,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -313,7 +328,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -350,7 +366,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
-                }
+                },
+                "shaclmateName": "ConceptScheme"
               },
               "parentObjectTypes": [
                 {
@@ -358,7 +375,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -395,7 +413,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -403,7 +422,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -440,7 +460,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -448,7 +469,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -485,7 +507,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -493,7 +516,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -530,7 +554,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -538,7 +563,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -575,7 +601,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -583,7 +610,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -620,7 +648,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -628,7 +657,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -665,7 +695,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -673,7 +704,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -710,7 +742,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
-                }
+                },
+                "shaclmateName": "ConceptScheme"
               },
               "parentObjectTypes": [
                 {
@@ -718,7 +751,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -743,7 +777,8 @@
         "identifier": {
           "termType": "NamedNode",
           "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-        }
+        },
+        "shaclmateName": "Resource"
       },
       "properties": [
         {
@@ -751,22 +786,6 @@
             "identifier": {
               "termType": "BlankNode",
               "value": "n3-147"
-            },
-            "shName": "prefLabel"
-          },
-          "path": "http://www.w3.org/2004/02/skos/core#prefLabel",
-          "type": {
-            "itemType": {
-              "kind": "LiteralType"
-            },
-            "kind": "SetType"
-          }
-        },
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-148"
             },
             "shName": "prefLabelXl"
           },
@@ -783,7 +802,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2008/05/skos-xl#Label"
-                }
+                },
+                "shaclmateName": "Label"
               },
               "nodeKinds": [
                 "BlankNode",
@@ -803,7 +823,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-149"
+              "value": "n3-148"
             },
             "shName": "scopeNote"
           },
@@ -819,7 +839,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-150"
+              "value": "n3-149"
             },
             "shName": "altLabel"
           },
@@ -835,7 +855,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-151"
+              "value": "n3-150"
             },
             "shName": "altLabelXl"
           },
@@ -852,7 +872,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2008/05/skos-xl#Label"
-                }
+                },
+                "shaclmateName": "Label"
               },
               "nodeKinds": [
                 "BlankNode",
@@ -872,7 +893,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-152"
+              "value": "n3-151"
             },
             "shName": "changeNote"
           },
@@ -888,7 +909,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-153"
+              "value": "n3-152"
             },
             "shName": "definition"
           },
@@ -904,7 +925,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-154"
+              "value": "n3-153"
             },
             "shName": "editorialNote"
           },
@@ -920,7 +941,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-155"
+              "value": "n3-154"
             },
             "shName": "example"
           },
@@ -936,7 +957,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-156"
+              "value": "n3-155"
             },
             "shName": "hiddenLabel"
           },
@@ -952,7 +973,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-157"
+              "value": "n3-156"
             },
             "shName": "hiddenLabelXl"
           },
@@ -969,7 +990,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2008/05/skos-xl#Label"
-                }
+                },
+                "shaclmateName": "Label"
               },
               "nodeKinds": [
                 "BlankNode",
@@ -989,7 +1011,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-158"
+              "value": "n3-157"
             },
             "shName": "historyNote"
           },
@@ -1005,7 +1027,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-159"
+              "value": "n3-158"
             },
             "shName": "notation"
           },
@@ -1025,11 +1047,27 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-160"
+              "value": "n3-159"
             },
             "shName": "note"
           },
           "path": "http://www.w3.org/2004/02/skos/core#notation",
+          "type": {
+            "itemType": {
+              "kind": "LiteralType"
+            },
+            "kind": "SetType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-160"
+            },
+            "shName": "prefLabel"
+          },
+          "path": "http://www.w3.org/2004/02/skos/core#prefLabel",
           "type": {
             "itemType": {
               "kind": "LiteralType"
@@ -1046,7 +1084,8 @@
         "identifier": {
           "termType": "NamedNode",
           "value": "http://www.w3.org/2008/05/skos-xl#Label"
-        }
+        },
+        "shaclmateName": "Label"
       },
       "properties": [
         {
@@ -1074,7 +1113,8 @@
         "identifier": {
           "termType": "NamedNode",
           "value": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
-        }
+        },
+        "shaclmateName": "ConceptScheme"
       },
       "properties": [
         {
@@ -1098,7 +1138,8 @@
                 "identifier": {
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                }
+                },
+                "shaclmateName": "Concept"
               },
               "parentObjectTypes": [
                 {
@@ -1106,7 +1147,8 @@
                   "identifier": {
                     "termType": "NamedNode",
                     "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                  }
+                  },
+                  "shaclmateName": "Resource"
                 }
               ],
               "nodeKinds": [
@@ -1131,7 +1173,8 @@
         "identifier": {
           "termType": "NamedNode",
           "value": "http://www.w3.org/2004/02/skos/core#OrderedCollection"
-        }
+        },
+        "shaclmateName": "OrderedCollection"
       },
       "properties": [
         {
@@ -1159,7 +1202,8 @@
                     "identifier": {
                       "termType": "NamedNode",
                       "value": "http://www.w3.org/2004/02/skos/core#Collection"
-                    }
+                    },
+                    "shaclmateName": "Collection"
                   },
                   "parentObjectTypes": [
                     {
@@ -1167,7 +1211,8 @@
                       "identifier": {
                         "termType": "NamedNode",
                         "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                      }
+                      },
+                      "shaclmateName": "Resource"
                     }
                   ],
                   "nodeKinds": [
@@ -1191,7 +1236,8 @@
                     "identifier": {
                       "termType": "NamedNode",
                       "value": "http://www.w3.org/2004/02/skos/core#Concept"
-                    }
+                    },
+                    "shaclmateName": "Concept"
                   },
                   "parentObjectTypes": [
                     {
@@ -1199,7 +1245,8 @@
                       "identifier": {
                         "termType": "NamedNode",
                         "value": "http://kos-kit.github.io/skos-shacl/ns#Resource"
-                      }
+                      },
+                      "shaclmateName": "Resource"
                     }
                   ],
                   "nodeKinds": [
