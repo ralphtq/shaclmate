@@ -1,5 +1,4 @@
 import * as sparqlBuilder from "@kos-kit/sparql-builder";
-import { OxigraphSparqlClient } from "@kos-kit/sparql-client";
 import type { Quad } from "@rdfjs/types";
 import N3, { DataFactory as dataFactory } from "n3";
 import * as oxigraph from "oxigraph";
@@ -36,13 +35,9 @@ describe("sparql", () => {
         )
         .build();
 
-      const sparqlQueryClient = new OxigraphSparqlClient({
-        dataFactory: oxigraph,
-        store: oxigraphStore,
-      });
       // Add to a Dataset to deduplicate the quads
       const constructResultDataset = new N3.Store(
-        (await sparqlQueryClient.queryQuads(constructQuery)).concat(),
+        oxigraphStore.query(constructQuery) as Quad[],
       );
       const constructResultQuads = [...constructResultDataset];
       if (constructResultQuads.length !== toRdfQuads.length) {

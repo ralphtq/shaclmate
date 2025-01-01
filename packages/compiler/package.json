@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@shaclmate/runtime": "2.0.13",
-    "@kos-kit/sparql-client": "2.0.107",
     "oxigraph": "^0.4.0",
     "rdf-isomorphic": "1.3.1"
   },

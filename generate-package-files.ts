@@ -82,7 +82,6 @@ const packages: readonly Package[] = [
     },
     devDependencies: {
       external: {
-        "@kos-kit/sparql-client": externalDependencyVersions["@kos-kit"],
         oxigraph: "^0.4.0",
         "rdf-isomorphic": "1.3.1",
       },
