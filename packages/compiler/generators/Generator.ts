@@ -1,5 +1,5 @@
-import * as ast from "../ast/index.js";
+import type { Ast } from "../ast/Ast.js";
 
 export interface Generator {
-  generate(ast: ast.Ast): string;
+  generate(ast: Ast): string;
 }

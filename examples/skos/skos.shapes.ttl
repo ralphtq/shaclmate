@@ -60,14 +60,6 @@ skos-shacl:Resource
     a owl:Class, sh:NodeShape ;
     sh:nodeKind sh:IRI ;
     sh:property [
-        sh:class skos-xl:Label ;
-        sh:name "prefLabelXl" ;
-        sh:path skos-xl:prefLabel
-    ], [
-        sh:name "scopeNote" ;
-        sh:or dash:StringOrLangString ;
-        sh:path skos:scopeNote
-    ], [
         sh:name "altLabel" ;
         sh:or dash:StringOrLangString ;
         sh:path skos:altLabel
@@ -115,6 +107,14 @@ skos-shacl:Resource
         sh:name "prefLabel" ;
         sh:or dash:StringOrLangString ;
         sh:path skos:prefLabel
+    ], [
+        sh:class skos-xl:Label ;
+        sh:name "prefLabelXl" ;
+        sh:path skos-xl:prefLabel
+    ], [
+        sh:name "scopeNote" ;
+        sh:or dash:StringOrLangString ;
+        sh:path skos:scopeNote
     ] .
 
 skos:Collection
