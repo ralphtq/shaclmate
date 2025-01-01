@@ -29,7 +29,13 @@ skos-shacl:OrderedCollectionMemberList-first
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "first" ;
-    sh:or ( [ sh:class skos:Collection ] [ sh:class skos:Concept ] ) ;
+    sh:or ([
+            sh:class skos:Collection
+        ]
+        [
+            sh:class skos:Concept
+        ]
+    ) ;
     sh:path rdf:first .
 
 skos-shacl:OrderedCollectionMemberList-rest
@@ -54,10 +60,6 @@ skos-shacl:Resource
     sh:name "Resource" ;
     sh:nodeKind sh:IRI ;
     sh:property [
-        sh:name "note" ;
-        sh:or dash:StringOrLangString ;
-        sh:path skos:notation
-    ], [
         sh:name "prefLabel" ;
         sh:or dash:StringOrLangString ;
         sh:path skos:prefLabel
@@ -109,6 +111,10 @@ skos-shacl:Resource
         sh:datatype rdf:langString ;
         sh:name "notation" ;
         sh:path skos:notation
+    ], [
+        sh:name "note" ;
+        sh:or dash:StringOrLangString ;
+        sh:path skos:notation
     ] .
 
 skos:Collection
@@ -118,7 +124,13 @@ skos:Collection
     sh:nodeKind sh:IRI ;
     sh:property [
         sh:name "member" ;
-        sh:or ( [ sh:class skos:Collection ] [ sh:class skos:Concept ] ) ;
+        sh:or ([
+                sh:class skos:Collection
+            ]
+            [
+                sh:class skos:Concept
+            ]
+        ) ;
         sh:path skos:member
     ] .
 
