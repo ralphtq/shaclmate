@@ -21,25 +21,25 @@ export class IdentifierProperty extends Property<IdentifierType> {
   readonly equalsFunction = "purifyHelpers.Equatable.booleanEquals";
   readonly mutable = false;
   private readonly classDeclarationVisibility: Maybe<PropertyVisibility>;
+  private readonly lazyObjectTypeMutable: () => boolean;
   private readonly mintingStrategy: Maybe<MintingStrategy>;
   private readonly objectTypeDeclarationType: TsObjectDeclarationType;
-  private readonly objectTypeMutable: boolean;
   private readonly override: boolean;
 
   constructor({
     abstract,
     classDeclarationVisibility,
+    lazyObjectTypeMutable,
     mintingStrategy,
     objectTypeDeclarationType,
-    objectTypeMutable,
     override,
     ...superParameters
   }: {
     abstract: boolean;
     classDeclarationVisibility: Maybe<PropertyVisibility>;
+    lazyObjectTypeMutable: () => boolean;
     mintingStrategy: Maybe<MintingStrategy>;
     objectTypeDeclarationType: TsObjectDeclarationType;
-    objectTypeMutable: boolean;
     override: boolean;
     type: IdentifierType;
   } & ConstructorParameters<typeof Property>[0]) {
@@ -49,7 +49,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     this.classDeclarationVisibility = classDeclarationVisibility;
     this.mintingStrategy = mintingStrategy;
     this.objectTypeDeclarationType = objectTypeDeclarationType;
-    this.objectTypeMutable = objectTypeMutable;
+    this.lazyObjectTypeMutable = lazyObjectTypeMutable;
     this.override = override;
   }
 
@@ -98,7 +98,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
       name: this.name,
       returnType: this.type.name,
       statements: [
-        this.objectTypeMutable
+        this.lazyObjectTypeMutable()
           ? `return (typeof this._${this.name} !== "undefined") ? this._${this.name} : ${mintIdentifier}`
           : `if (typeof this._${this.name} === "undefined") { this._${this.name} = ${mintIdentifier}; } return this._${this.name};`,
       ],

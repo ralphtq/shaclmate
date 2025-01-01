@@ -18,9 +18,9 @@ skos-shacl:OrderedCollection-memberList
     sh:path skos:memberList .
 
 skos-shacl:OrderedCollectionMemberList
+    shaclmate:name "OrderedCollectionMemberList" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf rdf:List ;
-    sh:name "OrderedCollectionMemberList" ;
     sh:nodeKind sh:BlankNodeOrIRI ;
     sh:property skos-shacl:OrderedCollectionMemberList-first, skos-shacl:OrderedCollectionMemberList-rest .
 
@@ -29,7 +29,13 @@ skos-shacl:OrderedCollectionMemberList-first
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "first" ;
-    sh:or ( [ sh:class skos:Collection ] [ sh:class skos:Concept ] ) ;
+    sh:or ([
+            sh:class skos:Collection
+        ]
+        [
+            sh:class skos:Concept
+        ]
+    ) ;
     sh:path rdf:first .
 
 skos-shacl:OrderedCollectionMemberList-rest
@@ -50,26 +56,10 @@ skos-shacl:OrderedCollectionMemberList-rest
 skos-shacl:Resource
     shaclmate:abstract true ;
     shaclmate:export false ;
+    shaclmate:name "Resource" ;
     a owl:Class, sh:NodeShape ;
-    sh:name "Resource" ;
     sh:nodeKind sh:IRI ;
     sh:property [
-        sh:name "note" ;
-        sh:or dash:StringOrLangString ;
-        sh:path skos:notation
-    ], [
-        sh:name "prefLabel" ;
-        sh:or dash:StringOrLangString ;
-        sh:path skos:prefLabel
-    ], [
-        sh:class skos-xl:Label ;
-        sh:name "prefLabelXl" ;
-        sh:path skos-xl:prefLabel
-    ], [
-        sh:name "scopeNote" ;
-        sh:or dash:StringOrLangString ;
-        sh:path skos:scopeNote
-    ], [
         sh:name "altLabel" ;
         sh:or dash:StringOrLangString ;
         sh:path skos:altLabel
@@ -109,23 +99,45 @@ skos-shacl:Resource
         sh:datatype rdf:langString ;
         sh:name "notation" ;
         sh:path skos:notation
+    ], [
+        sh:name "note" ;
+        sh:or dash:StringOrLangString ;
+        sh:path skos:notation
+    ], [
+        sh:name "prefLabel" ;
+        sh:or dash:StringOrLangString ;
+        sh:path skos:prefLabel
+    ], [
+        sh:class skos-xl:Label ;
+        sh:name "prefLabelXl" ;
+        sh:path skos-xl:prefLabel
+    ], [
+        sh:name "scopeNote" ;
+        sh:or dash:StringOrLangString ;
+        sh:path skos:scopeNote
     ] .
 
 skos:Collection
+    shaclmate:name "Collection" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf skos-shacl:Resource ;
-    sh:name "Collection" ;
     sh:nodeKind sh:IRI ;
     sh:property [
         sh:name "member" ;
-        sh:or ( [ sh:class skos:Collection ] [ sh:class skos:Concept ] ) ;
+        sh:or ([
+                sh:class skos:Collection
+            ]
+            [
+                sh:class skos:Concept
+            ]
+        ) ;
         sh:path skos:member
     ] .
 
 skos:Concept
+    shaclmate:name "Concept" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf skos-shacl:Resource ;
-    sh:name "Concept" ;
     sh:nodeKind sh:IRI ;
     sh:property [
         sh:class skos:Concept ;
@@ -186,9 +198,9 @@ skos:Concept
     ] .
 
 skos:ConceptScheme
+    shaclmate:name "ConceptScheme" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf skos-shacl:Resource ;
-    sh:name "ConceptScheme" ;
     sh:nodeKind sh:IRI ;
     sh:property [
         sh:class skos:Concept ;
@@ -197,15 +209,15 @@ skos:ConceptScheme
     ] .
 
 skos:OrderedCollection
+    shaclmate:name "OrderedCollection" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf skos:Collection ;
-    sh:name "OrderedCollection" ;
     sh:nodeKind sh:IRI ;
     sh:property skos-shacl:OrderedCollection-memberList .
 
 skos-xl:Label
+    shaclmate:name "Label" ;
     a owl:Class, sh:NodeShape ;
-    sh:name "Label" ;
     sh:nodeKind sh:BlankNodeOrIRI ;
     sh:property [
         sh:minCount 1 ;
