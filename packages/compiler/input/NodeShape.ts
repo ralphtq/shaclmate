@@ -224,6 +224,13 @@ export class NodeShape
       .flatMap((value) => value.toIri().toMaybe().toList())
       .concat();
 
+    // Ensure the toRdfTypes includes the fromRdfType if there is one
+    this.fromRdfType.ifJust((fromRdfType) => {
+      if (!toRdfTypes.some((toRdfType) => toRdfType.equals(fromRdfType))) {
+        toRdfTypes.push(fromRdfType);
+      }
+    });
+
     if (toRdfTypes.length === 0) {
       // No explicit shaclmate:toRdfType's
       // If the shape is a class, not abstract, and identified by an IRI then use the shape IRI as the fromRdfType.
@@ -235,13 +242,6 @@ export class NodeShape
         toRdfTypes.push(this.resource.identifier);
       }
     }
-
-    // Ensure the toRdfTypes includes the fromRdfType if there is one
-    this.fromRdfType.ifJust((fromRdfType) => {
-      if (!toRdfTypes.some((toRdfType) => toRdfType.equals(fromRdfType))) {
-        toRdfTypes.push(fromRdfType);
-      }
-    });
 
     return toRdfTypes;
   }
