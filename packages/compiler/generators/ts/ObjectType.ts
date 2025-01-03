@@ -293,7 +293,11 @@ export class ObjectType extends DeclaredType {
   >[0]): Maybe<Type.SparqlGraphPatternsExpression> {
     return Maybe.of(
       new Type.SparqlGraphPatternsExpression(
-        `new ${this.name}.SparqlGraphPatterns(${variables.subject})`,
+        // Ignore the rdf:type if the instance of this type is the object of another property.
+        // Instead, assume the property has the correct range.
+        // This also accommodates the case where the object of a property is a dangling identifier that's not the
+        // subject of any statements.
+        `new ${this.name}.SparqlGraphPatterns(${variables.subject}, { ignoreRdfType: true })`,
       ),
     );
   }
@@ -301,7 +305,11 @@ export class ObjectType extends DeclaredType {
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, languageIn: ${variables.languageIn}, resource: _resource }))`;
+    // Ignore the rdf:type if the instance of this type is the object of another property.
+    // Instead, assume the property has the correct range.
+    // This also accommodates the case where the object of a property is a dangling identifier that's not the
+    // subject of any statements.
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
   }
 
   override propertyHashStatements({
