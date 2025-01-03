@@ -82,7 +82,7 @@ export function fromRdfFunctionDeclaration(
 
   if (this.parentObjectTypes.length > 0) {
     statements = [
-      `return ${this.parentObjectTypes[0].name}.${this.parentObjectTypes[0].fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, resource: ${variables.resource} }).chain(_super => { ${statements.join("\n")} })`,
+      `return ${this.parentObjectTypes[0].name}.${this.parentObjectTypes[0].fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: ${variables.resource} }).chain(_super => { ${statements.join("\n")} })`,
     ];
   }
 

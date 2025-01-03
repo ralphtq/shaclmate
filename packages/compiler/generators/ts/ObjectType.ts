@@ -28,8 +28,8 @@ export class ObjectType extends DeclaredType {
   readonly abstract: boolean;
   readonly declarationType: TsObjectDeclarationType;
   readonly kind = "ObjectType";
-  protected readonly extern: boolean;
   protected readonly comment: Maybe<string>;
+  protected readonly extern: boolean;
   protected readonly fromRdfType: Maybe<NamedNode>;
   protected readonly label: Maybe<string>;
   protected readonly mintingStrategy: Maybe<MintingStrategy>;
@@ -301,7 +301,7 @@ export class ObjectType extends DeclaredType {
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, resource: _resource }))`;
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, languageIn: ${variables.languageIn}, resource: _resource }))`;
   }
 
   override propertyHashStatements({
