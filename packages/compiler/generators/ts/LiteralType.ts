@@ -2,14 +2,14 @@ import type { Literal } from "@rdfjs/types";
 import { xsd } from "@tpluscode/rdf-ns-builders";
 import { Maybe, type NonEmptyList } from "purify-ts";
 import { Import } from "./Import.js";
-import { RdfjsTermType } from "./RdfjsTermType.js";
+import { TermType } from "./TermType.js";
 import type { Type } from "./Type.js";
 
-export class LiteralType extends RdfjsTermType<Literal, Literal> {
+export class LiteralType extends TermType<Literal, Literal> {
   readonly jsonName: string =
     'string | { "@language": string | undefined, "@type": string | undefined, "@value": string }';
 
-  readonly kind:
+  override readonly kind:
     | "BooleanType"
     | "DateTimeType"
     | "LiteralType"
@@ -22,7 +22,7 @@ export class LiteralType extends RdfjsTermType<Literal, Literal> {
     languageIn,
     ...superParameters
   }: { languageIn: Maybe<NonEmptyList<string>> } & ConstructorParameters<
-    typeof RdfjsTermType<Literal, Literal>
+    typeof TermType<Literal, Literal>
   >[0]) {
     super(superParameters);
     this.languageIn = languageIn;
@@ -90,10 +90,32 @@ export class LiteralType extends RdfjsTermType<Literal, Literal> {
     return [Import.RDF_LITERAL, Import.RDFJS_TYPES];
   }
 
+  override propertyFromRdfResourceValueExpression({
+    variables,
+  }: Parameters<
+    TermType<Literal, Literal>["propertyFromRdfResourceValueExpression"]
+  >[0]): string {
+    return `${variables.resourceValue}.toLiteral()`;
+  }
+
+  override propertyHashStatements({
+    variables,
+  }: Parameters<
+    TermType<Literal, Literal>["propertyHashStatements"]
+  >[0]): readonly string[] {
+    return [`${variables.hasher}.update(${variables.value}.value);`];
+  }
+
+  override propertyToJsonExpression({
+    variables,
+  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+    return `(${variables.value}.datatype.value === "${xsd.string.value}" && ${variables.value}.language.length === 0 ? ${variables.value}.value : { "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value })`;
+  }
+
   protected override propertyFilterRdfResourceValuesExpression({
     variables,
   }: Parameters<
-    RdfjsTermType<Literal, Literal>["propertyFilterRdfResourceValuesExpression"]
+    TermType<Literal, Literal>["propertyFilterRdfResourceValuesExpression"]
   >[0]): string {
     return `${variables.resourceValues}.filter(_value => {
   const _languageInOrDefault = ${variables.languageIn} ?? ${this.languageIn.isJust() ? JSON.stringify(this.languageIn.unsafeCoerce()) : "[]"};
@@ -106,27 +128,5 @@ export class LiteralType extends RdfjsTermType<Literal, Literal> {
   }
   return _languageInOrDefault.some(_languageIn => _languageIn === _valueLiteral.language);
 })`;
-  }
-
-  override propertyFromRdfResourceValueExpression({
-    variables,
-  }: Parameters<
-    RdfjsTermType<Literal, Literal>["propertyFromRdfResourceValueExpression"]
-  >[0]): string {
-    return `${variables.resourceValue}.toLiteral()`;
-  }
-
-  override propertyHashStatements({
-    variables,
-  }: Parameters<
-    RdfjsTermType<Literal, Literal>["propertyHashStatements"]
-  >[0]): readonly string[] {
-    return [`${variables.hasher}.update(${variables.value}.value);`];
-  }
-
-  override propertyToJsonExpression({
-    variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    return `(${variables.value}.datatype.value === "${xsd.string.value}" && ${variables.value}.language.length === 0 ? ${variables.value}.value : { "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value })`;
   }
 }

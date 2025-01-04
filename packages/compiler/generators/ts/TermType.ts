@@ -5,14 +5,14 @@ import { Type } from "./Type.js";
 /**
  * Abstract base class for IdentifierType and LiteralType.
  */
-export abstract class RdfjsTermType<
-  _RdfjsTermT extends BlankNode | Literal | NamedNode,
-  ValueRdfjsTermT extends Literal | NamedNode,
+export abstract class TermType<
+  _TermT extends BlankNode | Literal | NamedNode,
+  ValueTermT extends Literal | NamedNode,
 > extends Type {
-  readonly defaultValue: Maybe<ValueRdfjsTermT>;
+  readonly defaultValue: Maybe<ValueTermT>;
   readonly equalsFunction: string = "purifyHelpers.Equatable.booleanEquals";
-  readonly hasValue: Maybe<ValueRdfjsTermT>;
-  readonly in_: Maybe<readonly ValueRdfjsTermT[]>;
+  readonly hasValue: Maybe<ValueTermT>;
+  readonly in_: Maybe<readonly ValueTermT[]>;
   abstract override readonly kind:
     | "BooleanType"
     | "DateTimeType"
@@ -28,9 +28,9 @@ export abstract class RdfjsTermType<
     in_,
     ...superParameters
   }: {
-    defaultValue: Maybe<ValueRdfjsTermT>;
-    hasValue: Maybe<ValueRdfjsTermT>;
-    in_: Maybe<readonly ValueRdfjsTermT[]>;
+    defaultValue: Maybe<ValueTermT>;
+    hasValue: Maybe<ValueTermT>;
+    in_: Maybe<readonly ValueTermT[]>;
   } & ConstructorParameters<typeof Type>[0]) {
     super(superParameters);
     this.defaultValue = defaultValue;

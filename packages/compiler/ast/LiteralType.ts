@@ -1,8 +1,8 @@
 import type { Literal, NamedNode } from "@rdfjs/types";
 import type { Maybe, NonEmptyList } from "purify-ts";
-import type { RdfjsTermType } from "./RdfjsTermType.js";
+import type { TermType } from "./TermType";
 
-export interface LiteralType extends RdfjsTermType<Literal, Literal> {
+export interface LiteralType extends TermType<Literal, Literal> {
   readonly datatype: Maybe<NamedNode>;
   readonly kind: "LiteralType";
   readonly languageIn: Maybe<NonEmptyList<string>>;

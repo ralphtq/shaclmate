@@ -4,13 +4,10 @@ import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
 import { Import } from "./Import.js";
-import { RdfjsTermType } from "./RdfjsTermType.js";
+import { TermType } from "./TermType";
 import type { Type } from "./Type.js";
 
-export class IdentifierType extends RdfjsTermType<
-  BlankNode | NamedNode,
-  NamedNode
-> {
+export class IdentifierType extends TermType<BlankNode | NamedNode, NamedNode> {
   readonly jsonName = `{ "@id": string }`;
   readonly kind = "IdentifierType";
   readonly nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
@@ -21,7 +18,7 @@ export class IdentifierType extends RdfjsTermType<
   }: {
     nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
   } & ConstructorParameters<
-    typeof RdfjsTermType<BlankNode | NamedNode, NamedNode>
+    typeof TermType<BlankNode | NamedNode, NamedNode>
   >[0]) {
     super(superParameters);
     this.nodeKinds = new Set([...nodeKinds]);
@@ -109,7 +106,7 @@ export class IdentifierType extends RdfjsTermType<
   protected override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    RdfjsTermType<
+    TermType<
       BlankNode | NamedNode,
       NamedNode
     >["propertyFromRdfResourceValueExpression"]
