@@ -1,13 +1,16 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
 import type { Maybe } from "purify-ts";
-import type { NodeShape } from "./NodeShape.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
+import type { NodeShapeLike } from "./NodeShapeLike.js";
+import type { OntologyLike } from "./OntologyLike.js";
+import type { PropertyGroupLike } from "./PropertyGroupLike.js";
 import type { PropertyPath } from "./PropertyPath.js";
-import type { Shape } from "./Shape.js";
+import type { ShapeLike } from "./ShapeLike.js";
 
-export interface PropertyShape<
-  NodeShapeT extends NodeShape<
+/**
+ * Minimal interface for objects satisfying PropertyShapeLike.
+ */
+export interface PropertyShapeLike<
+  NodeShapeT extends NodeShapeLike<
     any,
     OntologyT,
     PropertyGroupT,
@@ -15,9 +18,9 @@ export interface PropertyShape<
     ShapeT
   > &
     ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
+  OntologyT extends OntologyLike,
+  PropertyGroupT extends PropertyGroupLike,
+  PropertyShapeT extends PropertyShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -25,14 +28,20 @@ export interface PropertyShape<
     ShapeT
   > &
     ShapeT,
-  ShapeT extends Shape<
+  ShapeT extends ShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
     PropertyShapeT,
     any
   >,
-> extends Shape<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT> {
+> extends ShapeLike<
+    NodeShapeT,
+    OntologyT,
+    PropertyGroupT,
+    PropertyShapeT,
+    ShapeT
+  > {
   readonly defaultValue: Maybe<BlankNode | Literal | NamedNode>;
   readonly description: Maybe<Literal>;
   readonly group: Maybe<PropertyGroupT>;

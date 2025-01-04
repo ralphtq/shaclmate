@@ -1,5 +1,8 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
 
-export interface Ontology {
+/**
+ * Minimal interface for objects satisfying OntologyT.
+ */
+export interface OntologyLike {
   readonly identifier: BlankNode | NamedNode;
 }

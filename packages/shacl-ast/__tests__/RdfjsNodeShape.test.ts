@@ -5,13 +5,28 @@ import {
   type DefaultRdfjsShapesGraph,
   defaultRdfjsFactory,
 } from "../defaultRdfjsFactory.js";
-import { behavesLikeNodeShape } from "./behavesLikeNodeShape.js";
 import { testData } from "./testData.js";
 
 describe("RdfjsNodeShape", () => {
   const shapesGraph: DefaultRdfjsShapesGraph = new RdfjsShapesGraph({
     dataset: testData.shapesGraph,
     factory: defaultRdfjsFactory,
+  });
+
+  it("constraints: should get closed true", ({ expect }) => {
+    expect(
+      shapesGraph
+        .nodeShapeByIdentifier(schema.DatedMoneySpecification)
+        .unsafeCoerce()
+        .constraints.closed.unsafeCoerce(),
+    ).toStrictEqual(true);
+  });
+
+  it("constraints: should have properties", ({ expect }) => {
+    expect(
+      shapesGraph.nodeShapeByIdentifier(schema.Person).unsafeCoerce()
+        .constraints.properties,
+    ).toHaveLength(9);
   });
 
   it("should convert to a string", ({ expect }) => {
@@ -22,6 +37,4 @@ describe("RdfjsNodeShape", () => {
         .toString(),
     ).not.toHaveLength(0);
   });
-
-  behavesLikeNodeShape(shapesGraph);
 });

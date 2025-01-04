@@ -11,14 +11,14 @@ import { owl, sh } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { ResourceSet } from "rdfjs-resource";
 import type { Factory } from "./Factory.js";
-import type { NodeShape } from "./NodeShape.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
-import type { PropertyShape } from "./PropertyShape.js";
-import type { Shape } from "./Shape.js";
+import type { NodeShapeLike } from "./NodeShapeLike.js";
+import type { OntologyLike } from "./OntologyLike.js";
+import type { PropertyGroupLike } from "./PropertyGroupLike.js";
+import type { PropertyShapeLike } from "./PropertyShapeLike.js";
+import type { ShapeLike } from "./ShapeLike.js";
 
 export class RdfjsShapesGraph<
-  NodeShapeT extends NodeShape<
+  NodeShapeT extends NodeShapeLike<
     any,
     OntologyT,
     PropertyGroupT,
@@ -26,9 +26,9 @@ export class RdfjsShapesGraph<
     ShapeT
   > &
     ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
+  OntologyT extends OntologyLike,
+  PropertyGroupT extends PropertyGroupLike,
+  PropertyShapeT extends PropertyShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -36,7 +36,7 @@ export class RdfjsShapesGraph<
     ShapeT
   > &
     ShapeT,
-  ShapeT extends Shape<
+  ShapeT extends ShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,

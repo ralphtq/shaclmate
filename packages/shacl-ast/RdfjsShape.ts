@@ -4,15 +4,15 @@ import { rdfs, sh } from "@tpluscode/rdf-ns-builders";
 import { Maybe, NonEmptyList } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import { NodeKind } from "./NodeKind.js";
-import type { NodeShape } from "./NodeShape.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
-import type { PropertyShape } from "./PropertyShape.js";
-import type { Shape } from "./Shape.js";
-import type { ShapesGraph } from "./ShapesGraph.js";
+import type { NodeShapeLike } from "./NodeShapeLike.js";
+import type { OntologyLike } from "./OntologyLike.js";
+import type { PropertyGroupLike } from "./PropertyGroupLike.js";
+import type { PropertyShapeLike } from "./PropertyShapeLike.js";
+import type { ShapeLike } from "./ShapeLike.js";
+import type { ShapesGraphLike } from "./ShapesGraphLike.js";
 
 export abstract class RdfjsShape<
-  NodeShapeT extends NodeShape<
+  NodeShapeT extends NodeShapeLike<
     any,
     OntologyT,
     PropertyGroupT,
@@ -20,9 +20,9 @@ export abstract class RdfjsShape<
     ShapeT
   > &
     ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
+  OntologyT extends OntologyLike,
+  PropertyGroupT extends PropertyGroupLike,
+  PropertyShapeT extends PropertyShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -30,7 +30,7 @@ export abstract class RdfjsShape<
     ShapeT
   > &
     ShapeT,
-  ShapeT extends Shape<
+  ShapeT extends ShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -38,7 +38,7 @@ export abstract class RdfjsShape<
     any
   >,
 > implements
-    Shape<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT>
+    ShapeLike<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT>
 {
   abstract readonly constraints: RdfjsShape.Constraints<
     NodeShapeT,
@@ -51,7 +51,7 @@ export abstract class RdfjsShape<
 
   protected constructor(
     readonly resource: Resource,
-    protected readonly shapesGraph: ShapesGraph<
+    protected readonly shapesGraph: ShapesGraphLike<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -125,7 +125,7 @@ export abstract class RdfjsShape<
 
 export namespace RdfjsShape {
   export class Constraints<
-    NodeShapeT extends NodeShape<
+    NodeShapeT extends NodeShapeLike<
       any,
       OntologyT,
       PropertyGroupT,
@@ -133,9 +133,9 @@ export namespace RdfjsShape {
       ShapeT
     > &
       ShapeT,
-    OntologyT extends Ontology,
-    PropertyGroupT extends PropertyGroup,
-    PropertyShapeT extends PropertyShape<
+    OntologyT extends OntologyLike,
+    PropertyGroupT extends PropertyGroupLike,
+    PropertyShapeT extends PropertyShapeLike<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -143,7 +143,7 @@ export namespace RdfjsShape {
       ShapeT
     > &
       ShapeT,
-    ShapeT extends Shape<
+    ShapeT extends ShapeLike<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -151,7 +151,7 @@ export namespace RdfjsShape {
       any
     >,
   > implements
-      Shape.Constraints<
+      ShapeLike.Constraints<
         NodeShapeT,
         OntologyT,
         PropertyGroupT,
@@ -161,7 +161,7 @@ export namespace RdfjsShape {
   {
     constructor(
       protected readonly resource: Resource,
-      protected readonly shapesGraph: ShapesGraph<
+      protected readonly shapesGraph: ShapesGraphLike<
         NodeShapeT,
         OntologyT,
         PropertyGroupT,
@@ -201,6 +201,17 @@ export namespace RdfjsShape {
         .value(sh.in)
         .chain((value) => value.toList())
         .map((values) => values.map((value) => value.toTerm()))
+        .toMaybe()
+        .chain(NonEmptyList.fromArray);
+    }
+
+    get languageIn(): Maybe<NonEmptyList<string>> {
+      return this.resource
+        .value(sh.languageIn)
+        .chain((value) => value.toList())
+        .map((values) =>
+          values.flatMap((value) => value.toString().toMaybe().toList()),
+        )
         .toMaybe()
         .chain(NonEmptyList.fromArray);
     }
@@ -245,17 +256,6 @@ export namespace RdfjsShape {
         .value(sh.minInclusive)
         .chain((value) => value.toLiteral())
         .toMaybe();
-    }
-
-    get languageIn(): Maybe<NonEmptyList<string>> {
-      return this.resource
-        .value(sh.languageIn)
-        .chain((value) => value.toList())
-        .map((values) =>
-          values.flatMap((value) => value.toString().toMaybe().toList()),
-        )
-        .toMaybe()
-        .chain(NonEmptyList.fromArray);
     }
 
     get nodeKinds(): Maybe<Set<NodeKind>> {

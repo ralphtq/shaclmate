@@ -2,9 +2,9 @@ import type { Literal } from "@rdfjs/types";
 import { rdfs } from "@tpluscode/rdf-ns-builders";
 import type { Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
-import type { PropertyGroup } from "./PropertyGroup.js";
+import type { PropertyGroupLike } from "./PropertyGroupLike.js";
 
-export class RdfjsPropertyGroup implements PropertyGroup {
+export class RdfjsPropertyGroup implements PropertyGroupLike {
   constructor(private readonly resource: Resource) {}
 
   get comment(): Maybe<Literal> {

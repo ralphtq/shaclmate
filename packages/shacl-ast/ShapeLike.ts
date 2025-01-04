@@ -1,13 +1,13 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
 import type { Maybe, NonEmptyList } from "purify-ts";
 import type { NodeKind } from "./NodeKind.js";
-import type { NodeShape } from "./NodeShape.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
-import type { PropertyShape } from "./PropertyShape.js";
+import type { NodeShapeLike } from "./NodeShapeLike.js";
+import type { OntologyLike } from "./OntologyLike.js";
+import type { PropertyGroupLike } from "./PropertyGroupLike.js";
+import type { PropertyShapeLike } from "./PropertyShapeLike.js";
 
-export interface Shape<
-  NodeShapeT extends NodeShape<
+export interface ShapeLike<
+  NodeShapeT extends NodeShapeLike<
     any,
     OntologyT,
     PropertyGroupT,
@@ -15,9 +15,9 @@ export interface Shape<
     ShapeT
   > &
     ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
+  OntologyT extends OntologyLike,
+  PropertyGroupT extends PropertyGroupLike,
+  PropertyShapeT extends PropertyShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -25,7 +25,7 @@ export interface Shape<
     ShapeT
   > &
     ShapeT,
-  ShapeT extends Shape<
+  ShapeT extends ShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -33,24 +33,24 @@ export interface Shape<
     any
   >,
 > {
-  readonly constraints: Shape.Constraints<
+  readonly comment: Maybe<Literal>;
+  readonly constraints: ShapeLike.Constraints<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
     PropertyShapeT,
     ShapeT
   >;
-  readonly comment: Maybe<Literal>;
   readonly identifier: BlankNode | NamedNode;
   readonly isDefinedBy: Maybe<OntologyT>;
   readonly label: Maybe<Literal>;
   readonly mutable: Maybe<boolean>;
-  readonly targets: Shape.Targets;
+  readonly targets: ShapeLike.Targets;
 }
 
-export namespace Shape {
+export namespace ShapeLike {
   export interface Constraints<
-    NodeShapeT extends NodeShape<
+    NodeShapeT extends NodeShapeLike<
       any,
       OntologyT,
       PropertyGroupT,
@@ -58,9 +58,9 @@ export namespace Shape {
       ShapeT
     > &
       ShapeT,
-    OntologyT extends Ontology,
-    PropertyGroupT extends PropertyGroup,
-    PropertyShapeT extends PropertyShape<
+    OntologyT extends OntologyLike,
+    PropertyGroupT extends PropertyGroupLike,
+    PropertyShapeT extends PropertyShapeLike<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -68,7 +68,7 @@ export namespace Shape {
       ShapeT
     > &
       ShapeT,
-    ShapeT extends Shape<
+    ShapeT extends ShapeLike<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,

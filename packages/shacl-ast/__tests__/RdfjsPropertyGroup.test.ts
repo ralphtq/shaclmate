@@ -1,10 +1,10 @@
-import { describe } from "vitest";
+import { dash } from "@tpluscode/rdf-ns-builders";
+import { describe, it } from "vitest";
 import { RdfjsShapesGraph } from "../RdfjsShapesGraph.js";
 import {
   type DefaultRdfjsShapesGraph,
   defaultRdfjsFactory,
 } from "../defaultRdfjsFactory.js";
-import { behavesLikePropertyGroup } from "./behavesLikePropertyGroup.js";
 import { testData } from "./testData.js";
 
 describe("RdfjsPropertyGroup", () => {
@@ -13,5 +13,12 @@ describe("RdfjsPropertyGroup", () => {
     factory: defaultRdfjsFactory,
   });
 
-  behavesLikePropertyGroup(shapesGraph);
+  it("should have a label", ({ expect }) => {
+    const propertyGroup = shapesGraph
+      .propertyGroupByIdentifier(dash.ScriptAPIGenerationRules)
+      .unsafeCoerce();
+    expect(propertyGroup.label.unsafeCoerce().value).toStrictEqual(
+      "Script API Generation Rules",
+    );
+  });
 });

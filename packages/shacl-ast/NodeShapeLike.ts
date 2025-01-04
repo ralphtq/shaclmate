@@ -1,11 +1,14 @@
 import type { Maybe } from "purify-ts";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
-import type { PropertyShape } from "./PropertyShape.js";
-import type { Shape } from "./Shape.js";
+import type { OntologyLike } from "./OntologyLike.js";
+import type { PropertyGroupLike } from "./PropertyGroupLike.js";
+import type { PropertyShapeLike } from "./PropertyShapeLike.js";
+import type { ShapeLike } from "./ShapeLike.js";
 
-export interface NodeShape<
-  NodeShapeT extends NodeShape<
+/**
+ * Minimal interface for objects satisfying NodeShapeT.
+ */
+export interface NodeShapeLike<
+  NodeShapeT extends NodeShapeLike<
     any,
     OntologyT,
     PropertyGroupT,
@@ -13,9 +16,9 @@ export interface NodeShape<
     ShapeT
   > &
     ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
+  OntologyT extends OntologyLike,
+  PropertyGroupT extends PropertyGroupLike,
+  PropertyShapeT extends PropertyShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -23,14 +26,20 @@ export interface NodeShape<
     ShapeT
   > &
     ShapeT,
-  ShapeT extends Shape<
+  ShapeT extends ShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
     PropertyShapeT,
     any
   >,
-> extends Shape<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT> {
+> extends ShapeLike<
+    NodeShapeT,
+    OntologyT,
+    PropertyGroupT,
+    PropertyShapeT,
+    ShapeT
+  > {
   readonly constraints: NodeShape.Constraints<
     NodeShapeT,
     OntologyT,
@@ -42,7 +51,7 @@ export interface NodeShape<
 
 export namespace NodeShape {
   export interface Constraints<
-    NodeShapeT extends NodeShape<
+    NodeShapeT extends NodeShapeLike<
       any,
       OntologyT,
       PropertyGroupT,
@@ -50,9 +59,9 @@ export namespace NodeShape {
       ShapeT
     > &
       ShapeT,
-    OntologyT extends Ontology,
-    PropertyGroupT extends PropertyGroup,
-    PropertyShapeT extends PropertyShape<
+    OntologyT extends OntologyLike,
+    PropertyGroupT extends PropertyGroupLike,
+    PropertyShapeT extends PropertyShapeLike<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -60,14 +69,14 @@ export namespace NodeShape {
       ShapeT
     > &
       ShapeT,
-    ShapeT extends Shape<
+    ShapeT extends ShapeLike<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
       PropertyShapeT,
       any
     >,
-  > extends Shape.Constraints<
+  > extends ShapeLike.Constraints<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,

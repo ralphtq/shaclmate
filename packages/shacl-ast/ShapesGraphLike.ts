@@ -1,13 +1,13 @@
 import type { BlankNode, DefaultGraph, NamedNode } from "@rdfjs/types";
 import type { Maybe } from "purify-ts";
-import type { NodeShape } from "./NodeShape.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
-import type { PropertyShape } from "./PropertyShape.js";
-import type { Shape } from "./Shape.js";
+import type { NodeShapeLike } from "./NodeShapeLike.js";
+import type { OntologyLike } from "./OntologyLike.js";
+import type { PropertyGroupLike } from "./PropertyGroupLike.js";
+import type { PropertyShapeLike } from "./PropertyShapeLike.js";
+import type { ShapeLike } from "./ShapeLike.js";
 
-export interface ShapesGraph<
-  NodeShapeT extends NodeShape<
+export interface ShapesGraphLike<
+  NodeShapeT extends NodeShapeLike<
     any,
     OntologyT,
     PropertyGroupT,
@@ -15,9 +15,9 @@ export interface ShapesGraph<
     ShapeT
   > &
     ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
+  OntologyT extends OntologyLike,
+  PropertyGroupT extends PropertyGroupLike,
+  PropertyShapeT extends PropertyShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -25,7 +25,7 @@ export interface ShapesGraph<
     ShapeT
   > &
     ShapeT,
-  ShapeT extends Shape<
+  ShapeT extends ShapeLike<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,

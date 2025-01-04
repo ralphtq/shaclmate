@@ -5,7 +5,7 @@ import { RdfjsOntology } from "./RdfjsOntology.js";
 import { RdfjsPropertyGroup } from "./RdfjsPropertyGroup.js";
 import { RdfjsPropertyShape } from "./RdfjsPropertyShape.js";
 import type { RdfjsShape } from "./RdfjsShape.js";
-import type { ShapesGraph } from "./ShapesGraph.js";
+import type { RdfjsShapesGraph } from "./RdfjsShapesGraph.js";
 
 export type DefaultRdfjsOntology = RdfjsOntology;
 export type DefaultRdfjsPropertyGroup = RdfjsPropertyGroup;
@@ -31,7 +31,7 @@ export type DefaultRdfjsShape = RdfjsShape<
   DefaultRdfjsPropertyShape,
   any
 >;
-export type DefaultRdfjsShapesGraph = ShapesGraph<
+export type DefaultRdfjsShapesGraph = RdfjsShapesGraph<
   DefaultRdfjsNodeShape,
   DefaultRdfjsOntology,
   DefaultRdfjsPropertyGroup,
