@@ -1984,7 +1984,9 @@ export class NodeShapeWithMutableProperties {
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
       ? this._identifier
-      : dataFactory.blankNode();
+      : dataFactory.namedNode(
+          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
+        );
   }
 
   equals(
@@ -4736,7 +4738,9 @@ export class NodeShapeWithDefaultValueProperties {
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
       ? this._identifier
-      : dataFactory.blankNode();
+      : dataFactory.namedNode(
+          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
+        );
   }
 
   equals(
