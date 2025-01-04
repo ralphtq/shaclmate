@@ -1,5 +1,5 @@
 import type { Resource } from "rdfjs-resource";
-import type { RdfjsFactory } from "./RdfjsFactory.js";
+import type { Factory } from "./Factory.js";
 import { RdfjsNodeShape } from "./RdfjsNodeShape.js";
 import { RdfjsOntology } from "./RdfjsOntology.js";
 import { RdfjsPropertyGroup } from "./RdfjsPropertyGroup.js";
@@ -39,7 +39,7 @@ export type DefaultRdfjsShapesGraph = ShapesGraph<
   DefaultRdfjsShape
 >;
 
-export const defaultRdfjsFactory: RdfjsFactory<
+export const defaultRdfjsFactory: Factory<
   DefaultRdfjsNodeShape,
   DefaultRdfjsOntology,
   DefaultRdfjsPropertyGroup,

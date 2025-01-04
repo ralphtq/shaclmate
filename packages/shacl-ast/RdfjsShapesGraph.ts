@@ -10,11 +10,11 @@ import type {
 import { owl, sh } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { ResourceSet } from "rdfjs-resource";
+import type { Factory } from "./Factory.js";
 import type { NodeShape } from "./NodeShape.js";
 import type { Ontology } from "./Ontology.js";
 import type { PropertyGroup } from "./PropertyGroup.js";
 import type { PropertyShape } from "./PropertyShape.js";
-import type { RdfjsFactory } from "./RdfjsFactory.js";
 import type { Shape } from "./Shape.js";
 
 export class RdfjsShapesGraph<
@@ -73,7 +73,7 @@ export class RdfjsShapesGraph<
     factory,
   }: {
     dataset: DatasetCore;
-    factory: RdfjsFactory<
+    factory: Factory<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -157,7 +157,7 @@ export class RdfjsShapesGraph<
   }
 
   private readOntologies(
-    factory: RdfjsFactory<
+    factory: Factory<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -185,7 +185,7 @@ export class RdfjsShapesGraph<
   }
 
   private readPropertyGroups(
-    factory: RdfjsFactory<
+    factory: Factory<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -225,7 +225,7 @@ export class RdfjsShapesGraph<
   }
 
   private readShapes(
-    factory: RdfjsFactory<
+    factory: Factory<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
