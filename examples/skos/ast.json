@@ -787,22 +787,6 @@
               "termType": "BlankNode",
               "value": "n3-147"
             },
-            "shName": "altLabel"
-          },
-          "path": "http://www.w3.org/2004/02/skos/core#altLabel",
-          "type": {
-            "itemType": {
-              "kind": "LiteralType"
-            },
-            "kind": "SetType"
-          }
-        },
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-148"
-            },
             "shName": "altLabelXl"
           },
           "path": "http://www.w3.org/2008/05/skos-xl#altLabel",
@@ -839,7 +823,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-149"
+              "value": "n3-148"
             },
             "shName": "changeNote"
           },
@@ -855,7 +839,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-150"
+              "value": "n3-149"
             },
             "shName": "definition"
           },
@@ -871,7 +855,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-151"
+              "value": "n3-150"
             },
             "shName": "editorialNote"
           },
@@ -887,7 +871,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-152"
+              "value": "n3-151"
             },
             "shName": "example"
           },
@@ -903,7 +887,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-153"
+              "value": "n3-152"
             },
             "shName": "hiddenLabel"
           },
@@ -919,7 +903,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-154"
+              "value": "n3-153"
             },
             "shName": "hiddenLabelXl"
           },
@@ -957,7 +941,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-155"
+              "value": "n3-154"
             },
             "shName": "historyNote"
           },
@@ -973,7 +957,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-156"
+              "value": "n3-155"
             },
             "shName": "notation"
           },
@@ -993,7 +977,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-157"
+              "value": "n3-156"
             },
             "shName": "note"
           },
@@ -1009,7 +993,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-158"
+              "value": "n3-157"
             },
             "shName": "prefLabel"
           },
@@ -1025,7 +1009,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-159"
+              "value": "n3-158"
             },
             "shName": "prefLabelXl"
           },
@@ -1063,11 +1047,27 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-160"
+              "value": "n3-159"
             },
             "shName": "scopeNote"
           },
           "path": "http://www.w3.org/2004/02/skos/core#scopeNote",
+          "type": {
+            "itemType": {
+              "kind": "LiteralType"
+            },
+            "kind": "SetType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-160"
+            },
+            "shName": "altLabel"
+          },
+          "path": "http://www.w3.org/2004/02/skos/core#altLabel",
           "type": {
             "itemType": {
               "kind": "LiteralType"

@@ -339,9 +339,7 @@ export class OrNodeShapeMember2 {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -494,9 +492,7 @@ export class OrNodeShapeMember1 {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -652,9 +648,7 @@ export class NonClassNodeShape {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -816,9 +810,7 @@ export class NodeShapeWithPropertyVisibilities {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -1090,9 +1082,7 @@ export class NodeShapeWithPropertyCardinalities {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -1436,9 +1426,7 @@ export class NodeShapeWithOrProperties {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -1996,9 +1984,7 @@ export class NodeShapeWithMutableProperties {
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
       ? this._identifier
-      : dataFactory.namedNode(
-          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-        );
+      : dataFactory.blankNode();
   }
 
   equals(
@@ -2338,9 +2324,7 @@ export class NodeShapeWithListProperty {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -2682,9 +2666,7 @@ export class NodeShapeWithLanguageInProperties {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -3070,9 +3052,7 @@ export class NodeShapeWithInProperties {
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
       ? this._identifier
-      : dataFactory.namedNode(
-          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-        );
+      : dataFactory.blankNode();
   }
 
   equals(
@@ -3295,20 +3275,22 @@ export namespace NodeShapeWithInProperties {
         )
         .head()
         .chain((_value) =>
-          _value.toBoolean().chain((value) =>
-            value === true
-              ? purify.Either.of(value)
-              : purify.Left(
-                  new rdfjsResource.Resource.MistypedValueError({
-                    actualValue: rdfLiteral.toRdf(value),
-                    expectedValueType: "true",
-                    focusResource: _resource,
-                    predicate: dataFactory.namedNode(
-                      "http://example.com/inBooleansProperty",
-                    ),
-                  }),
-                ),
-          ),
+          _value
+            .toBoolean()
+            .chain((value) =>
+              value === true
+                ? purify.Either.of(value)
+                : purify.Left(
+                    new rdfjsResource.Resource.MistypedValueError({
+                      actualValue: rdfLiteral.toRdf(value),
+                      expectedValueType: "true",
+                      focusResource: _resource,
+                      predicate: dataFactory.namedNode(
+                        "http://example.com/inBooleansProperty",
+                      ),
+                    }),
+                  ),
+            ),
         )
         .toMaybe(),
     );
@@ -3587,9 +3569,7 @@ export class NodeShapeWithHasValueProperties {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -3822,9 +3802,7 @@ export class InlineNodeShape {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -3977,9 +3955,7 @@ export class ExternNodeShape {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -4180,9 +4156,7 @@ export class NodeShapeWithExternProperties {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -4361,7 +4335,12 @@ export namespace NodeShapeWithExternProperties {
         .head()
         .chain((value) => value.toResource())
         .chain((_resource) =>
-          ExternObjectType.fromRdf({ ..._context, resource: _resource }),
+          ExternObjectType.fromRdf({
+            ..._context,
+            ignoreRdfType: true,
+            languageIn: _languageIn,
+            resource: _resource,
+          }),
         )
         .toMaybe(),
     );
@@ -4400,7 +4379,12 @@ export namespace NodeShapeWithExternProperties {
         .head()
         .chain((value) => value.toResource())
         .chain((_resource) =>
-          InlineNodeShape.fromRdf({ ..._context, resource: _resource }),
+          InlineNodeShape.fromRdf({
+            ..._context,
+            ignoreRdfType: true,
+            languageIn: _languageIn,
+            resource: _resource,
+          }),
         )
         .toMaybe(),
     );
@@ -4435,7 +4419,10 @@ export namespace NodeShapeWithExternProperties {
               ),
               this.variable("ExternObjectTypeProperty"),
             ).chainObject(
-              (_object) => new ExternObjectType.SparqlGraphPatterns(_object),
+              (_object) =>
+                new ExternObjectType.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -4457,7 +4444,10 @@ export namespace NodeShapeWithExternProperties {
               dataFactory.namedNode("http://example.com/inlineProperty"),
               this.variable("InlineProperty"),
             ).chainObject(
-              (_object) => new InlineNodeShape.SparqlGraphPatterns(_object),
+              (_object) =>
+                new InlineNodeShape.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -4486,9 +4476,7 @@ export class NodeShapeWithExplicitRdfTypes {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -4748,9 +4736,7 @@ export class NodeShapeWithDefaultValueProperties {
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
       ? this._identifier
-      : dataFactory.namedNode(
-          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-        );
+      : dataFactory.blankNode();
   }
 
   equals(
@@ -5146,25 +5132,16 @@ export namespace NodeShapeWithDefaultValueProperties {
  * A node shape that only allows IRI identifiers.
  */
 export class IriNodeShape {
-  private _identifier: rdfjs.NamedNode | undefined;
+  identifier: rdfjs.NamedNode;
   readonly stringProperty: string;
   readonly type = "IriNodeShape";
 
   constructor(parameters: {
-    readonly identifier?: rdfjs.NamedNode;
+    readonly identifier: rdfjs.NamedNode;
     readonly stringProperty: string;
   }) {
-    this._identifier = parameters.identifier;
+    this.identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
-  }
-
-  get identifier(): rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
   }
 
   equals(other: IriNodeShape): purifyHelpers.Equatable.EqualsResult {
@@ -5612,13 +5589,13 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
     | "ConcreteChildClassNodeShape"
     | "ConcreteParentClassNodeShape";
 
-  // biome-ignore lint/complexity/noUselessConstructor: Always have a constructor
   constructor(
     parameters: ConstructorParameters<
       typeof AbstractBaseClassWithPropertiesNodeShape
     >[0],
   ) {
     super(parameters);
+    this.identifier = parameters.identifier;
   }
 
   override toRdf({
@@ -5661,6 +5638,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     return AbstractBaseClassWithPropertiesNodeShape.interfaceFromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       const identifier = _resource.identifier;
@@ -5715,18 +5693,20 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
   override equals(
     other: ConcreteParentClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.strictEquals(
-        this.parentStringProperty,
-        other.parentStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "parentStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.parentStringProperty,
+          other.parentStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "parentStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -5806,6 +5786,7 @@ export namespace ConcreteParentClassNodeShape {
     return AbstractBaseClassWithoutPropertiesNodeShape.interfaceFromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       if (
@@ -5907,18 +5888,20 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   override equals(
     other: ConcreteChildClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.strictEquals(
-        this.childStringProperty,
-        other.childStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "childStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.childStringProperty,
+          other.childStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "childStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -5998,6 +5981,7 @@ export namespace ConcreteChildClassNodeShape {
     return ConcreteParentClassNodeShape.fromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       if (
