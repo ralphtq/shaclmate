@@ -8,11 +8,6 @@ export abstract class PrimitiveType<
 > extends LiteralType {
   override readonly equalsFunction: string =
     "purifyHelpers.Equatable.strictEquals";
-  abstract override readonly kind:
-    | "BooleanType"
-    | "DateTimeType"
-    | "NumberType"
-    | "StringType";
   readonly primitiveDefaultValue: Maybe<ValueT>;
   readonly primitiveIn: Maybe<readonly ValueT[]>;
 
@@ -43,17 +38,17 @@ export abstract class PrimitiveType<
     return [`${variables.hasher}.update(${variables.value}.toString());`];
   }
 
+  override propertyToJsonExpression({
+    variables,
+  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+    return variables.value;
+  }
+
   protected override propertyFilterRdfResourceValuesExpression({
     variables,
   }: Parameters<
     LiteralType["propertyFilterRdfResourceValuesExpression"]
   >[0]): string {
     return variables.resourceValues;
-  }
-
-  override propertyToJsonExpression({
-    variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    return variables.value;
   }
 }

@@ -128,6 +128,10 @@ function typeToJson(type: ast.Type): AstJson.Type {
         itemType: typeToJson(type.itemType),
         kind: type.kind,
       };
+    case "TermType":
+      return {
+        kind: type.kind,
+      };
   }
 }
 

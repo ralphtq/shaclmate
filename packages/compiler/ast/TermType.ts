@@ -1,12 +1,11 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
+import type { NodeKind } from "@shaclmate/shacl-ast";
 import type { Maybe } from "purify-ts";
 
-export interface TermType<
-  _TermT extends BlankNode | Literal | NamedNode,
-  ValueTermT extends Literal | NamedNode,
-> {
-  readonly defaultValue: Maybe<ValueTermT>;
-  readonly hasValue: Maybe<ValueTermT>;
-  readonly in_: Maybe<readonly ValueTermT[]>;
-  readonly kind: "IdentifierType" | "LiteralType";
+export interface TermType<TermT extends BlankNode | Literal | NamedNode> {
+  readonly defaultValue: Maybe<TermT>;
+  readonly hasValue: Maybe<TermT>;
+  readonly in_: Maybe<readonly TermT[]>;
+  readonly kind: "IdentifierType" | "LiteralType" | "TermType";
+  readonly nodeKinds: Set<NodeKind>;
 }

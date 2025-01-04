@@ -4,10 +4,10 @@ import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
 import { Import } from "./Import.js";
-import { TermType } from "./TermType";
+import { TermType } from "./TermType.js";
 import type { Type } from "./Type.js";
 
-export class IdentifierType extends TermType<BlankNode | NamedNode, NamedNode> {
+export class IdentifierType extends TermType<BlankNode | NamedNode> {
   readonly jsonName = `{ "@id": string }`;
   readonly kind = "IdentifierType";
   readonly nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
@@ -17,9 +17,7 @@ export class IdentifierType extends TermType<BlankNode | NamedNode, NamedNode> {
     ...superParameters
   }: {
     nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
-  } & ConstructorParameters<
-    typeof TermType<BlankNode | NamedNode, NamedNode>
-  >[0]) {
+  } & ConstructorParameters<typeof TermType<BlankNode | NamedNode>>[0]) {
     super(superParameters);
     this.nodeKinds = new Set([...nodeKinds]);
     invariant(this.nodeKinds.size > 0);
@@ -106,10 +104,7 @@ export class IdentifierType extends TermType<BlankNode | NamedNode, NamedNode> {
   protected override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    TermType<
-      BlankNode | NamedNode,
-      NamedNode
-    >["propertyFromRdfResourceValueExpression"]
+    TermType<BlankNode | NamedNode>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     if (this.nodeKinds.size === 2) {
       return `${variables.resourceValue}.toIdentifier()`;

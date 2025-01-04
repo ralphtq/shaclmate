@@ -1,5 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import type { NodeKind } from "@shaclmate/shacl-ast";
+import { NodeKind } from "@shaclmate/shacl-ast";
 import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
 import { Either, Left, Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
@@ -193,6 +193,7 @@ export function transformPropertyShapeToAstCompositeType(
       maxInclusive: Maybe.empty(),
       minExclusive: Maybe.empty(),
       minInclusive: Maybe.empty(),
+      nodeKinds: new Set<NodeKind.LITERAL>([NodeKind.LITERAL]),
     });
   }
 

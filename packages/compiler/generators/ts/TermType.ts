@@ -6,20 +6,12 @@ import { Type } from "./Type.js";
  * Abstract base class for IdentifierType and LiteralType.
  */
 export abstract class TermType<
-  _TermT extends BlankNode | Literal | NamedNode,
-  ValueTermT extends Literal | NamedNode,
+  TermT extends BlankNode | Literal | NamedNode,
 > extends Type {
-  readonly defaultValue: Maybe<ValueTermT>;
+  readonly defaultValue: Maybe<TermT>;
   readonly equalsFunction: string = "purifyHelpers.Equatable.booleanEquals";
-  readonly hasValue: Maybe<ValueTermT>;
-  readonly in_: Maybe<readonly ValueTermT[]>;
-  abstract override readonly kind:
-    | "BooleanType"
-    | "DateTimeType"
-    | "IdentifierType"
-    | "LiteralType"
-    | "NumberType"
-    | "StringType";
+  readonly hasValue: Maybe<TermT>;
+  readonly in_: Maybe<readonly TermT[]>;
   readonly mutable: boolean = false;
 
   constructor({
@@ -28,9 +20,9 @@ export abstract class TermType<
     in_,
     ...superParameters
   }: {
-    defaultValue: Maybe<ValueTermT>;
-    hasValue: Maybe<ValueTermT>;
-    in_: Maybe<readonly ValueTermT[]>;
+    defaultValue: Maybe<TermT>;
+    hasValue: Maybe<TermT>;
+    in_: Maybe<readonly TermT[]>;
   } & ConstructorParameters<typeof Type>[0]) {
     super(superParameters);
     this.defaultValue = defaultValue;

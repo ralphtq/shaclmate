@@ -49,6 +49,8 @@ export class TypeFactory {
         });
       case "IntersectionType":
         throw new Error("not implemented");
+      case "TermType":
+        throw new Error("not implemented");
       case "ListType": {
         return new ListType({
           dataFactoryVariable: this.dataFactoryVariable,

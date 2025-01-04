@@ -56,6 +56,7 @@ export function transformPropertyShapeToAstLiteralType(
       maxInclusive: shape.constraints.maxInclusive,
       minExclusive: shape.constraints.minExclusive,
       minInclusive: shape.constraints.minInclusive,
+      nodeKinds: new Set<NodeKind.LITERAL>([NodeKind.LITERAL]),
     });
   }
 

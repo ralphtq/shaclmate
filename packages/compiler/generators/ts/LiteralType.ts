@@ -5,16 +5,9 @@ import { Import } from "./Import.js";
 import { TermType } from "./TermType.js";
 import type { Type } from "./Type.js";
 
-export class LiteralType extends TermType<Literal, Literal> {
+export class LiteralType extends TermType<Literal> {
   readonly jsonName: string =
     'string | { "@language": string | undefined, "@type": string | undefined, "@value": string }';
-
-  override readonly kind:
-    | "BooleanType"
-    | "DateTimeType"
-    | "LiteralType"
-    | "NumberType"
-    | "StringType" = "LiteralType";
 
   private readonly languageIn: Maybe<NonEmptyList<string>>;
 
@@ -22,7 +15,7 @@ export class LiteralType extends TermType<Literal, Literal> {
     languageIn,
     ...superParameters
   }: { languageIn: Maybe<NonEmptyList<string>> } & ConstructorParameters<
-    typeof TermType<Literal, Literal>
+    typeof TermType<Literal>
   >[0]) {
     super(superParameters);
     this.languageIn = languageIn;
@@ -93,7 +86,7 @@ export class LiteralType extends TermType<Literal, Literal> {
   override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    TermType<Literal, Literal>["propertyFromRdfResourceValueExpression"]
+    TermType<Literal>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     return `${variables.resourceValue}.toLiteral()`;
   }
@@ -101,7 +94,7 @@ export class LiteralType extends TermType<Literal, Literal> {
   override propertyHashStatements({
     variables,
   }: Parameters<
-    TermType<Literal, Literal>["propertyHashStatements"]
+    TermType<Literal>["propertyHashStatements"]
   >[0]): readonly string[] {
     return [`${variables.hasher}.update(${variables.value}.value);`];
   }
@@ -115,7 +108,7 @@ export class LiteralType extends TermType<Literal, Literal> {
   protected override propertyFilterRdfResourceValuesExpression({
     variables,
   }: Parameters<
-    TermType<Literal, Literal>["propertyFilterRdfResourceValuesExpression"]
+    TermType<Literal>["propertyFilterRdfResourceValuesExpression"]
   >[0]): string {
     return `${variables.resourceValues}.filter(_value => {
   const _languageInOrDefault = ${variables.languageIn} ?? ${this.languageIn.isJust() ? JSON.stringify(this.languageIn.unsafeCoerce()) : "[]"};

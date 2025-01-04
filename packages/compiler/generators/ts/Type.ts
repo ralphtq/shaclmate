@@ -1,7 +1,6 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
 import { xsd } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
-import type * as ast from "../../ast/index.js";
 import type { Import } from "./Import.js";
 
 /**
@@ -25,14 +24,6 @@ export abstract class Type {
    * JSON-compatible returned by propertyToJsonExpression.
    */
   abstract readonly jsonName: string;
-
-  abstract readonly kind:
-    | ast.Type["kind"]
-    | "BooleanType"
-    | "DateTimeType"
-    | "ListType"
-    | "NumberType"
-    | "StringType";
 
   /**
    * Is a value of this type mutable?
