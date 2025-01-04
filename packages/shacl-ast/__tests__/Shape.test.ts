@@ -1,22 +1,37 @@
+import type { NamedNode } from "@rdfjs/types";
 import { dash, schema, xsd } from "@tpluscode/rdf-ns-builders";
 import { DataFactory as dataFactory } from "n3";
-import { describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { NodeKind } from "../NodeKind.js";
 import { RdfjsShapesGraph } from "../RdfjsShapesGraph.js";
-import {
-  type DefaultRdfjsShapesGraph,
-  defaultRdfjsFactory,
-} from "../defaultRdfjsFactory.js";
-import { findPropertyShape as findPropertyShape_ } from "./findPropertyShape.js";
+import { defaultFactory } from "../defaultFactory.js";
 import { testData } from "./testData.js";
 
 describe("RdfjsShape", () => {
-  const shapesGraph: DefaultRdfjsShapesGraph = new RdfjsShapesGraph({
+  const shapesGraph = new RdfjsShapesGraph({
     dataset: testData.shapesGraph,
-    factory: defaultRdfjsFactory,
+    factory: defaultFactory,
   });
 
-  const findPropertyShape = findPropertyShape_(shapesGraph);
+  const findPropertyShape = (
+    nodeShapeIdentifier: NamedNode,
+    path: NamedNode,
+  ) => {
+    const nodeShape = shapesGraph
+      .nodeShapeByIdentifier(nodeShapeIdentifier)
+      .unsafeCoerce();
+    const propertyShape = nodeShape.constraints.properties.find(
+      (propertyShape) => {
+        const propertyShapePath = propertyShape.path;
+        return (
+          propertyShapePath.kind === "PredicatePath" &&
+          propertyShapePath.iri.equals(path)
+        );
+      },
+    );
+    expect(propertyShape).toBeDefined();
+    return propertyShape!;
+  };
 
   it("should have a description", ({ expect }) => {
     expect(

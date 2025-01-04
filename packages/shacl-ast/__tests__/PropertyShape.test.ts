@@ -1,19 +1,16 @@
 import { fail } from "node:assert";
+import type { NamedNode } from "@rdfjs/types";
 import { dash, rdf, schema } from "@tpluscode/rdf-ns-builders";
-import { describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import type { PredicatePath } from "../PropertyPath.js";
 import { RdfjsShapesGraph } from "../RdfjsShapesGraph.js";
-import {
-  type DefaultRdfjsShapesGraph,
-  defaultRdfjsFactory,
-} from "../defaultRdfjsFactory.js";
-import { findPropertyShape as findPropertyShape_ } from "./findPropertyShape.js";
+import { defaultFactory } from "../defaultFactory.js";
 import { testData } from "./testData.js";
 
-describe("RdfjsPropertyShape", () => {
-  const shapesGraph: DefaultRdfjsShapesGraph = new RdfjsShapesGraph({
+describe("PropertyShape", () => {
+  const shapesGraph = new RdfjsShapesGraph({
     dataset: testData.shapesGraph,
-    factory: defaultRdfjsFactory,
+    factory: defaultFactory,
   });
 
   // it("should convert to a string", ({ expect }) => {
@@ -22,7 +19,25 @@ describe("RdfjsPropertyShape", () => {
   //   ).not.toHaveLength(0);
   // });
 
-  const findPropertyShape = findPropertyShape_(shapesGraph);
+  const findPropertyShape = (
+    nodeShapeIdentifier: NamedNode,
+    path: NamedNode,
+  ) => {
+    const nodeShape = shapesGraph
+      .nodeShapeByIdentifier(nodeShapeIdentifier)
+      .unsafeCoerce();
+    const propertyShape = nodeShape.constraints.properties.find(
+      (propertyShape) => {
+        const propertyShapePath = propertyShape.path;
+        return (
+          propertyShapePath.kind === "PredicatePath" &&
+          propertyShapePath.iri.equals(path)
+        );
+      },
+    );
+    expect(propertyShape).toBeDefined();
+    return propertyShape!;
+  };
 
   // No sh:defaultValue in the test data
 

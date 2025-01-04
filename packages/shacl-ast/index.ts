@@ -1,4 +1,4 @@
-export * from "./defaultRdfjsFactory.js";
+export * from "./defaultFactory.js";
 export * from "./Factory.js";
 export * from "./NodeKind.js";
 export * from "./PropertyPath.js";
