@@ -1,4 +1,4 @@
-import type { BlankNode, DefaultGraph, NamedNode } from "@rdfjs/types";
+import type { BlankNode, NamedNode } from "@rdfjs/types";
 import type { Maybe } from "purify-ts";
 import type { NodeShapeLike } from "./NodeShapeLike.js";
 import type { OntologyLike } from "./OntologyLike.js";
@@ -33,11 +33,7 @@ export interface ShapesGraphLike<
     any
   >,
 > {
-  readonly node: BlankNode | DefaultGraph | NamedNode | null;
-  readonly nodeShapes: readonly NodeShapeT[];
   readonly ontologies: readonly OntologyT[];
-  readonly propertyGroups: readonly PropertyGroupT[];
-  readonly propertyShapes: readonly PropertyShapeT[];
 
   nodeShapeByIdentifier(identifier: BlankNode | NamedNode): Maybe<NodeShapeT>;
   ontologyByIdentifier(identifier: BlankNode | NamedNode): Maybe<OntologyT>;

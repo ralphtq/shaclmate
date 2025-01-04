@@ -1,9 +1,6 @@
-import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import type { Maybe } from "purify-ts";
 import type { NodeShapeLike } from "./NodeShapeLike.js";
 import type { OntologyLike } from "./OntologyLike.js";
 import type { PropertyGroupLike } from "./PropertyGroupLike.js";
-import type { PropertyPath } from "./PropertyPath.js";
 import type { ShapeLike } from "./ShapeLike.js";
 
 /**
@@ -41,11 +38,4 @@ export interface PropertyShapeLike<
     PropertyGroupT,
     PropertyShapeT,
     ShapeT
-  > {
-  readonly defaultValue: Maybe<BlankNode | Literal | NamedNode>;
-  readonly description: Maybe<Literal>;
-  readonly group: Maybe<PropertyGroupT>;
-  readonly name: Maybe<Literal>;
-  readonly order: Maybe<number>;
-  readonly path: PropertyPath;
-}
+  > {}
