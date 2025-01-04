@@ -4,7 +4,7 @@ import type { Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
 import { PropertyPath } from "./PropertyPath.js";
-import { Shape } from "./Shape.";
+import { Shape } from "./Shape.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
 
 export class PropertyShape<
