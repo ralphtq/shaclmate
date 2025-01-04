@@ -1,10 +1,11 @@
+import { Ontology as CoreOntology } from "@shaclmate/shacl-ast";
 import type { Either, Maybe } from "purify-ts";
 import type { TsFeature, TsObjectDeclarationType } from "../enums/index.js";
 import { shaclmate } from "../vocabularies/index.js";
 import { tsFeatures } from "./tsFeatures.js";
 import { tsObjectDeclarationType } from "./tsObjectDeclarationType.js";
 
-export class Ontology extends Ontology {
+export class Ontology extends CoreOntology {
   get tsDataFactoryVariable(): Maybe<string> {
     return this.resource
       .value(shaclmate.tsDataFactoryVariable)

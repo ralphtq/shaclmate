@@ -16,14 +16,14 @@ export function transformPropertyShapeToAstLiteralType(
     defaultValue: Maybe<BlankNode | Literal | NamedNode>;
   } | null,
 ): Either<Error, ast.LiteralType> {
-  const literalDefaultValue = (
+  const literalDefaultValue: Maybe<Literal> = (
     shape instanceof input.PropertyShape ? shape.defaultValue : Maybe.empty()
   )
     .alt(inherited !== null ? inherited.defaultValue : Maybe.empty())
-    .filter((term) => term.termType === "Literal");
+    .filter((term) => term.termType === "Literal") as Maybe<Literal>;
   const literalHasValue = shape.constraints.hasValue.filter(
     (term) => term.termType === "Literal",
-  );
+  ) as Maybe<Literal>;
   const literalIn = shape.constraints.in_
     .map((in_) => in_.filter((term) => term.termType === "Literal"))
     .filter((in_) => in_.length > 0);

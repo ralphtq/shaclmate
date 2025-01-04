@@ -1,7 +1,7 @@
 import TermSet from "@rdfjs/term-set";
 import type * as rdfjs from "@rdfjs/types";
 import type { NamedNode } from "@rdfjs/types";
-import { NodeKind } from "@shaclmate/shacl-ast";
+import { NodeShape as CoreNodeShape, NodeKind } from "@shaclmate/shacl-ast";
 import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
 import { Either, Left, Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
@@ -11,11 +11,9 @@ import type {
   TsObjectDeclarationType,
 } from "../enums/index.js";
 import { shaclmate } from "../vocabularies/index.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
-import type { PropertyShape } from "./PropertyShape.js";
 import type { Shape } from "./Shape.js";
 import { extern } from "./extern.js";
+import type { Ontology, PropertyGroup, PropertyShape } from "./index.js";
 import { shaclmateName } from "./shaclmateName.js";
 import { tsFeatures } from "./tsFeatures.js";
 import { tsObjectDeclarationType } from "./tsObjectDeclarationType.js";
@@ -76,10 +74,13 @@ function descendantClassIris(
   return [...descendantClassIris];
 }
 
-export class NodeShape
-  extends NodeShape<any, Ontology, PropertyGroup, PropertyShape, Shape>
-  implements Shape
-{
+export class NodeShape extends CoreNodeShape<
+  any,
+  Ontology,
+  PropertyGroup,
+  PropertyShape,
+  Shape
+> {
   get abstract(): Maybe<boolean> {
     return this.resource
       .value(shaclmate.abstract)

@@ -1,11 +1,13 @@
 import type { DatasetCore } from "@rdfjs/types";
 import { RdfjsShapesGraph } from "@shaclmate/shacl-ast";
 import type { Resource } from "rdfjs-resource";
-import { NodeShape } from "./NodeShape.js";
-import { Ontology } from "./Ontology.js";
-import { PropertyGroup } from "./PropertyGroup.js";
-import { PropertyShape } from "./PropertyShape.js";
-import type { Shape } from "./Shape.js";
+import {
+  NodeShape,
+  Ontology,
+  PropertyGroup,
+  PropertyShape,
+  type Shape,
+} from "./index.js";
 
 export class ShapesGraph extends RdfjsShapesGraph<
   NodeShape,

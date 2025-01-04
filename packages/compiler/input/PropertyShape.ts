@@ -1,17 +1,19 @@
+import { PropertyShape as CorePropertyShape } from "@shaclmate/shacl-ast";
 import { Either, Left, type Maybe } from "purify-ts";
 import type { PropertyVisibility } from "../enums/index.js";
 import { shaclmate } from "../vocabularies/index.js";
-import type { NodeShape } from "./NodeShape.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
 import type { Shape } from "./Shape.js";
 import { extern } from "./extern.js";
+import type { NodeShape, Ontology, PropertyGroup } from "./index.js";
 import { shaclmateName } from "./shaclmateName.js";
 
-export class PropertyShape
-  extends PropertyShape<NodeShape, Ontology, PropertyGroup, any, Shape>
-  implements Shape
-{
+export class PropertyShape extends CorePropertyShape<
+  NodeShape,
+  Ontology,
+  PropertyGroup,
+  any,
+  Shape
+> {
   get extern(): Maybe<boolean> {
     return extern.bind(this)();
   }

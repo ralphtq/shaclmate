@@ -23,7 +23,7 @@ export abstract class Shape<
   >;
   readonly targets: Shape.Targets;
 
-  protected constructor(
+  constructor(
     readonly resource: Resource,
     protected readonly shapesGraph: ShapesGraph<
       NodeShapeT,
