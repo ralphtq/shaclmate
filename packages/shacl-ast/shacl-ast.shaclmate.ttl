@@ -1,2 +1,52 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix shaclmate: <http://minorg.github.io/shaclmate/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://minorg.github.io/shaclmate/shacl-ast/ns#> .
+
+<http://minorg.github.io/shaclmate/shacl-ast/ns#>
+    a owl:Ontology ;
+    rdfs:comment "The shapes in this ontology are modeled after shacl-shacl but are intended for code generation with shaclmate rather than validation." ;
+    rdfs:label "SHACL for shacl-ast" ;
+    rdfs:seeAlso <https://www.w3.org/TR/shacl/#shacl-shacl> .
+
+:NodeShape
+    shaclmate:name "NodeShape" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:subClassOf :Shape .
+
+:PropertyGroup
+    shaclmate:name "PropertyGroup" ;
+    a sh:NodeShape .
+
+:PropertyShape
+    shaclmate:name "PropertyShape" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "Doesn't include sh:path since shaclmate can't handle the requisite SHACL yet" ;
+    sh:property [
+        sh:maxCount 1 ;
+        sh:path sh:defaultValue
+    ], [
+        sh:or dash:StringOrLangString ;
+        sh:path sh:description
+    ], [
+        shaclmate:extern true ;
+        sh:node :PropertyGroup ;
+        sh:path sh:group
+    ], [
+        sh:or dash:StringOrLangString ;
+        sh:path sh:name
+    ], [
+        sh:datatype xsd:decimal ;
+        sh:maxCount 1 ;
+        sh:path sh:order
+    ] .
+
+:Shape
+    shaclmate:abstract true ;
+    shaclmate:name "Shape" ;
+    a owl:Class, sh:NodeShape .
 
