@@ -3,7 +3,7 @@ import { rdfs } from "@tpluscode/rdf-ns-builders";
 import type { Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 
-export class RdfjsPropertyGroup {
+export class PropertyGroup {
   constructor(private readonly resource: Resource) {}
 
   get comment(): Maybe<Literal> {

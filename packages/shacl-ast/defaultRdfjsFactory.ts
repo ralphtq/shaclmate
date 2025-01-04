@@ -1,30 +1,30 @@
 import type { Resource } from "rdfjs-resource";
 import type { Factory } from "./Factory.js";
-import { RdfjsNodeShape } from "./RdfjsNodeShape.js";
-import { RdfjsOntology } from "./RdfjsOntology.js";
-import { RdfjsPropertyGroup } from "./RdfjsPropertyGroup.js";
-import { RdfjsPropertyShape } from "./RdfjsPropertyShape.js";
-import type { RdfjsShape } from "./RdfjsShape.js";
+import { NodeShape } from "./NodeShape.js";
+import { Ontology } from "./Ontology.js";
+import { PropertyGroup } from "./PropertyGroup.js";
+import { PropertyShape } from "./PropertyShape.js";
 import type { RdfjsShapesGraph } from "./RdfjsShapesGraph.js";
+import type { Shape } from "./Shape.js";
 
-export type DefaultRdfjsOntology = RdfjsOntology;
-export type DefaultRdfjsPropertyGroup = RdfjsPropertyGroup;
+export type DefaultRdfjsOntology = Ontology;
+export type DefaultRdfjsPropertyGroup = PropertyGroup;
 
-export type DefaultRdfjsNodeShape = RdfjsNodeShape<
+export type DefaultRdfjsNodeShape = NodeShape<
   any,
   DefaultRdfjsOntology,
   DefaultRdfjsPropertyGroup,
   DefaultRdfjsPropertyShape,
   DefaultRdfjsShape
 >;
-export type DefaultRdfjsPropertyShape = RdfjsPropertyShape<
+export type DefaultRdfjsPropertyShape = PropertyShape<
   DefaultRdfjsNodeShape,
   DefaultRdfjsOntology,
   DefaultRdfjsPropertyGroup,
   any,
   DefaultRdfjsShape
 >;
-export type DefaultRdfjsShape = RdfjsShape<
+export type DefaultRdfjsShape = Shape<
   DefaultRdfjsNodeShape,
   DefaultRdfjsOntology,
   DefaultRdfjsPropertyGroup,
@@ -47,27 +47,27 @@ export const defaultRdfjsFactory: Factory<
   DefaultRdfjsShape
 > = {
   createNodeShape(resource: Resource, shapesGraph: DefaultRdfjsShapesGraph) {
-    return new RdfjsNodeShape(resource, shapesGraph);
+    return new NodeShape(resource, shapesGraph);
   },
 
   createOntology(
     resource: Resource,
     _shapesGraph: DefaultRdfjsShapesGraph,
   ): DefaultRdfjsOntology {
-    return new RdfjsOntology(resource);
+    return new Ontology(resource);
   },
 
   createPropertyGroup(
     resource: Resource,
     _shapesGraph: DefaultRdfjsShapesGraph,
   ): DefaultRdfjsPropertyGroup {
-    return new RdfjsPropertyGroup(resource);
+    return new PropertyGroup(resource);
   },
 
   createPropertyShape(
     resource: Resource,
     shapesGraph: DefaultRdfjsShapesGraph,
   ) {
-    return new RdfjsPropertyShape(resource, shapesGraph);
+    return new PropertyShape(resource, shapesGraph);
   },
 };

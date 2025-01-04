@@ -4,23 +4,17 @@ import type { Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
 import { PropertyPath } from "./PropertyPath.js";
-import { RdfjsShape } from "./RdfjsShape.js";
+import { Shape } from "./Shape";
 import type { ShapesGraph } from "./ShapesGraph.js";
 
-export class RdfjsPropertyShape<
+export class PropertyShape<
   NodeShapeT extends ShapeT,
   OntologyT extends OntologyLike,
   PropertyGroupT,
   PropertyShapeT extends ShapeT,
   ShapeT,
-> extends RdfjsShape<
-  NodeShapeT,
-  OntologyT,
-  PropertyGroupT,
-  PropertyShapeT,
-  ShapeT
-> {
-  readonly constraints: RdfjsShape.Constraints<
+> extends Shape<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT> {
+  readonly constraints: Shape.Constraints<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -39,7 +33,7 @@ export class RdfjsPropertyShape<
     >,
   ) {
     super(resource, shapesGraph);
-    this.constraints = new RdfjsShape.Constraints(resource, shapesGraph);
+    this.constraints = new Shape.Constraints(resource, shapesGraph);
   }
 
   get defaultValue(): Maybe<BlankNode | Literal | NamedNode> {

@@ -1,7 +1,7 @@
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
 
-export class RdfjsOntology implements OntologyLike {
+export class Ontology implements OntologyLike {
   readonly resource: Resource;
 
   constructor(resource: Resource) {

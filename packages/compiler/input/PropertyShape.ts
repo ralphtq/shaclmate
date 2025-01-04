@@ -1,4 +1,3 @@
-import { RdfjsPropertyShape } from "@shaclmate/shacl-ast";
 import { Either, Left, type Maybe } from "purify-ts";
 import type { PropertyVisibility } from "../enums/index.js";
 import { shaclmate } from "../vocabularies/index.js";
@@ -10,7 +9,7 @@ import { extern } from "./extern.js";
 import { shaclmateName } from "./shaclmateName.js";
 
 export class PropertyShape
-  extends RdfjsPropertyShape<NodeShape, Ontology, PropertyGroup, any, Shape>
+  extends PropertyShape<NodeShape, Ontology, PropertyGroup, any, Shape>
   implements Shape
 {
   get extern(): Maybe<boolean> {

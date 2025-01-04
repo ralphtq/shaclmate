@@ -1,7 +1,7 @@
 import TermSet from "@rdfjs/term-set";
 import type * as rdfjs from "@rdfjs/types";
 import type { NamedNode } from "@rdfjs/types";
-import { NodeKind, RdfjsNodeShape } from "@shaclmate/shacl-ast";
+import { NodeKind } from "@shaclmate/shacl-ast";
 import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
 import { Either, Left, Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
@@ -77,7 +77,7 @@ function descendantClassIris(
 }
 
 export class NodeShape
-  extends RdfjsNodeShape<any, Ontology, PropertyGroup, PropertyShape, Shape>
+  extends NodeShape<any, Ontology, PropertyGroup, PropertyShape, Shape>
   implements Shape
 {
   get abstract(): Maybe<boolean> {

@@ -2,23 +2,23 @@ import { sh } from "@tpluscode/rdf-ns-builders";
 import type { Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
-import { RdfjsShape } from "./RdfjsShape.js";
+import { Shape } from "./Shape.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
 
-export class RdfjsNodeShape<
+export class NodeShape<
   NodeShapeT extends ShapeT,
   OntologyT extends OntologyLike,
   PropertyGroupT,
   PropertyShapeT extends ShapeT,
   ShapeT,
-> extends RdfjsShape<
+> extends Shape<
   NodeShapeT,
   OntologyT,
   PropertyGroupT,
   PropertyShapeT,
   ShapeT
 > {
-  readonly constraints: RdfjsNodeShape.Constraints<
+  readonly constraints: NodeShape.Constraints<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -37,7 +37,7 @@ export class RdfjsNodeShape<
     >,
   ) {
     super(resource, shapesGraph);
-    this.constraints = new RdfjsNodeShape.Constraints(resource, shapesGraph);
+    this.constraints = new NodeShape.Constraints(resource, shapesGraph);
   }
 
   override toString(): string {
@@ -45,14 +45,14 @@ export class RdfjsNodeShape<
   }
 }
 
-export namespace RdfjsNodeShape {
+export namespace NodeShape {
   export class Constraints<
     NodeShapeT extends ShapeT,
     OntologyT extends OntologyLike,
     PropertyGroupT,
     PropertyShapeT extends ShapeT,
     ShapeT,
-  > extends RdfjsShape.Constraints<
+  > extends Shape.Constraints<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,

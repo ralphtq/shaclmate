@@ -1,3 +1,1 @@
-import { RdfjsPropertyGroup } from "@shaclmate/shacl-ast";
-
-export class PropertyGroup extends RdfjsPropertyGroup {}
+export class PropertyGroup extends PropertyGroup {}

@@ -7,21 +7,21 @@ import { NodeKind } from "./NodeKind.js";
 import type { OntologyLike } from "./OntologyLike.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
 
-export abstract class RdfjsShape<
+export abstract class Shape<
   NodeShapeT extends ShapeT,
   OntologyT extends OntologyLike,
   PropertyGroupT,
   PropertyShapeT extends ShapeT,
   ShapeT,
 > {
-  abstract readonly constraints: RdfjsShape.Constraints<
+  abstract readonly constraints: Shape.Constraints<
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
     PropertyShapeT,
     ShapeT
   >;
-  readonly targets: RdfjsShape.Targets;
+  readonly targets: Shape.Targets;
 
   protected constructor(
     readonly resource: Resource,
@@ -33,7 +33,7 @@ export abstract class RdfjsShape<
       ShapeT
     >,
   ) {
-    this.targets = new RdfjsShape.Targets(resource);
+    this.targets = new Shape.Targets(resource);
   }
 
   get comment(): Maybe<Literal> {
@@ -97,7 +97,7 @@ export abstract class RdfjsShape<
   }
 }
 
-export namespace RdfjsShape {
+export namespace Shape {
   export class Constraints<
     NodeShapeT extends ShapeT,
     OntologyT extends OntologyLike,
