@@ -11,13 +11,7 @@ export class NodeShape<
   PropertyGroupT,
   PropertyShapeT extends ShapeT,
   ShapeT,
-> extends Shape<
-  NodeShapeT,
-  OntologyT,
-  PropertyGroupT,
-  PropertyShapeT,
-  ShapeT
-> {
+> extends Shape<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT> {
   readonly constraints: NodeShape.Constraints<
     NodeShapeT,
     OntologyT,
