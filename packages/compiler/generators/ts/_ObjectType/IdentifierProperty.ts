@@ -187,15 +187,13 @@ export class IdentifierProperty extends Property<IdentifierType> {
   }: Parameters<
     Property<IdentifierType>["classConstructorStatements"]
   >[0]): readonly string[] {
+    if (this.abstract) {
+      return [];
+    }
     return this.classPropertyDeclaration
-      .map((classPropertyDeclaration) => {
-        if (classPropertyDeclaration.isAbstract) {
-          return [];
-        }
-        return [
-          `this.${classPropertyDeclaration.name} = ${variables.parameter};`,
-        ];
-      })
+      .map((classPropertyDeclaration) => [
+        `this.${classPropertyDeclaration.name} = ${variables.parameter};`,
+      ])
       .orDefault([]);
   }
 

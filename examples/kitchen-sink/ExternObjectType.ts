@@ -35,6 +35,7 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
     resource,
   }: {
     extra?: number;
+    languageIn?: readonly string[];
     ignoreRdfType?: boolean;
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, ExternObjectType> {

@@ -5589,13 +5589,13 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
     | "ConcreteChildClassNodeShape"
     | "ConcreteParentClassNodeShape";
 
+  // biome-ignore lint/complexity/noUselessConstructor: Always have a constructor
   constructor(
     parameters: ConstructorParameters<
       typeof AbstractBaseClassWithPropertiesNodeShape
     >[0],
   ) {
     super(parameters);
-    this.identifier = parameters.identifier;
   }
 
   override toRdf({
