@@ -5,7 +5,7 @@ import { Maybe, NonEmptyList } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import { NodeKind } from "./NodeKind.js";
 import type { OntologyLike } from "./OntologyLike.js";
-import type { ShapesGraphLike } from "./ShapesGraphLike.js";
+import type { ShapesGraph } from "./ShapesGraph.js";
 
 export abstract class RdfjsShape<
   NodeShapeT extends ShapeT,
@@ -25,7 +25,7 @@ export abstract class RdfjsShape<
 
   protected constructor(
     readonly resource: Resource,
-    protected readonly shapesGraph: ShapesGraphLike<
+    protected readonly shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -107,7 +107,7 @@ export namespace RdfjsShape {
   > {
     constructor(
       protected readonly resource: Resource,
-      protected readonly shapesGraph: ShapesGraphLike<
+      protected readonly shapesGraph: ShapesGraph<
         NodeShapeT,
         OntologyT,
         PropertyGroupT,

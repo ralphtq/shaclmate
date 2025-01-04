@@ -5,7 +5,7 @@ import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
 import { PropertyPath } from "./PropertyPath.js";
 import { RdfjsShape } from "./RdfjsShape.js";
-import type { ShapesGraphLike } from "./ShapesGraphLike.js";
+import type { ShapesGraph } from "./ShapesGraph.js";
 
 export class RdfjsPropertyShape<
   NodeShapeT extends ShapeT,
@@ -30,7 +30,7 @@ export class RdfjsPropertyShape<
 
   constructor(
     resource: Resource,
-    shapesGraph: ShapesGraphLike<
+    shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,

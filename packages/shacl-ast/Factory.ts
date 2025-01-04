@@ -1,6 +1,6 @@
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
-import type { ShapesGraphLike } from "./ShapesGraphLike.js";
+import type { ShapesGraph } from "./ShapesGraph.js";
 
 export type Factory<
   NodeShapeT extends ShapeT,
@@ -11,7 +11,7 @@ export type Factory<
 > = {
   createNodeShape(
     resource: Resource,
-    shapesGraph: ShapesGraphLike<
+    shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -22,7 +22,7 @@ export type Factory<
 
   createOntology(
     resource: Resource,
-    shapesGraph: ShapesGraphLike<
+    shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -33,7 +33,7 @@ export type Factory<
 
   createPropertyGroup(
     resource: Resource,
-    shapesGraph: ShapesGraphLike<
+    shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -44,7 +44,7 @@ export type Factory<
 
   createPropertyShape(
     resource: Resource,
-    shapesGraph: ShapesGraphLike<
+    shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
