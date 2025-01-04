@@ -11,38 +11,14 @@ import { owl, sh } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { ResourceSet } from "rdfjs-resource";
 import type { Factory } from "./Factory.js";
-import type { NodeShapeLike } from "./NodeShapeLike.js";
 import type { OntologyLike } from "./OntologyLike.js";
-import type { PropertyGroupLike } from "./PropertyGroupLike.js";
-import type { PropertyShapeLike } from "./PropertyShapeLike.js";
-import type { ShapeLike } from "./ShapeLike.js";
 
 export class RdfjsShapesGraph<
-  NodeShapeT extends NodeShapeLike<
-    any,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    ShapeT
-  > &
-    ShapeT,
+  NodeShapeT extends ShapeT,
   OntologyT extends OntologyLike,
-  PropertyGroupT extends PropertyGroupLike,
-  PropertyShapeT extends PropertyShapeLike<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    any,
-    ShapeT
-  > &
-    ShapeT,
-  ShapeT extends ShapeLike<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    any
-  >,
+  PropertyGroupT,
+  PropertyShapeT extends ShapeT,
+  ShapeT,
 > {
   readonly dataset: DatasetCore;
   readonly node: BlankNode | DefaultGraph | NamedNode | null;
