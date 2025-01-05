@@ -1244,25 +1244,23 @@ namespace Resource {
     }
 
     const scopeNote = _scopeNoteEither.unsafeCoerce();
-    return purify.Either.of(
-      new Resource({
-        altLabel,
-        altLabelXl,
-        changeNote,
-        definition,
-        editorialNote,
-        example,
-        hiddenLabel,
-        hiddenLabelXl,
-        historyNote,
-        identifier,
-        notation,
-        note,
-        prefLabel,
-        prefLabelXl,
-        scopeNote,
-      }),
-    );
+    return purify.Either.of({
+      altLabel,
+      altLabelXl,
+      changeNote,
+      definition,
+      editorialNote,
+      example,
+      hiddenLabel,
+      hiddenLabelXl,
+      historyNote,
+      identifier,
+      notation,
+      note,
+      prefLabel,
+      prefLabelXl,
+      scopeNote,
+    });
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {

@@ -70,7 +70,7 @@ export function fromRdfFunctionDeclaration(
       initializer ? `${name}: ${initializer}` : name,
     )
     .join(", ")} }`;
-  if (this.declarationType === "class") {
+  if (this.declarationType === "class" && !this.abstract) {
     construction = `new ${this.name}(${construction})`;
   }
 

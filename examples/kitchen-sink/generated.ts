@@ -6197,12 +6197,7 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
 
     const abcStringProperty = _abcStringPropertyEither.unsafeCoerce();
     const identifier = _resource.identifier;
-    return purify.Either.of(
-      new AbstractBaseClassWithPropertiesNodeShape({
-        abcStringProperty,
-        identifier,
-      }),
-    );
+    return purify.Either.of({ abcStringProperty, identifier });
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -6283,12 +6278,10 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
       resource: _resource,
     }).chain((_super) => {
       const identifier = _resource.identifier;
-      return purify.Either.of(
-        new AbstractBaseClassWithoutPropertiesNodeShape({
-          abcStringProperty: _super.abcStringProperty,
-          identifier,
-        }),
-      );
+      return purify.Either.of({
+        abcStringProperty: _super.abcStringProperty,
+        identifier,
+      });
     });
   }
 
@@ -6823,12 +6816,7 @@ export namespace AbstractBaseClassForExternObjectType {
 
     const abcStringProperty = _abcStringPropertyEither.unsafeCoerce();
     const identifier = _resource.identifier;
-    return purify.Either.of(
-      new AbstractBaseClassForExternObjectType({
-        abcStringProperty,
-        identifier,
-      }),
-    );
+    return purify.Either.of({ abcStringProperty, identifier });
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
