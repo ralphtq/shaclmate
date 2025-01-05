@@ -1,7 +1,7 @@
 import TermSet from "@rdfjs/term-set";
 import type * as rdfjs from "@rdfjs/types";
 import type { NamedNode } from "@rdfjs/types";
-import { NodeShape as CoreNodeShape, NodeKind } from "@shaclmate/shacl-ast";
+import { NodeShape as CoreNodeShape } from "@shaclmate/shacl-ast";
 import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
 import { Either, Left, Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
@@ -166,14 +166,14 @@ export class NodeShape extends CoreNodeShape<
     return thisMintingStrategy;
   }
 
-  get nodeKinds(): Set<NodeKind.BLANK_NODE | NodeKind.IRI> {
-    const thisNodeKinds = new Set<NodeKind.BLANK_NODE | NodeKind.IRI>(
+  get nodeKinds(): Set<"BlankNode" | "NamedNode"> {
+    const thisNodeKinds = new Set<"BlankNode" | "NamedNode">(
       [...this.constraints.nodeKinds.orDefault(new Set())].filter(
-        (nodeKind) => nodeKind !== NodeKind.LITERAL,
-      ),
+        (nodeKind) => nodeKind !== "Literal",
+      ) as ("BlankNode" | "NamedNode")[],
     );
 
-    const parentNodeKinds = new Set<NodeKind.BLANK_NODE | NodeKind.IRI>();
+    const parentNodeKinds = new Set<"BlankNode" | "NamedNode">();
     for (const parentNodeShape of this.parentNodeShapes) {
       for (const parentNodeKind of parentNodeShape.nodeKinds) {
         parentNodeKinds.add(parentNodeKind);
@@ -199,8 +199,8 @@ export class NodeShape extends CoreNodeShape<
 
     if (thisNodeKinds.size === 0) {
       // Default: both node kinds
-      thisNodeKinds.add(NodeKind.BLANK_NODE);
-      thisNodeKinds.add(NodeKind.IRI);
+      thisNodeKinds.add("BlankNode");
+      thisNodeKinds.add("NamedNode");
     }
 
     return thisNodeKinds;

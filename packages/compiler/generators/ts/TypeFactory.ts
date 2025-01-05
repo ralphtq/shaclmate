@@ -18,6 +18,7 @@ import { ObjectUnionType } from "./ObjectUnionType.js";
 import { OptionType } from "./OptionType.js";
 import { SetType } from "./SetType.js";
 import { StringType } from "./StringType.js";
+import { TermType } from "./TermType.js";
 import type { Type } from "./Type.js";
 import { UnionType } from "./UnionType.js";
 import { tsName } from "./tsName.js";
@@ -48,8 +49,6 @@ export class TypeFactory {
           nodeKinds: astType.nodeKinds,
         });
       case "IntersectionType":
-        throw new Error("not implemented");
-      case "TermType":
         throw new Error("not implemented");
       case "ListType": {
         return new ListType({
@@ -228,6 +227,14 @@ export class TypeFactory {
           dataFactoryVariable: this.dataFactoryVariable,
           itemType: this.createTypeFromAstType(astType.itemType),
           minCount: astType.minCount,
+        });
+      case "TermType":
+        return new TermType({
+          dataFactoryVariable: this.dataFactoryVariable,
+          defaultValue: astType.defaultValue,
+          hasValue: astType.hasValue,
+          in_: astType.in_,
+          nodeKinds: astType.nodeKinds,
         });
       case "UnionType": {
         return new UnionType({

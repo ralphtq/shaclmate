@@ -1,11 +1,15 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import type { Maybe } from "purify-ts";
+import { xsd } from "@tpluscode/rdf-ns-builders";
+import { Maybe } from "purify-ts";
+import { invariant } from "ts-invariant";
+import { Memoize } from "typescript-memoize";
+import { Import } from "./Import.js";
 import { Type } from "./Type.js";
 
 /**
  * Abstract base class for IdentifierType and LiteralType.
  */
-export abstract class TermType<
+export class TermType<
   TermT extends BlankNode | Literal | NamedNode,
 > extends Type {
   readonly defaultValue: Maybe<TermT>;
@@ -13,21 +17,110 @@ export abstract class TermType<
   readonly hasValue: Maybe<TermT>;
   readonly in_: Maybe<readonly TermT[]>;
   readonly mutable: boolean = false;
+  readonly nodeKinds: Set<TermT["termType"]>;
 
   constructor({
     defaultValue,
     hasValue,
     in_,
+    nodeKinds,
     ...superParameters
   }: {
     defaultValue: Maybe<TermT>;
     hasValue: Maybe<TermT>;
     in_: Maybe<readonly TermT[]>;
+    nodeKinds: Set<TermT["termType"]>;
   } & ConstructorParameters<typeof Type>[0]) {
     super(superParameters);
     this.defaultValue = defaultValue;
     this.hasValue = hasValue;
     this.in_ = in_;
+    this.nodeKinds = new Set([...nodeKinds]);
+    invariant(this.nodeKinds.size > 0);
+  }
+
+  get conversions(): readonly Type.Conversion[] {
+    const conversions: Type.Conversion[] = [];
+
+    if (this.nodeKinds.has("Literal")) {
+      conversions.push(
+        {
+          conversionExpression: (value) => `rdfLiteral.toRdf(${value})`,
+          sourceTypeCheckExpression: (value) => `typeof ${value} === "boolean"`,
+          sourceTypeName: "boolean",
+        },
+        {
+          conversionExpression: (value) => `rdfLiteral.toRdf(${value})`,
+          sourceTypeCheckExpression: (value) =>
+            `typeof ${value} === "object" && ${value} instanceof Date`,
+          sourceTypeName: "Date",
+        },
+        {
+          conversionExpression: (value) => `rdfLiteral.toRdf(${value})`,
+          sourceTypeCheckExpression: (value) => `typeof ${value} === "number"`,
+          sourceTypeName: "number",
+        },
+        {
+          conversionExpression: (value) =>
+            `${this.dataFactoryVariable}.literal(${value})`,
+          sourceTypeCheckExpression: (value) => `typeof ${value} === "string"`,
+          sourceTypeName: "string",
+        },
+      );
+    }
+
+    this.defaultValue.ifJust((defaultValue) => {
+      conversions.push({
+        conversionExpression: () => this.rdfjsTermExpression(defaultValue),
+        sourceTypeCheckExpression: (value) => `typeof ${value} === "undefined"`,
+        sourceTypeName: "undefined",
+      });
+    });
+
+    conversions.push({
+      conversionExpression: (value) => value,
+      sourceTypeCheckExpression: (value) => `typeof ${value} === "object"`,
+      sourceTypeName: this.name,
+    });
+
+    return conversions;
+  }
+
+  override get discriminatorProperty(): Maybe<Type.DiscriminatorProperty> {
+    return Maybe.of({
+      name: "termType",
+      type: "string" as const,
+      values: [...this.nodeKinds],
+    });
+  }
+
+  get jsonName(): string {
+    const jsonName: string[] = [];
+    if (this.nodeKinds.has("Literal")) {
+      jsonName.push(
+        '{ "@language": string | undefined, "@type": string | undefined, "@value": string }',
+      );
+    }
+    if (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")) {
+      jsonName.push(`{ "@id": string }`);
+    }
+    // `{ "@id": ${variables.value}.value }`
+    return jsonName.join(" | ");
+  }
+
+  @Memoize()
+  override get name(): string {
+    return [...this.nodeKinds]
+      .map((nodeKind) => `rdfjs.${nodeKind}`)
+      .join(" | ");
+  }
+
+  override get useImports(): readonly Import[] {
+    const imports = [Import.RDFJS_TYPES];
+    if (this.nodeKinds.has("Literal")) {
+      imports.push(Import.RDF_LITERAL);
+    }
+    return imports;
   }
 
   override propertyFromRdfExpression({
@@ -64,6 +157,15 @@ export abstract class TermType<
     return chain.join(".");
   }
 
+  override propertyHashStatements({
+    variables,
+  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
+    return [
+      `${variables.hasher}.update(${variables.value}.termType);`,
+      `${variables.hasher}.update(${variables.value}.value);`,
+    ];
+  }
+
   override propertySparqlGraphPatternExpression({
     variables,
   }: Parameters<
@@ -79,6 +181,16 @@ export abstract class TermType<
       expression = `sparqlBuilder.GraphPattern.optional(${expression})`;
     }
     return new Type.SparqlGraphPatternExpression(expression);
+  }
+
+  override propertyToJsonExpression({
+    variables,
+  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+    const expression = "";
+    if (this.nodeKinds.has("Literal")) {
+      `{ "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value }`;
+    }
+    return expression;
   }
 
   override propertyToRdfExpression({
@@ -108,9 +220,13 @@ export abstract class TermType<
    * @param variables
    * @protected
    */
-  protected abstract propertyFromRdfResourceValueExpression({
+  protected propertyFromRdfResourceValueExpression({
     variables,
   }: {
     variables: { predicate: string; resource: string; resourceValue: string };
-  }): string;
+  }): string {
+    if (this.nodeKinds.has("Literal") && this.nodeKinds.size === 1) {
+      return `${variables.resourceValue}.toLiteral()`;
+    }
+  }
 }
