@@ -70,23 +70,8 @@ export function fromRdfFunctionDeclaration(
       initializer ? `${name}: ${initializer}` : name,
     )
     .join(", ")} }`;
-  let returnType: string;
-  switch (this.declarationType) {
-    case "class": {
-      if (this.abstract) {
-        returnType = `{ ${Object.entries(propertiesByName)
-          .map(([name, { type }]) => `${name}: ${type}`)
-          .join(", ")} }`;
-      } else {
-        construction = `new ${this.name}(${construction})`;
-        returnType = this.name;
-      }
-      break;
-    }
-    case "interface": {
-      returnType = this.name;
-      break;
-    }
+  if (this.declarationType === "class") {
+    construction = `new ${this.name}(${construction})`;
   }
 
   statements.push(`return purify.Either.of(${construction})`);
@@ -107,7 +92,13 @@ export function fromRdfFunctionDeclaration(
         type: `{ [_index: string]: any; ignoreRdfType?: boolean; languageIn?: readonly string[]; resource: ${this.rdfjsResourceType().name}; }`,
       },
     ],
-    returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${returnType}>`,
+    returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${
+      this.abstract
+        ? `{ ${Object.entries(propertiesByName)
+            .map(([name, { type }]) => `${name}: ${type}`)
+            .join(", ")} }`
+        : this.name
+    }>`,
     statements,
   });
 }
