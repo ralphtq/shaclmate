@@ -10,7 +10,9 @@ describe("toJson", () => {
       "@type": "http://www.w3.org/2001/XMLSchema#integer",
       "@value": "1",
     });
-    expect(jsonObject.orTermsProperty).toStrictEqual("test");
+    expect(jsonObject.orTermsProperty).toStrictEqual({
+      "@value": "test",
+    });
   });
 
   it("child-parent", ({ expect }) => {
