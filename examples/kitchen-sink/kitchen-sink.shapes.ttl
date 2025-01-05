@@ -473,6 +473,46 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :publicProperty
     ] .
 
+:NodeShapeWithTermProperties
+    shaclmate:name "NodeShapeWithTermProperties" ;
+    a sh:NodeShape ;
+    rdfs:comment "Shape with properties that are not nested objects" ;
+    sh:property [
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:name "booleanProperty" ;
+        sh:path :booleanProperty
+    ], [
+        sh:datatype xsd:dateTime ;
+        sh:maxCount 1 ;
+        sh:name "dateTimeProperty" ;
+        sh:path :dateTimeProperty
+    ], [
+        sh:maxCount 1 ;
+        sh:name "iriProperty" ;
+        sh:nodeKind sh:IRI ;
+        sh:path :iriProperty
+    ], [
+        sh:maxCount 1 ;
+        sh:name "literalProperty" ;
+        sh:nodeKind sh:Literal ;
+        sh:path :literalProperty
+    ], [
+        sh:datatype xsd:decimal ;
+        sh:maxCount 1 ;
+        sh:name "numberProperty" ;
+        sh:path :numberProperty
+    ], [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:name "stringProperty" ;
+        sh:path :stringProperty
+    ], [
+        sh:maxCount 1 ;
+        sh:name "termProperty" ;
+        sh:path :termProperty
+    ] .
+
 :NonClassNodeShape
     shaclmate:name "NonClassNodeShape" ;
     a sh:NodeShape ;
