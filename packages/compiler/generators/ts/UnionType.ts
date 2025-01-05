@@ -203,15 +203,15 @@ ${this.memberTypeTraits
     for (const memberTypeTraits of this.memberTypeTraits) {
       for (const discriminatorPropertyValue of memberTypeTraits.discriminatorPropertyValues) {
         caseBlocks.push(
-          `case "${discriminatorPropertyValue}": { ${memberTypeTraits.memberType.propertyHashStatements(
-            {
+          `case "${discriminatorPropertyValue}": { ${memberTypeTraits.memberType
+            .propertyHashStatements({
               depth: depth + 1,
               variables: {
                 hasher: variables.hasher,
                 value: `${memberTypeTraits.payload(variables.value)}`,
               },
-            },
-          )}; break; }`,
+            })
+            .join("\n")}; break; }`,
         );
       }
     }

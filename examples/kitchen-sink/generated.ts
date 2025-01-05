@@ -1572,16 +1572,19 @@ export class NodeShapeWithOrProperties {
     },
   >(_hasher: HasherT): HasherT {
     this.orLiteralsProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
     this.orTermsProperty.ifJust((_value0) => {
       switch (_value0.termType) {
         case "Literal": {
+          _hasher.update(_value0.termType);
           _hasher.update(_value0.value);
           break;
         }
         case "NamedNode": {
-          _hasher.update(rdfjsResource.Resource.Identifier.toString(_value0));
+          _hasher.update(_value0.termType);
+          _hasher.update(_value0.value);
           break;
         }
       }
@@ -1593,9 +1596,8 @@ export class NodeShapeWithOrProperties {
           break;
         }
         case "1-rdfjs.NamedNode": {
-          _hasher.update(
-            rdfjsResource.Resource.Identifier.toString(_value0.value),
-          );
+          _hasher.update(_value0.value.termType);
+          _hasher.update(_value0.value.value);
           break;
         }
       }
@@ -1606,18 +1608,14 @@ export class NodeShapeWithOrProperties {
   toJson(): {
     readonly "@id": string;
     readonly orLiteralsProperty:
-      | (
-          | string
-          | {
-              "@language": string | undefined;
-              "@type": string | undefined;
-              "@value": string;
-            }
-        )
+      | {
+          "@language": string | undefined;
+          "@type": string | undefined;
+          "@value": string;
+        }
       | undefined;
     readonly orTermsProperty:
       | (
-          | string
           | {
               "@language": string | undefined;
               "@type": string | undefined;
@@ -1638,11 +1636,19 @@ export class NodeShapeWithOrProperties {
       JSON.stringify({
         "@id": this.identifier.value,
         orLiteralsProperty: this.orLiteralsProperty
+          .map((_item) => ({
+            "@language": _item.language.length > 0 ? _item.language : undefined,
+            "@type":
+              _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+                ? _item.datatype.value
+                : undefined,
+            "@value": _item.value,
+          }))
+          .extract(),
+        orTermsProperty: this.orTermsProperty
           .map((_item) =>
-            _item.datatype.value ===
-              "http://www.w3.org/2001/XMLSchema#string" &&
-            _item.language.length === 0
-              ? _item.value
+            _item.termType === "NamedNode"
+              ? { "@id": _item.value }
               : {
                   "@language":
                     _item.language.length > 0 ? _item.language : undefined,
@@ -1653,26 +1659,6 @@ export class NodeShapeWithOrProperties {
                       : undefined,
                   "@value": _item.value,
                 },
-          )
-          .extract(),
-        orTermsProperty: this.orTermsProperty
-          .map((_item) =>
-            _item.termType === "NamedNode"
-              ? { "@id": _item.value }
-              : _item.datatype.value ===
-                    "http://www.w3.org/2001/XMLSchema#string" &&
-                  _item.language.length === 0
-                ? _item.value
-                : {
-                    "@language":
-                      _item.language.length > 0 ? _item.language : undefined,
-                    "@type":
-                      _item.datatype.value !==
-                      "http://www.w3.org/2001/XMLSchema#string"
-                        ? _item.datatype.value
-                        : undefined,
-                    "@value": _item.value,
-                  },
           )
           .extract(),
         orUnrelatedProperty: this.orUnrelatedProperty
@@ -2738,9 +2724,11 @@ export class NodeShapeWithLanguageInProperties {
     },
   >(_hasher: HasherT): HasherT {
     this.languageInProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
     this.literalProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
     return _hasher;
@@ -2749,24 +2737,18 @@ export class NodeShapeWithLanguageInProperties {
   toJson(): {
     readonly "@id": string;
     readonly languageInProperty:
-      | (
-          | string
-          | {
-              "@language": string | undefined;
-              "@type": string | undefined;
-              "@value": string;
-            }
-        )
+      | {
+          "@language": string | undefined;
+          "@type": string | undefined;
+          "@value": string;
+        }
       | undefined;
     readonly literalProperty:
-      | (
-          | string
-          | {
-              "@language": string | undefined;
-              "@type": string | undefined;
-              "@value": string;
-            }
-        )
+      | {
+          "@language": string | undefined;
+          "@type": string | undefined;
+          "@value": string;
+        }
       | undefined;
     readonly type: string;
   } {
@@ -2774,40 +2756,24 @@ export class NodeShapeWithLanguageInProperties {
       JSON.stringify({
         "@id": this.identifier.value,
         languageInProperty: this.languageInProperty
-          .map((_item) =>
-            _item.datatype.value ===
-              "http://www.w3.org/2001/XMLSchema#string" &&
-            _item.language.length === 0
-              ? _item.value
-              : {
-                  "@language":
-                    _item.language.length > 0 ? _item.language : undefined,
-                  "@type":
-                    _item.datatype.value !==
-                    "http://www.w3.org/2001/XMLSchema#string"
-                      ? _item.datatype.value
-                      : undefined,
-                  "@value": _item.value,
-                },
-          )
+          .map((_item) => ({
+            "@language": _item.language.length > 0 ? _item.language : undefined,
+            "@type":
+              _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+                ? _item.datatype.value
+                : undefined,
+            "@value": _item.value,
+          }))
           .extract(),
         literalProperty: this.literalProperty
-          .map((_item) =>
-            _item.datatype.value ===
-              "http://www.w3.org/2001/XMLSchema#string" &&
-            _item.language.length === 0
-              ? _item.value
-              : {
-                  "@language":
-                    _item.language.length > 0 ? _item.language : undefined,
-                  "@type":
-                    _item.datatype.value !==
-                    "http://www.w3.org/2001/XMLSchema#string"
-                      ? _item.datatype.value
-                      : undefined,
-                  "@value": _item.value,
-                },
-          )
+          .map((_item) => ({
+            "@language": _item.language.length > 0 ? _item.language : undefined,
+            "@type":
+              _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+                ? _item.datatype.value
+                : undefined,
+            "@value": _item.value,
+          }))
           .extract(),
         type: this.type,
       } satisfies ReturnType<NodeShapeWithLanguageInProperties["toJson"]>),
@@ -3166,7 +3132,8 @@ export class NodeShapeWithInProperties {
       _hasher.update(_value0.toISOString());
     });
     this.inIrisProperty.ifJust((_value0) => {
-      _hasher.update(rdfjsResource.Resource.Identifier.toString(_value0));
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
     });
     this.inNumbersProperty.ifJust((_value0) => {
       _hasher.update(_value0.toString());
@@ -3277,22 +3244,20 @@ export namespace NodeShapeWithInProperties {
         )
         .head()
         .chain((_value) =>
-          _value
-            .toBoolean()
-            .chain((value) =>
-              value === true
-                ? purify.Either.of(value)
-                : purify.Left(
-                    new rdfjsResource.Resource.MistypedValueError({
-                      actualValue: rdfLiteral.toRdf(value),
-                      expectedValueType: "true",
-                      focusResource: _resource,
-                      predicate: dataFactory.namedNode(
-                        "http://example.com/inBooleansProperty",
-                      ),
-                    }),
-                  ),
-            ),
+          _value.toBoolean().chain((value) =>
+            value === true
+              ? purify.Either.of(value)
+              : purify.Left(
+                  new rdfjsResource.Resource.MistypedValueError({
+                    actualValue: rdfLiteral.toRdf(value),
+                    expectedValueType: "true",
+                    focusResource: _resource,
+                    predicate: dataFactory.namedNode(
+                      "http://example.com/inBooleansProperty",
+                    ),
+                  }),
+                ),
+          ),
         )
         .toMaybe(),
     );
@@ -3635,7 +3600,8 @@ export class NodeShapeWithHasValueProperties {
     },
   >(_hasher: HasherT): HasherT {
     this.hasIriProperty.ifJust((_value0) => {
-      _hasher.update(rdfjsResource.Resource.Identifier.toString(_value0));
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
     });
     this.hasLiteralProperty.ifJust((_value0) => {
       _hasher.update(_value0);
@@ -4239,7 +4205,8 @@ export class NodeShapeWithExternProperties {
       _value0.hash(_hasher);
     });
     this.externProperty.ifJust((_value0) => {
-      _hasher.update(rdfjsResource.Resource.Identifier.toString(_value0));
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
     });
     this.inlineProperty.ifJust((_value0) => {
       _value0.hash(_hasher);
@@ -5697,20 +5664,18 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
   override equals(
     other: ConcreteParentClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.parentStringProperty,
-          other.parentStringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "parentStringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+    return super.equals(other).chain(() =>
+      purifyHelpers.Equatable.strictEquals(
+        this.parentStringProperty,
+        other.parentStringProperty,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "parentStringProperty",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<
@@ -5892,20 +5857,18 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   override equals(
     other: ConcreteChildClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.childStringProperty,
-          other.childStringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "childStringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+    return super.equals(other).chain(() =>
+      purifyHelpers.Equatable.strictEquals(
+        this.childStringProperty,
+        other.childStringProperty,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "childStringProperty",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<

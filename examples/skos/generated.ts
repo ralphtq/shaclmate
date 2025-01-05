@@ -392,6 +392,7 @@ abstract class Resource {
     },
   >(_hasher: HasherT): HasherT {
     for (const _element0 of this.altLabel) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -400,22 +401,27 @@ abstract class Resource {
     }
 
     for (const _element0 of this.changeNote) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.definition) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.editorialNote) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.example) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.hiddenLabel) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -424,18 +430,22 @@ abstract class Resource {
     }
 
     for (const _element0 of this.historyNote) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.notation) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.note) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.prefLabel) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -444,6 +454,7 @@ abstract class Resource {
     }
 
     for (const _element0 of this.scopeNote) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -451,271 +462,161 @@ abstract class Resource {
   }
 
   toJson(): {
-    readonly altLabel: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly altLabel: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly altLabelXl: readonly ReturnType<Label["toJson"]>[];
-    readonly changeNote: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly definition: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly editorialNote: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly example: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly hiddenLabel: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly changeNote: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly definition: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly editorialNote: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly example: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly hiddenLabel: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly hiddenLabelXl: readonly ReturnType<Label["toJson"]>[];
-    readonly historyNote: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly historyNote: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly "@id": string;
-    readonly notation: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly note: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly prefLabel: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly notation: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly note: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly prefLabel: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly prefLabelXl: readonly ReturnType<Label["toJson"]>[];
-    readonly scopeNote: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly scopeNote: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly type: string;
   } {
     return JSON.parse(
       JSON.stringify({
-        altLabel: this.altLabel.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        altLabel: this.altLabel.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         altLabelXl: this.altLabelXl.map((_item) => _item.toJson()),
-        changeNote: this.changeNote.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        definition: this.definition.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        editorialNote: this.editorialNote.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        example: this.example.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        hiddenLabel: this.hiddenLabel.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        changeNote: this.changeNote.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        definition: this.definition.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        editorialNote: this.editorialNote.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        example: this.example.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        hiddenLabel: this.hiddenLabel.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         hiddenLabelXl: this.hiddenLabelXl.map((_item) => _item.toJson()),
-        historyNote: this.historyNote.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        historyNote: this.historyNote.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         "@id": this.identifier.value,
-        notation: this.notation.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        note: this.note.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        prefLabel: this.prefLabel.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        notation: this.notation.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        note: this.note.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        prefLabel: this.prefLabel.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         prefLabelXl: this.prefLabelXl.map((_item) => _item.toJson()),
-        scopeNote: this.scopeNote.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        scopeNote: this.scopeNote.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         type: this.type,
       } satisfies ReturnType<Resource["toJson"]>),
     );
@@ -2252,20 +2153,18 @@ export class ConceptScheme extends Resource {
   }
 
   override equals(other: ConceptScheme): purifyHelpers.Equatable.EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        purifyHelpers.Equatable.arrayEquals(
-          this.hasTopConcept,
-          other.hasTopConcept,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "hasTopConcept",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+    return super.equals(other).chain(() =>
+      purifyHelpers.Equatable.arrayEquals(
+        this.hasTopConcept,
+        other.hasTopConcept,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "hasTopConcept",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<
@@ -2531,6 +2430,7 @@ export class Label {
     },
   >(_hasher: HasherT): HasherT {
     for (const _element0 of this.literalForm) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -2539,34 +2439,24 @@ export class Label {
 
   toJson(): {
     readonly "@id": string;
-    readonly literalForm: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly literalForm: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly type: string;
   } {
     return JSON.parse(
       JSON.stringify({
         "@id": this.identifier.value,
-        literalForm: this.literalForm.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        literalForm: this.literalForm.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         type: this.type,
       } satisfies ReturnType<Label["toJson"]>),
     );

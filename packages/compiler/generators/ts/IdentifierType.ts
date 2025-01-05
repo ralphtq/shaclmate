@@ -25,6 +25,14 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
       .join(" | ");
   }
 
+  override propertyToJsonExpression({
+    variables,
+  }: Parameters<
+    TermType<BlankNode | NamedNode>["propertyToJsonExpression"]
+  >[0]): string {
+    return `{ "@id": ${variables.value}.value }`;
+  }
+
   protected override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<

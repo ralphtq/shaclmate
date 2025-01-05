@@ -1,4 +1,5 @@
 import type { Literal } from "@rdfjs/types";
+import { xsd } from "@tpluscode/rdf-ns-builders";
 import type { Maybe, NonEmptyList } from "purify-ts";
 import { TermType } from "./TermType.js";
 
@@ -25,6 +26,12 @@ export class LiteralType extends TermType<Literal> {
     TermType<Literal>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     return `${variables.resourceValue}.toLiteral()`;
+  }
+
+  override propertyToJsonExpression({
+    variables,
+  }: Parameters<TermType<Literal>["propertyToJsonExpression"]>[0]): string {
+    return `{ "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value }`;
   }
 
   protected override propertyFilterRdfResourceValuesExpression({

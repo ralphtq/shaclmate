@@ -23,7 +23,9 @@ export class BooleanType extends PrimitiveType<boolean> {
     return conversions;
   }
 
-  override get jsonName(): string { return "boolean"; }
+  override get jsonName(): string {
+    return "boolean";
+  }
 
   @Memoize()
   override get name(): string {
