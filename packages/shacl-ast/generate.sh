@@ -12,3 +12,4 @@ format_rdf() {
 
 format_rdf $PWD/shacl-ast.shaclmate.ttl
 ../cli/cli.sh generate $PWD/shacl-ast.shaclmate.ttl >$PWD/generated.ts
+npm exec biome -- check --write --unsafe $PWD/generated.ts
