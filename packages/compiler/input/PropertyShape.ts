@@ -18,6 +18,13 @@ export class PropertyShape extends CorePropertyShape<
     return extern.bind(this)();
   }
 
+  get mutable(): Maybe<boolean> {
+    return this.resource
+      .value(shaclmate.mutable)
+      .chain((value) => value.toBoolean())
+      .toMaybe();
+  }
+
   get shaclmateName(): Maybe<string> {
     return shaclmateName.bind(this)();
   }

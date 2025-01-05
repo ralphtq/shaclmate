@@ -166,6 +166,13 @@ export class NodeShape extends CoreNodeShape<
     return thisMintingStrategy;
   }
 
+  get mutable(): Maybe<boolean> {
+    return this.resource
+        .value(shaclmate.mutable)
+        .chain((value) => value.toBoolean())
+        .toMaybe();
+  }
+
   get nodeKinds(): Set<"BlankNode" | "NamedNode"> {
     const thisNodeKinds = new Set<"BlankNode" | "NamedNode">(
       [...this.constraints.nodeKinds.orDefault(new Set())].filter(
