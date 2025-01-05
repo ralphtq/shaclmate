@@ -221,6 +221,6 @@ export class TermType<
   }: {
     variables: { predicate: string; resource: string; resourceValue: string };
   }): string {
-    return `${variables.resourceValue}.toTerm()`;
+    return `purify.Either.of(${variables.resourceValue}.toTerm())`;
   }
 }
