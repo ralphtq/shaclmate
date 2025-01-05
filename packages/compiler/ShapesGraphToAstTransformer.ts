@@ -30,6 +30,8 @@ export class ShapesGraphToAstTransformer {
     _ShapesGraphToAstTransformer.transformPropertyShapeToAstLiteralType;
   protected transformPropertyShapeToAstObjectTypeProperty =
     _ShapesGraphToAstTransformer.transformPropertyShapeToAstObjectTypeProperty;
+  protected transformPropertyShapeToAstTermType =
+    _ShapesGraphToAstTransformer.transformPropertyShapeToAstTermType;
   protected transformPropertyShapeToAstType =
     _ShapesGraphToAstTransformer.transformPropertyShapeToAstType;
 

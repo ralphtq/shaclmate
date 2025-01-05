@@ -45,7 +45,7 @@ export function transformPropertyShapeToAstLiteralType(
     // Treat any shape with a single sh:nodeKind of sh:Literal as a literal type
     (nodeKinds.size === 1 && nodeKinds.has(NodeKind.LITERAL))
   ) {
-    return Either.of<Error, ast.LiteralType>({
+    return Either.of({
       datatype: shape.constraints.datatype,
       defaultValue: literalDefaultValue,
       hasValue: literalHasValue,
