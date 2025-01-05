@@ -109,9 +109,9 @@ export class TermType<
 
   @Memoize()
   override get name(): string {
-    return [...this.nodeKinds]
+    return `(${[...this.nodeKinds]
       .map((nodeKind) => `rdfjs.${nodeKind}`)
-      .join(" | ");
+      .join(" | ")})`;
   }
 
   override get useImports(): readonly Import[] {

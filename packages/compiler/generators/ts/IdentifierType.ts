@@ -20,9 +20,9 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
         .join(" | ")}>`;
     }
 
-    return [...this.nodeKinds]
+    return `(${[...this.nodeKinds]
       .map((nodeKind) => `rdfjs.${nodeKind}`)
-      .join(" | ");
+      .join(" | ")})`;
   }
 
   override propertyToJsonExpression({
