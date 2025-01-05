@@ -5,48 +5,109 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix shaclmate: <http://minorg.github.io/shaclmate/ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix : <http://minorg.github.io/shaclmate/shacl-ast/ns#> .
 
-<http://minorg.github.io/shaclmate/shacl-ast/ns#>
+<http://minorg.github.io/shaclmate/ns#>
+    shaclmate:tsFeatureInclude shaclmate:_TsFeature_FromRdf ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
     a owl:Ontology ;
     rdfs:comment "The shapes in this ontology are modeled after shacl-shacl but are intended for code generation with shaclmate rather than validation." ;
     rdfs:label "SHACL for shacl-ast" ;
     rdfs:seeAlso <https://www.w3.org/TR/shacl/#shacl-shacl> .
 
-:NodeShape
-    shaclmate:name "NodeShape" ;
+shaclmate:CoreNodeShape
+    shaclmate:fromRdfType sh:NodeShape ;
+    shaclmate:name "CoreNodeShape" ;
     a owl:Class, sh:NodeShape ;
-    rdfs:subClassOf :Shape .
+    rdfs:subClassOf shaclmate:CoreShape ;
+    sh:property shaclmate:CoreNodeShape-closed, shaclmate:CoreNodeShape-properties .
 
-:PropertyGroup
-    shaclmate:name "PropertyGroup" ;
-    a sh:NodeShape .
+shaclmate:CoreNodeShape-closed
+    a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:name "closed" ;
+    sh:path sh:closed .
 
-:PropertyShape
-    shaclmate:name "PropertyShape" ;
+shaclmate:CoreNodeShape-properties
+    a sh:PropertyShape ;
+    sh:name "properties" ;
+    sh:node shaclmate:CorePropertyShape ;
+    sh:path sh:property .
+
+shaclmate:CorePropertyGroup
+    shaclmate:fromRdfType sh:PropertyGroup ;
+    shaclmate:name "CorePropertyGroup" ;
+    a sh:NodeShape ;
+    sh:property shaclmate:CorePropertyGroup-comments, shaclmate:CorePropertyGroup-labels .
+
+shaclmate:CorePropertyGroup-comments
+    a sh:PropertyShape ;
+    sh:name "comments" ;
+    sh:or dash:StringOrLangString ;
+    sh:path rdfs:comment .
+
+shaclmate:CorePropertyGroup-labels
+    a sh:PropertyShape ;
+    sh:name "labels" ;
+    sh:or dash:StringOrLangString ;
+    sh:path rdfs:label .
+
+shaclmate:CorePropertyPath
+    shaclmate:extern true ;
+    shaclmate:name "PropertyPath" ;
+    shaclmate:tsImport "import { PropertyPath } from \"./PropertyPath.js\"" ;
+    a sh:NodeShape ;
+    rdfs:comment "Extern PropertyPath since shaclmate is not sophisticated enough to deal with all property path variants yet" .
+
+shaclmate:CorePropertyShape
+    shaclmate:fromRdfType sh:PropertyShape ;
+    shaclmate:name "CorePropertyShape" ;
     a owl:Class, sh:NodeShape ;
-    rdfs:comment "Doesn't include sh:path since shaclmate can't handle the requisite SHACL yet" ;
-    sh:property [
-        sh:maxCount 1 ;
-        sh:path sh:defaultValue
-    ], [
-        sh:or dash:StringOrLangString ;
-        sh:path sh:description
-    ], [
-        shaclmate:extern true ;
-        sh:node :PropertyGroup ;
-        sh:path sh:group
-    ], [
-        sh:or dash:StringOrLangString ;
-        sh:path sh:name
-    ], [
-        sh:datatype xsd:decimal ;
-        sh:maxCount 1 ;
-        sh:path sh:order
-    ] .
+    rdfs:subClassOf shaclmate:CoreShape ;
+    sh:property shaclmate:CorePropertyShape-defaultValue, shaclmate:CorePropertyShape-descriptions, shaclmate:CorePropertyShape-groups, shaclmate:CorePropertyShape-names, shaclmate:CorePropertyShape-order, shaclmate:CorePropertyShape-path .
 
-:Shape
+shaclmate:CorePropertyShape-defaultValue
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "defaultValue" ;
+    sh:path sh:defaultValue .
+
+shaclmate:CorePropertyShape-descriptions
+    a sh:PropertyShape ;
+    sh:name "descriptions" ;
+    sh:or dash:StringOrLangString ;
+    sh:path sh:description .
+
+shaclmate:CorePropertyShape-groups
+    shaclmate:extern true ;
+    a sh:PropertyShape ;
+    sh:name "groups" ;
+    sh:node shaclmate:CorePropertyGroup ;
+    sh:path sh:group .
+
+shaclmate:CorePropertyShape-names
+    a sh:PropertyShape ;
+    sh:name "names" ;
+    sh:or dash:StringOrLangString ;
+    sh:path sh:name .
+
+shaclmate:CorePropertyShape-order
+    a sh:PropertyShape ;
+    sh:datatype xsd:decimal ;
+    sh:maxCount 1 ;
+    sh:name "order" ;
+    sh:path sh:order .
+
+shaclmate:CorePropertyShape-path
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "path" ;
+    sh:node shaclmate:CorePropertyPath ;
+    sh:path sh:path .
+
+shaclmate:CoreShape
     shaclmate:abstract true ;
-    shaclmate:name "Shape" ;
+    shaclmate:name "CoreShape" ;
     a owl:Class, sh:NodeShape .
 
