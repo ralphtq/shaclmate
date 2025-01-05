@@ -3,19 +3,10 @@ import { Either, Left } from "purify-ts";
 import { invariant } from "ts-invariant";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
-import type { TsFeature } from "../enums/index.js";
+import { TsFeature } from "../enums/TsFeature.js";
 import * as input from "../input/index.js";
 import { logger } from "../logger.js";
 import type { NodeShapeAstType } from "./NodeShapeAstType.js";
-
-const tsFeaturesDefault: Set<TsFeature> = new Set([
-  "equals",
-  "fromRdf",
-  "hash",
-  "toJson",
-  "toRdf",
-  "sparql-graph-patterns",
-]);
 
 /**
  * Is an ast.ObjectType actually the shape of an RDF list?
@@ -176,7 +167,7 @@ export function transformNodeShapeToAstType(
       label: nodeShape.label.map((literal) => literal.value),
       memberTypes: [] as ast.ObjectType[],
       name: this.shapeAstName(nodeShape),
-      tsFeatures: nodeShape.tsFeatures.orDefault(tsFeaturesDefault),
+      tsFeatures: nodeShape.tsFeatures.orDefault(new Set(TsFeature.MEMBERS)),
     };
 
     this.nodeShapeAstTypesByIdentifier.set(
@@ -221,7 +212,7 @@ export function transformNodeShapeToAstType(
     properties: [], // This is mutable, we'll populate it below.
     parentObjectTypes: [], // This is mutable, we'll populate it below
     toRdfTypes: nodeShape.toRdfTypes,
-    tsFeatures: nodeShape.tsFeatures.orDefault(tsFeaturesDefault),
+    tsFeatures: nodeShape.tsFeatures.orDefault(new Set(TsFeature.MEMBERS)),
     tsIdentifierPropertyName:
       nodeShape.tsObjectIdentifierPropertyName.orDefault("identifier"),
     tsImport: nodeShape.tsImport,
