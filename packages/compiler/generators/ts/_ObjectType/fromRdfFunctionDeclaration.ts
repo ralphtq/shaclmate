@@ -70,12 +70,23 @@ export function fromRdfFunctionDeclaration(
       initializer ? `${name}: ${initializer}` : name,
     )
     .join(", ")} }`;
-  let returnType = `{ ${Object.entries(propertiesByName)
-    .map(([name, { type }]) => `${name}: ${type}`)
-    .join(", ")} }`;
-  if (this.declarationType === "class" && !this.abstract) {
-    construction = `new ${this.name}(${construction})`;
-    returnType = this.name;
+  let returnType: string;
+  switch (this.declarationType) {
+    case "class": {
+      if (this.abstract) {
+        returnType = `{ ${Object.entries(propertiesByName)
+          .map(([name, { type }]) => `${name}: ${type}`)
+          .join(", ")} }`;
+      } else {
+        construction = `new ${this.name}(${construction})`;
+        returnType = this.name;
+      }
+      break;
+    }
+    case "interface": {
+      returnType = this.name;
+      break;
+    }
   }
 
   statements.push(`return purify.Either.of(${construction})`);

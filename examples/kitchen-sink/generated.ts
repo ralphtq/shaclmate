@@ -5979,14 +5979,7 @@ export namespace InterfaceNodeShape {
     ignoreRdfType?: boolean;
     languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
-  }): purify.Either<
-    rdfjsResource.Resource.ValueError,
-    {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      stringProperty: string;
-      type: "InterfaceNodeShape";
-    }
-  > {
+  }): purify.Either<rdfjsResource.Resource.ValueError, InterfaceNodeShape> {
     const identifier = _resource.identifier;
     const _stringPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
