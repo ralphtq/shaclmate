@@ -1,4 +1,3 @@
-import { NodeKind } from "@shaclmate/shacl-ast";
 import { rdf } from "@tpluscode/rdf-ns-builders";
 import { Either, Left } from "purify-ts";
 import { invariant } from "ts-invariant";
@@ -32,9 +31,9 @@ function transformNodeShapeToListType(
   const listType: ast.ListType = {
     comment: nodeShape.comment.map((literal) => literal.value),
     fromRdfType: nodeShape.fromRdfType,
-    identifierNodeKind: nodeShape.nodeKinds.has(NodeKind.BLANK_NODE)
-      ? NodeKind.BLANK_NODE
-      : NodeKind.IRI,
+    identifierNodeKind: nodeShape.nodeKinds.has("BlankNode")
+      ? "BlankNode"
+      : "NamedNode",
     itemType: {
       kind: "PlaceholderType" as const,
     },

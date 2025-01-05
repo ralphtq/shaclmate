@@ -1,4 +1,3 @@
-import { NodeKind } from "@shaclmate/shacl-ast";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import type {
@@ -49,7 +48,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     this.classDeclarationVisibility = classDeclarationVisibility;
     if (mintingStrategy.isJust()) {
       this.mintingStrategy = mintingStrategy.unsafeCoerce();
-    } else if (this.type.nodeKinds.has(NodeKind.BLANK_NODE)) {
+    } else if (this.type.nodeKinds.has("BlankNode")) {
       this.mintingStrategy = "blankNode";
     } else {
       this.mintingStrategy = "none";

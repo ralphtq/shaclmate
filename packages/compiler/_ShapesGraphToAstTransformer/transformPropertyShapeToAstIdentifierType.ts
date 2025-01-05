@@ -1,5 +1,4 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { NodeKind } from "@shaclmate/shacl-ast";
 import { Either, Left, Maybe } from "purify-ts";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
@@ -34,16 +33,14 @@ export function transformPropertyShapeToAstIdentifierType(
     identifierHasValue.isJust() ||
     identifierDefaultValue.isJust() ||
     identifierIn.isJust() ||
-    (nodeKinds.size > 0 &&
-      nodeKinds.size <= 2 &&
-      !nodeKinds.has(NodeKind.LITERAL))
+    (nodeKinds.size > 0 && nodeKinds.size <= 2 && !nodeKinds.has("Literal"))
   ) {
     return Either.of({
       defaultValue: identifierDefaultValue,
       hasValue: identifierHasValue,
       in_: identifierIn,
       kind: "IdentifierType",
-      nodeKinds: nodeKinds as Set<NodeKind.BLANK_NODE | NodeKind.IRI>,
+      nodeKinds: nodeKinds as Set<"BlankNode" | "NamedNode">,
     });
   }
 

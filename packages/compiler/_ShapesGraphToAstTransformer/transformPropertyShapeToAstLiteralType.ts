@@ -1,5 +1,4 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { NodeKind } from "@shaclmate/shacl-ast";
 import { Either, Left, Maybe } from "purify-ts";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
@@ -43,7 +42,7 @@ export function transformPropertyShapeToAstLiteralType(
     literalHasValue.isJust() ||
     literalIn.isJust() ||
     // Treat any shape with a single sh:nodeKind of sh:Literal as a literal type
-    (nodeKinds.size === 1 && nodeKinds.has(NodeKind.LITERAL))
+    (nodeKinds.size === 1 && nodeKinds.has("Literal"))
   ) {
     return Either.of({
       datatype: shape.constraints.datatype,
@@ -56,7 +55,7 @@ export function transformPropertyShapeToAstLiteralType(
       maxInclusive: shape.constraints.maxInclusive,
       minExclusive: shape.constraints.minExclusive,
       minInclusive: shape.constraints.minInclusive,
-      nodeKinds: new Set<NodeKind.LITERAL>([NodeKind.LITERAL]),
+      nodeKinds: new Set<"Literal">(["Literal"]),
     });
   }
 

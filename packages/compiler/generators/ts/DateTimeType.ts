@@ -4,7 +4,6 @@ import type { Type } from "./Type.js";
 export class DateTimeType extends PrimitiveType<Date> {
   override readonly equalsFunction =
     "(left, right) => purifyHelpers.Equatable.EqualsResult.fromBooleanEqualsResult(left, right, left.getTime() === right.getTime())";
-  override readonly jsonName = "string";
   readonly kind = "DateTimeType";
   override readonly mutable = true;
 
@@ -27,6 +26,10 @@ export class DateTimeType extends PrimitiveType<Date> {
     });
 
     return conversions;
+  }
+
+  override get jsonName(): string {
+    return "string";
   }
 
   override get name(): string {

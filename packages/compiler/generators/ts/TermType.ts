@@ -104,7 +104,6 @@ export class TermType<
     if (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")) {
       jsonName.push(`{ "@id": string }`);
     }
-    // `{ "@id": ${variables.value}.value }`
     return jsonName.join(" | ");
   }
 
@@ -186,11 +185,8 @@ export class TermType<
   override propertyToJsonExpression({
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    const expression = "";
-    if (this.nodeKinds.has("Literal")) {
-      `{ "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value }`;
-    }
-    return expression;
+    invariant(this.nodeKinds.size === 3);
+    return `${variables.value}.termType === "Literal" ? { "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value } : { "@id": ${variables.value}.value }`;
   }
 
   override propertyToRdfExpression({
@@ -225,8 +221,6 @@ export class TermType<
   }: {
     variables: { predicate: string; resource: string; resourceValue: string };
   }): string {
-    if (this.nodeKinds.has("Literal") && this.nodeKinds.size === 1) {
-      return `${variables.resourceValue}.toLiteral()`;
-    }
+    return `${variables.resourceValue}.toTerm()`;
   }
 }

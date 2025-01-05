@@ -1,5 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { NodeKind } from "@shaclmate/shacl-ast";
+import type { NodeKind } from "@shaclmate/shacl-ast";
 import { Either, Maybe } from "purify-ts";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
@@ -34,10 +34,6 @@ export function transformPropertyShapeToAstTermType(
     nodeKinds:
       nodeKinds.size > 0
         ? nodeKinds
-        : new Set<NodeKind>([
-            NodeKind.BLANK_NODE,
-            NodeKind.IRI,
-            NodeKind.LITERAL,
-          ]),
+        : new Set<NodeKind>(["BlankNode", "NamedNode", "Literal"]),
   });
 }

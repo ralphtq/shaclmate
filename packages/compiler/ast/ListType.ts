@@ -1,5 +1,4 @@
 import type { NamedNode } from "@rdfjs/types";
-import type { NodeKind } from "@shaclmate/shacl-ast";
 import type { Maybe } from "purify-ts";
 import type { MintingStrategy } from "../enums/MintingStrategy.js";
 import type { Name } from "./Name.js";
@@ -29,12 +28,7 @@ export interface ListType {
   /**
    * Type of identifier (blank or named node) to use for lists and sub-lists.
    */
-  readonly identifierNodeKind: NodeKind.BLANK_NODE | NodeKind.IRI;
-
-  /**
-   * Human-readable label from rdfs:label.
-   */
-  readonly label: Maybe<string>;
+  readonly identifierNodeKind: "BlankNode" | "NamedNode";
 
   /**
    * List item type.
@@ -46,20 +40,21 @@ export interface ListType {
   readonly kind: "ListType";
 
   /**
-   * The list should be mutable in generated code.
+   * Human-readable label from rdfs:label.
    */
-  readonly mutable: Maybe<boolean>;
-
-  /**
-   * Name of this type, usually derived from sh:name or shaclmate:name.
-   */
-  readonly name: Name;
-
+  readonly label: Maybe<string>;
   /**
    * Strategy for minting new list and sub-list identifiers.
    */
   readonly mintingStrategy: Maybe<MintingStrategy>;
-
+  /**
+   * The list should be mutable in generated code.
+   */
+  readonly mutable: Maybe<boolean>;
+  /**
+   * Name of this type, usually derived from sh:name or shaclmate:name.
+   */
+  readonly name: Name;
   /**
    * rdf:type's that will be added to this object when it's serialized toRdf.
    *

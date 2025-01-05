@@ -1,5 +1,4 @@
 import type { NamedNode } from "@rdfjs/types";
-import type { NodeKind } from "@shaclmate/shacl-ast";
 import type { PredicatePath } from "@shaclmate/shacl-ast";
 import type { Maybe } from "purify-ts";
 import { Resource } from "rdfjs-resource";
@@ -94,7 +93,7 @@ export interface ObjectType {
    *
    * Used to associate instances with an RDF identifier.
    */
-  readonly nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
+  readonly nodeKinds: Set<"BlankNode" | "NamedNode">;
 
   /**
    * Immediate parent ObjectTypes of this Object types.
