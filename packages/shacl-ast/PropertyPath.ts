@@ -1,7 +1,9 @@
 import type { NamedNode } from "@rdfjs/types";
 import { rdf, sh } from "@tpluscode/rdf-ns-builders";
 import { Either, Left } from "purify-ts";
+import type * as purify from "purify-ts";
 import { Resource } from "rdfjs-resource";
+import type * as rdfjsResource from "rdfjs-resource";
 
 export interface AlternativePath {
   readonly kind: "AlternativePath";
@@ -49,9 +51,14 @@ export type PropertyPath =
   | ZeroOrOnePath;
 
 export namespace PropertyPath {
-  export function fromResource(
-    resource: Resource,
-  ): Either<Error, PropertyPath> {
+  export function fromRdf({
+    resource,
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<rdfjsResource.Resource.ValueError, PropertyPath> {
     // Predicate path
     // sh:path ex:parent
     if (resource.identifier.termType === "NamedNode") {
@@ -62,17 +69,23 @@ export namespace PropertyPath {
 
     const getPropertyPathList = (
       listResource: Resource,
-    ): Either<Error, readonly PropertyPath[]> => {
+    ): Either<Resource.ValueError, readonly PropertyPath[]> => {
       return listResource.toList().chain((values) => {
         const members: PropertyPath[] = [];
         for (const value of values) {
           const memberResource = value.toResource().toMaybe();
           if (memberResource.isNothing()) {
-            return Left(new Error("non-identifier in property path list"));
+            return Left(
+              new Resource.ValueError({
+                focusResource: resource,
+                message: "non-identifier in property path list",
+                predicate: rdf.subject,
+              }),
+            );
           }
-          const member = PropertyPath.fromResource(
-            memberResource.unsafeCoerce(),
-          );
+          const member = PropertyPath.fromRdf({
+            resource: memberResource.unsafeCoerce(),
+          });
           if (member.isLeft()) {
             return member;
           }
@@ -94,9 +107,11 @@ export namespace PropertyPath {
           break;
         default:
           return Left(
-            new Error(
-              `non-BlankNode/NamedNode property path object on path ${resource.identifier.value}: ${quad.object.termType} ${quad.object.value}`,
-            ),
+            new Resource.ValueError({
+              focusResource: resource,
+              message: `non-BlankNode/NamedNode property path object on path ${resource.identifier.value}: ${quad.object.termType} ${quad.object.value}`,
+              predicate: quad.predicate as NamedNode,
+            }),
           );
       }
       const objectResource = new Resource({
@@ -116,18 +131,22 @@ export namespace PropertyPath {
       // Inverse path
       // sh:path: [ sh:inversePath ex:parent ]
       if (quad.predicate.equals(sh.inversePath)) {
-        return PropertyPath.fromResource(objectResource).map((path) => ({
-          kind: "InversePath",
-          path,
-        }));
+        return PropertyPath.fromRdf({ resource: objectResource }).map(
+          (path) => ({
+            kind: "InversePath",
+            path,
+          }),
+        );
       }
 
       // One or more path
       if (quad.predicate.equals(sh.oneOrMorePath)) {
-        return PropertyPath.fromResource(objectResource).map((path) => ({
-          kind: "OneOrMorePath",
-          path,
-        }));
+        return PropertyPath.fromRdf({ resource: objectResource }).map(
+          (path) => ({
+            kind: "OneOrMorePath",
+            path,
+          }),
+        );
       }
 
       // Sequence path
@@ -141,24 +160,30 @@ export namespace PropertyPath {
 
       // Zero or more path
       if (quad.predicate.equals(sh.zeroOrMorePath)) {
-        return PropertyPath.fromResource(objectResource).map((path) => ({
-          kind: "ZeroOrMorePath",
-          path,
-        }));
+        return PropertyPath.fromRdf({ resource: objectResource }).map(
+          (path) => ({
+            kind: "ZeroOrMorePath",
+            path,
+          }),
+        );
       }
 
       if (quad.predicate.equals(sh.zeroOrOnePath)) {
-        return PropertyPath.fromResource(objectResource).map((path) => ({
-          kind: "ZeroOrOnePath",
-          path,
-        }));
+        return PropertyPath.fromRdf({ resource: objectResource }).map(
+          (path) => ({
+            kind: "ZeroOrOnePath",
+            path,
+          }),
+        );
       }
     }
 
     return Left(
-      new Error(
-        `unrecognized or ill-formed SHACL property path ${resource.identifier.value}`,
-      ),
+      new Resource.ValueError({
+        focusResource: resource,
+        message: `unrecognized or ill-formed SHACL property path ${resource.identifier.value}`,
+        predicate: rdf.subject,
+      }),
     );
   }
 }

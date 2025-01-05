@@ -76,7 +76,7 @@ export class PropertyShape<
     return this.resource
       .value(sh.path)
       .chain((value) => value.toResource())
-      .chain(PropertyPath.fromResource)
+      .chain((resource) => PropertyPath.fromRdf({ resource }))
       .unsafeCoerce();
   }
 
