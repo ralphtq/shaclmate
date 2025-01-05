@@ -2,7 +2,6 @@ import type { NamedNode } from "@rdfjs/types";
 import { dash, schema, xsd } from "@tpluscode/rdf-ns-builders";
 import { DataFactory as dataFactory } from "n3";
 import { describe, expect, it } from "vitest";
-import { NodeKind } from "../NodeKind.js";
 import { RdfjsShapesGraph } from "../RdfjsShapesGraph.js";
 import { defaultFactory } from "../defaultFactory.js";
 import { testData } from "./testData.js";
@@ -193,7 +192,7 @@ describe("RdfjsShape", () => {
       schema.parent,
     ).constraints.nodeKinds.orDefault(new Set());
     expect(nodeKinds.size).toStrictEqual(1);
-    expect(nodeKinds.has(NodeKind.IRI)).toStrictEqual(true);
+    expect(nodeKinds.has("NamedNode")).toStrictEqual(true);
   });
 
   // No shape in the test data with a clean sh:not

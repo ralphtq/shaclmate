@@ -3,7 +3,7 @@ import { shaclmate } from "@shaclmate/compiler/vocabularies/index";
 import { rdfs, sh } from "@tpluscode/rdf-ns-builders";
 import { Maybe, NonEmptyList } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
-import { NodeKind } from "./NodeKind.js";
+import type { NodeKind } from "./NodeKind.js";
 import type { OntologyLike } from "./OntologyLike.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
 
@@ -209,20 +209,20 @@ export namespace Shape {
       for (const nodeKindValue of this.resource.values(sh.nodeKind)) {
         nodeKindValue.toIri().ifRight((nodeKindIri) => {
           if (nodeKindIri.equals(sh.BlankNode)) {
-            nodeKinds.add(NodeKind.BLANK_NODE);
+            nodeKinds.add("BlankNode");
           } else if (nodeKindIri.equals(sh.BlankNodeOrIRI)) {
-            nodeKinds.add(NodeKind.BLANK_NODE);
-            nodeKinds.add(NodeKind.IRI);
+            nodeKinds.add("BlankNode");
+            nodeKinds.add("NamedNode");
           } else if (nodeKindIri.equals(sh.BlankNodeOrLiteral)) {
-            nodeKinds.add(NodeKind.BLANK_NODE);
-            nodeKinds.add(NodeKind.LITERAL);
+            nodeKinds.add("BlankNode");
+            nodeKinds.add("Literal");
           } else if (nodeKindIri.equals(sh.IRI)) {
-            nodeKinds.add(NodeKind.IRI);
+            nodeKinds.add("NamedNode");
           } else if (nodeKindIri.equals(sh.IRIOrLiteral)) {
-            nodeKinds.add(NodeKind.IRI);
-            nodeKinds.add(NodeKind.LITERAL);
+            nodeKinds.add("NamedNode");
+            nodeKinds.add("Literal");
           } else if (nodeKindIri.equals(sh.Literal)) {
-            nodeKinds.add(NodeKind.LITERAL);
+            nodeKinds.add("Literal");
           }
         });
       }

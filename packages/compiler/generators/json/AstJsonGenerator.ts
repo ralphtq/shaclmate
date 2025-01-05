@@ -1,5 +1,4 @@
 import type { Term as RdfjsTerm } from "@rdfjs/types";
-import * as shaclAst from "@shaclmate/shacl-ast";
 import type * as ast from "../../ast/index.js";
 import type { Generator } from "../Generator.js";
 
@@ -33,17 +32,6 @@ function nameToJson(name: ast.Name): AstJson.Name {
   };
 }
 
-function nodeKindToJson(nodeKind: shaclAst.NodeKind): string {
-  switch (nodeKind) {
-    case shaclAst.NodeKind.BLANK_NODE:
-      return "BlankNode";
-    case shaclAst.NodeKind.IRI:
-      return "NamedNode";
-    case shaclAst.NodeKind.LITERAL:
-      return "Literal";
-  }
-}
-
 function termToJson(term: RdfjsTerm): AstJson.Term {
   switch (term.termType) {
     case "BlankNode":
@@ -68,7 +56,7 @@ function typeToJson(type: ast.Type): AstJson.Type {
       return {
         hasValue: type.hasValue.map(termToJson).extract(),
         kind: type.kind,
-        nodeKinds: [...type.nodeKinds].map(nodeKindToJson),
+        nodeKinds: [...type.nodeKinds],
       };
     case "IntersectionType":
     case "UnionType":
@@ -110,7 +98,7 @@ function typeToJson(type: ast.Type): AstJson.Type {
           type.parentObjectTypes.length > 0
             ? type.parentObjectTypes.map((type) => nameToJson(type.name))
             : undefined,
-        nodeKinds: [...type.nodeKinds].map(nodeKindToJson),
+        nodeKinds: [...type.nodeKinds],
         toRdfTypes:
           type.toRdfTypes.length > 0
             ? type.toRdfTypes.map(termToJson)
