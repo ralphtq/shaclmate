@@ -2636,13 +2636,13 @@ export namespace ShaclCoreNodeShape {
     });
   }
 }
-export interface shaclmate_OwlOntology {
+export interface OwlOntology {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly labels: readonly rdfjs.Literal[];
-  readonly type: "shaclmate_OwlOntology";
+  readonly type: "OwlOntology";
 }
 
-export namespace shaclmate_OwlOntology {
+export namespace OwlOntology {
   export function fromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -2654,7 +2654,7 @@ export namespace shaclmate_OwlOntology {
     ignoreRdfType?: boolean;
     languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
-  }): purify.Either<rdfjsResource.Resource.ValueError, shaclmate_OwlOntology> {
+  }): purify.Either<rdfjsResource.Resource.ValueError, OwlOntology> {
     if (
       !_ignoreRdfType &&
       !_resource.isInstanceOf(
@@ -2709,7 +2709,7 @@ export namespace shaclmate_OwlOntology {
     }
 
     const labels = _labelsEither.unsafeCoerce();
-    const type = "shaclmate_OwlOntology" as const;
+    const type = "OwlOntology" as const;
     return purify.Either.of({ identifier, labels, type });
   }
 }

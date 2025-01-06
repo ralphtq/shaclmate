@@ -1,18 +1,20 @@
+import type { BlankNode, NamedNode } from "@rdfjs/types";
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
+import * as generated from "./generated.js";
 
 export class Ontology implements OntologyLike {
-  readonly resource: Resource;
+  private readonly delegate: generated.OwlOntology;
 
-  constructor(resource: Resource) {
-    this.resource = resource;
+  constructor(protected readonly resource: Resource) {
+    this.delegate = generated.OwlOntology.fromRdf({ resource }).unsafeCoerce();
   }
 
-  get identifier(): Resource.Identifier {
-    return this.resource.identifier;
+  get identifier(): BlankNode | NamedNode {
+    return this.delegate.identifier;
   }
 
   toString(): string {
-    return `Ontology(node=${this.resource.identifier.value})`;
+    return `Ontology(node=${this.identifier.value})`;
   }
 }

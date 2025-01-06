@@ -1,8 +1,9 @@
 import type { DatasetCore } from "@rdfjs/types";
 import { RdfjsShapesGraph } from "@shaclmate/shacl-ast";
+// import * as generated from "./generated.js";
+import * as generated from "@shaclmate/shacl-ast/generated.js";
 import { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
-import * as generated from "./generated.js";
 import {
   NodeShape,
   Ontology,

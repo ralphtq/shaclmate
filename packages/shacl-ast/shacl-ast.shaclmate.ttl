@@ -74,6 +74,7 @@ shaclmate:IriList-rest
 
 shaclmate:OwlOntology
     shaclmate:fromRdfType owl:Ontology ;
+    shaclmate:name "OwlOntology" ;
     a sh:NodeShape ;
     sh:property shaclmate:OwlOntology-labels .
 
