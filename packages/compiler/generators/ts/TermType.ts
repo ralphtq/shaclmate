@@ -221,6 +221,14 @@ export class TermType<
   }: {
     variables: { predicate: string; resource: string; resourceValue: string };
   }): string {
-    return `purify.Either.of(${variables.resourceValue}.toTerm())`;
+    let expression = `purify.Either.of(${variables.resourceValue}.toTerm())`;
+    if (this.nodeKinds.size < 3) {
+      expression = `${expression}.chain(term => {
+  switch (term.termType) {
+  ${[...this.nodeKinds].map((nodeKind) => `case "${nodeKind}":`).join("\n")} return purify.Either.of(term);
+  default: return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: term, expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} }));         
+}})`;
+    }
+    return expression;
   }
 }
