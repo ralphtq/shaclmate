@@ -1,5 +1,6 @@
 import type { DatasetCore } from "@rdfjs/types";
 import { RdfjsShapesGraph } from "@shaclmate/shacl-ast";
+import { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import {
   NodeShape,
@@ -20,23 +21,37 @@ export class ShapesGraph extends RdfjsShapesGraph<
     super({
       dataset,
       factory: {
-        createNodeShape(
-          resource: Resource,
-          shapesGraph: ShapesGraph,
-        ): NodeShape {
-          return new NodeShape(resource, shapesGraph);
+        nodeShapeFromRdf({
+          resource,
+          shapesGraph,
+        }: {
+          resource: Resource;
+          shapesGraph: ShapesGraph;
+        }): Either<Error, NodeShape> {
+          return Either.of(new NodeShape(resource, shapesGraph));
         },
-        createOntology(resource: Resource): Ontology {
-          return new Ontology(resource);
+        ontologyFromRdf({
+          resource,
+        }: {
+          resource: Resource;
+        }): Either<Error, Ontology> {
+          return Either.of(new Ontology(resource));
         },
-        createPropertyGroup(resource: Resource): PropertyGroup {
-          return new PropertyGroup(resource);
+        propertyGroupFromRdf({
+          resource,
+        }: {
+          resource: Resource;
+        }): Either<Error, PropertyGroup> {
+          return Either.of(new PropertyGroup(resource));
         },
-        createPropertyShape(
-          resource: Resource,
-          shapesGraph: ShapesGraph,
-        ): PropertyShape {
-          return new PropertyShape(resource, shapesGraph);
+        propertyShapeFromRdf({
+          resource,
+          shapesGraph,
+        }: {
+          resource: Resource;
+          shapesGraph: ShapesGraph;
+        }): Either<Error, PropertyShape> {
+          return Either.of(new PropertyShape(resource, shapesGraph));
         },
       },
     });

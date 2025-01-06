@@ -1,3 +1,4 @@
+import type { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
@@ -9,47 +10,47 @@ export interface Factory<
   PropertyShapeT extends ShapeT,
   ShapeT,
 > {
-  createNodeShape(
-    resource: Resource,
+  nodeShapeFromRdf(parameters: {
+    resource: Resource;
     shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
       PropertyShapeT,
       ShapeT
-    >,
-  ): NodeShapeT;
+    >;
+  }): Either<Error, NodeShapeT>;
 
-  createOntology(
-    resource: Resource,
+  ontologyFromRdf(parameters: {
+    resource: Resource;
     shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
       PropertyShapeT,
       ShapeT
-    >,
-  ): OntologyT;
+    >;
+  }): Either<Error, OntologyT>;
 
-  createPropertyGroup(
-    resource: Resource,
+  propertyGroupFromRdf(parameters: {
+    resource: Resource;
     shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
       PropertyShapeT,
       ShapeT
-    >,
-  ): PropertyGroupT;
+    >;
+  }): Either<Error, PropertyGroupT>;
 
-  createPropertyShape(
-    resource: Resource,
+  propertyShapeFromRdf(parameters: {
+    resource: Resource;
     shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
       PropertyShapeT,
       ShapeT
-    >,
-  ): PropertyShapeT;
+    >;
+  }): Either<Error, PropertyShapeT>;
 }

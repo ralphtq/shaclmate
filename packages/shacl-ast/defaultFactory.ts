@@ -1,3 +1,4 @@
+import { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { Factory } from "./Factory.js";
 import { NodeShape } from "./NodeShape.js";
@@ -43,25 +44,45 @@ export const defaultFactory: Factory<
   DefaultPropertyShape,
   DefaultShape
 > = {
-  createNodeShape(resource: Resource, shapesGraph: DefaultShapesGraph) {
-    return new NodeShape(resource, shapesGraph);
+  nodeShapeFromRdf({
+    resource,
+    shapesGraph,
+  }: {
+    resource: Resource;
+    shapesGraph: DefaultShapesGraph;
+  }) {
+    return Either.of(new NodeShape(resource, shapesGraph));
   },
 
-  createOntology(
-    resource: Resource,
-    _shapesGraph: DefaultShapesGraph,
-  ): Ontology {
-    return new Ontology(resource);
+  ontologyFromRdf({
+    resource,
+  }: {
+    resource: Resource;
+    shapesGraph: DefaultShapesGraph;
+  }): Either<Error, Ontology> {
+    return Either.of(new Ontology(resource));
   },
 
-  createPropertyGroup(
-    resource: Resource,
-    _shapesGraph: DefaultShapesGraph,
-  ): PropertyGroup {
-    return new PropertyGroup(resource);
+  propertyGroupFromRdf({
+    resource,
+  }: {
+    resource: Resource;
+    shapesGraph: DefaultShapesGraph;
+  }): Either<Error, PropertyGroup> {
+    return Either.of(new PropertyGroup(resource));
+    // return generated.CorePropertyGroup.fromRdf({
+    //   ignoreRdfType: true,
+    //   resource,
+    // }).map((propertyGroup) => new PropertyGroup(propertyGroup));
   },
 
-  createPropertyShape(resource: Resource, shapesGraph: DefaultShapesGraph) {
-    return new PropertyShape(resource, shapesGraph);
+  propertyShapeFromRdf({
+    resource,
+    shapesGraph,
+  }: { resource: Resource; shapesGraph: DefaultShapesGraph }): Either<
+    Error,
+    DefaultPropertyShape
+  > {
+    return Either.of(new PropertyShape(resource, shapesGraph));
   },
 };
