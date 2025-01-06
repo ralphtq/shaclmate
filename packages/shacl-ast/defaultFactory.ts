@@ -7,6 +7,7 @@ import { PropertyGroup } from "./PropertyGroup.js";
 import { PropertyShape } from "./PropertyShape.js";
 import type { Shape } from "./Shape.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
+import * as generated from "./generated.js";
 
 type DefaultNodeShape = NodeShape<
   any,
@@ -69,11 +70,10 @@ export const defaultFactory: Factory<
     resource: Resource;
     shapesGraph: DefaultShapesGraph;
   }): Either<Error, PropertyGroup> {
-    return Either.of(new PropertyGroup(resource));
-    // return generated.CorePropertyGroup.fromRdf({
-    //   ignoreRdfType: true,
-    //   resource,
-    // }).map((propertyGroup) => new PropertyGroup(propertyGroup));
+    return generated.ShaclCorePropertyGroup.fromRdf({
+      ignoreRdfType: true,
+      resource,
+    }).map((propertyGroup) => new PropertyGroup(propertyGroup));
   },
 
   propertyShapeFromRdf({

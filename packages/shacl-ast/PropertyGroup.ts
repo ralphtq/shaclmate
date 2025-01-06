@@ -1,26 +1,18 @@
-import type { Literal } from "@rdfjs/types";
-import { rdfs } from "@tpluscode/rdf-ns-builders";
-import type { Maybe } from "purify-ts";
-import type { Resource } from "rdfjs-resource";
+import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
+import type * as generated from "./generated.js";
 
 export class PropertyGroup {
-  constructor(private readonly resource: Resource) {}
+  constructor(private readonly delegate: generated.ShaclCorePropertyGroup) {}
 
-  get comment(): Maybe<Literal> {
-    return this.resource
-      .value(rdfs.comment)
-      .chain((value) => value.toLiteral())
-      .toMaybe();
+  get comments(): readonly Literal[] {
+    return this.delegate.comments;
   }
 
-  get identifier(): Resource.Identifier {
-    return this.resource.identifier;
+  get identifier(): BlankNode | NamedNode {
+    return this.delegate.identifier;
   }
 
-  get label(): Maybe<Literal> {
-    return this.resource
-      .value(rdfs.label)
-      .chain((value) => value.toLiteral())
-      .toMaybe();
+  get labels(): readonly Literal[] {
+    return this.delegate.labels;
   }
 }

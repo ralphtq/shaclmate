@@ -2,6 +2,7 @@ import type { DatasetCore } from "@rdfjs/types";
 import { RdfjsShapesGraph } from "@shaclmate/shacl-ast";
 import { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
+import * as generated from "./generated.js";
 import {
   NodeShape,
   Ontology,
@@ -42,7 +43,9 @@ export class ShapesGraph extends RdfjsShapesGraph<
         }: {
           resource: Resource;
         }): Either<Error, PropertyGroup> {
-          return Either.of(new PropertyGroup(resource));
+          return generated.ShaclCorePropertyGroup.fromRdf({
+            resource,
+          }).map((propertyGroup) => new PropertyGroup(propertyGroup));
         },
         propertyShapeFromRdf({
           resource,
