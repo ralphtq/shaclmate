@@ -3,125 +3,12 @@ import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
 import * as rdfjsResource from "rdfjs-resource";
 import { PropertyPath } from "./PropertyPath.js";
-export interface CorePropertyGroup {
-  readonly comments: readonly rdfjs.Literal[];
-  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly labels: readonly rdfjs.Literal[];
-  readonly type: "CorePropertyGroup";
-}
-
-export namespace CorePropertyGroup {
-  export function fromRdf({
-    ignoreRdfType: _ignoreRdfType,
-    languageIn: _languageIn,
-    resource: _resource,
-    // @ts-ignore
-    ..._context
-  }: {
-    [_index: string]: any;
-    ignoreRdfType?: boolean;
-    languageIn?: readonly string[];
-    resource: rdfjsResource.Resource;
-  }): purify.Either<rdfjsResource.Resource.ValueError, CorePropertyGroup> {
-    if (
-      !_ignoreRdfType &&
-      !_resource.isInstanceOf(
-        dataFactory.namedNode("http://www.w3.org/ns/shacl#PropertyGroup"),
-      )
-    ) {
-      return purify.Left(
-        new rdfjsResource.Resource.ValueError({
-          focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
-          predicate: dataFactory.namedNode(
-            "http://www.w3.org/ns/shacl#PropertyGroup",
-          ),
-        }),
-      );
-    }
-
-    const _commentsEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      readonly rdfjs.Literal[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#comment"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .filter((_value) => {
-              const _languageInOrDefault = _languageIn ?? [];
-              if (_languageInOrDefault.length === 0) {
-                return true;
-              }
-              const _valueLiteral = _value.toLiteral().toMaybe().extract();
-              if (typeof _valueLiteral === "undefined") {
-                return false;
-              }
-              return _languageInOrDefault.some(
-                (_languageIn) => _languageIn === _valueLiteral.language,
-              );
-            })
-            .head()
-            .chain((_value) => _value.toLiteral())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
-    if (_commentsEither.isLeft()) {
-      return _commentsEither;
-    }
-
-    const comments = _commentsEither.unsafeCoerce();
-    const identifier = _resource.identifier;
-    const _labelsEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      readonly rdfjs.Literal[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .filter((_value) => {
-              const _languageInOrDefault = _languageIn ?? [];
-              if (_languageInOrDefault.length === 0) {
-                return true;
-              }
-              const _valueLiteral = _value.toLiteral().toMaybe().extract();
-              if (typeof _valueLiteral === "undefined") {
-                return false;
-              }
-              return _languageInOrDefault.some(
-                (_languageIn) => _languageIn === _valueLiteral.language,
-              );
-            })
-            .head()
-            .chain((_value) => _value.toLiteral())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
-    if (_labelsEither.isLeft()) {
-      return _labelsEither;
-    }
-
-    const labels = _labelsEither.unsafeCoerce();
-    const type = "CorePropertyGroup" as const;
-    return purify.Either.of({ comments, identifier, labels, type });
-  }
-}
 export interface CorePropertyShape {
   readonly and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
-  readonly classes: readonly (readonly rdfjs.NamedNode[])[];
+  readonly classes: readonly rdfjs.NamedNode[];
   readonly comments: readonly rdfjs.Literal[];
   readonly datatype: purify.Maybe<rdfjs.NamedNode>;
+  readonly deactivated: purify.Maybe<boolean>;
   readonly defaultValue: purify.Maybe<
     rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
   >;
@@ -159,8 +46,8 @@ export interface CorePropertyShape {
       | "http://www.w3.org/ns/shacl#Literal"
     >
   >;
-  readonly nodes: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
-  readonly not: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
+  readonly nodes: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
+  readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly or: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
   readonly order: purify.Maybe<number>;
   readonly path: PropertyPath;
@@ -266,7 +153,7 @@ export namespace CorePropertyShape {
     const and = _andEither.unsafeCoerce();
     const _classesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly rdfjs.NamedNode[])[]
+      readonly rdfjs.NamedNode[]
     > = purify.Either.of([
       ..._resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#class"), {
@@ -276,45 +163,7 @@ export namespace CorePropertyShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IriList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IriList",
-                      ),
-                    }),
-                  ),
-            )
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIri())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
+            .chain((_value) => _value.toIri())
             .toMaybe()
             .toList(),
         ),
@@ -377,6 +226,24 @@ export namespace CorePropertyShape {
     }
 
     const datatype = _datatypeEither.unsafeCoerce();
+    const _deactivatedEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<boolean>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://www.w3.org/ns/shacl#deactivated"),
+          { unique: true },
+        )
+        .head()
+        .chain((_value) => _value.toBoolean())
+        .toMaybe(),
+    );
+    if (_deactivatedEither.isLeft()) {
+      return _deactivatedEither;
+    }
+
+    const deactivated = _deactivatedEither.unsafeCoerce();
     const _defaultValueEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
@@ -1019,7 +886,7 @@ export namespace CorePropertyShape {
     const nodeKind = _nodeKindEither.unsafeCoerce();
     const _nodesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
+      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
     > = purify.Either.of([
       ..._resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#node"), {
@@ -1029,45 +896,7 @@ export namespace CorePropertyShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIdentifier())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
+            .chain((_value) => _value.toIdentifier())
             .toMaybe()
             .toList(),
         ),
@@ -1079,7 +908,7 @@ export namespace CorePropertyShape {
     const nodes = _nodesEither.unsafeCoerce();
     const _notEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
+      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
     > = purify.Either.of([
       ..._resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#not"), {
@@ -1089,45 +918,7 @@ export namespace CorePropertyShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIdentifier())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
+            .chain((_value) => _value.toIdentifier())
             .toMaybe()
             .toList(),
         ),
@@ -1439,6 +1230,7 @@ export namespace CorePropertyShape {
       classes,
       comments,
       datatype,
+      deactivated,
       defaultValue,
       descriptions,
       flags,
@@ -1475,12 +1267,127 @@ export namespace CorePropertyShape {
     });
   }
 }
+export interface CorePropertyGroup {
+  readonly comments: readonly rdfjs.Literal[];
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly labels: readonly rdfjs.Literal[];
+  readonly type: "CorePropertyGroup";
+}
+
+export namespace CorePropertyGroup {
+  export function fromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<rdfjsResource.Resource.ValueError, CorePropertyGroup> {
+    if (
+      !_ignoreRdfType &&
+      !_resource.isInstanceOf(
+        dataFactory.namedNode("http://www.w3.org/ns/shacl#PropertyGroup"),
+      )
+    ) {
+      return purify.Left(
+        new rdfjsResource.Resource.ValueError({
+          focusResource: _resource,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          predicate: dataFactory.namedNode(
+            "http://www.w3.org/ns/shacl#PropertyGroup",
+          ),
+        }),
+      );
+    }
+
+    const _commentsEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      readonly rdfjs.Literal[]
+    > = purify.Either.of([
+      ..._resource
+        .values(
+          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#comment"),
+          { unique: true },
+        )
+        .flatMap((_value) =>
+          _value
+            .toValues()
+            .filter((_value) => {
+              const _languageInOrDefault = _languageIn ?? [];
+              if (_languageInOrDefault.length === 0) {
+                return true;
+              }
+              const _valueLiteral = _value.toLiteral().toMaybe().extract();
+              if (typeof _valueLiteral === "undefined") {
+                return false;
+              }
+              return _languageInOrDefault.some(
+                (_languageIn) => _languageIn === _valueLiteral.language,
+              );
+            })
+            .head()
+            .chain((_value) => _value.toLiteral())
+            .toMaybe()
+            .toList(),
+        ),
+    ]);
+    if (_commentsEither.isLeft()) {
+      return _commentsEither;
+    }
+
+    const comments = _commentsEither.unsafeCoerce();
+    const identifier = _resource.identifier;
+    const _labelsEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      readonly rdfjs.Literal[]
+    > = purify.Either.of([
+      ..._resource
+        .values(
+          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
+          { unique: true },
+        )
+        .flatMap((_value) =>
+          _value
+            .toValues()
+            .filter((_value) => {
+              const _languageInOrDefault = _languageIn ?? [];
+              if (_languageInOrDefault.length === 0) {
+                return true;
+              }
+              const _valueLiteral = _value.toLiteral().toMaybe().extract();
+              if (typeof _valueLiteral === "undefined") {
+                return false;
+              }
+              return _languageInOrDefault.some(
+                (_languageIn) => _languageIn === _valueLiteral.language,
+              );
+            })
+            .head()
+            .chain((_value) => _value.toLiteral())
+            .toMaybe()
+            .toList(),
+        ),
+    ]);
+    if (_labelsEither.isLeft()) {
+      return _labelsEither;
+    }
+
+    const labels = _labelsEither.unsafeCoerce();
+    const type = "CorePropertyGroup" as const;
+    return purify.Either.of({ comments, identifier, labels, type });
+  }
+}
 export interface CoreNodeShape {
   readonly and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
-  readonly classes: readonly (readonly rdfjs.NamedNode[])[];
+  readonly classes: readonly rdfjs.NamedNode[];
   readonly closed: purify.Maybe<boolean>;
   readonly comments: readonly rdfjs.Literal[];
   readonly datatype: purify.Maybe<rdfjs.NamedNode>;
+  readonly deactivated: purify.Maybe<boolean>;
   readonly flags: readonly string[];
   readonly hasValues: readonly (
     | rdfjs.BlankNode
@@ -1513,11 +1420,14 @@ export interface CoreNodeShape {
       | "http://www.w3.org/ns/shacl#Literal"
     >
   >;
-  readonly nodes: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
-  readonly not: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
+  readonly nodes: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
+  readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly or: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
   readonly patterns: readonly string[];
-  readonly properties: readonly CorePropertyShape[];
+  readonly properties: readonly (readonly (
+    | rdfjs.BlankNode
+    | rdfjs.NamedNode
+  )[])[];
   readonly targetClass: readonly rdfjs.NamedNode[];
   readonly targetNodes: readonly (rdfjs.NamedNode | rdfjs.Literal)[];
   readonly targetObjectsOf: readonly rdfjs.NamedNode[];
@@ -1618,7 +1528,7 @@ export namespace CoreNodeShape {
     const and = _andEither.unsafeCoerce();
     const _classesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly rdfjs.NamedNode[])[]
+      readonly rdfjs.NamedNode[]
     > = purify.Either.of([
       ..._resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#class"), {
@@ -1628,45 +1538,7 @@ export namespace CoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IriList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IriList",
-                      ),
-                    }),
-                  ),
-            )
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIri())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
+            .chain((_value) => _value.toIri())
             .toMaybe()
             .toList(),
         ),
@@ -1746,6 +1618,24 @@ export namespace CoreNodeShape {
     }
 
     const datatype = _datatypeEither.unsafeCoerce();
+    const _deactivatedEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<boolean>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://www.w3.org/ns/shacl#deactivated"),
+          { unique: true },
+        )
+        .head()
+        .chain((_value) => _value.toBoolean())
+        .toMaybe(),
+    );
+    if (_deactivatedEither.isLeft()) {
+      return _deactivatedEither;
+    }
+
+    const deactivated = _deactivatedEither.unsafeCoerce();
     const _flagsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly string[]
@@ -2333,7 +2223,7 @@ export namespace CoreNodeShape {
     const nodeKind = _nodeKindEither.unsafeCoerce();
     const _nodesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
+      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
     > = purify.Either.of([
       ..._resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#node"), {
@@ -2343,45 +2233,7 @@ export namespace CoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIdentifier())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
+            .chain((_value) => _value.toIdentifier())
             .toMaybe()
             .toList(),
         ),
@@ -2393,7 +2245,7 @@ export namespace CoreNodeShape {
     const nodes = _nodesEither.unsafeCoerce();
     const _notEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
+      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
     > = purify.Either.of([
       ..._resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#not"), {
@@ -2403,45 +2255,7 @@ export namespace CoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIdentifier())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
+            .chain((_value) => _value.toIdentifier())
             .toMaybe()
             .toList(),
         ),
@@ -2535,7 +2349,7 @@ export namespace CoreNodeShape {
     const patterns = _patternsEither.unsafeCoerce();
     const _propertiesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly CorePropertyShape[]
+      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
     > = purify.Either.of([
       ..._resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#property"), {
@@ -2545,14 +2359,44 @@ export namespace CoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((value) => value.toResource())
-            .chain((_resource) =>
-              CorePropertyShape.fromRdf({
-                ..._context,
-                ignoreRdfType: true,
-                languageIn: _languageIn,
-                resource: _resource,
-              }),
+            .chain((value) =>
+              value
+                .toResource()
+                .map((resource) =>
+                  resource.isInstanceOf(
+                    dataFactory.namedNode(
+                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
+                    ),
+                  ),
+                )
+                .orDefault(false)
+                ? purify.Right<
+                    rdfjsResource.Resource.Value,
+                    rdfjsResource.Resource.ValueError
+                  >(value)
+                : purify.Left<
+                    rdfjsResource.Resource.ValueError,
+                    rdfjsResource.Resource.Value
+                  >(
+                    new rdfjsResource.Resource.ValueError({
+                      focusResource: _resource,
+                      message: "unexpected RDF type",
+                      predicate: dataFactory.namedNode(
+                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
+                      ),
+                    }),
+                  ),
+            )
+            .chain((value) => value.toList())
+            .map((values) =>
+              values.flatMap((_value) =>
+                _value
+                  .toValues()
+                  .head()
+                  .chain((_value) => _value.toIdentifier())
+                  .toMaybe()
+                  .toList(),
+              ),
             )
             .toMaybe()
             .toList(),
@@ -2722,6 +2566,7 @@ export namespace CoreNodeShape {
       closed,
       comments,
       datatype,
+      deactivated,
       flags,
       hasValues,
       identifier,
