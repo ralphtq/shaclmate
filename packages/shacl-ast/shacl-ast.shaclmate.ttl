@@ -18,7 +18,7 @@ shaclmate:CoreNodeShape
     shaclmate:fromRdfType sh:NodeShape ;
     shaclmate:name "CoreNodeShape" ;
     a sh:NodeShape ;
-    sh:property shaclmate:CoreNodeShape-closed, shaclmate:CoreNodeShape-properties, shaclmate:CoreShape-and, shaclmate:CoreShape-classes, shaclmate:CoreShape-comments, shaclmate:CoreShape-datatype, shaclmate:CoreShape-hasValues, shaclmate:CoreShape-in, shaclmate:CoreShape-isDefinedBy, shaclmate:CoreShape-labels, shaclmate:CoreShape-languageIn, shaclmate:CoreShape-maxCount, shaclmate:CoreShape-maxExclusive, shaclmate:CoreShape-maxInclusive, shaclmate:CoreShape-minCount, shaclmate:CoreShape-minExclusive, shaclmate:CoreShape-minInclusive .
+    sh:property shaclmate:CoreNodeShape-closed, shaclmate:CoreNodeShape-properties, shaclmate:CoreShape-and, shaclmate:CoreShape-classes, shaclmate:CoreShape-comments, shaclmate:CoreShape-datatype, shaclmate:CoreShape-hasValues, shaclmate:CoreShape-in, shaclmate:CoreShape-isDefinedBy, shaclmate:CoreShape-labels, shaclmate:CoreShape-languageIn, shaclmate:CoreShape-maxCount, shaclmate:CoreShape-maxExclusive, shaclmate:CoreShape-maxInclusive, shaclmate:CoreShape-minCount, shaclmate:CoreShape-minExclusive, shaclmate:CoreShape-minInclusive, shaclmate:CoreShape-nodeKind, shaclmate:CoreShape-nodes, shaclmate:CoreShape-not, shaclmate:CoreShape-or, shaclmate:CoreShape-xone .
 
 shaclmate:CoreNodeShape-closed
     a sh:PropertyShape ;
@@ -63,7 +63,7 @@ shaclmate:CorePropertyShape
     shaclmate:name "CorePropertyShape" ;
     a sh:NodeShape ;
     rdfs:subClassOf shaclmate:CoreShape ;
-    sh:property shaclmate:CorePropertyShape-defaultValue, shaclmate:CorePropertyShape-descriptions, shaclmate:CorePropertyShape-groups, shaclmate:CorePropertyShape-names, shaclmate:CorePropertyShape-order, shaclmate:CorePropertyShape-path, shaclmate:CoreShape-and, shaclmate:CoreShape-classes, shaclmate:CoreShape-comments, shaclmate:CoreShape-datatype, shaclmate:CoreShape-hasValues, shaclmate:CoreShape-in, shaclmate:CoreShape-isDefinedBy, shaclmate:CoreShape-labels, shaclmate:CoreShape-languageIn, shaclmate:CoreShape-maxCount, shaclmate:CoreShape-maxExclusive, shaclmate:CoreShape-maxInclusive, shaclmate:CoreShape-minCount, shaclmate:CoreShape-minExclusive, shaclmate:CoreShape-minInclusive .
+    sh:property shaclmate:CorePropertyShape-defaultValue, shaclmate:CorePropertyShape-descriptions, shaclmate:CorePropertyShape-groups, shaclmate:CorePropertyShape-names, shaclmate:CorePropertyShape-order, shaclmate:CorePropertyShape-path, shaclmate:CoreShape-and, shaclmate:CoreShape-classes, shaclmate:CoreShape-comments, shaclmate:CoreShape-datatype, shaclmate:CoreShape-hasValues, shaclmate:CoreShape-in, shaclmate:CoreShape-isDefinedBy, shaclmate:CoreShape-labels, shaclmate:CoreShape-languageIn, shaclmate:CoreShape-maxCount, shaclmate:CoreShape-maxExclusive, shaclmate:CoreShape-maxInclusive, shaclmate:CoreShape-minCount, shaclmate:CoreShape-minExclusive, shaclmate:CoreShape-minInclusive, shaclmate:CoreShape-nodeKind, shaclmate:CoreShape-nodes, shaclmate:CoreShape-not, shaclmate:CoreShape-or, shaclmate:CoreShape-xone .
 
 shaclmate:CorePropertyShape-defaultValue
     a sh:PropertyShape ;
@@ -140,7 +140,7 @@ shaclmate:CoreShape-datatype
 shaclmate:CoreShape-hasValues
     a sh:PropertyShape ;
     sh:name "hasValues" ;
-    sh:path sh:hasValues .
+    sh:path sh:hasValue .
 
 shaclmate:CoreShape-in
     a sh:PropertyShape ;
@@ -210,6 +210,43 @@ shaclmate:CoreShape-minInclusive
     sh:name "minInclusive" ;
     sh:nodeKind sh:Literal ;
     sh:path sh:minInclusive .
+
+shaclmate:CoreShape-nodeKind
+    a sh:PropertyShape ;
+    sh:in (sh:BlankNode
+        sh:BlankNodeOrIRI
+        sh:BlankNodeOrLiteral
+        sh:IRI
+        sh:IRIOrLiteral
+        sh:Literal
+    ) ;
+    sh:maxCount 1 ;
+    sh:name "nodeKind" ;
+    sh:path sh:nodeKind .
+
+shaclmate:CoreShape-nodes
+    a sh:PropertyShape ;
+    sh:name "nodes" ;
+    sh:node shaclmate:IdentifierList ;
+    sh:path sh:node .
+
+shaclmate:CoreShape-not
+    a sh:PropertyShape ;
+    sh:name "not" ;
+    sh:node shaclmate:IdentifierList ;
+    sh:path sh:not .
+
+shaclmate:CoreShape-or
+    a sh:PropertyShape ;
+    sh:name "or" ;
+    sh:node shaclmate:IdentifierList ;
+    sh:path sh:or .
+
+shaclmate:CoreShape-xone
+    a sh:PropertyShape ;
+    sh:name "xone" ;
+    sh:node shaclmate:IdentifierList ;
+    sh:path sh:xone .
 
 shaclmate:IdentifierList
     shaclmate:name "IdentifierList" ;
