@@ -1085,7 +1085,26 @@ export namespace CorePropertyShape {
           _value
             .toValues()
             .head()
-            .chain((_value) => purify.Either.of(_value.toTerm()))
+            .chain((_value) =>
+              purify.Either.of(_value.toTerm()).chain((term) => {
+                switch (term.termType) {
+                  case "NamedNode":
+                  case "Literal":
+                    return purify.Either.of(term);
+                  default:
+                    return purify.Left(
+                      new rdfjsResource.Resource.MistypedValueError({
+                        actualValue: term,
+                        expectedValueType: "(rdfjs.NamedNode | rdfjs.Literal)",
+                        focusResource: _resource,
+                        predicate: dataFactory.namedNode(
+                          "http://www.w3.org/ns/shacl#targetNode",
+                        ),
+                      }),
+                    );
+                }
+              }),
+            )
             .toMaybe()
             .toList(),
         ),
@@ -2443,7 +2462,26 @@ export namespace CoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((_value) => purify.Either.of(_value.toTerm()))
+            .chain((_value) =>
+              purify.Either.of(_value.toTerm()).chain((term) => {
+                switch (term.termType) {
+                  case "NamedNode":
+                  case "Literal":
+                    return purify.Either.of(term);
+                  default:
+                    return purify.Left(
+                      new rdfjsResource.Resource.MistypedValueError({
+                        actualValue: term,
+                        expectedValueType: "(rdfjs.NamedNode | rdfjs.Literal)",
+                        focusResource: _resource,
+                        predicate: dataFactory.namedNode(
+                          "http://www.w3.org/ns/shacl#targetNode",
+                        ),
+                      }),
+                    );
+                }
+              }),
+            )
             .toMaybe()
             .toList(),
         ),
