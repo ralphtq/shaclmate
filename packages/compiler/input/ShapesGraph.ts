@@ -80,7 +80,12 @@ export class ShapesGraph extends RdfjsShapesGraph<
           resource: Resource;
           shapesGraph: ShapesGraph;
         }): Either<Error, PropertyShape> {
-          return Either.of(new PropertyShape(resource, shapesGraph));
+          return generated.ShaclmatePropertyShape.fromRdf({
+            ignoreRdfType: true,
+            resource,
+          }).map(
+            (generatedShape) => new PropertyShape(generatedShape, shapesGraph),
+          );
         },
       },
     });
