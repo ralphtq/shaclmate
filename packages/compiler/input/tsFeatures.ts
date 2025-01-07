@@ -1,51 +1,61 @@
-import type { NamedNode } from "@rdfjs/types";
+import type * as rdfjs from "@rdfjs/types";
 import { Maybe } from "purify-ts";
-import type { Resource } from "rdfjs-resource";
 import { TsFeature } from "../enums/index.js";
-import { logger } from "../logger.js";
-import { shaclmate } from "../vocabularies/index.js";
 
-function iriToTsFeature(iri: NamedNode): Maybe<TsFeature> {
-  if (iri.equals(shaclmate._TsFeature_Equals)) {
-    return Maybe.of("equals");
+function iriToTsFeature(
+  iri: rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+  >,
+): TsFeature {
+  switch (iri.value) {
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+      return "equals";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+      return "fromRdf";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+      return "hash";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
+      return "sparql-graph-patterns";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+      return "toJson";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+      return "toRdf";
   }
-  if (iri.equals(shaclmate._TsFeature_FromRdf)) {
-    return Maybe.of("fromRdf");
-  }
-  if (iri.equals(shaclmate._TsFeature_Hash)) {
-    return Maybe.of("hash");
-  }
-  if (iri.equals(shaclmate._TsFeature_SparqlGraphPatterns)) {
-    return Maybe.of("sparql-graph-patterns");
-  }
-  if (iri.equals(shaclmate._TsFeature_ToJson)) {
-    return Maybe.of("toJson");
-  }
-  if (iri.equals(shaclmate._TsFeature_ToRdf)) {
-    return Maybe.of("toRdf");
-  }
-  logger.warn("unrecognized shaclmate feature value: %s", iri.value);
-  return Maybe.empty();
 }
 
-export function tsFeatures(resource: Resource): Maybe<Set<TsFeature>> {
-  const excludeTsFeatures = resource
-    .values(shaclmate.tsFeatureExclude)
-    .flatMap((value) => value.toIri().toMaybe().toList())
-    .flatMap((iri) => iriToTsFeature(iri).toList());
+export function tsFeatures(generated: {
+  readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+  >[];
+  readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+  >[];
+}): Maybe<Set<TsFeature>> {
+  const tsFeatureIncludes = generated.tsFeatureIncludes.map(iriToTsFeature);
+  const tsFeatureExcludes = generated.tsFeatureExcludes.map(iriToTsFeature);
 
-  const includeTsFeatures = resource
-    .values(shaclmate.tsFeatureInclude)
-    .flatMap((value) => value.toIri().toMaybe().toList())
-    .flatMap((iri) => iriToTsFeature(iri).toList());
-
-  if (includeTsFeatures.length > 0) {
-    return Maybe.of(new Set<TsFeature>(includeTsFeatures));
+  if (tsFeatureIncludes.length > 0) {
+    return Maybe.of(new Set<TsFeature>(tsFeatureIncludes));
   }
-  if (excludeTsFeatures.length > 0) {
+  if (tsFeatureExcludes.length > 0) {
     const tsFeatures = new Set<TsFeature>(TsFeature.MEMBERS);
-    for (const excludeTsFeature of excludeTsFeatures) {
-      tsFeatures.delete(excludeTsFeature);
+    for (const tsFeatureExclude of tsFeatureIncludes) {
+      tsFeatures.delete(tsFeatureExclude);
     }
     return Maybe.of(tsFeatures);
   }

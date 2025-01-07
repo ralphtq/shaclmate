@@ -54,14 +54,21 @@ shaclmate:ShaclmateOntology
     shaclmate:name "ShaclmateOntology" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf shaclmate:OwlOntology ;
-    sh:property shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
+    sh:property shaclmate:ShaclmateOntology-tsDataFactoryVariable, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
+
+shaclmate:ShaclmateOntology-tsDataFactoryVariable
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "tsDataFactoryVariable" ;
+    sh:path shaclmate:tsDataFactoryVariable .
 
 shaclmate:ShaclmatePropertyShape
     shaclmate:fromRdfType sh:PropertyShape ;
     shaclmate:name "ShaclmatePropertyShape" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf shaclmate:ShaclCorePropertyShape ;
-    sh:property shaclmate:ShaclmateShape-extern, shaclmate:ShaclmateShape-mutable, shaclmate:ShaclmateShape-name .
+    sh:property shaclmate:ShaclmatePropertyShape-visibility, shaclmate:ShaclmateShape-extern, shaclmate:ShaclmateShape-mutable, shaclmate:ShaclmateShape-name .
 
 shaclmate:ShaclmatePropertyShape-visibility
     a sh:PropertyShape ;

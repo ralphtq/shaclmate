@@ -1,40 +1,50 @@
-import { Ontology as CoreOntology } from "@shaclmate/shacl-ast";
-import * as generated from "@shaclmate/shacl-ast/generated.js";
-import type { Either, Maybe } from "purify-ts";
+import { Ontology as OwlOntology } from "@shaclmate/shacl-ast";
+import type { Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { TsFeature, TsObjectDeclarationType } from "../enums/index.js";
-import { shaclmate } from "../vocabularies/index.js";
+import * as generated from "./generated.js";
 import { tsFeatures } from "./tsFeatures.js";
-import { tsObjectDeclarationType } from "./tsObjectDeclarationType.js";
 
-export class Ontology extends CoreOntology {
-  constructor(private readonly resource: Resource) {
+export class Ontology extends OwlOntology {
+  private generatedShaclmateOntology: generated.ShaclmateOntology;
+
+  constructor(resource: Resource) {
     super(
       generated.OwlOntology.fromRdf({
         ignoreRdfType: true,
         resource,
       }).unsafeCoerce(),
     );
+    this.generatedShaclmateOntology = generated.ShaclmateOntology.fromRdf({
+      ignoreRdfType: true,
+      resource,
+    }).unsafeCoerce();
   }
 
   get tsDataFactoryVariable(): Maybe<string> {
-    return this.resource
-      .value(shaclmate.tsDataFactoryVariable)
-      .chain((value) => value.toString())
-      .toMaybe();
+    return this.generatedShaclmateOntology.tsDataFactoryVariable;
   }
 
   get tsFeatures(): Maybe<Set<TsFeature>> {
-    return tsFeatures(this.resource);
+    return tsFeatures(this.generatedShaclmateOntology);
   }
 
   get tsImports(): readonly string[] {
-    return this.resource
-      .values(shaclmate.tsImport)
-      .flatMap((value) => value.toString().toMaybe().toList());
+    return this.generatedShaclmateOntology.tsImports;
   }
 
-  get tsObjectDeclarationType(): Either<Error, TsObjectDeclarationType> {
-    return tsObjectDeclarationType(this.resource);
+  get tsObjectDeclarationType(): Maybe<TsObjectDeclarationType> {
+    return this.generatedShaclmateOntology.tsObjectDeclarationType.map(
+      (iri) => {
+        switch (iri.value) {
+          case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class":
+            return "class";
+          case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface":
+            return "interface";
+          default:
+            throw new RangeError(iri.value);
+        }
+      },
+    );
   }
 }

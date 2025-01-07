@@ -2,9 +2,8 @@ import TermSet from "@rdfjs/term-set";
 import type * as rdfjs from "@rdfjs/types";
 import type { NamedNode } from "@rdfjs/types";
 import { NodeShape as ShaclCoreNodeShape } from "@shaclmate/shacl-ast";
-import * as generated from "@shaclmate/shacl-ast/generated.js";
 import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
-import { Either, Left, Maybe } from "purify-ts";
+import { Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type {
   MintingStrategy,
@@ -13,16 +12,14 @@ import type {
 } from "../enums/index.js";
 import { shaclmate } from "../vocabularies/index.js";
 import type { Shape } from "./Shape.js";
-import { extern } from "./extern.js";
+import * as generated from "./generated.js";
 import type {
   Ontology,
   PropertyGroup,
   PropertyShape,
   ShapesGraph,
 } from "./index.js";
-import { shaclmateName } from "./shaclmateName.js";
 import { tsFeatures } from "./tsFeatures.js";
-import { tsObjectDeclarationType } from "./tsObjectDeclarationType.js";
 
 function ancestorClassIris(
   classResource: Resource,
@@ -81,13 +78,13 @@ function descendantClassIris(
 }
 
 export class NodeShape extends ShaclCoreNodeShape<
-  generated.ShaclCoreNodeShape,
   any,
   Ontology,
   PropertyGroup,
   PropertyShape,
   Shape
 > {
+  private generatedShaclmateNodeShape: generated.ShaclmateNodeShape;
   constructor(
     readonly resource: Resource,
     shapesGraph: ShapesGraph,
@@ -99,13 +96,14 @@ export class NodeShape extends ShaclCoreNodeShape<
       }).unsafeCoerce(),
       shapesGraph,
     );
+    this.generatedShaclmateNodeShape = generated.ShaclmateNodeShape.fromRdf({
+      ignoreRdfType: true,
+      resource,
+    }).unsafeCoerce();
   }
 
   get abstract(): Maybe<boolean> {
-    return this.resource
-      .value(shaclmate.abstract)
-      .chain((value) => value.toBoolean())
-      .toMaybe();
+    return this.generatedShaclmateNodeShape.abstract;
   }
 
   get ancestorNodeShapes(): readonly NodeShape[] {
@@ -133,22 +131,16 @@ export class NodeShape extends ShaclCoreNodeShape<
   }
 
   get export(): Maybe<boolean> {
-    return this.resource
-      .value(shaclmate.export)
-      .chain((value) => value.toBoolean())
-      .toMaybe();
+    return this.generatedShaclmateNodeShape.export_;
   }
 
   get extern(): Maybe<boolean> {
-    return extern.bind(this)();
+    return this.generatedShaclmateNodeShape.extern;
   }
 
   get fromRdfType(): Maybe<NamedNode> {
     // Check for an explicit shaclmate:fromRdfType
-    const fromRdfType = this.resource
-      .value(shaclmate.fromRdfType)
-      .chain((value) => value.toIri())
-      .toMaybe();
+    const fromRdfType = this.generatedShaclmateNodeShape.fromRdfType;
     if (fromRdfType.isJust()) {
       return fromRdfType;
     }
@@ -158,9 +150,9 @@ export class NodeShape extends ShaclCoreNodeShape<
     if (
       !this.abstract.orDefault(false) &&
       this.isClass &&
-      this.resource.identifier.termType === "NamedNode"
+      this.identifier.termType === "NamedNode"
     ) {
-      return Maybe.of(this.resource.identifier);
+      return Maybe.of(this.identifier);
     }
 
     return Maybe.empty();
@@ -173,12 +165,12 @@ export class NodeShape extends ShaclCoreNodeShape<
     );
   }
 
-  get mintingStrategy(): Either<Error, MintingStrategy> {
+  get mintingStrategy(): Maybe<MintingStrategy> {
     const thisMintingStrategy = this._mintingStrategy;
-    if (thisMintingStrategy.isLeft()) {
+    if (thisMintingStrategy.isNothing()) {
       for (const ancestorNodeShape of this.ancestorNodeShapes) {
         const ancestorMintingStrategy = ancestorNodeShape._mintingStrategy;
-        if (ancestorMintingStrategy.isRight()) {
+        if (ancestorMintingStrategy.isJust()) {
           return ancestorMintingStrategy;
         }
       }
@@ -187,10 +179,7 @@ export class NodeShape extends ShaclCoreNodeShape<
   }
 
   get mutable(): Maybe<boolean> {
-    return this.resource
-      .value(shaclmate.mutable)
-      .chain((value) => value.toBoolean())
-      .toMaybe();
+    return this.generatedShaclmateNodeShape.mutable;
   }
 
   get nodeKinds(): Set<"BlankNode" | "NamedNode"> {
@@ -242,15 +231,12 @@ export class NodeShape extends ShaclCoreNodeShape<
   }
 
   get shaclmateName(): Maybe<string> {
-    return shaclmateName.bind(this)();
+    return this.generatedShaclmateNodeShape.name;
   }
 
   get toRdfTypes(): readonly NamedNode[] {
     // Look for one or more explicit shaclmate:toRdfType's
-    const toRdfTypes = this.resource
-      .values(shaclmate.toRdfType)
-      .flatMap((value) => value.toIri().toMaybe().toList())
-      .concat();
+    const toRdfTypes = this.generatedShaclmateNodeShape.toRdfTypes.concat();
 
     // Ensure the toRdfTypes includes the fromRdfType if there is one
     this.fromRdfType.ifJust((fromRdfType) => {
@@ -265,9 +251,9 @@ export class NodeShape extends ShaclCoreNodeShape<
       if (
         !this.abstract.orDefault(false) &&
         this.isClass &&
-        this.resource.identifier.termType === "NamedNode"
+        this.identifier.termType === "NamedNode"
       ) {
-        toRdfTypes.push(this.resource.identifier);
+        toRdfTypes.push(this.identifier);
       }
     }
 
@@ -275,7 +261,7 @@ export class NodeShape extends ShaclCoreNodeShape<
   }
 
   get tsFeatures(): Maybe<Set<TsFeature>> {
-    return tsFeatures(this.resource).altLazy(() =>
+    return tsFeatures(this.generatedShaclmateNodeShape).altLazy(() =>
       this.isDefinedBy.chain((ontology) => ontology.tsFeatures),
     );
   }
@@ -287,41 +273,43 @@ export class NodeShape extends ShaclCoreNodeShape<
       .toMaybe();
   }
 
-  get tsObjectDeclarationType(): Either<Error, TsObjectDeclarationType> {
-    return tsObjectDeclarationType(this.resource).altLazy(() =>
-      this.isDefinedBy
-        .toEither(new Error("node shape is not associated with an ontology"))
-        .chain((ontology) => ontology.tsObjectDeclarationType),
-    );
+  get tsObjectDeclarationType(): Maybe<TsObjectDeclarationType> {
+    return this.generatedShaclmateNodeShape.tsObjectDeclarationType
+      .map((iri) => {
+        switch (iri.value) {
+          case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class":
+            return "class";
+          case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface":
+            return "interface";
+          default:
+            throw new RangeError(iri.value);
+        }
+      })
+      .altLazy(() =>
+        this.isDefinedBy.chain((ontology) => ontology.tsObjectDeclarationType),
+      );
   }
 
   get tsObjectIdentifierPropertyName(): Maybe<string> {
-    return this.resource
-      .value(shaclmate.tsObjectIdentifierPropertyName)
-      .chain((value) => value.toString())
-      .toMaybe();
+    return this.generatedShaclmateNodeShape.tsObjectIdentifierPropertyName;
   }
 
   get tsObjectTypeDiscriminatorPropertyName(): Maybe<string> {
-    return this.resource
-      .value(shaclmate.tsObjectTypeDiscriminatorPropertyName)
-      .chain((value) => value.toString())
-      .toMaybe();
+    return this.generatedShaclmateNodeShape
+      .tsObjectTypeDiscriminatorPropertyName;
   }
 
-  private get _mintingStrategy(): Either<Error, MintingStrategy> {
-    return this.resource
-      .value(shaclmate.mintingStrategy)
-      .chain((value) => value.toIri())
-      .chain((iri) => {
-        if (iri.equals(shaclmate._MintingStrategy_SHA256)) {
-          return Either.of("sha256");
-        }
-        if (iri.equals(shaclmate._MintingStrategy_UUIDv4)) {
-          return Either.of("uuidv4");
-        }
-        return Left(new Error(`unrecognizsed minting strategy: ${iri.value}`));
-      });
+  private get _mintingStrategy(): Maybe<MintingStrategy> {
+    return this.generatedShaclmateNodeShape.mintingStrategy.map((iri) => {
+      switch (iri.value) {
+        case "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256":
+          return "sha256";
+        case "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4":
+          return "uuidv4";
+        default:
+          throw new RangeError(iri.value);
+      }
+    });
   }
 
   private get ancestorClassIris(): readonly NamedNode[] {
