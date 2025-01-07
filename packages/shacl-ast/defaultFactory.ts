@@ -1,4 +1,4 @@
-import { Either } from "purify-ts";
+import type { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { Factory } from "./Factory.js";
 import { NodeShape } from "./NodeShape.js";
@@ -10,6 +10,7 @@ import type { ShapesGraph } from "./ShapesGraph.js";
 import * as generated from "./generated.js";
 
 type DefaultNodeShape = NodeShape<
+  generated.ShaclCoreNodeShape,
   any,
   Ontology,
   PropertyGroup,
@@ -17,6 +18,7 @@ type DefaultNodeShape = NodeShape<
   DefaultShape
 >;
 type DefaultPropertyShape = PropertyShape<
+  generated.ShaclCorePropertyShape,
   DefaultNodeShape,
   Ontology,
   PropertyGroup,
@@ -24,6 +26,7 @@ type DefaultPropertyShape = PropertyShape<
   DefaultShape
 >;
 type DefaultShape = Shape<
+  generated.ShaclCoreShape,
   DefaultNodeShape,
   Ontology,
   PropertyGroup,
@@ -52,7 +55,10 @@ export const defaultFactory: Factory<
     resource: Resource;
     shapesGraph: DefaultShapesGraph;
   }) {
-    return Either.of(new NodeShape(resource, shapesGraph));
+    return generated.ShaclCoreNodeShape.fromRdf({
+      ignoreRdfType: true,
+      resource,
+    }).map((generatedShape) => new NodeShape(generatedShape, shapesGraph));
   },
 
   ontologyFromRdf({
@@ -61,7 +67,10 @@ export const defaultFactory: Factory<
     resource: Resource;
     shapesGraph: DefaultShapesGraph;
   }): Either<Error, Ontology> {
-    return Either.of(new Ontology(resource));
+    return generated.OwlOntology.fromRdf({
+      ignoreRdfType: true,
+      resource,
+    }).map((generatedOntology) => new Ontology(generatedOntology));
   },
 
   propertyGroupFromRdf({
@@ -83,6 +92,9 @@ export const defaultFactory: Factory<
     Error,
     DefaultPropertyShape
   > {
-    return Either.of(new PropertyShape(resource, shapesGraph));
+    return generated.ShaclCorePropertyShape.fromRdf({
+      ignoreRdfType: true,
+      resource,
+    }).map((generatedShape) => new PropertyShape(generatedShape, shapesGraph));
   },
 };
