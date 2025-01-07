@@ -277,7 +277,7 @@ export class TypeFactory {
       extern: astType.extern,
       features: astType.tsFeatures,
       fromRdfType: astType.fromRdfType,
-      import_: astType.tsImport,
+      imports: astType.tsImports,
       label: astType.label,
       lazyAncestorObjectTypes: () =>
         astType.ancestorObjectTypes.map((astType) =>

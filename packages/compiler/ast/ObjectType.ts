@@ -1,6 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import type { PredicatePath } from "@shaclmate/shacl-ast";
-import type { Maybe } from "purify-ts";
+import type { Maybe, NonEmptyList } from "purify-ts";
 import { Resource } from "rdfjs-resource";
 import genericToposort from "toposort";
 import type {
@@ -128,14 +128,14 @@ export interface ObjectType {
   readonly tsIdentifierPropertyName: string;
 
   /**
-   * A TypeScript import to add to generated code.
+   * TypeScript imports to add to generated code.
    *
    * This is often used in conjunction with extern=true to import the extern'd ObjectType code in order for generated
    * code to reference it.
    *
    * import { MyType } from "./MyType.js"
    */
-  readonly tsImport: Maybe<string>;
+  readonly tsImports: Maybe<NonEmptyList<string>>;
 
   /**
    * Whether to generate a TypeScript class or interface for this type.

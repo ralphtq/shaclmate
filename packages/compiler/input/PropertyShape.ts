@@ -20,10 +20,7 @@ export class PropertyShape extends ShaclCorePropertyShape<
 > {
   private readonly generatedShaclmatePropertyShape: generated.ShaclmatePropertyShape;
 
-  constructor(
-    readonly resource: Resource,
-    shapesGraph: ShapesGraph,
-  ) {
+  constructor(resource: Resource, shapesGraph: ShapesGraph) {
     super(
       generated.ShaclCorePropertyShape.fromRdf({
         ignoreRdfType: true,

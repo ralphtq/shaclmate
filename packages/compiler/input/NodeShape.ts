@@ -1,18 +1,13 @@
-import TermSet from "@rdfjs/term-set";
-import type * as rdfjs from "@rdfjs/types";
 import type { NamedNode } from "@rdfjs/types";
 import { NodeShape as ShaclCoreNodeShape } from "@shaclmate/shacl-ast";
-import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
-import { Maybe } from "purify-ts";
-import type { Resource } from "rdfjs-resource";
+import { Maybe, NonEmptyList } from "purify-ts";
 import type {
   MintingStrategy,
   TsFeature,
   TsObjectDeclarationType,
 } from "../enums/index.js";
-import { shaclmate } from "../vocabularies/index.js";
 import type { Shape } from "./Shape.js";
-import * as generated from "./generated.js";
+import type * as generated from "./generated.js";
 import type {
   Ontology,
   PropertyGroup,
@@ -21,62 +16,6 @@ import type {
 } from "./index.js";
 import { tsFeatures } from "./tsFeatures.js";
 
-function ancestorClassIris(
-  classResource: Resource,
-  maxDepth: number,
-): readonly rdfjs.NamedNode[] {
-  const ancestorClassIris = new TermSet<rdfjs.NamedNode>();
-
-  function ancestorClassIrisRecursive(
-    classResource: Resource,
-    depth: number,
-  ): void {
-    for (const parentClassValue of classResource.values(rdfs.subClassOf)) {
-      parentClassValue.toNamedResource().ifRight((parentClassResource) => {
-        if (ancestorClassIris.has(parentClassResource.identifier)) {
-          return;
-        }
-        ancestorClassIris.add(parentClassResource.identifier);
-        if (depth < maxDepth) {
-          ancestorClassIrisRecursive(parentClassResource, depth + 1);
-        }
-      });
-    }
-  }
-
-  ancestorClassIrisRecursive(classResource, 1);
-
-  return [...ancestorClassIris];
-}
-
-function descendantClassIris(
-  classResource: Resource,
-  maxDepth: number,
-): readonly rdfjs.NamedNode[] {
-  const descendantClassIris = new TermSet<rdfjs.NamedNode>();
-
-  function descendantClassIrisRecursive(
-    classResource: Resource,
-    depth: number,
-  ): void {
-    for (const childClassValue of classResource.valuesOf(rdfs.subClassOf)) {
-      childClassValue.toNamedResource().ifRight((childClassResource) => {
-        if (descendantClassIris.has(childClassResource.identifier)) {
-          return;
-        }
-        descendantClassIris.add(childClassResource.identifier);
-        if (depth < maxDepth) {
-          descendantClassIrisRecursive(childClassResource, depth + 1);
-        }
-      });
-    }
-  }
-
-  descendantClassIrisRecursive(classResource, 1);
-
-  return [...descendantClassIris];
-}
-
 export class NodeShape extends ShaclCoreNodeShape<
   any,
   Ontology,
@@ -84,22 +23,41 @@ export class NodeShape extends ShaclCoreNodeShape<
   PropertyShape,
   Shape
 > {
-  private generatedShaclmateNodeShape: generated.ShaclmateNodeShape;
-  constructor(
-    readonly resource: Resource,
-    shapesGraph: ShapesGraph,
-  ) {
-    super(
-      generated.ShaclCoreNodeShape.fromRdf({
-        ignoreRdfType: true,
-        resource,
-      }).unsafeCoerce(),
-      shapesGraph,
-    );
-    this.generatedShaclmateNodeShape = generated.ShaclmateNodeShape.fromRdf({
-      ignoreRdfType: true,
-      resource,
-    }).unsafeCoerce();
+  readonly isClass: boolean;
+  readonly isList: boolean;
+  private readonly ancestorClassIris: readonly NamedNode[];
+  private readonly childClassIris: readonly NamedNode[];
+  private readonly descendantClassIris: readonly NamedNode[];
+  private readonly generatedShaclmateNodeShape: generated.ShaclmateNodeShape;
+  private readonly parentClassIris: readonly NamedNode[];
+
+  constructor({
+    ancestorClassIris,
+    childClassIris,
+    descendantClassIris,
+    generatedShaclmateNodeShape,
+    isClass,
+    isList,
+    parentClassIris,
+    shapesGraph,
+  }: {
+    ancestorClassIris: readonly NamedNode[];
+    generatedShaclmateNodeShape: generated.ShaclmateNodeShape;
+    childClassIris: readonly NamedNode[];
+    descendantClassIris: readonly NamedNode[];
+    isClass: boolean;
+    isList: boolean;
+    parentClassIris: readonly NamedNode[];
+    shapesGraph: ShapesGraph;
+  }) {
+    super(generatedShaclmateNodeShape, shapesGraph);
+    this.ancestorClassIris = ancestorClassIris;
+    this.childClassIris = childClassIris;
+    this.descendantClassIris = descendantClassIris;
+    this.generatedShaclmateNodeShape = generatedShaclmateNodeShape;
+    this.isClass = isClass;
+    this.isList = isList;
+    this.parentClassIris = parentClassIris;
   }
 
   get abstract(): Maybe<boolean> {
@@ -156,13 +114,6 @@ export class NodeShape extends ShaclCoreNodeShape<
     }
 
     return Maybe.empty();
-  }
-
-  get isClass(): boolean {
-    return (
-      this.resource.isInstanceOf(owl.Class) ||
-      this.resource.isInstanceOf(rdfs.Class)
-    );
   }
 
   get mintingStrategy(): Maybe<MintingStrategy> {
@@ -266,11 +217,8 @@ export class NodeShape extends ShaclCoreNodeShape<
     );
   }
 
-  get tsImport(): Maybe<string> {
-    return this.resource
-      .value(shaclmate.tsImport)
-      .chain((value) => value.toString())
-      .toMaybe();
+  get tsImports(): Maybe<NonEmptyList<string>> {
+    return NonEmptyList.fromArray(this.generatedShaclmateNodeShape.tsImports);
   }
 
   get tsObjectDeclarationType(): Maybe<TsObjectDeclarationType> {
@@ -310,21 +258,5 @@ export class NodeShape extends ShaclCoreNodeShape<
           throw new RangeError(iri.value);
       }
     });
-  }
-
-  private get ancestorClassIris(): readonly NamedNode[] {
-    return ancestorClassIris(this.resource, Number.MAX_SAFE_INTEGER);
-  }
-
-  private get childClassIris(): readonly NamedNode[] {
-    return descendantClassIris(this.resource, 1);
-  }
-
-  private get descendantClassIris(): readonly NamedNode[] {
-    return descendantClassIris(this.resource, Number.MAX_SAFE_INTEGER);
-  }
-
-  private get parentClassIris(): readonly NamedNode[] {
-    return ancestorClassIris(this.resource, 1);
   }
 }

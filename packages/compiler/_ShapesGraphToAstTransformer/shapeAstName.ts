@@ -25,12 +25,10 @@ export function shapeAstName(
 
   return {
     curie:
-      shape.resource.identifier.termType === "NamedNode"
-        ? Maybe.fromNullable(
-            this.iriPrefixMap.shrink(shape.resource.identifier)?.value,
-          )
+      shape.identifier.termType === "NamedNode"
+        ? Maybe.fromNullable(this.iriPrefixMap.shrink(shape.identifier)?.value)
         : Maybe.empty(),
-    identifier: shape.resource.identifier,
+    identifier: shape.identifier,
     label: pickLiteral(shape.labels).map((literal) => literal.value),
     propertyPath,
     shName: shName,

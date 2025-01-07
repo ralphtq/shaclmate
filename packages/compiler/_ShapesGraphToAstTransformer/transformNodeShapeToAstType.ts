@@ -17,7 +17,7 @@ function transformNodeShapeToListType(
   this: ShapesGraphToAstTransformer,
   nodeShape: input.NodeShape,
 ): Either<Error, ast.ListType> {
-  invariant(nodeShape.resource.isSubClassOf(rdf.List));
+  invariant(nodeShape.isList);
 
   // Put a placeholder in the cache to deal with cyclic references
   const listType: ast.ListType = {
@@ -128,7 +128,7 @@ export function transformNodeShapeToAstType(
     }
   }
 
-  if (nodeShape.resource.isSubClassOf(rdf.List)) {
+  if (nodeShape.isList) {
     return transformNodeShapeToListType.bind(this)(nodeShape);
   }
 
@@ -209,7 +209,7 @@ export function transformNodeShapeToAstType(
     tsFeatures: nodeShape.tsFeatures.orDefault(new Set(TsFeature.MEMBERS)),
     tsIdentifierPropertyName:
       nodeShape.tsObjectIdentifierPropertyName.orDefault("identifier"),
-    tsImport: nodeShape.tsImport,
+    tsImports: nodeShape.tsImports,
     tsObjectDeclarationType:
       nodeShape.tsObjectDeclarationType.orDefault("class"),
     tsTypeDiscriminatorPropertyName:

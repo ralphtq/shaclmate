@@ -1,9 +1,11 @@
 import type { DatasetCore } from "@rdfjs/types";
 import { RdfjsShapesGraph } from "@shaclmate/shacl-ast";
-// import * as generated from "./generated.js";
-import * as generated from "@shaclmate/shacl-ast/generated.js";
+import { owl, rdf, rdfs } from "@tpluscode/rdf-ns-builders";
 import { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
+import { ancestorClassIris } from "./ancestorClassIris.js";
+import { descendantClassIris } from "./descendantClassIris.js";
+import * as generated from "./generated.js";
 import {
   NodeShape,
   Ontology,
@@ -30,7 +32,30 @@ export class ShapesGraph extends RdfjsShapesGraph<
           resource: Resource;
           shapesGraph: ShapesGraph;
         }): Either<Error, NodeShape> {
-          return Either.of(new NodeShape(resource, shapesGraph));
+          return generated.ShaclmateNodeShape.fromRdf({
+            ignoreRdfType: true,
+            resource,
+          }).map(
+            (generatedShape) =>
+              new NodeShape({
+                ancestorClassIris: ancestorClassIris(
+                  resource,
+                  Number.MAX_SAFE_INTEGER,
+                ),
+                childClassIris: descendantClassIris(resource, 1),
+                descendantClassIris: descendantClassIris(
+                  resource,
+                  Number.MAX_SAFE_INTEGER,
+                ),
+                generatedShaclmateNodeShape: generatedShape,
+                isClass:
+                  resource.isInstanceOf(owl.Class) ||
+                  resource.isInstanceOf(rdfs.Class),
+                isList: resource.isSubClassOf(rdf.List),
+                parentClassIris: ancestorClassIris(resource, 1),
+                shapesGraph,
+              }),
+          );
         },
         ontologyFromRdf({
           resource,

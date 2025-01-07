@@ -1,6 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import { camelCase } from "change-case";
-import { Maybe } from "purify-ts";
+import { Maybe, type NonEmptyList } from "purify-ts";
 import { invariant } from "ts-invariant";
 import {
   type ClassDeclarationStructure,
@@ -34,7 +34,7 @@ export class ObjectType extends DeclaredType {
   protected readonly label: Maybe<string>;
   protected readonly mintingStrategy: Maybe<MintingStrategy>;
   protected readonly toRdfTypes: readonly NamedNode[];
-  private readonly import_: Maybe<string>;
+  private readonly imports: Maybe<NonEmptyList<string>>;
   private readonly lazyAncestorObjectTypes: () => readonly ObjectType[];
   private readonly lazyDescendantObjectTypes: () => readonly ObjectType[];
   private readonly lazyParentObjectTypes: () => readonly ObjectType[];
@@ -51,7 +51,7 @@ export class ObjectType extends DeclaredType {
     lazyDescendantObjectTypes,
     lazyParentObjectTypes,
     lazyProperties,
-    import_,
+    imports,
     mintingStrategy,
     toRdfTypes,
     ...superParameters
@@ -61,7 +61,7 @@ export class ObjectType extends DeclaredType {
     declarationType: TsObjectDeclarationType;
     extern: boolean;
     fromRdfType: Maybe<NamedNode>;
-    import_: Maybe<string>;
+    imports: Maybe<NonEmptyList<string>>;
     label: Maybe<string>;
     lazyAncestorObjectTypes: () => readonly ObjectType[];
     lazyDescendantObjectTypes: () => readonly ObjectType[];
@@ -76,7 +76,7 @@ export class ObjectType extends DeclaredType {
     this.declarationType = declarationType;
     this.extern = extern;
     this.fromRdfType = fromRdfType;
-    this.import_ = import_;
+    this.imports = imports;
     this.label = label;
     // Lazily initialize some members in getters to avoid recursive construction
     this.lazyAncestorObjectTypes = lazyAncestorObjectTypes;
@@ -272,7 +272,9 @@ export class ObjectType extends DeclaredType {
   }
 
   override get useImports(): readonly Import[] {
-    return this.import_.toList();
+    return this.imports
+      .map((imports) => imports as readonly Import[])
+      .orDefault([]);
   }
 
   protected get thisVariable(): string {
