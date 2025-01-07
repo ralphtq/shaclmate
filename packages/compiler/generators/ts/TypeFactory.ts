@@ -53,7 +53,6 @@ export class TypeFactory {
       case "ListType": {
         return new ListType({
           dataFactoryVariable: this.dataFactoryVariable,
-          fromRdfType: astType.fromRdfType,
           identifierNodeKind: astType.identifierNodeKind,
           itemType: this.createTypeFromAstType(astType.itemType),
           mutable: astType.mutable.orDefault(false),

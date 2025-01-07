@@ -9,7 +9,6 @@ export class ListType extends Type {
   readonly itemType: Type;
   readonly kind = "ListType";
   override readonly mutable: boolean;
-  private readonly fromRdfType: Maybe<NamedNode>;
   private readonly identifierNodeKind: "BlankNode" | "NamedNode";
   private readonly mintingStrategy: MintingStrategy;
   private readonly toRdfTypes: readonly NamedNode[];
@@ -19,11 +18,9 @@ export class ListType extends Type {
     itemType,
     mintingStrategy,
     mutable,
-    fromRdfType,
     toRdfTypes,
     ...superParameters
   }: {
-    fromRdfType: Maybe<NamedNode>;
     identifierNodeKind: ListType["identifierNodeKind"];
     itemType: Type;
     mintingStrategy: Maybe<MintingStrategy>;
@@ -35,7 +32,6 @@ export class ListType extends Type {
     this.itemType = itemType;
     this.mintingStrategy = mintingStrategy.orDefault("sha256");
     this.mutable = mutable;
-    this.fromRdfType = fromRdfType;
     this.toRdfTypes = toRdfTypes;
   }
 
@@ -90,9 +86,7 @@ export class ListType extends Type {
             (itemSparqlGraphPatternsExpression) =>
               `itemGraphPatterns: (_itemVariable) => ${itemSparqlGraphPatternsExpression.toSparqlGraphPatternsExpression()}, `,
           )
-          .orDefault(
-            "",
-          )} ${this.fromRdfType.map((fromRdfType) => `rdfListType: ${this.rdfjsTermExpression(fromRdfType)}, `).orDefault("")} rdfList: ${variables.subject} })`,
+          .orDefault("")} rdfList: ${variables.subject} })`,
       ),
     );
   }
@@ -102,11 +96,6 @@ export class ListType extends Type {
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
     const chain: string[] = [variables.resourceValues];
     chain.push("head()");
-    this.fromRdfType.ifJust((fromRdfType) => {
-      chain.push(
-        `chain(value => value.toResource().map(resource => resource.isInstanceOf(${this.rdfjsTermExpression(fromRdfType)})).orDefault(false) ? purify.Right<rdfjsResource.Resource.Value, rdfjsResource.Resource.ValueError>(value) : purify.Left<rdfjsResource.Resource.ValueError, rdfjsResource.Resource.Value>(new rdfjsResource.Resource.ValueError({ focusResource: ${variables.resource}, message: "unexpected RDF type", predicate: ${this.rdfjsTermExpression(fromRdfType)} })))`,
-      );
-    });
     chain.push("chain(value => value.toList())");
     chain.push(
       `map(values => values.flatMap(_value => ${this.itemType.propertyFromRdfExpression({ variables: { ...variables, resourceValues: "_value.toValues()" } })}.toMaybe().toList()))`,
