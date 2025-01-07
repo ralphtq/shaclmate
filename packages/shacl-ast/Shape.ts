@@ -22,7 +22,10 @@ export abstract class Shape<
   readonly targets: Shape.Targets;
 
   constructor(
-    private readonly generatedShaclCoreShape: generated.ShaclCoreShape,
+    private readonly generatedShaclCoreShape: Omit<
+      generated.ShaclCoreShape,
+      "type"
+    >,
     protected readonly shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
@@ -87,7 +90,10 @@ export namespace Shape {
     ShapeT,
   > {
     constructor(
-      private readonly generatedShaclCoreShape: generated.ShaclCoreShape,
+      private readonly generatedShaclCoreShape: Omit<
+        generated.ShaclCoreShape,
+        "type"
+      >,
       protected readonly shapesGraph: ShapesGraph<
         NodeShapeT,
         OntologyT,
@@ -222,7 +228,7 @@ export namespace Shape {
 
   export class Targets {
     constructor(
-      private readonly generatedShape: generated.BaseShaclCoreShape,
+      private readonly generatedShape: Omit<generated.ShaclCoreShape, "type">,
     ) {}
 
     get targetClasses(): Maybe<NonEmptyList<NamedNode>> {

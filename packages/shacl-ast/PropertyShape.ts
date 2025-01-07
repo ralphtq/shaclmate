@@ -22,7 +22,10 @@ export class PropertyShape<
   >;
 
   constructor(
-    private readonly generatedShaclCorePropertyShape: generated.ShaclCorePropertyShape,
+    private readonly generatedShaclCorePropertyShape: Omit<
+      generated.ShaclCorePropertyShape,
+      "type"
+    >,
     shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
