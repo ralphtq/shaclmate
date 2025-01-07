@@ -1,7 +1,7 @@
 import type { DatasetCore } from "@rdfjs/types";
 import { RdfjsShapesGraph } from "@shaclmate/shacl-ast";
 import { owl, rdf, rdfs } from "@tpluscode/rdf-ns-builders";
-import { Either } from "purify-ts";
+import type { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import { ancestorClassIris } from "./ancestorClassIris.js";
 import { descendantClassIris } from "./descendantClassIris.js";
@@ -62,7 +62,9 @@ export class ShapesGraph extends RdfjsShapesGraph<
         }: {
           resource: Resource;
         }): Either<Error, Ontology> {
-          return Either.of(new Ontology(resource));
+          return generated.ShaclmateOntology.fromRdf({
+            resource,
+          }).map((generatedOntology) => new Ontology(generatedOntology));
         },
         propertyGroupFromRdf({
           resource,
@@ -71,7 +73,10 @@ export class ShapesGraph extends RdfjsShapesGraph<
         }): Either<Error, PropertyGroup> {
           return generated.ShaclCorePropertyGroup.fromRdf({
             resource,
-          }).map((propertyGroup) => new PropertyGroup(propertyGroup));
+          }).map(
+            (generatedPropertyGroup) =>
+              new PropertyGroup(generatedPropertyGroup),
+          );
         },
         propertyShapeFromRdf({
           resource,
