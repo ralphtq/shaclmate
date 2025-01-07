@@ -83,7 +83,7 @@ shaclmate:ShaclmatePropertyShape-visibility
 shaclmate:ShaclmateShape
     shaclmate:name "ShaclmateShape" ;
     a sh:NodeShape ;
-    sh:or (shaclmate:ShaclmateNodeShape
+    sh:xone (shaclmate:ShaclmateNodeShape
         shaclmate:ShaclCorePropertyShape
     ) .
 
