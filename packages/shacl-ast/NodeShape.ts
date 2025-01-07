@@ -1,4 +1,3 @@
-import { sh } from "@tpluscode/rdf-ns-builders";
 import { type Maybe, NonEmptyList } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
@@ -83,23 +82,10 @@ export namespace NodeShape {
 
     get properties(): Maybe<NonEmptyList<PropertyShapeT>> {
       return NonEmptyList.fromArray(
-        [...this.resource.values(sh.property)].flatMap((value) =>
-          value
-            .toIdentifier()
-            .toMaybe()
-            .chain((shapeNode) =>
-              this.shapesGraph.propertyShapeByIdentifier(shapeNode),
-            )
-            .toList(),
+        this.generatedShaclCoreNodeShape.properties.flatMap((identifier) =>
+          this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
         ),
       );
-      // return NonEmptyList.fromArray(
-      //   this.generatedNodeShape.properties.flatMap((identifiers) =>
-      //     identifiers.flatMap((identifier) =>
-      //       this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
-      //     ),
-      //   ),
-      // );
     }
   }
 }
