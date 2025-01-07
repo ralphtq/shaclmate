@@ -37,14 +37,7 @@ export interface ShaclCorePropertyShape {
   readonly minLength: purify.Maybe<number>;
   readonly names: readonly rdfjs.Literal[];
   readonly nodeKind: purify.Maybe<
-    rdfjs.NamedNode<
-      | "http://www.w3.org/ns/shacl#BlankNode"
-      | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-      | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-      | "http://www.w3.org/ns/shacl#IRI"
-      | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-      | "http://www.w3.org/ns/shacl#Literal"
-    >
+    rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
   >;
   readonly nodes: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
@@ -53,7 +46,7 @@ export interface ShaclCorePropertyShape {
   readonly path: PropertyPath;
   readonly patterns: readonly string[];
   readonly targetClass: readonly rdfjs.NamedNode[];
-  readonly targetNodes: readonly (rdfjs.NamedNode | rdfjs.Literal)[];
+  readonly targetNodes: readonly (rdfjs.Literal | rdfjs.NamedNode)[];
   readonly targetObjectsOf: readonly rdfjs.NamedNode[];
   readonly targetSubjectsOf: readonly rdfjs.NamedNode[];
   readonly type: "ShaclCorePropertyShape";
@@ -103,34 +96,6 @@ export namespace ShaclCorePropertyShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
             .chain((value) => value.toList())
             .map((values) =>
               values.flatMap((_value) =>
@@ -376,34 +341,6 @@ export namespace ShaclCorePropertyShape {
           unique: true,
         })
         .head()
-        .chain((value) =>
-          value
-            .toResource()
-            .map((resource) =>
-              resource.isInstanceOf(
-                dataFactory.namedNode(
-                  "http://minorg.github.io/shaclmate/ns#TermList",
-                ),
-              ),
-            )
-            .orDefault(false)
-            ? purify.Right<
-                rdfjsResource.Resource.Value,
-                rdfjsResource.Resource.ValueError
-              >(value)
-            : purify.Left<
-                rdfjsResource.Resource.ValueError,
-                rdfjsResource.Resource.Value
-              >(
-                new rdfjsResource.Resource.ValueError({
-                  focusResource: _resource,
-                  message: "unexpected RDF type",
-                  predicate: dataFactory.namedNode(
-                    "http://minorg.github.io/shaclmate/ns#TermList",
-                  ),
-                }),
-              ),
-        )
         .chain((value) => value.toList())
         .map((values) =>
           values.flatMap((_value) =>
@@ -488,34 +425,6 @@ export namespace ShaclCorePropertyShape {
           { unique: true },
         )
         .head()
-        .chain((value) =>
-          value
-            .toResource()
-            .map((resource) =>
-              resource.isInstanceOf(
-                dataFactory.namedNode(
-                  "http://minorg.github.io/shaclmate/ns#StringList",
-                ),
-              ),
-            )
-            .orDefault(false)
-            ? purify.Right<
-                rdfjsResource.Resource.Value,
-                rdfjsResource.Resource.ValueError
-              >(value)
-            : purify.Left<
-                rdfjsResource.Resource.ValueError,
-                rdfjsResource.Resource.Value
-              >(
-                new rdfjsResource.Resource.ValueError({
-                  focusResource: _resource,
-                  message: "unexpected RDF type",
-                  predicate: dataFactory.namedNode(
-                    "http://minorg.github.io/shaclmate/ns#StringList",
-                  ),
-                }),
-              ),
-        )
         .chain((value) => value.toList())
         .map((values) =>
           values.flatMap((_value) =>
@@ -763,120 +672,14 @@ export namespace ShaclCorePropertyShape {
     const names = _namesEither.unsafeCoerce();
     const _nodeKindEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      purify.Maybe<
-        rdfjs.NamedNode<
-          | "http://www.w3.org/ns/shacl#BlankNode"
-          | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-          | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-          | "http://www.w3.org/ns/shacl#IRI"
-          | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-          | "http://www.w3.org/ns/shacl#Literal"
-        >
-      >
+      purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
     > = purify.Either.of(
       _resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#nodeKind"), {
           unique: true,
         })
         .head()
-        .chain((_value) =>
-          _value.toIri().chain((iri) => {
-            switch (iri.value) {
-              case "http://www.w3.org/ns/shacl#BlankNode":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(
-                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNode">,
-                );
-              case "http://www.w3.org/ns/shacl#BlankNodeOrIRI":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(
-                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNodeOrIRI">,
-                );
-              case "http://www.w3.org/ns/shacl#BlankNodeOrLiteral":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(
-                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNodeOrLiteral">,
-                );
-              case "http://www.w3.org/ns/shacl#IRI":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#IRI">);
-              case "http://www.w3.org/ns/shacl#IRIOrLiteral":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(
-                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#IRIOrLiteral">,
-                );
-              case "http://www.w3.org/ns/shacl#Literal":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#Literal">);
-              default:
-                return purify.Left(
-                  new rdfjsResource.Resource.MistypedValueError({
-                    actualValue: iri,
-                    expectedValueType:
-                      'rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNode" | "http://www.w3.org/ns/shacl#BlankNodeOrIRI" | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral" | "http://www.w3.org/ns/shacl#IRI" | "http://www.w3.org/ns/shacl#IRIOrLiteral" | "http://www.w3.org/ns/shacl#Literal">',
-                    focusResource: _resource,
-                    predicate: dataFactory.namedNode(
-                      "http://www.w3.org/ns/shacl#nodeKind",
-                    ),
-                  }),
-                );
-            }
-          }),
-        )
+        .chain((_value) => purify.Either.of(_value.toTerm()))
         .toMaybe(),
     );
     if (_nodeKindEither.isLeft()) {
@@ -940,34 +743,6 @@ export namespace ShaclCorePropertyShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
             .chain((value) => value.toList())
             .map((values) =>
               values.flatMap((_value) =>
@@ -1074,7 +849,7 @@ export namespace ShaclCorePropertyShape {
     const targetClass = _targetClassEither.unsafeCoerce();
     const _targetNodesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (rdfjs.NamedNode | rdfjs.Literal)[]
+      readonly (rdfjs.Literal | rdfjs.NamedNode)[]
     > = purify.Either.of([
       ..._resource
         .values(
@@ -1088,14 +863,14 @@ export namespace ShaclCorePropertyShape {
             .chain((_value) =>
               purify.Either.of(_value.toTerm()).chain((term) => {
                 switch (term.termType) {
-                  case "NamedNode":
                   case "Literal":
+                  case "NamedNode":
                     return purify.Either.of(term);
                   default:
                     return purify.Left(
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: term,
-                        expectedValueType: "(rdfjs.NamedNode | rdfjs.Literal)",
+                        expectedValueType: "(rdfjs.Literal | rdfjs.NamedNode)",
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
                           "http://www.w3.org/ns/shacl#targetNode",
@@ -1196,34 +971,6 @@ export namespace ShaclCorePropertyShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
             .chain((value) => value.toList())
             .map((values) =>
               values.flatMap((_value) =>
@@ -1430,25 +1177,15 @@ export interface ShaclCoreNodeShape {
   readonly minInclusive: purify.Maybe<rdfjs.Literal>;
   readonly minLength: purify.Maybe<number>;
   readonly nodeKind: purify.Maybe<
-    rdfjs.NamedNode<
-      | "http://www.w3.org/ns/shacl#BlankNode"
-      | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-      | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-      | "http://www.w3.org/ns/shacl#IRI"
-      | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-      | "http://www.w3.org/ns/shacl#Literal"
-    >
+    rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
   >;
   readonly nodes: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly or: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
   readonly patterns: readonly string[];
-  readonly properties: readonly (readonly (
-    | rdfjs.BlankNode
-    | rdfjs.NamedNode
-  )[])[];
+  readonly properties: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly targetClass: readonly rdfjs.NamedNode[];
-  readonly targetNodes: readonly (rdfjs.NamedNode | rdfjs.Literal)[];
+  readonly targetNodes: readonly (rdfjs.Literal | rdfjs.NamedNode)[];
   readonly targetObjectsOf: readonly rdfjs.NamedNode[];
   readonly targetSubjectsOf: readonly rdfjs.NamedNode[];
   readonly type: "ShaclCoreNodeShape";
@@ -1497,34 +1234,6 @@ export namespace ShaclCoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
             .chain((value) => value.toList())
             .map((values) =>
               values.flatMap((_value) =>
@@ -1710,34 +1419,6 @@ export namespace ShaclCoreNodeShape {
           { unique: true },
         )
         .head()
-        .chain((value) =>
-          value
-            .toResource()
-            .map((resource) =>
-              resource.isInstanceOf(
-                dataFactory.namedNode(
-                  "http://minorg.github.io/shaclmate/ns#IriList",
-                ),
-              ),
-            )
-            .orDefault(false)
-            ? purify.Right<
-                rdfjsResource.Resource.Value,
-                rdfjsResource.Resource.ValueError
-              >(value)
-            : purify.Left<
-                rdfjsResource.Resource.ValueError,
-                rdfjsResource.Resource.Value
-              >(
-                new rdfjsResource.Resource.ValueError({
-                  focusResource: _resource,
-                  message: "unexpected RDF type",
-                  predicate: dataFactory.namedNode(
-                    "http://minorg.github.io/shaclmate/ns#IriList",
-                  ),
-                }),
-              ),
-        )
         .chain((value) => value.toList())
         .map((values) =>
           values.flatMap((_value) =>
@@ -1767,34 +1448,6 @@ export namespace ShaclCoreNodeShape {
           unique: true,
         })
         .head()
-        .chain((value) =>
-          value
-            .toResource()
-            .map((resource) =>
-              resource.isInstanceOf(
-                dataFactory.namedNode(
-                  "http://minorg.github.io/shaclmate/ns#TermList",
-                ),
-              ),
-            )
-            .orDefault(false)
-            ? purify.Right<
-                rdfjsResource.Resource.Value,
-                rdfjsResource.Resource.ValueError
-              >(value)
-            : purify.Left<
-                rdfjsResource.Resource.ValueError,
-                rdfjsResource.Resource.Value
-              >(
-                new rdfjsResource.Resource.ValueError({
-                  focusResource: _resource,
-                  message: "unexpected RDF type",
-                  predicate: dataFactory.namedNode(
-                    "http://minorg.github.io/shaclmate/ns#TermList",
-                  ),
-                }),
-              ),
-        )
         .chain((value) => value.toList())
         .map((values) =>
           values.flatMap((_value) =>
@@ -1879,34 +1532,6 @@ export namespace ShaclCoreNodeShape {
           { unique: true },
         )
         .head()
-        .chain((value) =>
-          value
-            .toResource()
-            .map((resource) =>
-              resource.isInstanceOf(
-                dataFactory.namedNode(
-                  "http://minorg.github.io/shaclmate/ns#StringList",
-                ),
-              ),
-            )
-            .orDefault(false)
-            ? purify.Right<
-                rdfjsResource.Resource.Value,
-                rdfjsResource.Resource.ValueError
-              >(value)
-            : purify.Left<
-                rdfjsResource.Resource.ValueError,
-                rdfjsResource.Resource.Value
-              >(
-                new rdfjsResource.Resource.ValueError({
-                  focusResource: _resource,
-                  message: "unexpected RDF type",
-                  predicate: dataFactory.namedNode(
-                    "http://minorg.github.io/shaclmate/ns#StringList",
-                  ),
-                }),
-              ),
-        )
         .chain((value) => value.toList())
         .map((values) =>
           values.flatMap((_value) =>
@@ -2119,120 +1744,14 @@ export namespace ShaclCoreNodeShape {
     const minLength = _minLengthEither.unsafeCoerce();
     const _nodeKindEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      purify.Maybe<
-        rdfjs.NamedNode<
-          | "http://www.w3.org/ns/shacl#BlankNode"
-          | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-          | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-          | "http://www.w3.org/ns/shacl#IRI"
-          | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-          | "http://www.w3.org/ns/shacl#Literal"
-        >
-      >
+      purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
     > = purify.Either.of(
       _resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#nodeKind"), {
           unique: true,
         })
         .head()
-        .chain((_value) =>
-          _value.toIri().chain((iri) => {
-            switch (iri.value) {
-              case "http://www.w3.org/ns/shacl#BlankNode":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(
-                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNode">,
-                );
-              case "http://www.w3.org/ns/shacl#BlankNodeOrIRI":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(
-                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNodeOrIRI">,
-                );
-              case "http://www.w3.org/ns/shacl#BlankNodeOrLiteral":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(
-                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNodeOrLiteral">,
-                );
-              case "http://www.w3.org/ns/shacl#IRI":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#IRI">);
-              case "http://www.w3.org/ns/shacl#IRIOrLiteral":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(
-                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#IRIOrLiteral">,
-                );
-              case "http://www.w3.org/ns/shacl#Literal":
-                return purify.Either.of<
-                  rdfjsResource.Resource.ValueError,
-                  rdfjs.NamedNode<
-                    | "http://www.w3.org/ns/shacl#BlankNode"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
-                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
-                    | "http://www.w3.org/ns/shacl#IRI"
-                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
-                    | "http://www.w3.org/ns/shacl#Literal"
-                  >
-                >(iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#Literal">);
-              default:
-                return purify.Left(
-                  new rdfjsResource.Resource.MistypedValueError({
-                    actualValue: iri,
-                    expectedValueType:
-                      'rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNode" | "http://www.w3.org/ns/shacl#BlankNodeOrIRI" | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral" | "http://www.w3.org/ns/shacl#IRI" | "http://www.w3.org/ns/shacl#IRIOrLiteral" | "http://www.w3.org/ns/shacl#Literal">',
-                    focusResource: _resource,
-                    predicate: dataFactory.namedNode(
-                      "http://www.w3.org/ns/shacl#nodeKind",
-                    ),
-                  }),
-                );
-            }
-          }),
-        )
+        .chain((_value) => purify.Either.of(_value.toTerm()))
         .toMaybe(),
     );
     if (_nodeKindEither.isLeft()) {
@@ -2296,34 +1815,6 @@ export namespace ShaclCoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
             .chain((value) => value.toList())
             .map((values) =>
               values.flatMap((_value) =>
@@ -2368,7 +1859,7 @@ export namespace ShaclCoreNodeShape {
     const patterns = _patternsEither.unsafeCoerce();
     const _propertiesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
+      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
     > = purify.Either.of([
       ..._resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#property"), {
@@ -2378,45 +1869,7 @@ export namespace ShaclCoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIdentifier())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
+            .chain((_value) => _value.toIdentifier())
             .toMaybe()
             .toList(),
         ),
@@ -2451,7 +1904,7 @@ export namespace ShaclCoreNodeShape {
     const targetClass = _targetClassEither.unsafeCoerce();
     const _targetNodesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (rdfjs.NamedNode | rdfjs.Literal)[]
+      readonly (rdfjs.Literal | rdfjs.NamedNode)[]
     > = purify.Either.of([
       ..._resource
         .values(
@@ -2465,14 +1918,14 @@ export namespace ShaclCoreNodeShape {
             .chain((_value) =>
               purify.Either.of(_value.toTerm()).chain((term) => {
                 switch (term.termType) {
-                  case "NamedNode":
                   case "Literal":
+                  case "NamedNode":
                     return purify.Either.of(term);
                   default:
                     return purify.Left(
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: term,
-                        expectedValueType: "(rdfjs.NamedNode | rdfjs.Literal)",
+                        expectedValueType: "(rdfjs.Literal | rdfjs.NamedNode)",
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
                           "http://www.w3.org/ns/shacl#targetNode",
@@ -2550,34 +2003,6 @@ export namespace ShaclCoreNodeShape {
           _value
             .toValues()
             .head()
-            .chain((value) =>
-              value
-                .toResource()
-                .map((resource) =>
-                  resource.isInstanceOf(
-                    dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                    ),
-                  ),
-                )
-                .orDefault(false)
-                ? purify.Right<
-                    rdfjsResource.Resource.Value,
-                    rdfjsResource.Resource.ValueError
-                  >(value)
-                : purify.Left<
-                    rdfjsResource.Resource.ValueError,
-                    rdfjsResource.Resource.Value
-                  >(
-                    new rdfjsResource.Resource.ValueError({
-                      focusResource: _resource,
-                      message: "unexpected RDF type",
-                      predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#IdentifierList",
-                      ),
-                    }),
-                  ),
-            )
             .chain((value) => value.toList())
             .map((values) =>
               values.flatMap((_value) =>
