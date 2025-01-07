@@ -77,16 +77,16 @@ function transformNodeShapeToListType(
     return Left(new Error(`${nodeShape} does not have an rdf:rest property`));
   }
   if (restProperty.type.kind !== "UnionType") {
-    return Left(new Error(`${nodeShape} rdf:rest property is not sh:or`));
+    return Left(new Error(`${nodeShape} rdf:rest property is not sh:xone`));
   }
   if (restProperty.type.memberTypes.length !== 2) {
     return Left(
       new Error(
-        `${nodeShape} rdf:rest property sh:or does not have exactly two member types`,
+        `${nodeShape} rdf:rest property sh:xone does not have exactly two member types`,
       ),
     );
   }
-  // rdf:rest should be sh:or ( [ sh:class nodeShape ] [ sh:hasValue rdf:nil ] )
+  // rdf:rest should be sh:xone ( [ sh:class nodeShape ] [ sh:hasValue rdf:nil ] )
   if (
     !restProperty.type.memberTypes.find(
       (type) =>
@@ -96,7 +96,7 @@ function transformNodeShapeToListType(
   ) {
     return Left(
       new Error(
-        `${nodeShape} rdf:rest property sh:or is not recursive into the node shape`,
+        `${nodeShape} rdf:rest property sh:xone is not recursive into the node shape`,
       ),
     );
   }
@@ -107,7 +107,7 @@ function transformNodeShapeToListType(
   ) {
     return Left(
       new Error(
-        `${nodeShape} rdf:rest property sh:or does not include sh:hasValue rdf:nil`,
+        `${nodeShape} rdf:rest property sh:xone does not include sh:hasValue rdf:nil`,
       ),
     );
   }
@@ -134,7 +134,10 @@ export function transformNodeShapeToAstType(
 
   const export_ = nodeShape.export.orDefault(true);
 
-  if (nodeShape.constraints.and.isJust() || nodeShape.constraints.or.isJust()) {
+  if (
+    nodeShape.constraints.and.isJust() ||
+    nodeShape.constraints.xone.isJust()
+  ) {
     let compositeTypeShapes: readonly input.Shape[];
     let compositeTypeKind:
       | ast.ObjectIntersectionType["kind"]
@@ -143,7 +146,7 @@ export function transformNodeShapeToAstType(
       compositeTypeShapes = nodeShape.constraints.and.unsafeCoerce();
       compositeTypeKind = "ObjectIntersectionType";
     } else {
-      compositeTypeShapes = nodeShape.constraints.or.unsafeCoerce();
+      compositeTypeShapes = nodeShape.constraints.xone.unsafeCoerce();
       compositeTypeKind = "ObjectUnionType";
     }
 
