@@ -37,7 +37,14 @@ export interface ShaclCorePropertyShape {
   readonly minLength: purify.Maybe<number>;
   readonly names: readonly rdfjs.Literal[];
   readonly nodeKind: purify.Maybe<
-    rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
+    rdfjs.NamedNode<
+      | "http://www.w3.org/ns/shacl#BlankNode"
+      | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+      | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+      | "http://www.w3.org/ns/shacl#IRI"
+      | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+      | "http://www.w3.org/ns/shacl#Literal"
+    >
   >;
   readonly nodes: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
@@ -672,14 +679,120 @@ export namespace ShaclCorePropertyShape {
     const names = _namesEither.unsafeCoerce();
     const _nodeKindEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
+      purify.Maybe<
+        rdfjs.NamedNode<
+          | "http://www.w3.org/ns/shacl#BlankNode"
+          | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+          | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+          | "http://www.w3.org/ns/shacl#IRI"
+          | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+          | "http://www.w3.org/ns/shacl#Literal"
+        >
+      >
     > = purify.Either.of(
       _resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#nodeKind"), {
           unique: true,
         })
         .head()
-        .chain((_value) => purify.Either.of(_value.toTerm()))
+        .chain((_value) =>
+          _value.toIri().chain((iri) => {
+            switch (iri.value) {
+              case "http://www.w3.org/ns/shacl#BlankNode":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(
+                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNode">,
+                );
+              case "http://www.w3.org/ns/shacl#BlankNodeOrIRI":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(
+                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNodeOrIRI">,
+                );
+              case "http://www.w3.org/ns/shacl#BlankNodeOrLiteral":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(
+                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNodeOrLiteral">,
+                );
+              case "http://www.w3.org/ns/shacl#IRI":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#IRI">);
+              case "http://www.w3.org/ns/shacl#IRIOrLiteral":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(
+                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#IRIOrLiteral">,
+                );
+              case "http://www.w3.org/ns/shacl#Literal":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#Literal">);
+              default:
+                return purify.Left(
+                  new rdfjsResource.Resource.MistypedValueError({
+                    actualValue: iri,
+                    expectedValueType:
+                      'rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNode" | "http://www.w3.org/ns/shacl#BlankNodeOrIRI" | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral" | "http://www.w3.org/ns/shacl#IRI" | "http://www.w3.org/ns/shacl#IRIOrLiteral" | "http://www.w3.org/ns/shacl#Literal">',
+                    focusResource: _resource,
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/ns/shacl#nodeKind",
+                    ),
+                  }),
+                );
+            }
+          }),
+        )
         .toMaybe(),
     );
     if (_nodeKindEither.isLeft()) {
@@ -1177,7 +1290,14 @@ export interface ShaclCoreNodeShape {
   readonly minInclusive: purify.Maybe<rdfjs.Literal>;
   readonly minLength: purify.Maybe<number>;
   readonly nodeKind: purify.Maybe<
-    rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
+    rdfjs.NamedNode<
+      | "http://www.w3.org/ns/shacl#BlankNode"
+      | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+      | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+      | "http://www.w3.org/ns/shacl#IRI"
+      | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+      | "http://www.w3.org/ns/shacl#Literal"
+    >
   >;
   readonly nodes: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
@@ -1744,14 +1864,120 @@ export namespace ShaclCoreNodeShape {
     const minLength = _minLengthEither.unsafeCoerce();
     const _nodeKindEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
+      purify.Maybe<
+        rdfjs.NamedNode<
+          | "http://www.w3.org/ns/shacl#BlankNode"
+          | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+          | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+          | "http://www.w3.org/ns/shacl#IRI"
+          | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+          | "http://www.w3.org/ns/shacl#Literal"
+        >
+      >
     > = purify.Either.of(
       _resource
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#nodeKind"), {
           unique: true,
         })
         .head()
-        .chain((_value) => purify.Either.of(_value.toTerm()))
+        .chain((_value) =>
+          _value.toIri().chain((iri) => {
+            switch (iri.value) {
+              case "http://www.w3.org/ns/shacl#BlankNode":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(
+                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNode">,
+                );
+              case "http://www.w3.org/ns/shacl#BlankNodeOrIRI":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(
+                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNodeOrIRI">,
+                );
+              case "http://www.w3.org/ns/shacl#BlankNodeOrLiteral":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(
+                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNodeOrLiteral">,
+                );
+              case "http://www.w3.org/ns/shacl#IRI":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#IRI">);
+              case "http://www.w3.org/ns/shacl#IRIOrLiteral":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(
+                  iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#IRIOrLiteral">,
+                );
+              case "http://www.w3.org/ns/shacl#Literal":
+                return purify.Either.of<
+                  rdfjsResource.Resource.ValueError,
+                  rdfjs.NamedNode<
+                    | "http://www.w3.org/ns/shacl#BlankNode"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrIRI"
+                    | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral"
+                    | "http://www.w3.org/ns/shacl#IRI"
+                    | "http://www.w3.org/ns/shacl#IRIOrLiteral"
+                    | "http://www.w3.org/ns/shacl#Literal"
+                  >
+                >(iri as rdfjs.NamedNode<"http://www.w3.org/ns/shacl#Literal">);
+              default:
+                return purify.Left(
+                  new rdfjsResource.Resource.MistypedValueError({
+                    actualValue: iri,
+                    expectedValueType:
+                      'rdfjs.NamedNode<"http://www.w3.org/ns/shacl#BlankNode" | "http://www.w3.org/ns/shacl#BlankNodeOrIRI" | "http://www.w3.org/ns/shacl#BlankNodeOrLiteral" | "http://www.w3.org/ns/shacl#IRI" | "http://www.w3.org/ns/shacl#IRIOrLiteral" | "http://www.w3.org/ns/shacl#Literal">',
+                    focusResource: _resource,
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/ns/shacl#nodeKind",
+                    ),
+                  }),
+                );
+            }
+          }),
+        )
         .toMaybe(),
     );
     if (_nodeKindEither.isLeft()) {

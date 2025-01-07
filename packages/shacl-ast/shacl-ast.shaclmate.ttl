@@ -75,7 +75,7 @@ shaclmate:IriList-rest
 shaclmate:OwlOntology
     shaclmate:fromRdfType owl:Ontology ;
     shaclmate:name "OwlOntology" ;
-    a sh:NodeShape ;
+    a owl:Class, sh:NodeShape ;
     sh:property shaclmate:OwlOntology-labels .
 
 shaclmate:OwlOntology-labels
@@ -87,7 +87,7 @@ shaclmate:OwlOntology-labels
 shaclmate:ShaclCoreNodeShape
     shaclmate:fromRdfType sh:NodeShape ;
     shaclmate:name "ShaclCoreNodeShape" ;
-    a sh:NodeShape ;
+    a owl:Class, sh:NodeShape ;
     sh:property shaclmate:ShaclCoreNodeShape-closed, shaclmate:ShaclCoreNodeShape-ignoredProperties, shaclmate:ShaclCoreNodeShape-properties, shaclmate:ShaclCoreShape-and, shaclmate:ShaclCoreShape-classes, shaclmate:ShaclCoreShape-comments, shaclmate:ShaclCoreShape-datatype, shaclmate:ShaclCoreShape-deactivated, shaclmate:ShaclCoreShape-flags, shaclmate:ShaclCoreShape-hasValues, shaclmate:ShaclCoreShape-in, shaclmate:ShaclCoreShape-isDefinedBy, shaclmate:ShaclCoreShape-labels, shaclmate:ShaclCoreShape-languageIn, shaclmate:ShaclCoreShape-maxCount, shaclmate:ShaclCoreShape-maxExclusive, shaclmate:ShaclCoreShape-maxInclusive, shaclmate:ShaclCoreShape-maxLength, shaclmate:ShaclCoreShape-minCount, shaclmate:ShaclCoreShape-minExclusive, shaclmate:ShaclCoreShape-minInclusive, shaclmate:ShaclCoreShape-minLength, shaclmate:ShaclCoreShape-nodeKind, shaclmate:ShaclCoreShape-nodes, shaclmate:ShaclCoreShape-not, shaclmate:ShaclCoreShape-or, shaclmate:ShaclCoreShape-patterns, shaclmate:ShaclCoreShape-targetClasses, shaclmate:ShaclCoreShape-targetNodes, shaclmate:ShaclCoreShape-targetObjectsOf, shaclmate:ShaclCoreShape-targetSubjectsOf, shaclmate:ShaclCoreShape-xone .
 
 shaclmate:ShaclCoreNodeShape-closed
@@ -138,7 +138,7 @@ shaclmate:ShaclCorePropertyPath
 shaclmate:ShaclCorePropertyShape
     shaclmate:fromRdfType sh:PropertyShape ;
     shaclmate:name "ShaclCorePropertyShape" ;
-    a sh:NodeShape ;
+    a owl:Class, sh:NodeShape ;
     sh:property shaclmate:ShaclCorePropertyShape-defaultValue, shaclmate:ShaclCorePropertyShape-descriptions, shaclmate:ShaclCorePropertyShape-groups, shaclmate:ShaclCorePropertyShape-names, shaclmate:ShaclCorePropertyShape-order, shaclmate:ShaclCorePropertyShape-path, shaclmate:ShaclCorePropertyShape-uniqueLang, shaclmate:ShaclCoreShape-and, shaclmate:ShaclCoreShape-classes, shaclmate:ShaclCoreShape-comments, shaclmate:ShaclCoreShape-datatype, shaclmate:ShaclCoreShape-deactivated, shaclmate:ShaclCoreShape-flags, shaclmate:ShaclCoreShape-hasValues, shaclmate:ShaclCoreShape-in, shaclmate:ShaclCoreShape-isDefinedBy, shaclmate:ShaclCoreShape-labels, shaclmate:ShaclCoreShape-languageIn, shaclmate:ShaclCoreShape-maxCount, shaclmate:ShaclCoreShape-maxExclusive, shaclmate:ShaclCoreShape-maxInclusive, shaclmate:ShaclCoreShape-maxLength, shaclmate:ShaclCoreShape-minCount, shaclmate:ShaclCoreShape-minExclusive, shaclmate:ShaclCoreShape-minInclusive, shaclmate:ShaclCoreShape-minLength, shaclmate:ShaclCoreShape-nodeKind, shaclmate:ShaclCoreShape-nodes, shaclmate:ShaclCoreShape-not, shaclmate:ShaclCoreShape-or, shaclmate:ShaclCoreShape-patterns, shaclmate:ShaclCoreShape-targetClasses, shaclmate:ShaclCoreShape-targetNodes, shaclmate:ShaclCoreShape-targetObjectsOf, shaclmate:ShaclCoreShape-targetSubjectsOf, shaclmate:ShaclCoreShape-xone .
 
 shaclmate:ShaclCorePropertyShape-defaultValue
