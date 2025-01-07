@@ -10,6 +10,6 @@ format_rdf() {
   echo "formatted $1"
 }
 
-# format_rdf $PWD/../shacl-ast/shacl-ast.shaclmate.ttl
-../../cli/cli.sh generate $PWD/../../shacl-ast/shacl-ast.shaclmate.ttl >$PWD/generated.ts
+format_rdf input.shaclmate.ttl
+../../cli/cli.sh generate $PWD/../../shacl-ast/shacl-ast.shaclmate.ttl $PWD/input.shaclmate.ttl >generated.ts
 npm exec biome -- check --write --unsafe $PWD/generated.ts
