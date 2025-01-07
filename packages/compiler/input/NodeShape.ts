@@ -1,7 +1,8 @@
 import TermSet from "@rdfjs/term-set";
 import type * as rdfjs from "@rdfjs/types";
 import type { NamedNode } from "@rdfjs/types";
-import { NodeShape as CoreNodeShape } from "@shaclmate/shacl-ast";
+import { NodeShape as ShaclCoreNodeShape } from "@shaclmate/shacl-ast";
+import * as generated from "@shaclmate/shacl-ast/generated.js";
 import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
 import { Either, Left, Maybe } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
@@ -13,7 +14,12 @@ import type {
 import { shaclmate } from "../vocabularies/index.js";
 import type { Shape } from "./Shape.js";
 import { extern } from "./extern.js";
-import type { Ontology, PropertyGroup, PropertyShape } from "./index.js";
+import type {
+  Ontology,
+  PropertyGroup,
+  PropertyShape,
+  ShapesGraph,
+} from "./index.js";
 import { shaclmateName } from "./shaclmateName.js";
 import { tsFeatures } from "./tsFeatures.js";
 import { tsObjectDeclarationType } from "./tsObjectDeclarationType.js";
@@ -74,13 +80,27 @@ function descendantClassIris(
   return [...descendantClassIris];
 }
 
-export class NodeShape extends CoreNodeShape<
+export class NodeShape extends ShaclCoreNodeShape<
+  generated.ShaclCoreNodeShape,
   any,
   Ontology,
   PropertyGroup,
   PropertyShape,
   Shape
 > {
+  constructor(
+    readonly resource: Resource,
+    shapesGraph: ShapesGraph,
+  ) {
+    super(
+      generated.ShaclCoreNodeShape.fromRdf({
+        ignoreRdfType: true,
+        resource,
+      }).unsafeCoerce(),
+      shapesGraph,
+    );
+  }
+
   get abstract(): Maybe<boolean> {
     return this.resource
       .value(shaclmate.abstract)
@@ -168,9 +188,9 @@ export class NodeShape extends CoreNodeShape<
 
   get mutable(): Maybe<boolean> {
     return this.resource
-        .value(shaclmate.mutable)
-        .chain((value) => value.toBoolean())
-        .toMaybe();
+      .value(shaclmate.mutable)
+      .chain((value) => value.toBoolean())
+      .toMaybe();
   }
 
   get nodeKinds(): Set<"BlankNode" | "NamedNode"> {

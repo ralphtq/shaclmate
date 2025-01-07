@@ -1,19 +1,40 @@
 import { PropertyShape as CorePropertyShape } from "@shaclmate/shacl-ast";
+import * as generated from "@shaclmate/shacl-ast/generated.js";
 import { Either, Left, type Maybe } from "purify-ts";
+import type { Resource } from "rdfjs-resource";
 import type { PropertyVisibility } from "../enums/index.js";
 import { shaclmate } from "../vocabularies/index.js";
 import type { Shape } from "./Shape.js";
 import { extern } from "./extern.js";
-import type { NodeShape, Ontology, PropertyGroup } from "./index.js";
+import type {
+  NodeShape,
+  Ontology,
+  PropertyGroup,
+  ShapesGraph,
+} from "./index.js";
 import { shaclmateName } from "./shaclmateName.js";
 
 export class PropertyShape extends CorePropertyShape<
+  generated.ShaclCorePropertyShape,
   NodeShape,
   Ontology,
   PropertyGroup,
   any,
   Shape
 > {
+  constructor(
+    readonly resource: Resource,
+    shapesGraph: ShapesGraph,
+  ) {
+    super(
+      generated.ShaclCorePropertyShape.fromRdf({
+        ignoreRdfType: true,
+        resource,
+      }).unsafeCoerce(),
+      shapesGraph,
+    );
+  }
+
   get extern(): Maybe<boolean> {
     return extern.bind(this)();
   }
