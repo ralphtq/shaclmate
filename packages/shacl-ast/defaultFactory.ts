@@ -10,7 +10,6 @@ import type { ShapesGraph } from "./ShapesGraph.js";
 import * as generated from "./generated.js";
 
 type DefaultNodeShape = NodeShape<
-  generated.ShaclCoreNodeShape,
   any,
   Ontology,
   PropertyGroup,
@@ -18,7 +17,6 @@ type DefaultNodeShape = NodeShape<
   DefaultShape
 >;
 type DefaultPropertyShape = PropertyShape<
-  generated.ShaclCorePropertyShape,
   DefaultNodeShape,
   Ontology,
   PropertyGroup,
@@ -26,7 +24,6 @@ type DefaultPropertyShape = PropertyShape<
   DefaultShape
 >;
 type DefaultShape = Shape<
-  generated.ShaclCoreShape,
   DefaultNodeShape,
   Ontology,
   PropertyGroup,

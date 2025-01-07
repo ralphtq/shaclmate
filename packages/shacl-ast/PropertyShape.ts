@@ -7,22 +7,13 @@ import type { ShapesGraph } from "./ShapesGraph.js";
 import type * as generated from "./generated.js";
 
 export class PropertyShape<
-  GeneratedShapeT extends generated.ShaclCorePropertyShape,
   NodeShapeT extends ShapeT,
   OntologyT extends OntologyLike,
   PropertyGroupT,
   PropertyShapeT extends ShapeT,
   ShapeT,
-> extends Shape<
-  GeneratedShapeT,
-  NodeShapeT,
-  OntologyT,
-  PropertyGroupT,
-  PropertyShapeT,
-  ShapeT
-> {
+> extends Shape<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT> {
   readonly constraints: Shape.Constraints<
-    GeneratedShapeT,
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -31,7 +22,7 @@ export class PropertyShape<
   >;
 
   constructor(
-    generatedShape: GeneratedShapeT,
+    private readonly generatedShaclCorePropertyShape: generated.ShaclCorePropertyShape,
     shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
@@ -40,36 +31,41 @@ export class PropertyShape<
       ShapeT
     >,
   ) {
-    super(generatedShape, shapesGraph);
-    this.constraints = new Shape.Constraints(generatedShape, shapesGraph);
+    super(generatedShaclCorePropertyShape, shapesGraph);
+    this.constraints = new Shape.Constraints(
+      generatedShaclCorePropertyShape,
+      shapesGraph,
+    );
   }
 
   get defaultValue(): Maybe<BlankNode | Literal | NamedNode> {
-    return this.generatedShape.defaultValue;
+    return this.generatedShaclCorePropertyShape.defaultValue;
   }
 
   get descriptions(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShape.descriptions);
+    return NonEmptyList.fromArray(
+      this.generatedShaclCorePropertyShape.descriptions,
+    );
   }
 
   get groups(): Maybe<NonEmptyList<PropertyGroupT>> {
     return NonEmptyList.fromArray(
-      this.generatedShape.groups.flatMap((identifier) =>
+      this.generatedShaclCorePropertyShape.groups.flatMap((identifier) =>
         this.shapesGraph.propertyGroupByIdentifier(identifier).toList(),
       ),
     );
   }
 
   get names(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShape.names);
+    return NonEmptyList.fromArray(this.generatedShaclCorePropertyShape.names);
   }
 
   get order(): Maybe<number> {
-    return this.generatedShape.order;
+    return this.generatedShaclCorePropertyShape.order;
   }
 
   get path(): PropertyPath {
-    return this.generatedShape.path;
+    return this.generatedShaclCorePropertyShape.path;
   }
 
   override toString(): string {

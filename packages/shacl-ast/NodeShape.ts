@@ -4,24 +4,14 @@ import { Shape } from "./Shape.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
 import type * as generated from "./generated.js";
 
-// @ts-ignore
 export class NodeShape<
-  GeneratedShapeT extends generated.ShaclCoreNodeShape,
   NodeShapeT extends ShapeT,
   OntologyT extends OntologyLike,
   PropertyGroupT,
   PropertyShapeT extends ShapeT,
   ShapeT,
-> extends Shape<
-  GeneratedShapeT,
-  NodeShapeT,
-  OntologyT,
-  PropertyGroupT,
-  PropertyShapeT,
-  ShapeT
-> {
+> extends Shape<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT> {
   readonly constraints: NodeShape.Constraints<
-    GeneratedShapeT,
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -30,7 +20,7 @@ export class NodeShape<
   >;
 
   constructor(
-    generatedShape: GeneratedShapeT,
+    generatedShaclCoreNodeShape: generated.ShaclCoreNodeShape,
     shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
@@ -39,8 +29,11 @@ export class NodeShape<
       ShapeT
     >,
   ) {
-    super(generatedShape, shapesGraph);
-    this.constraints = new NodeShape.Constraints(generatedShape, shapesGraph);
+    super(generatedShaclCoreNodeShape, shapesGraph);
+    this.constraints = new NodeShape.Constraints(
+      generatedShaclCoreNodeShape,
+      shapesGraph,
+    );
   }
 
   override toString(): string {
@@ -50,27 +43,38 @@ export class NodeShape<
 
 export namespace NodeShape {
   export class Constraints<
-    GeneratedShapeT extends generated.ShaclCoreNodeShape,
     NodeShapeT extends ShapeT,
     OntologyT extends OntologyLike,
     PropertyGroupT,
     PropertyShapeT extends ShapeT,
     ShapeT,
   > extends Shape.Constraints<
-    GeneratedShapeT,
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
     PropertyShapeT,
     ShapeT
   > {
+    constructor(
+      private readonly generatedShaclCoreNodeShape: generated.ShaclCoreNodeShape,
+      shapesGraph: ShapesGraph<
+        NodeShapeT,
+        OntologyT,
+        PropertyGroupT,
+        PropertyShapeT,
+        ShapeT
+      >,
+    ) {
+      super(generatedShaclCoreNodeShape, shapesGraph);
+    }
+
     get closed(): Maybe<boolean> {
-      return this.generatedShape.closed;
+      return this.generatedShaclCoreNodeShape.closed;
     }
 
     get properties(): Maybe<NonEmptyList<PropertyShapeT>> {
       return NonEmptyList.fromArray(
-        this.generatedShape.properties.flatMap((identifier) =>
+        this.generatedShaclCoreNodeShape.properties.flatMap((identifier) =>
           this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
         ),
       );

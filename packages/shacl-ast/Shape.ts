@@ -6,7 +6,6 @@ import type { ShapesGraph } from "./ShapesGraph.js";
 import type * as generated from "./generated.js";
 
 export abstract class Shape<
-  GeneratedShapeT extends generated.BaseShaclCoreShape,
   NodeShapeT extends ShapeT,
   OntologyT extends OntologyLike,
   PropertyGroupT,
@@ -14,7 +13,6 @@ export abstract class Shape<
   ShapeT,
 > {
   abstract readonly constraints: Shape.Constraints<
-    GeneratedShapeT,
     NodeShapeT,
     OntologyT,
     PropertyGroupT,
@@ -24,7 +22,7 @@ export abstract class Shape<
   readonly targets: Shape.Targets;
 
   constructor(
-    protected readonly generatedShape: GeneratedShapeT,
+    private readonly generatedShaclCoreShape: generated.ShaclCoreShape,
     protected readonly shapesGraph: ShapesGraph<
       NodeShapeT,
       OntologyT,
@@ -33,22 +31,22 @@ export abstract class Shape<
       ShapeT
     >,
   ) {
-    this.targets = new Shape.Targets(this.generatedShape);
+    this.targets = new Shape.Targets(this.generatedShaclCoreShape);
   }
 
   get comments(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShape.comments);
+    return NonEmptyList.fromArray(this.generatedShaclCoreShape.comments);
   }
 
   get identifier(): BlankNode | NamedNode {
-    return this.generatedShape.identifier;
+    return this.generatedShaclCoreShape.identifier;
   }
 
   get isDefinedBy(): Maybe<OntologyT> {
-    if (this.generatedShape.isDefinedBy.isJust()) {
+    if (this.generatedShaclCoreShape.isDefinedBy.isJust()) {
       // If there's an rdfs:isDefinedBy statement on the shape then don't fall back to anything else
       return this.shapesGraph.ontologyByIdentifier(
-        this.generatedShape.isDefinedBy.unsafeCoerce(),
+        this.generatedShaclCoreShape.isDefinedBy.unsafeCoerce(),
       );
     }
 
@@ -76,13 +74,12 @@ export abstract class Shape<
   }
 
   get labels(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShape.labels);
+    return NonEmptyList.fromArray(this.generatedShaclCoreShape.labels);
   }
 }
 
 export namespace Shape {
   export class Constraints<
-    GeneratedShapeT extends generated.BaseShaclCoreShape,
     NodeShapeT extends ShapeT,
     OntologyT extends OntologyLike,
     PropertyGroupT,
@@ -90,7 +87,7 @@ export namespace Shape {
     ShapeT,
   > {
     constructor(
-      protected readonly generatedShape: GeneratedShapeT,
+      private readonly generatedShaclCoreShape: generated.ShaclCoreShape,
       protected readonly shapesGraph: ShapesGraph<
         NodeShapeT,
         OntologyT,
@@ -102,7 +99,7 @@ export namespace Shape {
 
     get and(): Maybe<NonEmptyList<ShapeT>> {
       return NonEmptyList.fromArray(
-        this.generatedShape.and.flatMap((identifiers) =>
+        this.generatedShaclCoreShape.and.flatMap((identifiers) =>
           identifiers.flatMap((identifier) =>
             this.shapesGraph.shapeByIdentifier(identifier).toList(),
           ),
@@ -111,51 +108,53 @@ export namespace Shape {
     }
 
     get classes(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.classes);
+      return NonEmptyList.fromArray(this.generatedShaclCoreShape.classes);
     }
 
     get datatype(): Maybe<NamedNode> {
-      return this.generatedShape.datatype;
+      return this.generatedShaclCoreShape.datatype;
     }
 
     get hasValues(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.hasValues);
+      return NonEmptyList.fromArray(this.generatedShaclCoreShape.hasValues);
     }
 
     get in_(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
-      return this.generatedShape.in_.chain(NonEmptyList.fromArray);
+      return this.generatedShaclCoreShape.in_.chain(NonEmptyList.fromArray);
     }
 
     get languageIn(): Maybe<NonEmptyList<string>> {
-      return this.generatedShape.languageIn.chain(NonEmptyList.fromArray);
+      return this.generatedShaclCoreShape.languageIn.chain(
+        NonEmptyList.fromArray,
+      );
     }
 
     get maxCount(): Maybe<number> {
-      return this.generatedShape.maxCount;
+      return this.generatedShaclCoreShape.maxCount;
     }
 
     get maxExclusive(): Maybe<Literal> {
-      return this.generatedShape.maxExclusive;
+      return this.generatedShaclCoreShape.maxExclusive;
     }
 
     get maxInclusive(): Maybe<Literal> {
-      return this.generatedShape.maxInclusive;
+      return this.generatedShaclCoreShape.maxInclusive;
     }
 
     get minCount(): Maybe<number> {
-      return this.generatedShape.minCount;
+      return this.generatedShaclCoreShape.minCount;
     }
 
     get minExclusive(): Maybe<Literal> {
-      return this.generatedShape.minExclusive;
+      return this.generatedShaclCoreShape.minExclusive;
     }
 
     get minInclusive(): Maybe<Literal> {
-      return this.generatedShape.minInclusive;
+      return this.generatedShaclCoreShape.minInclusive;
     }
 
     get nodeKinds(): Maybe<Set<NodeKind>> {
-      return this.generatedShape.nodeKind.chain((iri) => {
+      return this.generatedShaclCoreShape.nodeKind.chain((iri) => {
         const nodeKinds = new Set<NodeKind>();
         switch (iri.value) {
           case "http://www.w3.org/ns/shacl#BlankNode":
@@ -186,7 +185,7 @@ export namespace Shape {
 
     get nodes(): Maybe<NonEmptyList<NodeShapeT>> {
       return NonEmptyList.fromArray(
-        this.generatedShape.nodes.flatMap((identifier) =>
+        this.generatedShaclCoreShape.nodes.flatMap((identifier) =>
           this.shapesGraph.nodeShapeByIdentifier(identifier).toList(),
         ),
       );
@@ -194,7 +193,7 @@ export namespace Shape {
 
     get not(): Maybe<NonEmptyList<ShapeT>> {
       return NonEmptyList.fromArray(
-        this.generatedShape.not.flatMap((identifier) =>
+        this.generatedShaclCoreShape.not.flatMap((identifier) =>
           this.shapesGraph.shapeByIdentifier(identifier).toList(),
         ),
       );
@@ -202,7 +201,7 @@ export namespace Shape {
 
     get or(): Maybe<NonEmptyList<ShapeT>> {
       return NonEmptyList.fromArray(
-        this.generatedShape.or.flatMap((identifiers) =>
+        this.generatedShaclCoreShape.or.flatMap((identifiers) =>
           identifiers.flatMap((identifier) =>
             this.shapesGraph.shapeByIdentifier(identifier).toList(),
           ),
@@ -212,7 +211,7 @@ export namespace Shape {
 
     get xone(): Maybe<NonEmptyList<ShapeT>> {
       return NonEmptyList.fromArray(
-        this.generatedShape.xone.flatMap((identifiers) =>
+        this.generatedShaclCoreShape.xone.flatMap((identifiers) =>
           identifiers.flatMap((identifier) =>
             this.shapesGraph.shapeByIdentifier(identifier).toList(),
           ),
