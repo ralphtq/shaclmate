@@ -68,7 +68,6 @@ export const defaultFactory: Factory<
     resource,
   }: {
     resource: Resource;
-
     shapesGraph: DefaultShapesGraph;
   }): Either<Error, PropertyGroup> {
     return generated.ShaclCorePropertyGroup.fromRdf({

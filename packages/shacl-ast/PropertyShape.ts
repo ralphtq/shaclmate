@@ -35,6 +35,7 @@ export class PropertyShape<
   ) {
     super(resource, shapesGraph);
     this.generatedPropertyShape = generated.ShaclCorePropertyShape.fromRdf({
+      ignoreRdfType: true,
       resource,
     }).unsafeCoerce();
     this.constraints = new Shape.Constraints(

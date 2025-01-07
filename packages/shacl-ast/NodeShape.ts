@@ -34,6 +34,7 @@ export class NodeShape<
   ) {
     super(resource, shapesGraph);
     this.generatedNodeShape = generated.ShaclCoreNodeShape.fromRdf({
+      ignoreRdfType: true,
       resource,
     }).unsafeCoerce();
     this.constraints = new NodeShape.Constraints(

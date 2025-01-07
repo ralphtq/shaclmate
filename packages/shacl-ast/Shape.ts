@@ -34,6 +34,7 @@ export abstract class Shape<
     >,
   ) {
     this.generatedShape = generated.ShaclCoreShape.fromRdf({
+      ignoreRdfType: true,
       resource,
     }).unsafeCoerce();
     this.targets = new Shape.Targets(this.generatedShape);
