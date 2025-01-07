@@ -37,12 +37,12 @@ describe("equals", () => {
   it("terms union type", ({ expect }) => {
     const identifier = dataFactory.blankNode();
     expect(
-      new kitchenSink.NodeShapeWithOrProperties({
+      new kitchenSink.NodeShapeWithUnionProperties({
         identifier,
         orTermsProperty: dataFactory.namedNode("http://example.com/term"),
       })
         .equals(
-          new kitchenSink.NodeShapeWithOrProperties({
+          new kitchenSink.NodeShapeWithUnionProperties({
             identifier,
             orTermsProperty: dataFactory.namedNode("http://example.com/term"),
           }),
@@ -51,12 +51,12 @@ describe("equals", () => {
     ).toStrictEqual(true);
 
     expect(
-      new kitchenSink.NodeShapeWithOrProperties({
+      new kitchenSink.NodeShapeWithUnionProperties({
         identifier,
         orTermsProperty: dataFactory.namedNode("http://example.com/term"),
       })
         .equals(
-          new kitchenSink.NodeShapeWithOrProperties({
+          new kitchenSink.NodeShapeWithUnionProperties({
             identifier,
             orTermsProperty: dataFactory.literal("test"),
           }),
@@ -68,12 +68,12 @@ describe("equals", () => {
   it("unrelated union type", ({ expect }) => {
     const identifier = dataFactory.blankNode();
     expect(
-      new kitchenSink.NodeShapeWithOrProperties({
+      new kitchenSink.NodeShapeWithUnionProperties({
         identifier,
         orUnrelatedProperty: { type: "0-number", value: 1 },
       })
         .equals(
-          new kitchenSink.NodeShapeWithOrProperties({
+          new kitchenSink.NodeShapeWithUnionProperties({
             identifier,
             orUnrelatedProperty: { type: "0-number", value: 1 },
           }),
@@ -82,15 +82,15 @@ describe("equals", () => {
     ).toStrictEqual(true);
 
     expect(
-      new kitchenSink.NodeShapeWithOrProperties({
+      new kitchenSink.NodeShapeWithUnionProperties({
         identifier,
         orUnrelatedProperty: { type: "0-number", value: 1 },
       })
         .equals(
-          new kitchenSink.NodeShapeWithOrProperties({
+          new kitchenSink.NodeShapeWithUnionProperties({
             identifier,
             orUnrelatedProperty: {
-              type: "1-rdfjs.NamedNode",
+              type: "1-(rdfjs.NamedNode)",
               value: dataFactory.namedNode("http://example.com/term"),
             },
           }),

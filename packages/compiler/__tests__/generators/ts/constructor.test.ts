@@ -52,7 +52,7 @@ describe("constructor", () => {
 
   it("union of literals property", ({ expect }) => {
     expect(
-      new kitchenSink.NodeShapeWithOrProperties({
+      new kitchenSink.NodeShapeWithUnionProperties({
         identifier: dataFactory.blankNode(),
         orLiteralsProperty: dataFactory.literal("test"),
       }).orLiteralsProperty.unsafeCoerce().value,

@@ -1324,7 +1324,7 @@ export namespace ShaclmatePropertyShape {
         _resource
           .values(
             dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#extern",
+              "http://minorg.github.io/shaclmate/ns#mutable",
             ),
             { unique: true },
           )
@@ -2363,7 +2363,7 @@ export namespace ShaclmateNodeShape {
         _resource
           .values(
             dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#fromRdfType",
+              "http://minorg.github.io/shaclmate/ns#mintingStrategy",
             ),
             { unique: true },
           )
@@ -2399,7 +2399,7 @@ export namespace ShaclmateNodeShape {
                         'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256" | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4">',
                       focusResource: _resource,
                       predicate: dataFactory.namedNode(
-                        "http://minorg.github.io/shaclmate/ns#fromRdfType",
+                        "http://minorg.github.io/shaclmate/ns#mintingStrategy",
                       ),
                     }),
                   );
@@ -2419,7 +2419,7 @@ export namespace ShaclmateNodeShape {
         _resource
           .values(
             dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#extern",
+              "http://minorg.github.io/shaclmate/ns#mutable",
             ),
             { unique: true },
           )

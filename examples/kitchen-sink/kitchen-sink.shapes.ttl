@@ -134,14 +134,14 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "rest" ;
-    sh:or ([
+    sh:path rdf:rest ;
+    sh:xone ([
             sh:class :ListShape
         ]
         [
             sh:hasValue ( )
         ]
-    ) ;
-    sh:path rdf:rest .
+    ) .
 
 :MutableListShape
     shaclmate:mutable true ;
@@ -164,14 +164,14 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "rest" ;
-    sh:or ([
+    sh:path rdf:rest ;
+    sh:xone ([
             sh:class :MutableListShape
         ]
         [
             sh:hasValue ( )
         ]
-    ) ;
-    sh:path rdf:rest .
+    ) .
 
 :NodeShapeWithDefaultValueProperties
     shaclmate:mintingStrategy shaclmate:_MintingStrategy_SHA256 ;
@@ -381,45 +381,6 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :mutableListProperty
     ] .
 
-:NodeShapeWithOrProperties
-    shaclmate:name "NodeShapeWithOrProperties" ;
-    a sh:NodeShape ;
-    rdfs:comment "Shape with sh:or properties." ;
-    sh:property [
-        sh:maxCount 1 ;
-        sh:name "orLiteralsProperty" ;
-        sh:or ([
-                sh:datatype xsd:integer
-            ]
-            [
-                sh:datatype xsd:string
-            ]
-        ) ;
-        sh:path :orLiteralsProperty
-    ], [
-        sh:maxCount 1 ;
-        sh:name "orTermsProperty" ;
-        sh:or ([
-                sh:nodeKind sh:Literal
-            ]
-            [
-                sh:nodeKind sh:IRI
-            ]
-        ) ;
-        sh:path :orTermsProperty
-    ], [
-        sh:maxCount 1 ;
-        sh:name "orUnrelatedProperty" ;
-        sh:or ([
-                sh:datatype xsd:integer
-            ]
-            [
-                sh:nodeKind sh:IRI
-            ]
-        ) ;
-        sh:path :orUnrelatedProperty
-    ] .
-
 :NodeShapeWithPropertyCardinalities
     shaclmate:name "NodeShapeWithPropertyCardinalities" ;
     a sh:NodeShape ;
@@ -513,6 +474,45 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :termProperty
     ] .
 
+:NodeShapeWithUnionProperties
+    shaclmate:name "NodeShapeWithUnionProperties" ;
+    a sh:NodeShape ;
+    rdfs:comment "Shape with sh:xone properties." ;
+    sh:property [
+        sh:maxCount 1 ;
+        sh:name "orLiteralsProperty" ;
+        sh:path :orLiteralsProperty ;
+        sh:xone ([
+                sh:datatype xsd:integer
+            ]
+            [
+                sh:datatype xsd:string
+            ]
+        )
+    ], [
+        sh:maxCount 1 ;
+        sh:name "orTermsProperty" ;
+        sh:path :orTermsProperty ;
+        sh:xone ([
+                sh:nodeKind sh:Literal
+            ]
+            [
+                sh:nodeKind sh:IRI
+            ]
+        )
+    ], [
+        sh:maxCount 1 ;
+        sh:name "orUnrelatedProperty" ;
+        sh:path :orUnrelatedProperty ;
+        sh:xone ([
+                sh:datatype xsd:integer
+            ]
+            [
+                sh:nodeKind sh:IRI
+            ]
+        )
+    ] .
+
 :NonClassNodeShape
     shaclmate:name "NonClassNodeShape" ;
     a sh:NodeShape ;
@@ -523,37 +523,6 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:minCount 1 ;
         sh:name "stringProperty" ;
         sh:path :stringProperty
-    ] .
-
-:OrNodeShape
-    shaclmate:name "OrNodeShape" ;
-    a sh:NodeShape ;
-    rdfs:comment "Node that that sh:or's other node shapes. This will usually be generated as a discriminated union." ;
-    sh:or (:OrNodeShapeMember1
-        :OrNodeShapeMember2
-        :ExternObjectType
-    ) .
-
-:OrNodeShapeMember1
-    shaclmate:name "OrNodeShapeMember1" ;
-    a sh:NodeShape ;
-    sh:property [
-        sh:datatype xsd:string ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:name "stringProperty1" ;
-        sh:path :stringProperty1
-    ] .
-
-:OrNodeShapeMember2
-    shaclmate:name "OrNodeShapeMember2" ;
-    a sh:NodeShape ;
-    sh:property [
-        sh:datatype xsd:string ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:name "stringProperty2" ;
-        sh:path :stringProperty2
     ] .
 
 :Sha256IriNodeShape
@@ -568,6 +537,37 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:minCount 1 ;
         sh:name "stringProperty" ;
         sh:path :stringProperty
+    ] .
+
+:UnionNodeShape
+    shaclmate:name "UnionNodeShape" ;
+    a sh:NodeShape ;
+    rdfs:comment "Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
+    sh:xone (:UnionNodeShapeMember1
+        :UnionNodeShapeMember2
+        :ExternObjectType
+    ) .
+
+:UnionNodeShapeMember1
+    shaclmate:name "UnionNodeShapeMember1" ;
+    a sh:NodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "stringProperty1" ;
+        sh:path :stringProperty1
+    ] .
+
+:UnionNodeShapeMember2
+    shaclmate:name "UnionNodeShapeMember2" ;
+    a sh:NodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "stringProperty2" ;
+        sh:path :stringProperty2
     ] .
 
 :UuidV4IriNodeShape

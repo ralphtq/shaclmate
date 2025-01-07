@@ -41,7 +41,7 @@ shaclmate:ShaclmateNodeShape-mintingStrategy
     ) ;
     sh:maxCount 1 ;
     sh:name "mintingStrategy" ;
-    sh:path shaclmate:fromRdfType .
+    sh:path shaclmate:mintingStrategy .
 
 shaclmate:ShaclmateNodeShape-toRdfTypes
     a sh:PropertyShape ;
@@ -99,7 +99,7 @@ shaclmate:ShaclmateShape-mutable
     sh:datatype xsd:boolean ;
     sh:maxCount 1 ;
     sh:name "mutable" ;
-    sh:path shaclmate:extern .
+    sh:path shaclmate:mutable .
 
 shaclmate:ShaclmateShape-name
     a sh:PropertyShape ;
