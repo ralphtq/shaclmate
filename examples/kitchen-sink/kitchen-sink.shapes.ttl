@@ -402,9 +402,14 @@ shaclmate:toRdfType's are added an serialization.""" ;
     ], [
         rdfs:comment "Set: minCount implicitly=0, no maxCount or maxCount > 1" ;
         sh:datatype xsd:string ;
+        sh:name "emptyStringSetProperty" ;
+        sh:path :emptyStringSetProperty
+    ], [
+        rdfs:comment "Set: minCount implicitly=1, no maxCount or maxCount > 1" ;
+        sh:datatype xsd:string ;
         sh:minCount 1 ;
-        sh:name "setStringProperty" ;
-        sh:path :setStringProperty
+        sh:name "nonEmptyStringSetProperty" ;
+        sh:path :nonEmptyStringSetProperty
     ] .
 
 :NodeShapeWithPropertyVisibilities

@@ -1,5 +1,6 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
 import { DataFactory as dataFactory } from "n3";
+import { NonEmptyList } from "purify-ts";
 import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObjectType.js";
 import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
 import { ClassHarness } from "./ClassHarness.js";
@@ -175,9 +176,10 @@ export const harnesses = {
     fromRdf: kitchenSink.NodeShapeWithPropertyCardinalities.fromRdf,
     instance: new kitchenSink.NodeShapeWithPropertyCardinalities({
       identifier,
+      emptyStringSetProperty: undefined,
+      nonEmptyStringSetProperty: NonEmptyList(["test1"]),
       optionalStringProperty: undefined,
       requiredStringProperty: "test",
-      setStringProperty: ["test1"], // Has minCount 1
     }),
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithPropertyCardinalities.SparqlGraphPatterns,
