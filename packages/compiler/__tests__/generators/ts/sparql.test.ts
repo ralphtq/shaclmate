@@ -40,7 +40,10 @@ describe("sparql", () => {
         oxigraphStore.query(constructQuery) as Quad[],
       );
       const constructResultQuads = [...constructResultDataset];
-      if (constructResultQuads.length !== toRdfQuads.length) {
+      if (
+        constructResultQuads.length !== toRdfQuads.length ||
+        !isomorphic(constructResultQuads, toRdfQuads)
+      ) {
         console.info("not equal");
         const toRdfTurtle = await quadsToTurtle(toRdfQuads);
         const constructResultTurtle = await quadsToTurtle(constructResultQuads);

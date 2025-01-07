@@ -1,41 +1,54 @@
-import { RdfjsPropertyShape } from "@shaclmate/shacl-ast";
-import { Either, Left, type Maybe } from "purify-ts";
+import { PropertyShape as ShaclCorePropertyShape } from "@shaclmate/shacl-ast";
+import type { Maybe } from "purify-ts";
 import type { PropertyVisibility } from "../enums/index.js";
-import { shaclmate } from "../vocabularies/index.js";
-import type { NodeShape } from "./NodeShape.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
 import type { Shape } from "./Shape.js";
-import { extern } from "./extern.js";
-import { shaclmateName } from "./shaclmateName.js";
+import type * as generated from "./generated.js";
+import type {
+  NodeShape,
+  Ontology,
+  PropertyGroup,
+  ShapesGraph,
+} from "./index.js";
 
-export class PropertyShape
-  extends RdfjsPropertyShape<NodeShape, Ontology, PropertyGroup, any, Shape>
-  implements Shape
-{
+export class PropertyShape extends ShaclCorePropertyShape<
+  NodeShape,
+  Ontology,
+  PropertyGroup,
+  any,
+  Shape
+> {
+  constructor(
+    private readonly generatedShaclmatePropertyShape: generated.ShaclmatePropertyShape,
+    shapesGraph: ShapesGraph,
+  ) {
+    super(generatedShaclmatePropertyShape, shapesGraph);
+  }
+
   get extern(): Maybe<boolean> {
-    return extern.bind(this)();
+    return this.generatedShaclmatePropertyShape.extern;
+  }
+
+  get mutable(): Maybe<boolean> {
+    return this.generatedShaclmatePropertyShape.mutable;
   }
 
   get shaclmateName(): Maybe<string> {
-    return shaclmateName.bind(this)();
+    return this.generatedShaclmatePropertyShape.name;
   }
 
   get visibility(): PropertyVisibility {
-    return this.resource
-      .value(shaclmate.visibility)
-      .chain((value) => value.toIri())
-      .chain((iri) => {
-        if (iri.equals(shaclmate._Visibility_Private)) {
-          return Either.of("private" as const);
+    return this.generatedShaclmatePropertyShape.visibility
+      .map((iri) => {
+        switch (iri.value) {
+          case "http://minorg.github.io/shaclmate/ns#_Visibility_Private":
+            return "private";
+          case "http://minorg.github.io/shaclmate/ns#_Visibility_Protected":
+            return "protected";
+          case "http://minorg.github.io/shaclmate/ns#_Visibility_Public":
+            return "public";
+          default:
+            throw new RangeError(iri.value);
         }
-        if (iri.equals(shaclmate._Visibility_Protected)) {
-          return Either.of("protected" as const);
-        }
-        if (iri.equals(shaclmate._Visibility_Public)) {
-          return Either.of("public" as const);
-        }
-        return Left(new Error(`unknown visibility: ${iri.value}`));
       })
       .orDefault("public" as const);
   }

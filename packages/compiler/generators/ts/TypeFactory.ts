@@ -18,6 +18,7 @@ import { ObjectUnionType } from "./ObjectUnionType.js";
 import { OptionType } from "./OptionType.js";
 import { SetType } from "./SetType.js";
 import { StringType } from "./StringType.js";
+import { TermType } from "./TermType.js";
 import type { Type } from "./Type.js";
 import { UnionType } from "./UnionType.js";
 import { tsName } from "./tsName.js";
@@ -43,7 +44,7 @@ export class TypeFactory {
         return new IdentifierType({
           dataFactoryVariable: this.dataFactoryVariable,
           defaultValue: astType.defaultValue,
-          hasValue: astType.hasValue,
+          hasValues: astType.hasValues,
           in_: astType.in_,
           nodeKinds: astType.nodeKinds,
         });
@@ -52,7 +53,6 @@ export class TypeFactory {
       case "ListType": {
         return new ListType({
           dataFactoryVariable: this.dataFactoryVariable,
-          fromRdfType: astType.fromRdfType,
           identifierNodeKind: astType.identifierNodeKind,
           itemType: this.createTypeFromAstType(astType.itemType),
           mutable: astType.mutable.orDefault(false),
@@ -69,7 +69,11 @@ export class TypeFactory {
         astType.defaultValue.ifJust((defaultValue) =>
           datatypes.add(defaultValue.datatype),
         );
-        astType.hasValue.ifJust((hasValue) => datatypes.add(hasValue.datatype));
+        astType.hasValues.ifJust((hasValues) => {
+          for (const hasValue of hasValues) {
+            datatypes.add(hasValue.datatype);
+          }
+        });
         astType.in_.ifJust((in_) => {
           for (const value of in_) {
             datatypes.add(value.datatype);
@@ -83,7 +87,7 @@ export class TypeFactory {
             return new BooleanType({
               dataFactoryVariable: this.dataFactoryVariable,
               defaultValue: astType.defaultValue,
-              hasValue: astType.hasValue,
+              hasValues: astType.hasValues,
               languageIn: Maybe.empty(),
               in_: astType.in_,
               primitiveDefaultValue: astType.defaultValue
@@ -101,7 +105,7 @@ export class TypeFactory {
             return new DateTimeType({
               dataFactoryVariable: this.dataFactoryVariable,
               defaultValue: astType.defaultValue,
-              hasValue: astType.hasValue,
+              hasValues: astType.hasValues,
               in_: astType.in_,
               languageIn: Maybe.empty(),
               primitiveDefaultValue: astType.defaultValue
@@ -144,7 +148,7 @@ export class TypeFactory {
               return new NumberType({
                 dataFactoryVariable: this.dataFactoryVariable,
                 defaultValue: astType.defaultValue,
-                hasValue: astType.hasValue,
+                hasValues: astType.hasValues,
                 in_: astType.in_,
                 languageIn: Maybe.empty(),
                 primitiveDefaultValue: astType.defaultValue
@@ -163,7 +167,7 @@ export class TypeFactory {
             return new StringType({
               dataFactoryVariable: this.dataFactoryVariable,
               defaultValue: astType.defaultValue,
-              hasValue: astType.hasValue,
+              hasValues: astType.hasValues,
               languageIn: Maybe.empty(),
               in_: astType.in_,
               primitiveDefaultValue: astType.defaultValue.map(
@@ -192,9 +196,9 @@ export class TypeFactory {
         return new LiteralType({
           dataFactoryVariable: this.dataFactoryVariable,
           defaultValue: astType.defaultValue,
+          hasValues: astType.hasValues,
           in_: astType.in_,
           languageIn: astType.languageIn,
-          hasValue: astType.hasValue,
         });
       }
       case "ObjectIntersectionType":
@@ -227,6 +231,14 @@ export class TypeFactory {
           itemType: this.createTypeFromAstType(astType.itemType),
           minCount: astType.minCount,
         });
+      case "TermType":
+        return new TermType({
+          dataFactoryVariable: this.dataFactoryVariable,
+          defaultValue: astType.defaultValue,
+          hasValues: astType.hasValues,
+          in_: astType.in_,
+          nodeKinds: astType.nodeKinds,
+        });
       case "UnionType": {
         return new UnionType({
           dataFactoryVariable: this.dataFactoryVariable,
@@ -251,7 +263,7 @@ export class TypeFactory {
     const identifierType = new IdentifierType({
       dataFactoryVariable: this.dataFactoryVariable,
       defaultValue: Maybe.empty(),
-      hasValue: Maybe.empty(),
+      hasValues: Maybe.empty(),
       in_: Maybe.empty(),
       nodeKinds: astType.nodeKinds,
     });
@@ -265,7 +277,7 @@ export class TypeFactory {
       extern: astType.extern,
       features: astType.tsFeatures,
       fromRdfType: astType.fromRdfType,
-      import_: astType.tsImport,
+      imports: astType.tsImports,
       label: astType.label,
       lazyAncestorObjectTypes: () =>
         astType.ancestorObjectTypes.map((astType) =>

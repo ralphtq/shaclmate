@@ -1,0 +1,163 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix shaclmate: <http://minorg.github.io/shaclmate/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+shaclmate:ShaclmateNodeShape
+    shaclmate:fromRdfType sh:NodeShape ;
+    shaclmate:name "ShaclmateNodeShape" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:subClassOf shaclmate:ShaclCoreNodeShape ;
+    sh:property shaclmate:ShaclmateNodeShape-abstract, shaclmate:ShaclmateNodeShape-export, shaclmate:ShaclmateNodeShape-fromRdfType, shaclmate:ShaclmateNodeShape-mintingStrategy, shaclmate:ShaclmateNodeShape-toRdfTypes, shaclmate:ShaclmateShape-extern, shaclmate:ShaclmateShape-mutable, shaclmate:ShaclmateShape-name, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
+
+shaclmate:ShaclmateNodeShape-abstract
+    a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:name "abstract" ;
+    sh:path shaclmate:abstract .
+
+shaclmate:ShaclmateNodeShape-export
+    a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:name "export_" ;
+    sh:path shaclmate:export .
+
+shaclmate:ShaclmateNodeShape-fromRdfType
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "fromRdfType" ;
+    sh:nodeKind sh:IRI ;
+    sh:path shaclmate:fromRdfType .
+
+shaclmate:ShaclmateNodeShape-mintingStrategy
+    a sh:PropertyShape ;
+    sh:in (shaclmate:_MintingStrategy_SHA256
+        shaclmate:_MintingStrategy_UUIDv4
+    ) ;
+    sh:maxCount 1 ;
+    sh:name "mintingStrategy" ;
+    sh:path shaclmate:fromRdfType .
+
+shaclmate:ShaclmateNodeShape-toRdfTypes
+    a sh:PropertyShape ;
+    sh:name "toRdfTypes" ;
+    sh:nodeKind sh:IRI ;
+    sh:path shaclmate:toRdfType .
+
+shaclmate:ShaclmateOntology
+    shaclmate:fromRdfType owl:Ontology ;
+    shaclmate:name "ShaclmateOntology" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:subClassOf shaclmate:OwlOntology ;
+    sh:property shaclmate:ShaclmateOntology-tsDataFactoryVariable, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
+
+shaclmate:ShaclmateOntology-tsDataFactoryVariable
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "tsDataFactoryVariable" ;
+    sh:path shaclmate:tsDataFactoryVariable .
+
+shaclmate:ShaclmatePropertyShape
+    shaclmate:fromRdfType sh:PropertyShape ;
+    shaclmate:name "ShaclmatePropertyShape" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:subClassOf shaclmate:ShaclCorePropertyShape ;
+    sh:property shaclmate:ShaclmatePropertyShape-visibility, shaclmate:ShaclmateShape-extern, shaclmate:ShaclmateShape-mutable, shaclmate:ShaclmateShape-name .
+
+shaclmate:ShaclmatePropertyShape-visibility
+    a sh:PropertyShape ;
+    sh:in (shaclmate:_Visibility_Private
+        shaclmate:_Visibility_Protected
+        shaclmate:_Visibility_Public
+    ) ;
+    sh:maxCount 1 ;
+    sh:name "visibility" ;
+    sh:path shaclmate:visibility .
+
+shaclmate:ShaclmateShape
+    shaclmate:name "ShaclmateShape" ;
+    a sh:NodeShape ;
+    sh:or (shaclmate:ShaclmateNodeShape
+        shaclmate:ShaclCorePropertyShape
+    ) .
+
+shaclmate:ShaclmateShape-extern
+    a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:name "extern" ;
+    sh:path shaclmate:extern .
+
+shaclmate:ShaclmateShape-mutable
+    a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:name "mutable" ;
+    sh:path shaclmate:extern .
+
+shaclmate:ShaclmateShape-name
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "name" ;
+    sh:path shaclmate:name .
+
+shaclmate:tsFeatureExcludes
+    a sh:PropertyShape ;
+    sh:in (shaclmate:_TsFeature_Equals
+        shaclmate:_TsFeature_FromRdf
+        shaclmate:_TsFeature_Hash
+        shaclmate:_TsFeature_SparqlGraphPatterns
+        shaclmate:_TsFeature_ToJson
+        shaclmate:_TsFeature_ToRdf
+    ) ;
+    sh:name "tsFeatureExcludes" ;
+    sh:path shaclmate:tsFeatureExclude .
+
+shaclmate:tsFeatureIncludes
+    a sh:PropertyShape ;
+    sh:in (shaclmate:_TsFeature_Equals
+        shaclmate:_TsFeature_FromRdf
+        shaclmate:_TsFeature_Hash
+        shaclmate:_TsFeature_SparqlGraphPatterns
+        shaclmate:_TsFeature_ToJson
+        shaclmate:_TsFeature_ToRdf
+    ) ;
+    sh:name "tsFeatureIncludes" ;
+    sh:path shaclmate:tsFeatureInclude .
+
+shaclmate:tsImports
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:name "tsImports" ;
+    sh:path shaclmate:tsImport .
+
+shaclmate:tsObjectDeclarationType
+    a sh:PropertyShape ;
+    sh:in (shaclmate:_TsObjectDeclarationType_Class
+        shaclmate:_TsObjectDeclarationType_Interface
+    ) ;
+    sh:maxCount 1 ;
+    sh:name "tsObjectDeclarationType" ;
+    sh:path shaclmate:tsObjectDeclarationType .
+
+shaclmate:tsObjectIdentifierPropertyName
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "tsObjectIdentifierPropertyName" ;
+    sh:path shaclmate:tsObjectIdentifierPropertyName .
+
+shaclmate:tsObjectTypeDiscriminatorPropertyName
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "tsObjectTypeDiscriminatorPropertyName" ;
+    sh:path shaclmate:tsObjectTypeDiscriminatorPropertyName .
+

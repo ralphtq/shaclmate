@@ -1,35 +1,15 @@
-import type { Maybe } from "purify-ts";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
-import type { PropertyShape } from "./PropertyShape.js";
-import type { Shape } from "./Shape.js";
+import { type Maybe, NonEmptyList } from "purify-ts";
+import type { OntologyLike } from "./OntologyLike.js";
+import { Shape } from "./Shape.js";
+import type { ShapesGraph } from "./ShapesGraph.js";
+import type * as generated from "./generated.js";
 
-export interface NodeShape<
-  NodeShapeT extends NodeShape<
-    any,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    ShapeT
-  > &
-    ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    any,
-    ShapeT
-  > &
-    ShapeT,
-  ShapeT extends Shape<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    any
-  >,
+export class NodeShape<
+  NodeShapeT extends ShapeT,
+  OntologyT extends OntologyLike,
+  PropertyGroupT,
+  PropertyShapeT extends ShapeT,
+  ShapeT,
 > extends Shape<NodeShapeT, OntologyT, PropertyGroupT, PropertyShapeT, ShapeT> {
   readonly constraints: NodeShape.Constraints<
     NodeShapeT,
@@ -38,43 +18,69 @@ export interface NodeShape<
     PropertyShapeT,
     ShapeT
   >;
+
+  constructor(
+    generatedShaclCoreNodeShape: Omit<generated.ShaclCoreNodeShape, "type">,
+    shapesGraph: ShapesGraph<
+      NodeShapeT,
+      OntologyT,
+      PropertyGroupT,
+      PropertyShapeT,
+      ShapeT
+    >,
+  ) {
+    super(generatedShaclCoreNodeShape, shapesGraph);
+    this.constraints = new NodeShape.Constraints(
+      generatedShaclCoreNodeShape,
+      shapesGraph,
+    );
+  }
+
+  override toString(): string {
+    return `NodeShape(node=${this.identifier.value})`;
+  }
 }
 
 export namespace NodeShape {
-  export interface Constraints<
-    NodeShapeT extends NodeShape<
-      any,
-      OntologyT,
-      PropertyGroupT,
-      PropertyShapeT,
-      ShapeT
-    > &
-      ShapeT,
-    OntologyT extends Ontology,
-    PropertyGroupT extends PropertyGroup,
-    PropertyShapeT extends PropertyShape<
-      NodeShapeT,
-      OntologyT,
-      PropertyGroupT,
-      any,
-      ShapeT
-    > &
-      ShapeT,
-    ShapeT extends Shape<
-      NodeShapeT,
-      OntologyT,
-      PropertyGroupT,
-      PropertyShapeT,
-      any
-    >,
+  export class Constraints<
+    NodeShapeT extends ShapeT,
+    OntologyT extends OntologyLike,
+    PropertyGroupT,
+    PropertyShapeT extends ShapeT,
+    ShapeT,
   > extends Shape.Constraints<
-      NodeShapeT,
-      OntologyT,
-      PropertyGroupT,
-      PropertyShapeT,
-      ShapeT
-    > {
-    readonly closed: Maybe<boolean>;
-    readonly properties: readonly PropertyShapeT[];
+    NodeShapeT,
+    OntologyT,
+    PropertyGroupT,
+    PropertyShapeT,
+    ShapeT
+  > {
+    constructor(
+      private readonly generatedShaclCoreNodeShape: Omit<
+        generated.ShaclCoreNodeShape,
+        "type"
+      >,
+      shapesGraph: ShapesGraph<
+        NodeShapeT,
+        OntologyT,
+        PropertyGroupT,
+        PropertyShapeT,
+        ShapeT
+      >,
+    ) {
+      super(generatedShaclCoreNodeShape, shapesGraph);
+    }
+
+    get closed(): Maybe<boolean> {
+      return this.generatedShaclCoreNodeShape.closed;
+    }
+
+    get properties(): Maybe<NonEmptyList<PropertyShapeT>> {
+      return NonEmptyList.fromArray(
+        this.generatedShaclCoreNodeShape.properties.flatMap((identifier) =>
+          this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
+        ),
+      );
+    }
   }
 }

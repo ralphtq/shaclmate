@@ -1,6 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import { camelCase } from "change-case";
-import { Maybe } from "purify-ts";
+import { Maybe, type NonEmptyList } from "purify-ts";
 import { invariant } from "ts-invariant";
 import {
   type ClassDeclarationStructure,
@@ -28,13 +28,13 @@ export class ObjectType extends DeclaredType {
   readonly abstract: boolean;
   readonly declarationType: TsObjectDeclarationType;
   readonly kind = "ObjectType";
-  protected readonly extern: boolean;
   protected readonly comment: Maybe<string>;
+  protected readonly extern: boolean;
   protected readonly fromRdfType: Maybe<NamedNode>;
   protected readonly label: Maybe<string>;
   protected readonly mintingStrategy: Maybe<MintingStrategy>;
   protected readonly toRdfTypes: readonly NamedNode[];
-  private readonly import_: Maybe<string>;
+  private readonly imports: Maybe<NonEmptyList<string>>;
   private readonly lazyAncestorObjectTypes: () => readonly ObjectType[];
   private readonly lazyDescendantObjectTypes: () => readonly ObjectType[];
   private readonly lazyParentObjectTypes: () => readonly ObjectType[];
@@ -51,7 +51,7 @@ export class ObjectType extends DeclaredType {
     lazyDescendantObjectTypes,
     lazyParentObjectTypes,
     lazyProperties,
-    import_,
+    imports,
     mintingStrategy,
     toRdfTypes,
     ...superParameters
@@ -61,7 +61,7 @@ export class ObjectType extends DeclaredType {
     declarationType: TsObjectDeclarationType;
     extern: boolean;
     fromRdfType: Maybe<NamedNode>;
-    import_: Maybe<string>;
+    imports: Maybe<NonEmptyList<string>>;
     label: Maybe<string>;
     lazyAncestorObjectTypes: () => readonly ObjectType[];
     lazyDescendantObjectTypes: () => readonly ObjectType[];
@@ -76,7 +76,7 @@ export class ObjectType extends DeclaredType {
     this.declarationType = declarationType;
     this.extern = extern;
     this.fromRdfType = fromRdfType;
-    this.import_ = import_;
+    this.imports = imports;
     this.label = label;
     // Lazily initialize some members in getters to avoid recursive construction
     this.lazyAncestorObjectTypes = lazyAncestorObjectTypes;
@@ -272,7 +272,9 @@ export class ObjectType extends DeclaredType {
   }
 
   override get useImports(): readonly Import[] {
-    return this.import_.toList();
+    return this.imports
+      .map((imports) => imports as readonly Import[])
+      .orDefault([]);
   }
 
   protected get thisVariable(): string {
@@ -293,7 +295,11 @@ export class ObjectType extends DeclaredType {
   >[0]): Maybe<Type.SparqlGraphPatternsExpression> {
     return Maybe.of(
       new Type.SparqlGraphPatternsExpression(
-        `new ${this.name}.SparqlGraphPatterns(${variables.subject})`,
+        // Ignore the rdf:type if the instance of this type is the object of another property.
+        // Instead, assume the property has the correct range.
+        // This also accommodates the case where the object of a property is a dangling identifier that's not the
+        // subject of any statements.
+        `new ${this.name}.SparqlGraphPatterns(${variables.subject}, { ignoreRdfType: true })`,
       ),
     );
   }
@@ -301,7 +307,11 @@ export class ObjectType extends DeclaredType {
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, resource: _resource }))`;
+    // Ignore the rdf:type if the instance of this type is the object of another property.
+    // Instead, assume the property has the correct range.
+    // This also accommodates the case where the object of a property is a dangling identifier that's not the
+    // subject of any statements.
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
   }
 
   override propertyHashStatements({

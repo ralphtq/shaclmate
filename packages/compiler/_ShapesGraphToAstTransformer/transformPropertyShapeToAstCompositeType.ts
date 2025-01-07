@@ -1,5 +1,4 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import type { NodeKind } from "@shaclmate/shacl-ast";
 import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
 import { Either, Left, Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
@@ -23,7 +22,7 @@ export function transformPropertyShapeToAstCompositeType(
     shape instanceof input.PropertyShape ? shape.defaultValue : Maybe.empty()
   ).alt(inherited !== null ? inherited.defaultValue : Maybe.empty());
 
-  const hasValue = shape.constraints.hasValue;
+  const hasValue = shape.constraints.hasValues;
   const extern = shape.extern.alt(
     inherited !== null ? inherited.extern : Maybe.empty(),
   );
@@ -42,7 +41,7 @@ export function transformPropertyShapeToAstCompositeType(
 
     if (extern.orDefault(false)) {
       // Use the identifier type instead
-      let nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
+      let nodeKinds: Set<"BlankNode" | "NamedNode">;
       switch (astType.kind) {
         case "ListType":
           nodeKinds = new Set();
@@ -64,8 +63,8 @@ export function transformPropertyShapeToAstCompositeType(
       return Either.of({
         defaultValue: defaultValue.filter(
           (term) => term.termType === "NamedNode",
-        ),
-        hasValue: Maybe.empty(),
+        ) as Maybe<NamedNode>,
+        hasValues: Maybe.empty(),
         in_: Maybe.empty(),
         kind: "IdentifierType",
         nodeKinds,
@@ -185,7 +184,7 @@ export function transformPropertyShapeToAstCompositeType(
     return Either.of({
       datatype: Maybe.empty(),
       defaultValue: defaultValue.filter((term) => term.termType === "Literal"),
-      hasValue: Maybe.empty(),
+      hasValues: Maybe.empty(),
       in_: Maybe.empty(),
       kind: "LiteralType",
       languageIn: Maybe.empty(),
@@ -193,6 +192,7 @@ export function transformPropertyShapeToAstCompositeType(
       maxInclusive: Maybe.empty(),
       minExclusive: Maybe.empty(),
       minInclusive: Maybe.empty(),
+      nodeKinds: new Set<"Literal">(["Literal"]),
     });
   }
 
@@ -206,11 +206,11 @@ export function transformPropertyShapeToAstCompositeType(
     return Either.of({
       defaultValue: defaultValue.filter(
         (term) => term.termType === "NamedNode",
-      ),
-      hasValue: Maybe.empty(),
+      ) as Maybe<NamedNode>,
+      hasValues: Maybe.empty(),
       in_: Maybe.empty(),
       kind: "IdentifierType",
-      nodeKinds: new Set<NodeKind.BLANK_NODE | NodeKind.IRI>(
+      nodeKinds: new Set<"BlankNode" | "NamedNode">(
         memberItemTypes
           .filter((memberItemType) => memberItemType.kind === "IdentifierType")
           .flatMap((memberItemType) => [...memberItemType.nodeKinds]),

@@ -1,6 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { NodeKind } from "@shaclmate/shacl-ast";
-import { Either, Left, Maybe } from "purify-ts";
+import { Either, Left, Maybe, NonEmptyList } from "purify-ts";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
 import * as input from "../input/index.js";
@@ -16,17 +15,19 @@ export function transformPropertyShapeToAstLiteralType(
     defaultValue: Maybe<BlankNode | Literal | NamedNode>;
   } | null,
 ): Either<Error, ast.LiteralType> {
-  const literalDefaultValue = (
+  const literalDefaultValue: Maybe<Literal> = (
     shape instanceof input.PropertyShape ? shape.defaultValue : Maybe.empty()
   )
     .alt(inherited !== null ? inherited.defaultValue : Maybe.empty())
-    .filter((term) => term.termType === "Literal");
-  const literalHasValue = shape.constraints.hasValue.filter(
-    (term) => term.termType === "Literal",
+    .filter((term) => term.termType === "Literal") as Maybe<Literal>;
+  const literalHasValues = shape.constraints.hasValues.chain((hasValues) =>
+    NonEmptyList.fromArray(
+      hasValues.filter((term) => term.termType === "Literal"),
+    ),
   );
-  const literalIn = shape.constraints.in_
-    .map((in_) => in_.filter((term) => term.termType === "Literal"))
-    .filter((in_) => in_.length > 0);
+  const literalIn = shape.constraints.in_.chain((in_) =>
+    NonEmptyList.fromArray(in_.filter((term) => term.termType === "Literal")),
+  );
   const nodeKinds = propertyShapeNodeKinds(shape);
 
   if (
@@ -40,15 +41,15 @@ export function transformPropertyShapeToAstLiteralType(
       shape.constraints.minInclusive,
     ].some((constraint) => constraint.isJust()) ||
     literalDefaultValue.isJust() ||
-    literalHasValue.isJust() ||
+    literalHasValues.isJust() ||
     literalIn.isJust() ||
     // Treat any shape with a single sh:nodeKind of sh:Literal as a literal type
-    (nodeKinds.size === 1 && nodeKinds.has(NodeKind.LITERAL))
+    (nodeKinds.size === 1 && nodeKinds.has("Literal"))
   ) {
-    return Either.of<Error, ast.LiteralType>({
+    return Either.of({
       datatype: shape.constraints.datatype,
       defaultValue: literalDefaultValue,
-      hasValue: literalHasValue,
+      hasValues: literalHasValues,
       in_: literalIn,
       kind: "LiteralType",
       languageIn: shape.constraints.languageIn,
@@ -56,6 +57,7 @@ export function transformPropertyShapeToAstLiteralType(
       maxInclusive: shape.constraints.maxInclusive,
       minExclusive: shape.constraints.minExclusive,
       minInclusive: shape.constraints.minInclusive,
+      nodeKinds: new Set<"Literal">(["Literal"]),
     });
   }
 

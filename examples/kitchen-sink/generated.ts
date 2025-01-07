@@ -339,9 +339,7 @@ export class OrNodeShapeMember2 {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -494,9 +492,7 @@ export class OrNodeShapeMember1 {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -652,9 +648,7 @@ export class NonClassNodeShape {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -793,6 +787,678 @@ export namespace NonClassNodeShape {
   }
 }
 /**
+ * Shape with properties that are not nested objects
+ */
+export class NodeShapeWithTermProperties {
+  readonly booleanProperty: purify.Maybe<boolean>;
+  readonly dateTimeProperty: purify.Maybe<Date>;
+  private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
+  readonly iriProperty: purify.Maybe<rdfjs.NamedNode>;
+  readonly literalProperty: purify.Maybe<rdfjs.Literal>;
+  readonly numberProperty: purify.Maybe<number>;
+  readonly stringProperty: purify.Maybe<string>;
+  readonly termProperty: purify.Maybe<
+    rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
+  >;
+  readonly type = "NodeShapeWithTermProperties";
+
+  constructor(parameters: {
+    readonly booleanProperty?: boolean | purify.Maybe<boolean>;
+    readonly dateTimeProperty?: Date | purify.Maybe<Date>;
+    readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly iriProperty?: purify.Maybe<rdfjs.NamedNode> | rdfjs.NamedNode;
+    readonly literalProperty?:
+      | Date
+      | boolean
+      | number
+      | purify.Maybe<rdfjs.Literal>
+      | rdfjs.Literal
+      | string;
+    readonly numberProperty?: number | purify.Maybe<number>;
+    readonly stringProperty?: purify.Maybe<string> | string;
+    readonly termProperty?:
+      | Date
+      | boolean
+      | number
+      | purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
+      | rdfjs.BlankNode
+      | rdfjs.NamedNode
+      | rdfjs.Literal
+      | string;
+  }) {
+    if (purify.Maybe.isMaybe(parameters.booleanProperty)) {
+      this.booleanProperty = parameters.booleanProperty;
+    } else if (typeof parameters.booleanProperty === "boolean") {
+      this.booleanProperty = purify.Maybe.of(parameters.booleanProperty);
+    } else if (typeof parameters.booleanProperty === "undefined") {
+      this.booleanProperty = purify.Maybe.empty();
+    } else {
+      this.booleanProperty = parameters.booleanProperty; // never
+    }
+
+    if (purify.Maybe.isMaybe(parameters.dateTimeProperty)) {
+      this.dateTimeProperty = parameters.dateTimeProperty;
+    } else if (
+      typeof parameters.dateTimeProperty === "object" &&
+      parameters.dateTimeProperty instanceof Date
+    ) {
+      this.dateTimeProperty = purify.Maybe.of(parameters.dateTimeProperty);
+    } else if (typeof parameters.dateTimeProperty === "undefined") {
+      this.dateTimeProperty = purify.Maybe.empty();
+    } else {
+      this.dateTimeProperty = parameters.dateTimeProperty; // never
+    }
+
+    this._identifier = parameters.identifier;
+    if (purify.Maybe.isMaybe(parameters.iriProperty)) {
+      this.iriProperty = parameters.iriProperty;
+    } else if (typeof parameters.iriProperty === "object") {
+      this.iriProperty = purify.Maybe.of(parameters.iriProperty);
+    } else if (typeof parameters.iriProperty === "undefined") {
+      this.iriProperty = purify.Maybe.empty();
+    } else {
+      this.iriProperty = parameters.iriProperty; // never
+    }
+
+    if (purify.Maybe.isMaybe(parameters.literalProperty)) {
+      this.literalProperty = parameters.literalProperty;
+    } else if (typeof parameters.literalProperty === "boolean") {
+      this.literalProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.literalProperty),
+      );
+    } else if (
+      typeof parameters.literalProperty === "object" &&
+      parameters.literalProperty instanceof Date
+    ) {
+      this.literalProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.literalProperty),
+      );
+    } else if (typeof parameters.literalProperty === "number") {
+      this.literalProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.literalProperty),
+      );
+    } else if (typeof parameters.literalProperty === "string") {
+      this.literalProperty = purify.Maybe.of(
+        dataFactory.literal(parameters.literalProperty),
+      );
+    } else if (typeof parameters.literalProperty === "object") {
+      this.literalProperty = purify.Maybe.of(parameters.literalProperty);
+    } else if (typeof parameters.literalProperty === "undefined") {
+      this.literalProperty = purify.Maybe.empty();
+    } else {
+      this.literalProperty = parameters.literalProperty; // never
+    }
+
+    if (purify.Maybe.isMaybe(parameters.numberProperty)) {
+      this.numberProperty = parameters.numberProperty;
+    } else if (typeof parameters.numberProperty === "number") {
+      this.numberProperty = purify.Maybe.of(parameters.numberProperty);
+    } else if (typeof parameters.numberProperty === "undefined") {
+      this.numberProperty = purify.Maybe.empty();
+    } else {
+      this.numberProperty = parameters.numberProperty; // never
+    }
+
+    if (purify.Maybe.isMaybe(parameters.stringProperty)) {
+      this.stringProperty = parameters.stringProperty;
+    } else if (typeof parameters.stringProperty === "string") {
+      this.stringProperty = purify.Maybe.of(parameters.stringProperty);
+    } else if (typeof parameters.stringProperty === "undefined") {
+      this.stringProperty = purify.Maybe.empty();
+    } else {
+      this.stringProperty = parameters.stringProperty; // never
+    }
+
+    if (purify.Maybe.isMaybe(parameters.termProperty)) {
+      this.termProperty = parameters.termProperty;
+    } else if (typeof parameters.termProperty === "boolean") {
+      this.termProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.termProperty),
+      );
+    } else if (
+      typeof parameters.termProperty === "object" &&
+      parameters.termProperty instanceof Date
+    ) {
+      this.termProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.termProperty),
+      );
+    } else if (typeof parameters.termProperty === "number") {
+      this.termProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.termProperty),
+      );
+    } else if (typeof parameters.termProperty === "string") {
+      this.termProperty = purify.Maybe.of(
+        dataFactory.literal(parameters.termProperty),
+      );
+    } else if (typeof parameters.termProperty === "object") {
+      this.termProperty = purify.Maybe.of(parameters.termProperty);
+    } else if (typeof parameters.termProperty === "undefined") {
+      this.termProperty = purify.Maybe.empty();
+    } else {
+      this.termProperty = parameters.termProperty; // never
+    }
+  }
+
+  get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
+    return typeof this._identifier !== "undefined"
+      ? this._identifier
+      : dataFactory.blankNode();
+  }
+
+  equals(
+    other: NodeShapeWithTermProperties,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.booleanEquals(
+      this.booleanProperty,
+      other.booleanProperty,
+    )
+      .mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "booleanProperty",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      }))
+      .chain(() =>
+        ((left, right) =>
+          purifyHelpers.Maybes.equals(left, right, (left, right) =>
+            purifyHelpers.Equatable.EqualsResult.fromBooleanEqualsResult(
+              left,
+              right,
+              left.getTime() === right.getTime(),
+            ),
+          ))(this.dateTimeProperty, other.dateTimeProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "dateTimeProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.booleanEquals(
+          this.identifier,
+          other.identifier,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "identifier",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        ((left, right) =>
+          purifyHelpers.Maybes.equals(
+            left,
+            right,
+            purifyHelpers.Equatable.booleanEquals,
+          ))(this.iriProperty, other.iriProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "iriProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        ((left, right) =>
+          purifyHelpers.Maybes.equals(
+            left,
+            right,
+            purifyHelpers.Equatable.booleanEquals,
+          ))(this.literalProperty, other.literalProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "literalProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.booleanEquals(
+          this.numberProperty,
+          other.numberProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "numberProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.booleanEquals(
+          this.stringProperty,
+          other.stringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "stringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        ((left, right) =>
+          purifyHelpers.Maybes.equals(
+            left,
+            right,
+            purifyHelpers.Equatable.booleanEquals,
+          ))(this.termProperty, other.termProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "termProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(_hasher: HasherT): HasherT {
+    this.booleanProperty.ifJust((_value0) => {
+      _hasher.update(_value0.toString());
+    });
+    this.dateTimeProperty.ifJust((_value0) => {
+      _hasher.update(_value0.toISOString());
+    });
+    this.iriProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
+    });
+    this.literalProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
+    });
+    this.numberProperty.ifJust((_value0) => {
+      _hasher.update(_value0.toString());
+    });
+    this.stringProperty.ifJust((_value0) => {
+      _hasher.update(_value0);
+    });
+    this.termProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
+    });
+    return _hasher;
+  }
+
+  toJson(): {
+    readonly booleanProperty: boolean | undefined;
+    readonly dateTimeProperty: string | undefined;
+    readonly "@id": string;
+    readonly iriProperty: { "@id": string } | undefined;
+    readonly literalProperty:
+      | {
+          "@language": string | undefined;
+          "@type": string | undefined;
+          "@value": string;
+        }
+      | undefined;
+    readonly numberProperty: number | undefined;
+    readonly stringProperty: string | undefined;
+    readonly termProperty:
+      | (
+          | {
+              "@language": string | undefined;
+              "@type": string | undefined;
+              "@value": string;
+            }
+          | { "@id": string }
+        )
+      | undefined;
+    readonly type: string;
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        booleanProperty: this.booleanProperty.map((_item) => _item).extract(),
+        dateTimeProperty: this.dateTimeProperty
+          .map((_item) => _item.toISOString())
+          .extract(),
+        "@id": this.identifier.value,
+        iriProperty: this.iriProperty
+          .map((_item) => ({ "@id": _item.value }))
+          .extract(),
+        literalProperty: this.literalProperty
+          .map((_item) => ({
+            "@language": _item.language.length > 0 ? _item.language : undefined,
+            "@type":
+              _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+                ? _item.datatype.value
+                : undefined,
+            "@value": _item.value,
+          }))
+          .extract(),
+        numberProperty: this.numberProperty.map((_item) => _item).extract(),
+        stringProperty: this.stringProperty.map((_item) => _item).extract(),
+        termProperty: this.termProperty
+          .map((_item) =>
+            _item.termType === "Literal"
+              ? {
+                  "@language":
+                    _item.language.length > 0 ? _item.language : undefined,
+                  "@type":
+                    _item.datatype.value !==
+                    "http://www.w3.org/2001/XMLSchema#string"
+                      ? _item.datatype.value
+                      : undefined,
+                  "@value": _item.value,
+                }
+              : { "@id": _item.value },
+          )
+          .extract(),
+        type: this.type,
+      } satisfies ReturnType<NodeShapeWithTermProperties["toJson"]>),
+    );
+  }
+
+  toRdf({
+    mutateGraph,
+    resourceSet,
+  }: {
+    ignoreRdfType?: boolean;
+    mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+    resourceSet: rdfjsResource.MutableResourceSet;
+  }): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource({
+      identifier: this.identifier,
+      mutateGraph,
+    });
+    _resource.add(
+      dataFactory.namedNode("http://example.com/booleanProperty"),
+      this.booleanProperty,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/dateTimeProperty"),
+      this.dateTimeProperty,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/iriProperty"),
+      this.iriProperty,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/literalProperty"),
+      this.literalProperty,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/numberProperty"),
+      this.numberProperty,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/stringProperty"),
+      this.stringProperty,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/termProperty"),
+      this.termProperty,
+    );
+    return _resource;
+  }
+
+  toString(): string {
+    return JSON.stringify(this.toJson());
+  }
+}
+
+export namespace NodeShapeWithTermProperties {
+  export function fromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    NodeShapeWithTermProperties
+  > {
+    const _booleanPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<boolean>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/booleanProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => _value.toBoolean())
+        .toMaybe(),
+    );
+    if (_booleanPropertyEither.isLeft()) {
+      return _booleanPropertyEither;
+    }
+
+    const booleanProperty = _booleanPropertyEither.unsafeCoerce();
+    const _dateTimePropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<Date>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/dateTimeProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => _value.toDate())
+        .toMaybe(),
+    );
+    if (_dateTimePropertyEither.isLeft()) {
+      return _dateTimePropertyEither;
+    }
+
+    const dateTimeProperty = _dateTimePropertyEither.unsafeCoerce();
+    const identifier = _resource.identifier;
+    const _iriPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<rdfjs.NamedNode>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/iriProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => _value.toIri())
+        .toMaybe(),
+    );
+    if (_iriPropertyEither.isLeft()) {
+      return _iriPropertyEither;
+    }
+
+    const iriProperty = _iriPropertyEither.unsafeCoerce();
+    const _literalPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<rdfjs.Literal>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/literalProperty"), {
+          unique: true,
+        })
+        .filter((_value) => {
+          const _languageInOrDefault = _languageIn ?? [];
+          if (_languageInOrDefault.length === 0) {
+            return true;
+          }
+          const _valueLiteral = _value.toLiteral().toMaybe().extract();
+          if (typeof _valueLiteral === "undefined") {
+            return false;
+          }
+          return _languageInOrDefault.some(
+            (_languageIn) => _languageIn === _valueLiteral.language,
+          );
+        })
+        .head()
+        .chain((_value) => _value.toLiteral())
+        .toMaybe(),
+    );
+    if (_literalPropertyEither.isLeft()) {
+      return _literalPropertyEither;
+    }
+
+    const literalProperty = _literalPropertyEither.unsafeCoerce();
+    const _numberPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<number>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/numberProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => _value.toNumber())
+        .toMaybe(),
+    );
+    if (_numberPropertyEither.isLeft()) {
+      return _numberPropertyEither;
+    }
+
+    const numberProperty = _numberPropertyEither.unsafeCoerce();
+    const _stringPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<string>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/stringProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => _value.toString())
+        .toMaybe(),
+    );
+    if (_stringPropertyEither.isLeft()) {
+      return _stringPropertyEither;
+    }
+
+    const stringProperty = _stringPropertyEither.unsafeCoerce();
+    const _termPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/termProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => purify.Either.of(_value.toTerm()))
+        .toMaybe(),
+    );
+    if (_termPropertyEither.isLeft()) {
+      return _termPropertyEither;
+    }
+
+    const termProperty = _termPropertyEither.unsafeCoerce();
+    return purify.Either.of(
+      new NodeShapeWithTermProperties({
+        booleanProperty,
+        dateTimeProperty,
+        identifier,
+        iriProperty,
+        literalProperty,
+        numberProperty,
+        stringProperty,
+        termProperty,
+      }),
+    );
+  }
+
+  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
+    constructor(
+      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
+      _options?: { ignoreRdfType?: boolean },
+    ) {
+      super(subject);
+      this.add(
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/booleanProperty"),
+            this.variable("BooleanProperty"),
+          ),
+        ),
+      );
+      this.add(
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/dateTimeProperty"),
+            this.variable("DateTimeProperty"),
+          ),
+        ),
+      );
+      this.add(
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/iriProperty"),
+            this.variable("IriProperty"),
+          ),
+        ),
+      );
+      this.add(
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/literalProperty"),
+            this.variable("LiteralProperty"),
+          ),
+        ),
+      );
+      this.add(
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/numberProperty"),
+            this.variable("NumberProperty"),
+          ),
+        ),
+      );
+      this.add(
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/stringProperty"),
+            this.variable("StringProperty"),
+          ),
+        ),
+      );
+      this.add(
+        sparqlBuilder.GraphPattern.optional(
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/termProperty"),
+            this.variable("TermProperty"),
+          ),
+        ),
+      );
+    }
+  }
+}
+/**
  * Shape with properties that have visibility modifiers (private, protected, public)
  */
 export class NodeShapeWithPropertyVisibilities {
@@ -816,9 +1482,7 @@ export class NodeShapeWithPropertyVisibilities {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -1090,9 +1754,7 @@ export class NodeShapeWithPropertyCardinalities {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -1436,9 +2098,7 @@ export class NodeShapeWithOrProperties {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -1584,16 +2244,19 @@ export class NodeShapeWithOrProperties {
     },
   >(_hasher: HasherT): HasherT {
     this.orLiteralsProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
     this.orTermsProperty.ifJust((_value0) => {
       switch (_value0.termType) {
         case "Literal": {
+          _hasher.update(_value0.termType);
           _hasher.update(_value0.value);
           break;
         }
         case "NamedNode": {
-          _hasher.update(rdfjsResource.Resource.Identifier.toString(_value0));
+          _hasher.update(_value0.termType);
+          _hasher.update(_value0.value);
           break;
         }
       }
@@ -1605,9 +2268,8 @@ export class NodeShapeWithOrProperties {
           break;
         }
         case "1-rdfjs.NamedNode": {
-          _hasher.update(
-            rdfjsResource.Resource.Identifier.toString(_value0.value),
-          );
+          _hasher.update(_value0.value.termType);
+          _hasher.update(_value0.value.value);
           break;
         }
       }
@@ -1618,18 +2280,14 @@ export class NodeShapeWithOrProperties {
   toJson(): {
     readonly "@id": string;
     readonly orLiteralsProperty:
-      | (
-          | string
-          | {
-              "@language": string | undefined;
-              "@type": string | undefined;
-              "@value": string;
-            }
-        )
+      | {
+          "@language": string | undefined;
+          "@type": string | undefined;
+          "@value": string;
+        }
       | undefined;
     readonly orTermsProperty:
       | (
-          | string
           | {
               "@language": string | undefined;
               "@type": string | undefined;
@@ -1650,11 +2308,19 @@ export class NodeShapeWithOrProperties {
       JSON.stringify({
         "@id": this.identifier.value,
         orLiteralsProperty: this.orLiteralsProperty
+          .map((_item) => ({
+            "@language": _item.language.length > 0 ? _item.language : undefined,
+            "@type":
+              _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+                ? _item.datatype.value
+                : undefined,
+            "@value": _item.value,
+          }))
+          .extract(),
+        orTermsProperty: this.orTermsProperty
           .map((_item) =>
-            _item.datatype.value ===
-              "http://www.w3.org/2001/XMLSchema#string" &&
-            _item.language.length === 0
-              ? _item.value
+            _item.termType === "NamedNode"
+              ? { "@id": _item.value }
               : {
                   "@language":
                     _item.language.length > 0 ? _item.language : undefined,
@@ -1665,26 +2331,6 @@ export class NodeShapeWithOrProperties {
                       : undefined,
                   "@value": _item.value,
                 },
-          )
-          .extract(),
-        orTermsProperty: this.orTermsProperty
-          .map((_item) =>
-            _item.termType === "NamedNode"
-              ? { "@id": _item.value }
-              : _item.datatype.value ===
-                    "http://www.w3.org/2001/XMLSchema#string" &&
-                  _item.language.length === 0
-                ? _item.value
-                : {
-                    "@language":
-                      _item.language.length > 0 ? _item.language : undefined,
-                    "@type":
-                      _item.datatype.value !==
-                      "http://www.w3.org/2001/XMLSchema#string"
-                        ? _item.datatype.value
-                        : undefined,
-                    "@value": _item.value,
-                  },
           )
           .extract(),
         orUnrelatedProperty: this.orUnrelatedProperty
@@ -2338,9 +2984,7 @@ export class NodeShapeWithListProperty {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -2682,9 +3326,7 @@ export class NodeShapeWithLanguageInProperties {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -2754,9 +3396,11 @@ export class NodeShapeWithLanguageInProperties {
     },
   >(_hasher: HasherT): HasherT {
     this.languageInProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
     this.literalProperty.ifJust((_value0) => {
+      _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
     return _hasher;
@@ -2765,24 +3409,18 @@ export class NodeShapeWithLanguageInProperties {
   toJson(): {
     readonly "@id": string;
     readonly languageInProperty:
-      | (
-          | string
-          | {
-              "@language": string | undefined;
-              "@type": string | undefined;
-              "@value": string;
-            }
-        )
+      | {
+          "@language": string | undefined;
+          "@type": string | undefined;
+          "@value": string;
+        }
       | undefined;
     readonly literalProperty:
-      | (
-          | string
-          | {
-              "@language": string | undefined;
-              "@type": string | undefined;
-              "@value": string;
-            }
-        )
+      | {
+          "@language": string | undefined;
+          "@type": string | undefined;
+          "@value": string;
+        }
       | undefined;
     readonly type: string;
   } {
@@ -2790,40 +3428,24 @@ export class NodeShapeWithLanguageInProperties {
       JSON.stringify({
         "@id": this.identifier.value,
         languageInProperty: this.languageInProperty
-          .map((_item) =>
-            _item.datatype.value ===
-              "http://www.w3.org/2001/XMLSchema#string" &&
-            _item.language.length === 0
-              ? _item.value
-              : {
-                  "@language":
-                    _item.language.length > 0 ? _item.language : undefined,
-                  "@type":
-                    _item.datatype.value !==
-                    "http://www.w3.org/2001/XMLSchema#string"
-                      ? _item.datatype.value
-                      : undefined,
-                  "@value": _item.value,
-                },
-          )
+          .map((_item) => ({
+            "@language": _item.language.length > 0 ? _item.language : undefined,
+            "@type":
+              _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+                ? _item.datatype.value
+                : undefined,
+            "@value": _item.value,
+          }))
           .extract(),
         literalProperty: this.literalProperty
-          .map((_item) =>
-            _item.datatype.value ===
-              "http://www.w3.org/2001/XMLSchema#string" &&
-            _item.language.length === 0
-              ? _item.value
-              : {
-                  "@language":
-                    _item.language.length > 0 ? _item.language : undefined,
-                  "@type":
-                    _item.datatype.value !==
-                    "http://www.w3.org/2001/XMLSchema#string"
-                      ? _item.datatype.value
-                      : undefined,
-                  "@value": _item.value,
-                },
-          )
+          .map((_item) => ({
+            "@language": _item.language.length > 0 ? _item.language : undefined,
+            "@type":
+              _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+                ? _item.datatype.value
+                : undefined,
+            "@value": _item.value,
+          }))
           .extract(),
         type: this.type,
       } satisfies ReturnType<NodeShapeWithLanguageInProperties["toJson"]>),
@@ -3070,9 +3692,7 @@ export class NodeShapeWithInProperties {
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
       ? this._identifier
-      : dataFactory.namedNode(
-          `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-        );
+      : dataFactory.blankNode();
   }
 
   equals(
@@ -3184,7 +3804,8 @@ export class NodeShapeWithInProperties {
       _hasher.update(_value0.toISOString());
     });
     this.inIrisProperty.ifJust((_value0) => {
-      _hasher.update(rdfjsResource.Resource.Identifier.toString(_value0));
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
     });
     this.inNumbersProperty.ifJust((_value0) => {
       _hasher.update(_value0.toString());
@@ -3587,9 +4208,7 @@ export class NodeShapeWithHasValueProperties {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -3653,7 +4272,8 @@ export class NodeShapeWithHasValueProperties {
     },
   >(_hasher: HasherT): HasherT {
     this.hasIriProperty.ifJust((_value0) => {
-      _hasher.update(rdfjsResource.Resource.Identifier.toString(_value0));
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
     });
     this.hasLiteralProperty.ifJust((_value0) => {
       _hasher.update(_value0);
@@ -3822,9 +4442,7 @@ export class InlineNodeShape {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -3977,9 +4595,7 @@ export class ExternNodeShape {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -4180,9 +4796,7 @@ export class NodeShapeWithExternProperties {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -4263,7 +4877,8 @@ export class NodeShapeWithExternProperties {
       _value0.hash(_hasher);
     });
     this.externProperty.ifJust((_value0) => {
-      _hasher.update(rdfjsResource.Resource.Identifier.toString(_value0));
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
     });
     this.inlineProperty.ifJust((_value0) => {
       _value0.hash(_hasher);
@@ -4361,7 +4976,12 @@ export namespace NodeShapeWithExternProperties {
         .head()
         .chain((value) => value.toResource())
         .chain((_resource) =>
-          ExternObjectType.fromRdf({ ..._context, resource: _resource }),
+          ExternObjectType.fromRdf({
+            ..._context,
+            ignoreRdfType: true,
+            languageIn: _languageIn,
+            resource: _resource,
+          }),
         )
         .toMaybe(),
     );
@@ -4400,7 +5020,12 @@ export namespace NodeShapeWithExternProperties {
         .head()
         .chain((value) => value.toResource())
         .chain((_resource) =>
-          InlineNodeShape.fromRdf({ ..._context, resource: _resource }),
+          InlineNodeShape.fromRdf({
+            ..._context,
+            ignoreRdfType: true,
+            languageIn: _languageIn,
+            resource: _resource,
+          }),
         )
         .toMaybe(),
     );
@@ -4435,7 +5060,10 @@ export namespace NodeShapeWithExternProperties {
               ),
               this.variable("ExternObjectTypeProperty"),
             ).chainObject(
-              (_object) => new ExternObjectType.SparqlGraphPatterns(_object),
+              (_object) =>
+                new ExternObjectType.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -4457,7 +5085,10 @@ export namespace NodeShapeWithExternProperties {
               dataFactory.namedNode("http://example.com/inlineProperty"),
               this.variable("InlineProperty"),
             ).chainObject(
-              (_object) => new InlineNodeShape.SparqlGraphPatterns(_object),
+              (_object) =>
+                new InlineNodeShape.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -4486,9 +5117,7 @@ export class NodeShapeWithExplicitRdfTypes {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -5146,25 +5775,16 @@ export namespace NodeShapeWithDefaultValueProperties {
  * A node shape that only allows IRI identifiers.
  */
 export class IriNodeShape {
-  private _identifier: rdfjs.NamedNode | undefined;
+  identifier: rdfjs.NamedNode;
   readonly stringProperty: string;
   readonly type = "IriNodeShape";
 
   constructor(parameters: {
-    readonly identifier?: rdfjs.NamedNode;
+    readonly identifier: rdfjs.NamedNode;
     readonly stringProperty: string;
   }) {
-    this._identifier = parameters.identifier;
+    this.identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
-  }
-
-  get identifier(): rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
   }
 
   equals(other: IriNodeShape): purifyHelpers.Equatable.EqualsResult {
@@ -5359,14 +5979,7 @@ export namespace InterfaceNodeShape {
     ignoreRdfType?: boolean;
     languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
-  }): purify.Either<
-    rdfjsResource.Resource.ValueError,
-    {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      stringProperty: string;
-      type: "InterfaceNodeShape";
-    }
-  > {
+  }): purify.Either<rdfjsResource.Resource.ValueError, InterfaceNodeShape> {
     const identifier = _resource.identifier;
     const _stringPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
@@ -5661,6 +6274,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     return AbstractBaseClassWithPropertiesNodeShape.interfaceFromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       const identifier = _resource.identifier;
@@ -5806,6 +6420,7 @@ export namespace ConcreteParentClassNodeShape {
     return AbstractBaseClassWithoutPropertiesNodeShape.interfaceFromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       if (
@@ -5998,6 +6613,7 @@ export namespace ConcreteChildClassNodeShape {
     return ConcreteParentClassNodeShape.fromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       if (

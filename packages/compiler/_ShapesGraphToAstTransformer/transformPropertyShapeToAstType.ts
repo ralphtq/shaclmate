@@ -27,6 +27,7 @@ export function transformPropertyShapeToAstType(
     .altLazy(() =>
       this.transformPropertyShapeToAstLiteralType(shape, inherited),
     )
+    .altLazy(() => this.transformPropertyShapeToAstTermType(shape, inherited))
     .map((itemType) => {
       // Handle cardinality constraints
 

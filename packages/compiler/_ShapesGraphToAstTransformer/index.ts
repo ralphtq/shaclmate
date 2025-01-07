@@ -6,3 +6,4 @@ export * from "./transformPropertyShapeToAstCompositeType.js";
 export * from "./transformPropertyShapeToAstIdentifierType.js";
 export * from "./transformPropertyShapeToAstLiteralType.js";
 export * from "./transformPropertyShapeToAstType.js";
+export * from "./transformPropertyShapeToAstTermType.js";

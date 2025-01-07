@@ -1,8 +1,6 @@
+import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
+
 /**
  * TypeScript enum corresponding to sh:NodeKind, for simpler manipulation.
  */
-export enum NodeKind {
-  BLANK_NODE = 1,
-  IRI = 2,
-  LITERAL = 3,
-}
+export type NodeKind = (BlankNode | NamedNode | Literal)["termType"];

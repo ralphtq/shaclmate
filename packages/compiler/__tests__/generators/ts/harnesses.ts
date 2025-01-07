@@ -195,6 +195,21 @@ export const harnesses = {
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithPropertyVisibilities.SparqlGraphPatterns,
   }),
+  nodeShapeWithTermProperties: new ClassHarness({
+    fromRdf: kitchenSink.NodeShapeWithTermProperties.fromRdf,
+    instance: new kitchenSink.NodeShapeWithTermProperties({
+      booleanProperty: true,
+      dateTimeProperty: new Date(),
+      identifier: dataFactory.namedNode("http://example.com/identifier"),
+      iriProperty: dataFactory.namedNode("http://example.com"),
+      literalProperty: dataFactory.literal("test"),
+      numberProperty: 1,
+      stringProperty: "test",
+      termProperty: 1,
+    }),
+    sparqlGraphPatternsClass:
+      kitchenSink.NodeShapeWithTermProperties.SparqlGraphPatterns,
+  }),
   nonClassNodeShape: new ClassHarness({
     fromRdf: kitchenSink.NonClassNodeShape.fromRdf,
     instance: new kitchenSink.NonClassNodeShape({

@@ -1,4 +1,3 @@
-import { NodeKind } from "@shaclmate/shacl-ast";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import type {
@@ -22,7 +21,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
   readonly mutable = false;
   private readonly classDeclarationVisibility: Maybe<PropertyVisibility>;
   private readonly lazyObjectTypeMutable: () => boolean;
-  private readonly mintingStrategy: Maybe<MintingStrategy>;
+  private readonly mintingStrategy: MintingStrategy | "blankNode" | "none";
   private readonly objectTypeDeclarationType: TsObjectDeclarationType;
   private readonly override: boolean;
 
@@ -47,7 +46,13 @@ export class IdentifierProperty extends Property<IdentifierType> {
     invariant(this.visibility === "public");
     this.abstract = abstract;
     this.classDeclarationVisibility = classDeclarationVisibility;
-    this.mintingStrategy = mintingStrategy;
+    if (mintingStrategy.isJust()) {
+      this.mintingStrategy = mintingStrategy.unsafeCoerce();
+    } else if (this.type.nodeKinds.has("BlankNode")) {
+      this.mintingStrategy = "blankNode";
+    } else {
+      this.mintingStrategy = "none";
+    }
     this.objectTypeDeclarationType = objectTypeDeclarationType;
     this.lazyObjectTypeMutable = lazyObjectTypeMutable;
     this.override = override;
@@ -60,9 +65,8 @@ export class IdentifierProperty extends Property<IdentifierType> {
       return Maybe.empty();
     }
 
-    // Identifier is always optional
     return Maybe.of({
-      hasQuestionToken: true,
+      hasQuestionToken: this.mintingStrategy !== "none",
       isReadonly: true,
       name: this.name,
       type: this.type.name,
@@ -77,20 +81,21 @@ export class IdentifierProperty extends Property<IdentifierType> {
     }
 
     let mintIdentifier: string;
-    if (this.type.nodeKinds.has(NodeKind.IRI)) {
-      switch (this.mintingStrategy.orDefault("sha256")) {
-        case "sha256":
-          mintIdentifier =
-            "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`)";
-          break;
-        case "uuidv4":
-          mintIdentifier =
-            "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${uuid.v4()}`)";
-          break;
-      }
-    } else {
-      invariant(this.type.nodeKinds.has(NodeKind.BLANK_NODE));
-      mintIdentifier = "dataFactory.blankNode()";
+    switch (this.mintingStrategy) {
+      case "blankNode":
+        mintIdentifier = "dataFactory.blankNode()";
+        break;
+      case "none":
+        // If there's no minting strategy the identifier will be required by the constructor and assigned to a public property.
+        return Maybe.empty();
+      case "sha256":
+        mintIdentifier =
+          "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`)";
+        break;
+      case "uuidv4":
+        mintIdentifier =
+          "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${uuid.v4()}`)";
+        break;
     }
 
     return Maybe.of({
@@ -123,36 +128,41 @@ export class IdentifierProperty extends Property<IdentifierType> {
       });
     }
 
-    if (this.classDeclarationVisibility.isJust()) {
-      // Mutable _identifier that will be lazily initialized by the getter
-      return Maybe.of({
-        name: `_${this.name}`,
-        scope: this.classDeclarationVisibility
-          .map(Property.visibilityToScope)
-          .unsafeCoerce(),
-        type: `${this.type.name} | undefined`,
-      });
+    // See note in TypeFactory re: the logic of whether to declare the identifier in the class or not.
+    if (!this.classDeclarationVisibility.isJust()) {
+      return Maybe.empty();
     }
 
-    return Maybe.empty();
+    switch (this.mintingStrategy) {
+      case "none":
+        // Immutable, public identifier property, no getter
+        return Maybe.of({
+          name: this.name,
+          type: this.type.name,
+        });
+      default:
+        // Mutable _identifier property that will be lazily initialized by the getter to mint the identifier
+        return Maybe.of({
+          name: `_${this.name}`,
+          scope: this.classDeclarationVisibility
+            .map(Property.visibilityToScope)
+            .unsafeCoerce(),
+          type: `${this.type.name} | undefined`,
+        });
+    }
   }
 
   override get declarationImports(): readonly Import[] {
-    if (this.objectTypeDeclarationType !== "class") {
-      return [];
-    }
-    if (!this.type.nodeKinds.has(NodeKind.IRI)) {
-      return [];
+    if (this.objectTypeDeclarationType === "class") {
+      switch (this.mintingStrategy) {
+        case "sha256":
+          return [Import.SHA256];
+        case "uuidv4":
+          return [Import.UUID];
+      }
     }
 
-    switch (this.mintingStrategy.orDefault("sha256")) {
-      case "sha256":
-        return [Import.SHA256];
-      case "uuidv4":
-        return [Import.UUID];
-      default:
-        throw new Error("not implemented");
-    }
+    return [];
   }
 
   override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {
@@ -176,10 +186,14 @@ export class IdentifierProperty extends Property<IdentifierType> {
   }: Parameters<
     Property<IdentifierType>["classConstructorStatements"]
   >[0]): readonly string[] {
-    if (this.classDeclarationVisibility.isJust()) {
-      return [`this._${this.name} = ${variables.parameter};`];
+    if (this.abstract) {
+      return [];
     }
-    return [];
+    return this.classPropertyDeclaration
+      .map((classPropertyDeclaration) => [
+        `this.${classPropertyDeclaration.name} = ${variables.parameter};`,
+      ])
+      .orDefault([]);
   }
 
   override fromRdfStatements({

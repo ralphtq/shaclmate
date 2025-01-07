@@ -1,32 +1,63 @@
+import type * as rdfjs from "@rdfjs/types";
 import { Maybe } from "purify-ts";
-import type { Resource } from "rdfjs-resource";
-import type { TsFeature } from "../enums/index.js";
-import { logger } from "../logger.js";
-import { shaclmate } from "../vocabularies/index.js";
+import { TsFeature } from "../enums/index.js";
 
-export function tsFeatures(resource: Resource): Maybe<Set<TsFeature>> {
-  const tsFeatures = new Set<TsFeature>();
-  for (const featureIri of resource
-    .values(shaclmate.tsFeature)
-    .flatMap((value) => value.toIri().toMaybe().toList())) {
-    if (featureIri.equals(shaclmate._TsFeature_Equals)) {
-      tsFeatures.add("equals");
-    } else if (featureIri.equals(shaclmate._TsFeature_FromRdf)) {
-      tsFeatures.add("fromRdf");
-    } else if (featureIri.equals(shaclmate._TsFeature_Hash)) {
-      tsFeatures.add("hash");
-    } else if (featureIri.equals(shaclmate._TsFeature_SparqlGraphPatterns)) {
-      tsFeatures.add("sparql-graph-patterns");
-    } else if (featureIri.equals(shaclmate._TsFeature_ToJson)) {
-      tsFeatures.add("toJson");
-    } else if (featureIri.equals(shaclmate._TsFeature_ToRdf)) {
-      tsFeatures.add("toRdf");
-    } else {
-      logger.warn(
-        "unrecognized shaclmate:tsFeature value: %s",
-        featureIri.value,
-      );
-    }
+function iriToTsFeature(
+  iri: rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+  >,
+): TsFeature {
+  switch (iri.value) {
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+      return "equals";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+      return "fromRdf";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+      return "hash";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
+      return "sparql-graph-patterns";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+      return "toJson";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+      return "toRdf";
   }
-  return tsFeatures.size > 0 ? Maybe.of(tsFeatures) : Maybe.empty();
+}
+
+export function tsFeatures(generated: {
+  readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+  >[];
+  readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+  >[];
+}): Maybe<Set<TsFeature>> {
+  const tsFeatureIncludes = generated.tsFeatureIncludes.map(iriToTsFeature);
+  const tsFeatureExcludes = generated.tsFeatureExcludes.map(iriToTsFeature);
+
+  if (tsFeatureIncludes.length > 0) {
+    return Maybe.of(new Set<TsFeature>(tsFeatureIncludes));
+  }
+  if (tsFeatureExcludes.length > 0) {
+    const tsFeatures = new Set<TsFeature>(TsFeature.MEMBERS);
+    for (const tsFeatureExclude of tsFeatureIncludes) {
+      tsFeatures.delete(tsFeatureExclude);
+    }
+    return Maybe.of(tsFeatures);
+  }
+  return Maybe.empty();
 }

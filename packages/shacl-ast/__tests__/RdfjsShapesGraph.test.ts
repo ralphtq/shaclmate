@@ -1,19 +1,12 @@
-import { beforeAll, describe, it } from "vitest";
+import { describe, it } from "vitest";
 import { RdfjsShapesGraph } from "../RdfjsShapesGraph.js";
-import {
-  type DefaultRdfjsShapesGraph,
-  defaultRdfjsFactory,
-} from "../defaultRdfjsFactory.js";
+import { defaultFactory } from "../defaultFactory.js";
 import { testData } from "./testData.js";
 
 describe("RdfjsShapesGraph", () => {
-  let shapesGraph: DefaultRdfjsShapesGraph;
-
-  beforeAll(() => {
-    shapesGraph = new RdfjsShapesGraph({
-      dataset: testData.shapesGraph,
-      factory: defaultRdfjsFactory,
-    });
+  const shapesGraph = new RdfjsShapesGraph({
+    dataset: testData.shapesGraph,
+    factory: defaultFactory,
   });
 
   it("should parse the shapes correctly", ({ expect }) => {

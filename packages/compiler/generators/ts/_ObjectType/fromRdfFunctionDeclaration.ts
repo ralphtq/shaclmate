@@ -70,19 +70,15 @@ export function fromRdfFunctionDeclaration(
       initializer ? `${name}: ${initializer}` : name,
     )
     .join(", ")} }`;
-  let returnType = `{ ${Object.entries(propertiesByName)
-    .map(([name, { type }]) => `${name}: ${type}`)
-    .join(", ")} }`;
   if (this.declarationType === "class" && !this.abstract) {
     construction = `new ${this.name}(${construction})`;
-    returnType = this.name;
   }
 
   statements.push(`return purify.Either.of(${construction})`);
 
   if (this.parentObjectTypes.length > 0) {
     statements = [
-      `return ${this.parentObjectTypes[0].name}.${this.parentObjectTypes[0].fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, resource: ${variables.resource} }).chain(_super => { ${statements.join("\n")} })`,
+      `return ${this.parentObjectTypes[0].name}.${this.parentObjectTypes[0].fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: ${variables.resource} }).chain(_super => { ${statements.join("\n")} })`,
     ];
   }
 
@@ -96,7 +92,13 @@ export function fromRdfFunctionDeclaration(
         type: `{ [_index: string]: any; ignoreRdfType?: boolean; languageIn?: readonly string[]; resource: ${this.rdfjsResourceType().name}; }`,
       },
     ],
-    returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${returnType}>`,
+    returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${
+      this.abstract
+        ? `{ ${Object.entries(propertiesByName)
+            .map(([name, { type }]) => `${name}: ${type}`)
+            .join(", ")} }`
+        : this.name
+    }>`,
     statements,
   });
 }

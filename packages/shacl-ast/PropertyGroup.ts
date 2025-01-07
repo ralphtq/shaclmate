@@ -1,8 +1,18 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import type { Maybe } from "purify-ts";
+import type * as generated from "./generated.js";
 
-export interface PropertyGroup {
-  readonly comment: Maybe<Literal>;
-  readonly identifier: BlankNode | NamedNode;
-  readonly label: Maybe<Literal>;
+export class PropertyGroup {
+  constructor(private readonly delegate: generated.ShaclCorePropertyGroup) {}
+
+  get comments(): readonly Literal[] {
+    return this.delegate.comments;
+  }
+
+  get identifier(): BlankNode | NamedNode {
+    return this.delegate.identifier;
+  }
+
+  get labels(): readonly Literal[] {
+    return this.delegate.labels;
+  }
 }

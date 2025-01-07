@@ -1,22 +1,13 @@
-import { NodeKind } from "@shaclmate/shacl-ast";
 import { rdf } from "@tpluscode/rdf-ns-builders";
 import { Either, Left } from "purify-ts";
 import { invariant } from "ts-invariant";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
-import type { TsFeature } from "../enums/index.js";
+import { TsFeature } from "../enums/TsFeature.js";
 import * as input from "../input/index.js";
 import { logger } from "../logger.js";
 import type { NodeShapeAstType } from "./NodeShapeAstType.js";
-
-const tsFeaturesDefault: Set<TsFeature> = new Set([
-  "equals",
-  "fromRdf",
-  "hash",
-  "toJson",
-  "toRdf",
-  "sparql-graph-patterns",
-]);
+import { pickLiteral } from "./pickLiteral.js";
 
 /**
  * Is an ast.ObjectType actually the shape of an RDF list?
@@ -26,47 +17,45 @@ function transformNodeShapeToListType(
   this: ShapesGraphToAstTransformer,
   nodeShape: input.NodeShape,
 ): Either<Error, ast.ListType> {
-  invariant(nodeShape.resource.isSubClassOf(rdf.List));
+  invariant(nodeShape.isList);
 
   // Put a placeholder in the cache to deal with cyclic references
   const listType: ast.ListType = {
-    comment: nodeShape.comment.map((literal) => literal.value),
-    fromRdfType: nodeShape.fromRdfType,
-    identifierNodeKind: nodeShape.nodeKinds.has(NodeKind.BLANK_NODE)
-      ? NodeKind.BLANK_NODE
-      : NodeKind.IRI,
+    comment: pickLiteral(nodeShape.comments).map((literal) => literal.value),
+    identifierNodeKind: nodeShape.nodeKinds.has("BlankNode")
+      ? "BlankNode"
+      : "NamedNode",
     itemType: {
       kind: "PlaceholderType" as const,
     },
     kind: "ListType" as const,
-    label: nodeShape.label.map((literal) => literal.value),
+    label: pickLiteral(nodeShape.labels).map((literal) => literal.value),
     mutable: nodeShape.mutable,
     name: this.shapeAstName(nodeShape),
-    mintingStrategy: nodeShape.mintingStrategy.toMaybe(),
+    mintingStrategy: nodeShape.mintingStrategy,
     toRdfTypes: nodeShape.toRdfTypes,
   };
 
-  this.nodeShapeAstTypesByIdentifier.set(
-    nodeShape.resource.identifier,
-    listType,
-  );
+  this.nodeShapeAstTypesByIdentifier.set(nodeShape.identifier, listType);
 
   const properties: ast.ObjectType.Property[] = [];
-  for (const propertyShape of nodeShape.constraints.properties) {
-    const propertyEither =
-      this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
-    if (propertyEither.isLeft()) {
-      logger.warn(
-        "error transforming %s %s: %s",
-        nodeShape,
-        propertyShape,
-        (propertyEither.extract() as Error).message,
-      );
-      continue;
-      // return property;
+  nodeShape.constraints.properties.ifJust((propertyShapes) => {
+    for (const propertyShape of propertyShapes) {
+      const propertyEither =
+        this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
+      if (propertyEither.isLeft()) {
+        logger.warn(
+          "error transforming %s %s: %s",
+          nodeShape,
+          propertyShape,
+          (propertyEither.extract() as Error).message,
+        );
+        continue;
+        // return property;
+      }
+      properties.push(propertyEither.unsafeCoerce());
     }
-    properties.push(propertyEither.unsafeCoerce());
-  }
+  });
 
   if (properties.length !== 2) {
     return Left(new Error(`${nodeShape} does not have exactly two properties`));
@@ -102,7 +91,7 @@ function transformNodeShapeToListType(
     !restProperty.type.memberTypes.find(
       (type) =>
         type.kind === "ListType" &&
-        type.name.identifier.equals(nodeShape.resource.identifier),
+        type.name.identifier.equals(nodeShape.identifier),
     )
   ) {
     return Left(
@@ -133,15 +122,13 @@ export function transformNodeShapeToAstType(
   nodeShape: input.NodeShape,
 ): Either<Error, NodeShapeAstType> {
   {
-    const type = this.nodeShapeAstTypesByIdentifier.get(
-      nodeShape.resource.identifier,
-    );
+    const type = this.nodeShapeAstTypesByIdentifier.get(nodeShape.identifier);
     if (type) {
       return Either.of(type);
     }
   }
 
-  if (nodeShape.resource.isSubClassOf(rdf.List)) {
+  if (nodeShape.isList) {
     return transformNodeShapeToListType.bind(this)(nodeShape);
   }
 
@@ -171,19 +158,16 @@ export function transformNodeShapeToAstType(
 
     // Put a placeholder in the cache to deal with cyclic references
     const compositeType = {
-      comment: nodeShape.comment.map((literal) => literal.value),
+      comment: pickLiteral(nodeShape.comments).map((literal) => literal.value),
       export: export_,
       kind: compositeTypeKind,
-      label: nodeShape.label.map((literal) => literal.value),
+      label: pickLiteral(nodeShape.labels).map((literal) => literal.value),
       memberTypes: [] as ast.ObjectType[],
       name: this.shapeAstName(nodeShape),
-      tsFeatures: nodeShape.tsFeatures.orDefault(tsFeaturesDefault),
+      tsFeatures: nodeShape.tsFeatures.orDefault(new Set(TsFeature.MEMBERS)),
     };
 
-    this.nodeShapeAstTypesByIdentifier.set(
-      nodeShape.resource.identifier,
-      compositeType,
-    );
+    this.nodeShapeAstTypesByIdentifier.set(nodeShape.identifier, compositeType);
 
     compositeType.memberTypes.push(
       ...Either.rights(
@@ -209,32 +193,29 @@ export function transformNodeShapeToAstType(
     abstract: nodeShape.abstract.orDefault(false),
     ancestorObjectTypes: [],
     childObjectTypes: [],
-    comment: nodeShape.comment.map((literal) => literal.value),
+    comment: pickLiteral(nodeShape.comments).map((literal) => literal.value),
     descendantObjectTypes: [],
     export: export_,
     extern: nodeShape.extern.orDefault(false),
     fromRdfType: nodeShape.fromRdfType,
-    label: nodeShape.label.map((literal) => literal.value),
+    label: pickLiteral(nodeShape.labels).map((literal) => literal.value),
     kind: "ObjectType",
-    mintingStrategy: nodeShape.mintingStrategy.toMaybe(),
+    mintingStrategy: nodeShape.mintingStrategy,
     name: this.shapeAstName(nodeShape),
     nodeKinds: nodeShape.nodeKinds,
     properties: [], // This is mutable, we'll populate it below.
     parentObjectTypes: [], // This is mutable, we'll populate it below
     toRdfTypes: nodeShape.toRdfTypes,
-    tsFeatures: nodeShape.tsFeatures.orDefault(tsFeaturesDefault),
+    tsFeatures: nodeShape.tsFeatures.orDefault(new Set(TsFeature.MEMBERS)),
     tsIdentifierPropertyName:
       nodeShape.tsObjectIdentifierPropertyName.orDefault("identifier"),
-    tsImport: nodeShape.tsImport,
+    tsImports: nodeShape.tsImports,
     tsObjectDeclarationType:
       nodeShape.tsObjectDeclarationType.orDefault("class"),
     tsTypeDiscriminatorPropertyName:
       nodeShape.tsObjectTypeDiscriminatorPropertyName.orDefault("type"),
   };
-  this.nodeShapeAstTypesByIdentifier.set(
-    nodeShape.resource.identifier,
-    objectType,
-  );
+  this.nodeShapeAstTypesByIdentifier.set(nodeShape.identifier, objectType);
 
   // Populate ancestor and descendant object types
   const relatedObjectTypes = (
@@ -261,21 +242,23 @@ export function transformNodeShapeToAstType(
   );
 
   // Populate properties
-  for (const propertyShape of nodeShape.constraints.properties) {
-    const propertyEither =
-      this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
-    if (propertyEither.isLeft()) {
-      logger.warn(
-        "error transforming %s %s: %s",
-        nodeShape,
-        propertyShape,
-        (propertyEither.extract() as Error).message,
-      );
-      continue;
-      // return property;
+  nodeShape.constraints.properties.ifJust((propertyShapes) => {
+    for (const propertyShape of propertyShapes) {
+      const propertyEither =
+        this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
+      if (propertyEither.isLeft()) {
+        logger.warn(
+          "error transforming %s %s: %s",
+          nodeShape,
+          propertyShape,
+          (propertyEither.extract() as Error).message,
+        );
+        continue;
+        // return property;
+      }
+      objectType.properties.push(propertyEither.unsafeCoerce());
     }
-    objectType.properties.push(propertyEither.unsafeCoerce());
-  }
+  });
 
   return Either.of(objectType);
 }

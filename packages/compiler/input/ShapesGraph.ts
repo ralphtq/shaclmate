@@ -1,11 +1,18 @@
 import type { DatasetCore } from "@rdfjs/types";
 import { RdfjsShapesGraph } from "@shaclmate/shacl-ast";
+import { owl, rdf, rdfs } from "@tpluscode/rdf-ns-builders";
+import type { Either } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
-import { NodeShape } from "./NodeShape.js";
-import { Ontology } from "./Ontology.js";
-import { PropertyGroup } from "./PropertyGroup.js";
-import { PropertyShape } from "./PropertyShape.js";
-import type { Shape } from "./Shape.js";
+import { ancestorClassIris } from "./ancestorClassIris.js";
+import { descendantClassIris } from "./descendantClassIris.js";
+import * as generated from "./generated.js";
+import {
+  NodeShape,
+  Ontology,
+  PropertyGroup,
+  PropertyShape,
+  type Shape,
+} from "./index.js";
 
 export class ShapesGraph extends RdfjsShapesGraph<
   NodeShape,
@@ -18,23 +25,74 @@ export class ShapesGraph extends RdfjsShapesGraph<
     super({
       dataset,
       factory: {
-        createNodeShape(
-          resource: Resource,
-          shapesGraph: ShapesGraph,
-        ): NodeShape {
-          return new NodeShape(resource, shapesGraph);
+        nodeShapeFromRdf({
+          resource,
+          shapesGraph,
+        }: {
+          resource: Resource;
+          shapesGraph: ShapesGraph;
+        }): Either<Error, NodeShape> {
+          return generated.ShaclmateNodeShape.fromRdf({
+            ignoreRdfType: true,
+            resource,
+          }).map(
+            (generatedShape) =>
+              new NodeShape({
+                ancestorClassIris: ancestorClassIris(
+                  resource,
+                  Number.MAX_SAFE_INTEGER,
+                ),
+                childClassIris: descendantClassIris(resource, 1),
+                descendantClassIris: descendantClassIris(
+                  resource,
+                  Number.MAX_SAFE_INTEGER,
+                ),
+                generatedShaclmateNodeShape: generatedShape,
+                isClass:
+                  resource.isInstanceOf(owl.Class) ||
+                  resource.isInstanceOf(rdfs.Class),
+                isList: resource.isSubClassOf(rdf.List),
+                parentClassIris: ancestorClassIris(resource, 1),
+                shapesGraph,
+              }),
+          );
         },
-        createOntology(resource: Resource): Ontology {
-          return new Ontology(resource);
+        ontologyFromRdf({
+          resource,
+        }: {
+          resource: Resource;
+        }): Either<Error, Ontology> {
+          return generated.ShaclmateOntology.fromRdf({
+            ignoreRdfType: true,
+            resource,
+          }).map((generatedOntology) => new Ontology(generatedOntology));
         },
-        createPropertyGroup(resource: Resource): PropertyGroup {
-          return new PropertyGroup(resource);
+        propertyGroupFromRdf({
+          resource,
+        }: {
+          resource: Resource;
+        }): Either<Error, PropertyGroup> {
+          return generated.ShaclCorePropertyGroup.fromRdf({
+            ignoreRdfType: true,
+            resource,
+          }).map(
+            (generatedPropertyGroup) =>
+              new PropertyGroup(generatedPropertyGroup),
+          );
         },
-        createPropertyShape(
-          resource: Resource,
-          shapesGraph: ShapesGraph,
-        ): PropertyShape {
-          return new PropertyShape(resource, shapesGraph);
+        propertyShapeFromRdf({
+          resource,
+          shapesGraph,
+        }: {
+          resource: Resource;
+          shapesGraph: ShapesGraph;
+        }): Either<Error, PropertyShape> {
+          return generated.ShaclmatePropertyShape.fromRdf({
+            ignoreRdfType: true,
+            resource,
+          }).map(
+            (generatedShape) => new PropertyShape(generatedShape, shapesGraph),
+          );
         },
       },
     });

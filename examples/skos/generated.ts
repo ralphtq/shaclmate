@@ -1,6 +1,5 @@
 import * as sparqlBuilder from "@kos-kit/sparql-builder";
 import type * as rdfjs from "@rdfjs/types";
-import { sha256 } from "js-sha256";
 import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
 import * as purifyHelpers from "purify-ts-helpers";
@@ -393,6 +392,7 @@ abstract class Resource {
     },
   >(_hasher: HasherT): HasherT {
     for (const _element0 of this.altLabel) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -401,22 +401,27 @@ abstract class Resource {
     }
 
     for (const _element0 of this.changeNote) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.definition) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.editorialNote) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.example) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.hiddenLabel) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -425,18 +430,22 @@ abstract class Resource {
     }
 
     for (const _element0 of this.historyNote) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.notation) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.note) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
     for (const _element0 of this.prefLabel) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -445,6 +454,7 @@ abstract class Resource {
     }
 
     for (const _element0 of this.scopeNote) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -452,271 +462,161 @@ abstract class Resource {
   }
 
   toJson(): {
-    readonly altLabel: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly altLabel: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly altLabelXl: readonly ReturnType<Label["toJson"]>[];
-    readonly changeNote: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly definition: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly editorialNote: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly example: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly hiddenLabel: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly changeNote: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly definition: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly editorialNote: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly example: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly hiddenLabel: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly hiddenLabelXl: readonly ReturnType<Label["toJson"]>[];
-    readonly historyNote: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly historyNote: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly "@id": string;
-    readonly notation: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly note: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
-    readonly prefLabel: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly notation: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly note: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
+    readonly prefLabel: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly prefLabelXl: readonly ReturnType<Label["toJson"]>[];
-    readonly scopeNote: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly scopeNote: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly type: string;
   } {
     return JSON.parse(
       JSON.stringify({
-        altLabel: this.altLabel.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        altLabel: this.altLabel.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         altLabelXl: this.altLabelXl.map((_item) => _item.toJson()),
-        changeNote: this.changeNote.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        definition: this.definition.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        editorialNote: this.editorialNote.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        example: this.example.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        hiddenLabel: this.hiddenLabel.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        changeNote: this.changeNote.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        definition: this.definition.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        editorialNote: this.editorialNote.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        example: this.example.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        hiddenLabel: this.hiddenLabel.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         hiddenLabelXl: this.hiddenLabelXl.map((_item) => _item.toJson()),
-        historyNote: this.historyNote.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        historyNote: this.historyNote.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         "@id": this.identifier.value,
-        notation: this.notation.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        note: this.note.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
-        prefLabel: this.prefLabel.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        notation: this.notation.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        note: this.note.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
+        prefLabel: this.prefLabel.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         prefLabelXl: this.prefLabelXl.map((_item) => _item.toJson()),
-        scopeNote: this.scopeNote.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        scopeNote: this.scopeNote.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         type: this.type,
       } satisfies ReturnType<Resource["toJson"]>),
     );
@@ -889,7 +789,12 @@ namespace Resource {
             .head()
             .chain((value) => value.toResource())
             .chain((_resource) =>
-              Label.fromRdf({ ..._context, resource: _resource }),
+              Label.fromRdf({
+                ..._context,
+                ignoreRdfType: true,
+                languageIn: _languageIn,
+                resource: _resource,
+              }),
             )
             .toMaybe()
             .toList(),
@@ -1105,7 +1010,12 @@ namespace Resource {
             .head()
             .chain((value) => value.toResource())
             .chain((_resource) =>
-              Label.fromRdf({ ..._context, resource: _resource }),
+              Label.fromRdf({
+                ..._context,
+                ignoreRdfType: true,
+                languageIn: _languageIn,
+                resource: _resource,
+              }),
             )
             .toMaybe()
             .toList(),
@@ -1280,7 +1190,12 @@ namespace Resource {
             .head()
             .chain((value) => value.toResource())
             .chain((_resource) =>
-              Label.fromRdf({ ..._context, resource: _resource }),
+              Label.fromRdf({
+                ..._context,
+                ignoreRdfType: true,
+                languageIn: _languageIn,
+                resource: _resource,
+              }),
             )
             .toMaybe()
             .toList(),
@@ -1374,7 +1289,10 @@ namespace Resource {
                 "http://www.w3.org/2008/05/skos-xl#altLabel",
               ),
               this.variable("AltLabelXl"),
-            ).chainObject((_object) => new Label.SparqlGraphPatterns(_object)),
+            ).chainObject(
+              (_object) =>
+                new Label.SparqlGraphPatterns(_object, { ignoreRdfType: true }),
+            ),
           ),
         ),
       );
@@ -1442,7 +1360,10 @@ namespace Resource {
                 "http://www.w3.org/2008/05/skos-xl#hiddenLabel",
               ),
               this.variable("HiddenLabelXl"),
-            ).chainObject((_object) => new Label.SparqlGraphPatterns(_object)),
+            ).chainObject(
+              (_object) =>
+                new Label.SparqlGraphPatterns(_object, { ignoreRdfType: true }),
+            ),
           ),
         ),
       );
@@ -1499,7 +1420,10 @@ namespace Resource {
                 "http://www.w3.org/2008/05/skos-xl#prefLabel",
               ),
               this.variable("PrefLabelXl"),
-            ).chainObject((_object) => new Label.SparqlGraphPatterns(_object)),
+            ).chainObject(
+              (_object) =>
+                new Label.SparqlGraphPatterns(_object, { ignoreRdfType: true }),
+            ),
           ),
         ),
       );
@@ -1518,18 +1442,18 @@ namespace Resource {
   }
 }
 export class Collection extends Resource {
-  protected _identifier: rdfjs.NamedNode | undefined;
+  identifier: rdfjs.NamedNode;
   readonly member: readonly (Collection | Concept)[];
   override readonly type: "Collection" | "OrderedCollection" = "Collection";
 
   constructor(
     parameters: {
-      readonly identifier?: rdfjs.NamedNode;
+      readonly identifier: rdfjs.NamedNode;
       readonly member?: readonly (Collection | Concept)[];
     } & ConstructorParameters<typeof Resource>[0],
   ) {
     super(parameters);
-    this._identifier = parameters.identifier;
+    this.identifier = parameters.identifier;
     if (Array.isArray(parameters.member)) {
       this.member = parameters.member;
     } else if (typeof parameters.member === "undefined") {
@@ -1537,15 +1461,6 @@ export class Collection extends Resource {
     } else {
       this.member = parameters.member; // never
     }
-  }
-
-  override get identifier(): rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
   }
 
   override equals(other: Collection): purifyHelpers.Equatable.EqualsResult {
@@ -1682,6 +1597,7 @@ export namespace Collection {
     return Resource.interfaceFromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       if (
@@ -1719,7 +1635,12 @@ export namespace Collection {
                 .head()
                 .chain((value) => value.toNamedResource())
                 .chain((_resource) =>
-                  Collection.fromRdf({ ..._context, resource: _resource }),
+                  Collection.fromRdf({
+                    ..._context,
+                    ignoreRdfType: true,
+                    languageIn: _languageIn,
+                    resource: _resource,
+                  }),
                 ) as purify.Either<
                 rdfjsResource.Resource.ValueError,
                 Collection | Concept
@@ -1732,7 +1653,12 @@ export namespace Collection {
                     .head()
                     .chain((value) => value.toNamedResource())
                     .chain((_resource) =>
-                      Concept.fromRdf({ ..._context, resource: _resource }),
+                      Concept.fromRdf({
+                        ..._context,
+                        ignoreRdfType: true,
+                        languageIn: _languageIn,
+                        resource: _resource,
+                      }),
                     ) as purify.Either<
                     rdfjsResource.Resource.ValueError,
                     Collection | Concept
@@ -1797,7 +1723,10 @@ export namespace Collection {
                 ),
                 this.variable("Member"),
               ).chainObject(
-                (_object) => new Collection.SparqlGraphPatterns(_object),
+                (_object) =>
+                  new Collection.SparqlGraphPatterns(_object, {
+                    ignoreRdfType: true,
+                  }),
               ),
             ),
             sparqlBuilder.GraphPattern.group(
@@ -1808,7 +1737,10 @@ export namespace Collection {
                 ),
                 this.variable("Member"),
               ).chainObject(
-                (_object) => new Concept.SparqlGraphPatterns(_object),
+                (_object) =>
+                  new Concept.SparqlGraphPatterns(_object, {
+                    ignoreRdfType: true,
+                  }),
               ),
             ),
           ),
@@ -1823,21 +1755,12 @@ export class OrderedCollection extends Collection {
 
   constructor(
     parameters: {
-      readonly identifier?: rdfjs.NamedNode;
+      readonly identifier: rdfjs.NamedNode;
       readonly memberList: readonly (Collection | Concept)[];
     } & ConstructorParameters<typeof Collection>[0],
   ) {
     super(parameters);
     this.memberList = parameters.memberList;
-  }
-
-  override get identifier(): rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
   }
 
   override equals(
@@ -2036,6 +1959,7 @@ export namespace OrderedCollection {
     return Collection.fromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       if (
@@ -2105,7 +2029,12 @@ export namespace OrderedCollection {
                 .head()
                 .chain((value) => value.toNamedResource())
                 .chain((_resource) =>
-                  Collection.fromRdf({ ..._context, resource: _resource }),
+                  Collection.fromRdf({
+                    ..._context,
+                    ignoreRdfType: true,
+                    languageIn: _languageIn,
+                    resource: _resource,
+                  }),
                 ) as purify.Either<
                 rdfjsResource.Resource.ValueError,
                 Collection | Concept
@@ -2118,7 +2047,12 @@ export namespace OrderedCollection {
                     .head()
                     .chain((value) => value.toNamedResource())
                     .chain((_resource) =>
-                      Concept.fromRdf({ ..._context, resource: _resource }),
+                      Concept.fromRdf({
+                        ..._context,
+                        ignoreRdfType: true,
+                        languageIn: _languageIn,
+                        resource: _resource,
+                      }),
                     ) as purify.Either<
                     rdfjsResource.Resource.ValueError,
                     Collection | Concept
@@ -2197,13 +2131,13 @@ export namespace OrderedCollection {
 }
 export class ConceptScheme extends Resource {
   readonly hasTopConcept: readonly Concept[];
-  private _identifier: rdfjs.NamedNode | undefined;
+  identifier: rdfjs.NamedNode;
   override readonly type = "ConceptScheme";
 
   constructor(
     parameters: {
       readonly hasTopConcept?: readonly Concept[];
-      readonly identifier?: rdfjs.NamedNode;
+      readonly identifier: rdfjs.NamedNode;
     } & ConstructorParameters<typeof Resource>[0],
   ) {
     super(parameters);
@@ -2215,33 +2149,22 @@ export class ConceptScheme extends Resource {
       this.hasTopConcept = parameters.hasTopConcept; // never
     }
 
-    this._identifier = parameters.identifier;
-  }
-
-  override get identifier(): rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
+    this.identifier = parameters.identifier;
   }
 
   override equals(other: ConceptScheme): purifyHelpers.Equatable.EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        purifyHelpers.Equatable.arrayEquals(
-          this.hasTopConcept,
-          other.hasTopConcept,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "hasTopConcept",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+    return super.equals(other).chain(() =>
+      purifyHelpers.Equatable.arrayEquals(
+        this.hasTopConcept,
+        other.hasTopConcept,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "hasTopConcept",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<
@@ -2325,6 +2248,7 @@ export namespace ConceptScheme {
     return Resource.interfaceFromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       if (
@@ -2362,7 +2286,12 @@ export namespace ConceptScheme {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -2423,7 +2352,10 @@ export namespace ConceptScheme {
               ),
               this.variable("HasTopConcept"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -2446,9 +2378,7 @@ export class Label {
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
+      this._identifier = dataFactory.blankNode();
     }
     return this._identifier;
   }
@@ -2500,6 +2430,7 @@ export class Label {
     },
   >(_hasher: HasherT): HasherT {
     for (const _element0 of this.literalForm) {
+      _hasher.update(_element0.termType);
       _hasher.update(_element0.value);
     }
 
@@ -2508,34 +2439,24 @@ export class Label {
 
   toJson(): {
     readonly "@id": string;
-    readonly literalForm: readonly (
-      | string
-      | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
-        }
-    )[];
+    readonly literalForm: readonly {
+      "@language": string | undefined;
+      "@type": string | undefined;
+      "@value": string;
+    }[];
     readonly type: string;
   } {
     return JSON.parse(
       JSON.stringify({
         "@id": this.identifier.value,
-        literalForm: this.literalForm.map((_item) =>
-          _item.datatype.value === "http://www.w3.org/2001/XMLSchema#string" &&
-          _item.language.length === 0
-            ? _item.value
-            : {
-                "@language":
-                  _item.language.length > 0 ? _item.language : undefined,
-                "@type":
-                  _item.datatype.value !==
-                  "http://www.w3.org/2001/XMLSchema#string"
-                    ? _item.datatype.value
-                    : undefined,
-                "@value": _item.value,
-              },
-        ),
+        literalForm: this.literalForm.map((_item) => ({
+          "@language": _item.language.length > 0 ? _item.language : undefined,
+          "@type":
+            _item.datatype.value !== "http://www.w3.org/2001/XMLSchema#string"
+              ? _item.datatype.value
+              : undefined,
+          "@value": _item.value,
+        })),
         type: this.type,
       } satisfies ReturnType<Label["toJson"]>),
     );
@@ -2682,7 +2603,7 @@ export class Concept extends Resource {
   readonly broadMatch: readonly Concept[];
   readonly closeMatch: readonly Concept[];
   readonly exactMatch: readonly Concept[];
-  private _identifier: rdfjs.NamedNode | undefined;
+  identifier: rdfjs.NamedNode;
   readonly inScheme: readonly ConceptScheme[];
   readonly mappingRelation: readonly Concept[];
   readonly narrower: readonly Concept[];
@@ -2701,7 +2622,7 @@ export class Concept extends Resource {
       readonly broadMatch?: readonly Concept[];
       readonly closeMatch?: readonly Concept[];
       readonly exactMatch?: readonly Concept[];
-      readonly identifier?: rdfjs.NamedNode;
+      readonly identifier: rdfjs.NamedNode;
       readonly inScheme?: readonly ConceptScheme[];
       readonly mappingRelation?: readonly Concept[];
       readonly narrower?: readonly Concept[];
@@ -2754,7 +2675,7 @@ export class Concept extends Resource {
       this.exactMatch = parameters.exactMatch; // never
     }
 
-    this._identifier = parameters.identifier;
+    this.identifier = parameters.identifier;
     if (Array.isArray(parameters.inScheme)) {
       this.inScheme = parameters.inScheme;
     } else if (typeof parameters.inScheme === "undefined") {
@@ -2826,15 +2747,6 @@ export class Concept extends Resource {
     } else {
       this.topConceptOf = parameters.topConceptOf; // never
     }
-  }
-
-  override get identifier(): rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.namedNode(
-        `urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`,
-      );
-    }
-    return this._identifier;
   }
 
   override equals(other: Concept): purifyHelpers.Equatable.EqualsResult {
@@ -3257,6 +3169,7 @@ export namespace Concept {
     return Resource.interfaceFromRdf({
       ..._context,
       ignoreRdfType: true,
+      languageIn: _languageIn,
       resource: _resource,
     }).chain((_super) => {
       if (
@@ -3292,7 +3205,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3319,7 +3237,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3346,7 +3269,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3373,7 +3301,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3400,7 +3333,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3428,7 +3366,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                ConceptScheme.fromRdf({ ..._context, resource: _resource }),
+                ConceptScheme.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3455,7 +3398,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3482,7 +3430,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3509,7 +3462,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3536,7 +3494,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3563,7 +3526,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3590,7 +3558,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3617,7 +3590,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                Concept.fromRdf({ ..._context, resource: _resource }),
+                Concept.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3644,7 +3622,12 @@ export namespace Concept {
               .head()
               .chain((value) => value.toNamedResource())
               .chain((_resource) =>
-                ConceptScheme.fromRdf({ ..._context, resource: _resource }),
+                ConceptScheme.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
               )
               .toMaybe()
               .toList(),
@@ -3717,7 +3700,10 @@ export namespace Concept {
               ),
               this.variable("Broader"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3732,7 +3718,10 @@ export namespace Concept {
               ),
               this.variable("BroaderTransitive"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3747,7 +3736,10 @@ export namespace Concept {
               ),
               this.variable("BroadMatch"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3762,7 +3754,10 @@ export namespace Concept {
               ),
               this.variable("CloseMatch"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3777,7 +3772,10 @@ export namespace Concept {
               ),
               this.variable("ExactMatch"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3792,7 +3790,10 @@ export namespace Concept {
               ),
               this.variable("InScheme"),
             ).chainObject(
-              (_object) => new ConceptScheme.SparqlGraphPatterns(_object),
+              (_object) =>
+                new ConceptScheme.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3807,7 +3808,10 @@ export namespace Concept {
               ),
               this.variable("MappingRelation"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3822,7 +3826,10 @@ export namespace Concept {
               ),
               this.variable("Narrower"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3837,7 +3844,10 @@ export namespace Concept {
               ),
               this.variable("NarrowerTransitive"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3852,7 +3862,10 @@ export namespace Concept {
               ),
               this.variable("NarrowMatch"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3867,7 +3880,10 @@ export namespace Concept {
               ),
               this.variable("Related"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3882,7 +3898,10 @@ export namespace Concept {
               ),
               this.variable("RelatedMatch"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3897,7 +3916,10 @@ export namespace Concept {
               ),
               this.variable("SemanticRelation"),
             ).chainObject(
-              (_object) => new Concept.SparqlGraphPatterns(_object),
+              (_object) =>
+                new Concept.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),
@@ -3912,7 +3934,10 @@ export namespace Concept {
               ),
               this.variable("TopConceptOf"),
             ).chainObject(
-              (_object) => new ConceptScheme.SparqlGraphPatterns(_object),
+              (_object) =>
+                new ConceptScheme.SparqlGraphPatterns(_object, {
+                  ignoreRdfType: true,
+                }),
             ),
           ),
         ),

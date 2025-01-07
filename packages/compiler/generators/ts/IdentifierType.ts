@@ -1,70 +1,12 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
-import { NodeKind } from "@shaclmate/shacl-ast";
-import { Maybe } from "purify-ts";
-import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
-import { Import } from "./Import.js";
-import { RdfjsTermType } from "./RdfjsTermType.js";
-import type { Type } from "./Type.js";
+import { TermType } from "./TermType.js";
 
-export class IdentifierType extends RdfjsTermType<
-  BlankNode | NamedNode,
-  NamedNode
-> {
-  readonly jsonName = `{ "@id": string }`;
+export class IdentifierType extends TermType<BlankNode | NamedNode> {
   readonly kind = "IdentifierType";
-  readonly nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
-
-  constructor({
-    nodeKinds,
-    ...superParameters
-  }: {
-    nodeKinds: Set<NodeKind.BLANK_NODE | NodeKind.IRI>;
-  } & ConstructorParameters<
-    typeof RdfjsTermType<BlankNode | NamedNode, NamedNode>
-  >[0]) {
-    super(superParameters);
-    this.nodeKinds = new Set([...nodeKinds]);
-    invariant(this.nodeKinds.size > 0);
-  }
-
-  override get conversions(): readonly Type.Conversion[] {
-    const conversions: Type.Conversion[] = [
-      {
-        conversionExpression: (value) => value,
-        sourceTypeCheckExpression: (value) => `typeof ${value} === "object"`,
-        sourceTypeName: this.name,
-      },
-    ];
-
-    this.defaultValue.ifJust((defaultValue) =>
-      conversions.push({
-        conversionExpression: () => this.rdfjsTermExpression(defaultValue),
-        sourceTypeCheckExpression: (value) => `typeof ${value} === "undefined"`,
-        sourceTypeName: "undefined",
-      }),
-    );
-
-    return conversions;
-  }
-
-  override get discriminatorProperty(): Maybe<Type.DiscriminatorProperty> {
-    return Maybe.of({
-      name: "termType",
-      type: "string" as const,
-      values: [...this.nodeKinds].map((nodeKind) => {
-        switch (nodeKind) {
-          case NodeKind.BLANK_NODE:
-            return "BlankNode" satisfies BlankNode["termType"];
-          case NodeKind.IRI:
-            return "NamedNode" satisfies NamedNode["termType"];
-        }
-      }),
-    });
-  }
 
   get isNamedNodeKind(): boolean {
-    return this.nodeKinds.size === 1 && this.nodeKinds.has(NodeKind.IRI);
+    return this.nodeKinds.size === 1 && this.nodeKinds.has("NamedNode");
   }
 
   @Memoize()
@@ -78,41 +20,23 @@ export class IdentifierType extends RdfjsTermType<
         .join(" | ")}>`;
     }
 
-    const names: string[] = [];
-    if (this.nodeKinds.has(NodeKind.BLANK_NODE)) {
-      names.push("rdfjs.BlankNode");
-    }
-    if (this.nodeKinds.has(NodeKind.IRI)) {
-      names.push("rdfjs.NamedNode");
-    }
-    return names.join(" | ");
-  }
-
-  get useImports(): readonly Import[] {
-    return [Import.RDFJS_TYPES];
-  }
-
-  override propertyHashStatements({
-    variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    return [
-      `${variables.hasher}.update(rdfjsResource.Resource.Identifier.toString(${variables.value}));`,
-    ];
+    return `(${[...this.nodeKinds]
+      .map((nodeKind) => `rdfjs.${nodeKind}`)
+      .join(" | ")})`;
   }
 
   override propertyToJsonExpression({
     variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<
+    TermType<BlankNode | NamedNode>["propertyToJsonExpression"]
+  >[0]): string {
     return `{ "@id": ${variables.value}.value }`;
   }
 
   protected override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
-    RdfjsTermType<
-      BlankNode | NamedNode,
-      NamedNode
-    >["propertyFromRdfResourceValueExpression"]
+    TermType<BlankNode | NamedNode>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     if (this.nodeKinds.size === 2) {
       return `${variables.resourceValue}.toIdentifier()`;

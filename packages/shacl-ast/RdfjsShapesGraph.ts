@@ -10,39 +10,15 @@ import type {
 import { owl, sh } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { ResourceSet } from "rdfjs-resource";
-import type { NodeShape } from "./NodeShape.js";
-import type { Ontology } from "./Ontology.js";
-import type { PropertyGroup } from "./PropertyGroup.js";
-import type { PropertyShape } from "./PropertyShape.js";
-import type { RdfjsFactory } from "./RdfjsFactory.js";
-import type { Shape } from "./Shape.js";
+import type { Factory } from "./Factory.js";
+import type { OntologyLike } from "./OntologyLike.js";
 
 export class RdfjsShapesGraph<
-  NodeShapeT extends NodeShape<
-    any,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    ShapeT
-  > &
-    ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    any,
-    ShapeT
-  > &
-    ShapeT,
-  ShapeT extends Shape<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    any
-  >,
+  NodeShapeT extends ShapeT,
+  OntologyT extends OntologyLike,
+  PropertyGroupT,
+  PropertyShapeT extends ShapeT,
+  ShapeT,
 > {
   readonly dataset: DatasetCore;
   readonly node: BlankNode | DefaultGraph | NamedNode | null;
@@ -73,7 +49,7 @@ export class RdfjsShapesGraph<
     factory,
   }: {
     dataset: DatasetCore;
-    factory: RdfjsFactory<
+    factory: Factory<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -117,7 +93,9 @@ export class RdfjsShapesGraph<
     return Maybe.fromNullable(this.ontologiesByIdentifier.get(identifier));
   }
 
-  propertyGroupByIdentifier(identifier: NamedNode): Maybe<PropertyGroupT> {
+  propertyGroupByIdentifier(
+    identifier: BlankNode | NamedNode,
+  ): Maybe<PropertyGroupT> {
     return Maybe.fromNullable(this.propertyGroupsByIdentifier.get(identifier));
   }
 
@@ -157,7 +135,7 @@ export class RdfjsShapesGraph<
   }
 
   private readOntologies(
-    factory: RdfjsFactory<
+    factory: Factory<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -177,15 +155,21 @@ export class RdfjsShapesGraph<
       if (ontologiesByIdentifier.has(ontologyResource.identifier)) {
         continue;
       }
-      const ontology = factory.createOntology(ontologyResource, this);
-      ontologies.push(ontology);
-      ontologiesByIdentifier.set(ontologyResource.identifier, ontology);
+      factory
+        .ontologyFromRdf({
+          resource: ontologyResource,
+          shapesGraph: this,
+        })
+        .ifRight((ontology) => {
+          ontologies.push(ontology);
+          ontologiesByIdentifier.set(ontologyResource.identifier, ontology);
+        });
     }
     return { ontologies, ontologiesByIdentifier };
   }
 
   private readPropertyGroups(
-    factory: RdfjsFactory<
+    factory: Factory<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -211,21 +195,24 @@ export class RdfjsShapesGraph<
       if (propertyGroupsByIdentifier.has(propertyGroupResource.identifier)) {
         continue;
       }
-      const propertyGroup = factory.createPropertyGroup(
-        propertyGroupResource,
-        this,
-      );
-      propertyGroups.push(propertyGroup);
-      propertyGroupsByIdentifier.set(
-        propertyGroupResource.identifier,
-        propertyGroup,
-      );
+      factory
+        .propertyGroupFromRdf({
+          resource: propertyGroupResource,
+          shapesGraph: this,
+        })
+        .ifRight((propertyGroup) => {
+          propertyGroups.push(propertyGroup);
+          propertyGroupsByIdentifier.set(
+            propertyGroupResource.identifier,
+            propertyGroup,
+          );
+        });
     }
     return { propertyGroups, propertyGroupsByIdentifier };
   }
 
   private readShapes(
-    factory: RdfjsFactory<
+    factory: Factory<
       NodeShapeT,
       OntologyT,
       PropertyGroupT,
@@ -356,20 +343,26 @@ export class RdfjsShapesGraph<
     for (const shapeNode of shapeNodeSet) {
       if (this.dataset.match(shapeNode, sh.path, null, this.node).size > 0) {
         // A property shape is a shape in the shapes graph that is the subject of a triple that has sh:path as its predicate. A shape has at most one value for sh:path. Each value of sh:path in a shape must be a well-formed SHACL property path. It is recommended, but not required, for a property shape to be declared as a SHACL instance of sh:PropertyShape. SHACL instances of sh:PropertyShape have one value for the property sh:path.
-        const propertyShape = factory.createPropertyShape(
-          this.resourceSet.resource(shapeNode),
-          this,
-        );
-        propertyShapes.push(propertyShape);
-        propertyShapesByIdentifier.set(shapeNode, propertyShape);
+        factory
+          .propertyShapeFromRdf({
+            resource: this.resourceSet.resource(shapeNode),
+            shapesGraph: this,
+          })
+          .ifRight((propertyShape) => {
+            propertyShapes.push(propertyShape);
+            propertyShapesByIdentifier.set(shapeNode, propertyShape);
+          });
       } else {
         // A node shape is a shape in the shapes graph that is not the subject of a triple with sh:path as its predicate. It is recommended, but not required, for a node shape to be declared as a SHACL instance of sh:NodeShape. SHACL instances of sh:NodeShape cannot have a value for the property sh:path.
-        const nodeShape = factory.createNodeShape(
-          this.resourceSet.resource(shapeNode),
-          this,
-        );
-        nodeShapes.push(nodeShape);
-        nodeShapesByIdentifier.set(shapeNode, nodeShape);
+        factory
+          .nodeShapeFromRdf({
+            resource: this.resourceSet.resource(shapeNode),
+            shapesGraph: this,
+          })
+          .ifRight((nodeShape) => {
+            nodeShapes.push(nodeShape);
+            nodeShapesByIdentifier.set(shapeNode, nodeShape);
+          });
       }
     }
 

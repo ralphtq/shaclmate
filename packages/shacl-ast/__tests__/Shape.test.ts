@@ -1,59 +1,44 @@
+import type { NamedNode } from "@rdfjs/types";
 import { dash, schema, xsd } from "@tpluscode/rdf-ns-builders";
 import { DataFactory as dataFactory } from "n3";
-import { it } from "vitest";
-import { NodeKind } from "../NodeKind.js";
-import type { NodeShape } from "../NodeShape.js";
-import type { Ontology } from "../Ontology.js";
-import type { PropertyGroup } from "../PropertyGroup.js";
-import type { PropertyShape } from "../PropertyShape.js";
-import type { Shape } from "../Shape.js";
-import type { ShapesGraph } from "../ShapesGraph.js";
-import { findPropertyShape as findPropertyShape_ } from "./findPropertyShape.js";
+import { describe, expect, it } from "vitest";
+import { RdfjsShapesGraph } from "../RdfjsShapesGraph.js";
+import { defaultFactory } from "../defaultFactory.js";
+import { testData } from "./testData.js";
 
-export function behavesLikeShape<
-  NodeShapeT extends NodeShape<
-    any,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    ShapeT
-  > &
-    ShapeT,
-  OntologyT extends Ontology,
-  PropertyGroupT extends PropertyGroup,
-  PropertyShapeT extends PropertyShape<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    any,
-    ShapeT
-  > &
-    ShapeT,
-  ShapeT extends Shape<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    any
-  >,
->(
-  shapesGraph: ShapesGraph<
-    NodeShapeT,
-    OntologyT,
-    PropertyGroupT,
-    PropertyShapeT,
-    ShapeT
-  >,
-) {
-  const findPropertyShape = findPropertyShape_(shapesGraph);
+describe("RdfjsShape", () => {
+  const shapesGraph = new RdfjsShapesGraph({
+    dataset: testData.shapesGraph,
+    factory: defaultFactory,
+  });
+
+  const findPropertyShape = (
+    nodeShapeIdentifier: NamedNode,
+    path: NamedNode,
+  ) => {
+    const nodeShape = shapesGraph
+      .nodeShapeByIdentifier(nodeShapeIdentifier)
+      .unsafeCoerce();
+    const propertyShape = nodeShape.constraints.properties
+      .unsafeCoerce()
+      .find((propertyShape) => {
+        const propertyShapePath = propertyShape.path;
+        return (
+          propertyShapePath.kind === "PredicatePath" &&
+          propertyShapePath.iri.equals(path)
+        );
+      });
+    expect(propertyShape).toBeDefined();
+    return propertyShape!;
+  };
 
   it("should have a description", ({ expect }) => {
-    expect(
-      findPropertyShape(
-        dash.ScriptAPIShape,
-        dash.generateClass,
-      ).description.extractNullable()?.value,
-    ).toMatch(/^The API generator/);
+    const descriptions = findPropertyShape(
+      dash.ScriptAPIShape,
+      dash.generateClass,
+    ).descriptions.unsafeCoerce();
+    expect(descriptions).toHaveLength(1);
+    expect(descriptions[0].value).toMatch(/^The API generator/);
   });
 
   it("should be defined by an ontology", ({ expect }) => {
@@ -79,10 +64,12 @@ export function behavesLikeShape<
   });
 
   it("should have a name", ({ expect }) => {
-    expect(
-      findPropertyShape(schema.Person, schema.givenName).name.extractNullable()
-        ?.value,
-    ).toStrictEqual("given name");
+    const names = findPropertyShape(
+      schema.Person,
+      schema.givenName,
+    ).names.unsafeCoerce();
+    expect(names).toHaveLength(1);
+    expect(names[0].value).toStrictEqual("given name");
   });
 
   // No shape in the test data with a clean sh:and
@@ -113,14 +100,14 @@ export function behavesLikeShape<
   });
 
   it("constraints: should have an sh:hasValue", ({ expect }) => {
-    expect(
-      findPropertyShape(
-        dataFactory.namedNode(
-          "http://topbraid.org/examples/schemashacl#FemalePerson",
-        ),
-        schema.gender,
-      ).constraints.hasValue.extractNullable()?.value,
-    ).toStrictEqual("female");
+    const hasValues = findPropertyShape(
+      dataFactory.namedNode(
+        "http://topbraid.org/examples/schemashacl#FemalePerson",
+      ),
+      schema.gender,
+    ).constraints.hasValues.unsafeCoerce();
+    expect(hasValues).toHaveLength(1);
+    expect(hasValues[0].value).toStrictEqual("female");
   });
 
   it("constraints: should have an sh:in", ({ expect }) => {
@@ -207,7 +194,7 @@ export function behavesLikeShape<
       schema.parent,
     ).constraints.nodeKinds.orDefault(new Set());
     expect(nodeKinds.size).toStrictEqual(1);
-    expect(nodeKinds.has(NodeKind.IRI)).toStrictEqual(true);
+    expect(nodeKinds.has("NamedNode")).toStrictEqual(true);
   });
 
   // No shape in the test data with a clean sh:not
@@ -234,4 +221,4 @@ export function behavesLikeShape<
   });
 
   // No sh:xone in the test data
-}
+});

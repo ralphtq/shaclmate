@@ -975,6 +975,150 @@
     {
       "kind": "ObjectType",
       "name": {
+        "curie": ":NodeShapeWithTermProperties",
+        "identifier": {
+          "termType": "NamedNode",
+          "value": "http://example.com/NodeShapeWithTermProperties"
+        },
+        "shaclmateName": "NodeShapeWithTermProperties"
+      },
+      "properties": [
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-207"
+            },
+            "shName": "booleanProperty"
+          },
+          "path": "http://example.com/booleanProperty",
+          "type": {
+            "itemType": {
+              "datatype": {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#boolean"
+              },
+              "kind": "LiteralType"
+            },
+            "kind": "OptionType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-208"
+            },
+            "shName": "dateTimeProperty"
+          },
+          "path": "http://example.com/dateTimeProperty",
+          "type": {
+            "itemType": {
+              "datatype": {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#dateTime"
+              },
+              "kind": "LiteralType"
+            },
+            "kind": "OptionType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-209"
+            },
+            "shName": "iriProperty"
+          },
+          "path": "http://example.com/iriProperty",
+          "type": {
+            "itemType": {
+              "kind": "IdentifierType",
+              "nodeKinds": [
+                "NamedNode"
+              ]
+            },
+            "kind": "OptionType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-210"
+            },
+            "shName": "literalProperty"
+          },
+          "path": "http://example.com/literalProperty",
+          "type": {
+            "itemType": {
+              "kind": "LiteralType"
+            },
+            "kind": "OptionType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-211"
+            },
+            "shName": "numberProperty"
+          },
+          "path": "http://example.com/numberProperty",
+          "type": {
+            "itemType": {
+              "datatype": {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#decimal"
+              },
+              "kind": "LiteralType"
+            },
+            "kind": "OptionType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-212"
+            },
+            "shName": "stringProperty"
+          },
+          "path": "http://example.com/stringProperty",
+          "type": {
+            "itemType": {
+              "datatype": {
+                "termType": "NamedNode",
+                "value": "http://www.w3.org/2001/XMLSchema#string"
+              },
+              "kind": "LiteralType"
+            },
+            "kind": "OptionType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-213"
+            },
+            "shName": "termProperty"
+          },
+          "path": "http://example.com/termProperty",
+          "type": {
+            "itemType": {
+              "kind": "TermType"
+            },
+            "kind": "OptionType"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "ObjectType",
+      "name": {
         "curie": ":NonClassNodeShape",
         "identifier": {
           "termType": "NamedNode",
@@ -987,7 +1131,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-207"
+              "value": "n3-214"
             },
             "shName": "stringProperty"
           },
@@ -1017,7 +1161,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-211"
+              "value": "n3-218"
             },
             "shName": "stringProperty1"
           },
@@ -1047,7 +1191,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-212"
+              "value": "n3-219"
             },
             "shName": "stringProperty2"
           },
@@ -1077,7 +1221,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-213"
+              "value": "n3-220"
             },
             "shName": "stringProperty"
           },
@@ -1107,7 +1251,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-214"
+              "value": "n3-221"
             },
             "shName": "stringProperty"
           },
