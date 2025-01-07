@@ -76,9 +76,11 @@ export namespace NodeShape {
     }
 
     get properties(): Maybe<NonEmptyList<PropertyShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreNodeShape.properties.flatMap((identifier) =>
-          this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
+      return this.generatedShaclCoreNodeShape.properties.chain((identifiers) =>
+        NonEmptyList.fromArray(
+          identifiers.flatMap((identifier) =>
+            this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
+          ),
         ),
       );
     }

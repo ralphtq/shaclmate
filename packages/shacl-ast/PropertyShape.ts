@@ -46,21 +46,21 @@ export class PropertyShape<
   }
 
   get descriptions(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(
-      this.generatedShaclCorePropertyShape.descriptions,
-    );
+    return this.generatedShaclCorePropertyShape.descriptions;
   }
 
   get groups(): Maybe<NonEmptyList<PropertyGroupT>> {
-    return NonEmptyList.fromArray(
-      this.generatedShaclCorePropertyShape.groups.flatMap((identifier) =>
-        this.shapesGraph.propertyGroupByIdentifier(identifier).toList(),
+    return this.generatedShaclCorePropertyShape.groups.chain((identifiers) =>
+      NonEmptyList.fromArray(
+        identifiers.flatMap((identifier) =>
+          this.shapesGraph.propertyGroupByIdentifier(identifier).toList(),
+        ),
       ),
     );
   }
 
   get names(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShaclCorePropertyShape.names);
+    return this.generatedShaclCorePropertyShape.names;
   }
 
   get order(): Maybe<number> {

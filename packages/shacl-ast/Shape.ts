@@ -1,4 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
+import type * as rdfjs from "@rdfjs/types";
 import { Maybe, NonEmptyList } from "purify-ts";
 import type { NodeKind } from "./NodeKind.js";
 import type { OntologyLike } from "./OntologyLike.js";
@@ -38,7 +39,7 @@ export abstract class Shape<
   }
 
   get comments(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShaclCoreShape.comments);
+    return this.generatedShaclCoreShape.comments;
   }
 
   get identifier(): BlankNode | NamedNode {
@@ -77,7 +78,7 @@ export abstract class Shape<
   }
 
   get labels(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShaclCoreShape.labels);
+    return this.generatedShaclCoreShape.labels;
   }
 }
 
@@ -104,17 +105,11 @@ export namespace Shape {
     ) {}
 
     get and(): Maybe<NonEmptyList<ShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.and.flatMap((identifiers) =>
-          identifiers.flatMap((identifier) =>
-            this.shapesGraph.shapeByIdentifier(identifier).toList(),
-          ),
-        ),
-      );
+      return this.shapeListTakingConstraint(this.generatedShaclCoreShape.and);
     }
 
     get classes(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShaclCoreShape.classes);
+      return this.generatedShaclCoreShape.classes;
     }
 
     get datatype(): Maybe<NamedNode> {
@@ -122,7 +117,7 @@ export namespace Shape {
     }
 
     get hasValues(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShaclCoreShape.hasValues);
+      return this.generatedShaclCoreShape.hasValues;
     }
 
     get in_(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
@@ -190,24 +185,18 @@ export namespace Shape {
     }
 
     get nodes(): Maybe<NonEmptyList<NodeShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.nodes.flatMap((identifier) =>
-          this.shapesGraph.nodeShapeByIdentifier(identifier).toList(),
+      return this.generatedShaclCoreShape.nodes.chain((identifiers) =>
+        NonEmptyList.fromArray(
+          identifiers.flatMap((identifier) =>
+            this.shapesGraph.nodeShapeByIdentifier(identifier).toList(),
+          ),
         ),
       );
     }
 
     get not(): Maybe<NonEmptyList<ShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.not.flatMap((identifier) =>
-          this.shapesGraph.shapeByIdentifier(identifier).toList(),
-        ),
-      );
-    }
-
-    get or(): Maybe<NonEmptyList<ShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.or.flatMap((identifiers) =>
+      return this.generatedShaclCoreShape.not.chain((identifiers) =>
+        NonEmptyList.fromArray(
           identifiers.flatMap((identifier) =>
             this.shapesGraph.shapeByIdentifier(identifier).toList(),
           ),
@@ -215,11 +204,25 @@ export namespace Shape {
       );
     }
 
+    get or(): Maybe<NonEmptyList<ShapeT>> {
+      return this.shapeListTakingConstraint(this.generatedShaclCoreShape.or);
+    }
+
     get xone(): Maybe<NonEmptyList<ShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.xone.flatMap((identifiers) =>
-          identifiers.flatMap((identifier) =>
-            this.shapesGraph.shapeByIdentifier(identifier).toList(),
+      return this.shapeListTakingConstraint(this.generatedShaclCoreShape.xone);
+    }
+
+    private shapeListTakingConstraint(
+      identifiers: Maybe<
+        NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+      >,
+    ): Maybe<NonEmptyList<ShapeT>> {
+      return identifiers.chain((identifiers) =>
+        NonEmptyList.fromArray(
+          identifiers.flatMap((identifiers) =>
+            identifiers.flatMap((identifier) =>
+              this.shapesGraph.shapeByIdentifier(identifier).toList(),
+            ),
           ),
         ),
       );
@@ -232,19 +235,19 @@ export namespace Shape {
     ) {}
 
     get targetClasses(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.classes);
+      return this.generatedShape.classes;
     }
 
     get targetNodes(): Maybe<NonEmptyList<Literal | NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.targetNodes);
+      return this.generatedShape.targetNodes;
     }
 
     get targetObjectsOf(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.targetObjectsOf);
+      return this.generatedShape.targetObjectsOf;
     }
 
     get targetSubjectsOf(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.targetSubjectsOf);
+      return this.generatedShape.targetSubjectsOf;
     }
   }
 }
