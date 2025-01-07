@@ -4,6 +4,7 @@ import { Shape } from "./Shape.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
 import type * as generated from "./generated.js";
 
+// @ts-ignore
 export class NodeShape<
   GeneratedShapeT extends generated.ShaclCoreNodeShape,
   NodeShapeT extends ShapeT,
@@ -49,7 +50,7 @@ export class NodeShape<
 
 export namespace NodeShape {
   export class Constraints<
-    GeneratedShapeT extends generated.ShaclCoreShape,
+    GeneratedShapeT extends generated.ShaclCoreNodeShape,
     NodeShapeT extends ShapeT,
     OntologyT extends OntologyLike,
     PropertyGroupT,
@@ -64,14 +65,12 @@ export namespace NodeShape {
     ShapeT
   > {
     get closed(): Maybe<boolean> {
-      return (this.generatedShape as generated.ShaclCoreNodeShape).closed;
+      return this.generatedShape.closed;
     }
 
     get properties(): Maybe<NonEmptyList<PropertyShapeT>> {
       return NonEmptyList.fromArray(
-        (
-          this.generatedShape as generated.ShaclCoreNodeShape
-        ).properties.flatMap((identifier) =>
+        this.generatedShape.properties.flatMap((identifier) =>
           this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
         ),
       );

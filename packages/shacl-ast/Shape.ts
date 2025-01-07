@@ -6,7 +6,7 @@ import type { ShapesGraph } from "./ShapesGraph.js";
 import type * as generated from "./generated.js";
 
 export abstract class Shape<
-  GeneratedShapeT extends generated.ShaclCoreShape,
+  GeneratedShapeT extends generated.BaseShaclCoreShape,
   NodeShapeT extends ShapeT,
   OntologyT extends OntologyLike,
   PropertyGroupT,
@@ -82,7 +82,7 @@ export abstract class Shape<
 
 export namespace Shape {
   export class Constraints<
-    GeneratedShapeT extends generated.ShaclCoreShape,
+    GeneratedShapeT extends generated.BaseShaclCoreShape,
     NodeShapeT extends ShapeT,
     OntologyT extends OntologyLike,
     PropertyGroupT,
@@ -222,7 +222,9 @@ export namespace Shape {
   }
 
   export class Targets {
-    constructor(private readonly generatedShape: generated.ShaclCoreShape) {}
+    constructor(
+      private readonly generatedShape: generated.BaseShaclCoreShape,
+    ) {}
 
     get targetClasses(): Maybe<NonEmptyList<NamedNode>> {
       return NonEmptyList.fromArray(this.generatedShape.classes);

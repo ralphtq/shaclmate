@@ -14,6 +14,205 @@
     rdfs:label "SHACL for shacl-ast" ;
     rdfs:seeAlso <https://www.w3.org/TR/shacl/#shacl-shacl> .
 
+shaclmate:BaseShaclCoreShape
+    shaclmate:abstract true ;
+    shaclmate:name "BaseShaclCoreShape" ;
+    a owl:Class, sh:NodeShape ;
+    sh:property shaclmate:BaseShaclCoreShape-and, shaclmate:BaseShaclCoreShape-classes, shaclmate:BaseShaclCoreShape-comments, shaclmate:BaseShaclCoreShape-datatype, shaclmate:BaseShaclCoreShape-deactivated, shaclmate:BaseShaclCoreShape-flags, shaclmate:BaseShaclCoreShape-hasValues, shaclmate:BaseShaclCoreShape-in, shaclmate:BaseShaclCoreShape-isDefinedBy, shaclmate:BaseShaclCoreShape-labels, shaclmate:BaseShaclCoreShape-languageIn, shaclmate:BaseShaclCoreShape-maxCount, shaclmate:BaseShaclCoreShape-maxExclusive, shaclmate:BaseShaclCoreShape-maxInclusive, shaclmate:BaseShaclCoreShape-maxLength, shaclmate:BaseShaclCoreShape-minCount, shaclmate:BaseShaclCoreShape-minExclusive, shaclmate:BaseShaclCoreShape-minInclusive, shaclmate:BaseShaclCoreShape-minLength, shaclmate:BaseShaclCoreShape-nodeKind, shaclmate:BaseShaclCoreShape-nodes, shaclmate:BaseShaclCoreShape-not, shaclmate:BaseShaclCoreShape-or, shaclmate:BaseShaclCoreShape-patterns, shaclmate:BaseShaclCoreShape-targetClasses, shaclmate:BaseShaclCoreShape-targetNodes, shaclmate:BaseShaclCoreShape-targetObjectsOf, shaclmate:BaseShaclCoreShape-targetSubjectsOf, shaclmate:BaseShaclCoreShape-xone .
+
+shaclmate:BaseShaclCoreShape-and
+    a sh:PropertyShape ;
+    sh:name "and" ;
+    sh:node shaclmate:IdentifierList ;
+    sh:path sh:and .
+
+shaclmate:BaseShaclCoreShape-classes
+    a sh:PropertyShape ;
+    sh:name "classes" ;
+    sh:nodeKind sh:IRI ;
+    sh:path sh:class .
+
+shaclmate:BaseShaclCoreShape-comments
+    a sh:PropertyShape ;
+    sh:name "comments" ;
+    sh:or dash:StringOrLangString ;
+    sh:path rdfs:comment .
+
+shaclmate:BaseShaclCoreShape-datatype
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "datatype" ;
+    sh:nodeKind sh:IRI ;
+    sh:path sh:datatype .
+
+shaclmate:BaseShaclCoreShape-deactivated
+    a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:name "deactivated" ;
+    sh:path sh:deactivated .
+
+shaclmate:BaseShaclCoreShape-flags
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:name "flags" ;
+    sh:path sh:flags .
+
+shaclmate:BaseShaclCoreShape-hasValues
+    a sh:PropertyShape ;
+    sh:name "hasValues" ;
+    sh:path sh:hasValue .
+
+shaclmate:BaseShaclCoreShape-in
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "in_" ;
+    sh:node shaclmate:TermList ;
+    sh:path sh:in .
+
+shaclmate:BaseShaclCoreShape-isDefinedBy
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "isDefinedBy" ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:path rdfs:isDefinedBy .
+
+shaclmate:BaseShaclCoreShape-labels
+    a sh:PropertyShape ;
+    sh:name "labels" ;
+    sh:or dash:StringOrLangString ;
+    sh:path rdfs:label .
+
+shaclmate:BaseShaclCoreShape-languageIn
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "languageIn" ;
+    sh:node shaclmate:StringList ;
+    sh:path sh:languageIn .
+
+shaclmate:BaseShaclCoreShape-maxCount
+    a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:name "maxCount" ;
+    sh:path sh:maxCount .
+
+shaclmate:BaseShaclCoreShape-maxExclusive
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "maxExclusive" ;
+    sh:nodeKind sh:Literal ;
+    sh:path sh:maxExclusive .
+
+shaclmate:BaseShaclCoreShape-maxInclusive
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "maxInclusive" ;
+    sh:nodeKind sh:Literal ;
+    sh:path sh:maxInclusive .
+
+shaclmate:BaseShaclCoreShape-maxLength
+    a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:name "maxLength" ;
+    sh:path sh:maxLength .
+
+shaclmate:BaseShaclCoreShape-minCount
+    a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:name "minCount" ;
+    sh:path sh:minCount .
+
+shaclmate:BaseShaclCoreShape-minExclusive
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "minExclusive" ;
+    sh:nodeKind sh:Literal ;
+    sh:path sh:minExclusive .
+
+shaclmate:BaseShaclCoreShape-minInclusive
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:name "minInclusive" ;
+    sh:nodeKind sh:Literal ;
+    sh:path sh:minInclusive .
+
+shaclmate:BaseShaclCoreShape-minLength
+    a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:name "minLength" ;
+    sh:path sh:minLength .
+
+shaclmate:BaseShaclCoreShape-nodeKind
+    a sh:PropertyShape ;
+    sh:in (sh:BlankNode
+        sh:BlankNodeOrIRI
+        sh:BlankNodeOrLiteral
+        sh:IRI
+        sh:IRIOrLiteral
+        sh:Literal
+    ) ;
+    sh:maxCount 1 ;
+    sh:name "nodeKind" ;
+    sh:path sh:nodeKind .
+
+shaclmate:BaseShaclCoreShape-nodes
+    a sh:PropertyShape ;
+    sh:name "nodes" ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:path sh:node .
+
+shaclmate:BaseShaclCoreShape-not
+    a sh:PropertyShape ;
+    sh:name "not" ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:path sh:not .
+
+shaclmate:BaseShaclCoreShape-or
+    a sh:PropertyShape ;
+    sh:name "or" ;
+    sh:node shaclmate:IdentifierList ;
+    sh:path sh:or .
+
+shaclmate:BaseShaclCoreShape-patterns
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:name "patterns" ;
+    sh:path sh:pattern .
+
+shaclmate:BaseShaclCoreShape-targetClasses
+    a sh:PropertyShape ;
+    sh:name "targetClass" ;
+    sh:nodeKind sh:IRI ;
+    sh:path sh:targetClass .
+
+shaclmate:BaseShaclCoreShape-targetNodes
+    a sh:PropertyShape ;
+    sh:name "targetNodes" ;
+    sh:nodeKind sh:IRIOrLiteral ;
+    sh:path sh:targetNode .
+
+shaclmate:BaseShaclCoreShape-targetObjectsOf
+    a sh:PropertyShape ;
+    sh:name "targetObjectsOf" ;
+    sh:nodeKind sh:IRI ;
+    sh:path sh:targetObjectsOf .
+
+shaclmate:BaseShaclCoreShape-targetSubjectsOf
+    a sh:PropertyShape ;
+    sh:name "targetSubjectsOf" ;
+    sh:nodeKind sh:IRI ;
+    sh:path sh:targetSubjectsOf .
+
+shaclmate:BaseShaclCoreShape-xone
+    a sh:PropertyShape ;
+    sh:name "xone" ;
+    sh:node shaclmate:IdentifierList ;
+    sh:path sh:xone .
+
 shaclmate:IdentifierList
     shaclmate:name "IdentifierList" ;
     a owl:Class, sh:NodeShape ;
@@ -88,7 +287,8 @@ shaclmate:ShaclCoreNodeShape
     shaclmate:fromRdfType sh:NodeShape ;
     shaclmate:name "ShaclCoreNodeShape" ;
     a owl:Class, sh:NodeShape ;
-    sh:property shaclmate:ShaclCoreNodeShape-closed, shaclmate:ShaclCoreNodeShape-ignoredProperties, shaclmate:ShaclCoreNodeShape-properties, shaclmate:ShaclCoreShape-and, shaclmate:ShaclCoreShape-classes, shaclmate:ShaclCoreShape-comments, shaclmate:ShaclCoreShape-datatype, shaclmate:ShaclCoreShape-deactivated, shaclmate:ShaclCoreShape-flags, shaclmate:ShaclCoreShape-hasValues, shaclmate:ShaclCoreShape-in, shaclmate:ShaclCoreShape-isDefinedBy, shaclmate:ShaclCoreShape-labels, shaclmate:ShaclCoreShape-languageIn, shaclmate:ShaclCoreShape-maxCount, shaclmate:ShaclCoreShape-maxExclusive, shaclmate:ShaclCoreShape-maxInclusive, shaclmate:ShaclCoreShape-maxLength, shaclmate:ShaclCoreShape-minCount, shaclmate:ShaclCoreShape-minExclusive, shaclmate:ShaclCoreShape-minInclusive, shaclmate:ShaclCoreShape-minLength, shaclmate:ShaclCoreShape-nodeKind, shaclmate:ShaclCoreShape-nodes, shaclmate:ShaclCoreShape-not, shaclmate:ShaclCoreShape-or, shaclmate:ShaclCoreShape-patterns, shaclmate:ShaclCoreShape-targetClasses, shaclmate:ShaclCoreShape-targetNodes, shaclmate:ShaclCoreShape-targetObjectsOf, shaclmate:ShaclCoreShape-targetSubjectsOf, shaclmate:ShaclCoreShape-xone .
+    rdfs:subClassOf shaclmate:BaseShaclCoreShape ;
+    sh:property shaclmate:ShaclCoreNodeShape-closed, shaclmate:ShaclCoreNodeShape-ignoredProperties, shaclmate:ShaclCoreNodeShape-properties .
 
 shaclmate:ShaclCoreNodeShape-closed
     a sh:PropertyShape ;
@@ -139,7 +339,8 @@ shaclmate:ShaclCorePropertyShape
     shaclmate:fromRdfType sh:PropertyShape ;
     shaclmate:name "ShaclCorePropertyShape" ;
     a owl:Class, sh:NodeShape ;
-    sh:property shaclmate:ShaclCorePropertyShape-defaultValue, shaclmate:ShaclCorePropertyShape-descriptions, shaclmate:ShaclCorePropertyShape-groups, shaclmate:ShaclCorePropertyShape-names, shaclmate:ShaclCorePropertyShape-order, shaclmate:ShaclCorePropertyShape-path, shaclmate:ShaclCorePropertyShape-uniqueLang, shaclmate:ShaclCoreShape-and, shaclmate:ShaclCoreShape-classes, shaclmate:ShaclCoreShape-comments, shaclmate:ShaclCoreShape-datatype, shaclmate:ShaclCoreShape-deactivated, shaclmate:ShaclCoreShape-flags, shaclmate:ShaclCoreShape-hasValues, shaclmate:ShaclCoreShape-in, shaclmate:ShaclCoreShape-isDefinedBy, shaclmate:ShaclCoreShape-labels, shaclmate:ShaclCoreShape-languageIn, shaclmate:ShaclCoreShape-maxCount, shaclmate:ShaclCoreShape-maxExclusive, shaclmate:ShaclCoreShape-maxInclusive, shaclmate:ShaclCoreShape-maxLength, shaclmate:ShaclCoreShape-minCount, shaclmate:ShaclCoreShape-minExclusive, shaclmate:ShaclCoreShape-minInclusive, shaclmate:ShaclCoreShape-minLength, shaclmate:ShaclCoreShape-nodeKind, shaclmate:ShaclCoreShape-nodes, shaclmate:ShaclCoreShape-not, shaclmate:ShaclCoreShape-or, shaclmate:ShaclCoreShape-patterns, shaclmate:ShaclCoreShape-targetClasses, shaclmate:ShaclCoreShape-targetNodes, shaclmate:ShaclCoreShape-targetObjectsOf, shaclmate:ShaclCoreShape-targetSubjectsOf, shaclmate:ShaclCoreShape-xone .
+    rdfs:subClassOf shaclmate:BaseShaclCoreShape ;
+    sh:property shaclmate:ShaclCorePropertyShape-defaultValue, shaclmate:ShaclCorePropertyShape-descriptions, shaclmate:ShaclCorePropertyShape-groups, shaclmate:ShaclCorePropertyShape-names, shaclmate:ShaclCorePropertyShape-order, shaclmate:ShaclCorePropertyShape-path, shaclmate:ShaclCorePropertyShape-uniqueLang .
 
 shaclmate:ShaclCorePropertyShape-defaultValue
     a sh:PropertyShape ;
@@ -193,199 +394,6 @@ shaclmate:ShaclCoreShape
     sh:or (shaclmate:ShaclCoreNodeShape
         shaclmate:ShaclCorePropertyShape
     ) .
-
-shaclmate:ShaclCoreShape-and
-    a sh:PropertyShape ;
-    sh:name "and" ;
-    sh:node shaclmate:IdentifierList ;
-    sh:path sh:and .
-
-shaclmate:ShaclCoreShape-classes
-    a sh:PropertyShape ;
-    sh:name "classes" ;
-    sh:nodeKind sh:IRI ;
-    sh:path sh:class .
-
-shaclmate:ShaclCoreShape-comments
-    a sh:PropertyShape ;
-    sh:name "comments" ;
-    sh:or dash:StringOrLangString ;
-    sh:path rdfs:comment .
-
-shaclmate:ShaclCoreShape-datatype
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:name "datatype" ;
-    sh:nodeKind sh:IRI ;
-    sh:path sh:datatype .
-
-shaclmate:ShaclCoreShape-deactivated
-    a sh:PropertyShape ;
-    sh:datatype xsd:boolean ;
-    sh:maxCount 1 ;
-    sh:name "deactivated" ;
-    sh:path sh:deactivated .
-
-shaclmate:ShaclCoreShape-flags
-    a sh:PropertyShape ;
-    sh:datatype xsd:string ;
-    sh:name "flags" ;
-    sh:path sh:flags .
-
-shaclmate:ShaclCoreShape-hasValues
-    a sh:PropertyShape ;
-    sh:name "hasValues" ;
-    sh:path sh:hasValue .
-
-shaclmate:ShaclCoreShape-in
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:name "in_" ;
-    sh:node shaclmate:TermList ;
-    sh:path sh:in .
-
-shaclmate:ShaclCoreShape-isDefinedBy
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:name "isDefinedBy" ;
-    sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:path rdfs:isDefinedBy .
-
-shaclmate:ShaclCoreShape-labels
-    a sh:PropertyShape ;
-    sh:name "labels" ;
-    sh:or dash:StringOrLangString ;
-    sh:path rdfs:label .
-
-shaclmate:ShaclCoreShape-languageIn
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:name "languageIn" ;
-    sh:node shaclmate:StringList ;
-    sh:path sh:languageIn .
-
-shaclmate:ShaclCoreShape-maxCount
-    a sh:PropertyShape ;
-    sh:datatype xsd:integer ;
-    sh:maxCount 1 ;
-    sh:name "maxCount" ;
-    sh:path sh:maxCount .
-
-shaclmate:ShaclCoreShape-maxExclusive
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:name "maxExclusive" ;
-    sh:nodeKind sh:Literal ;
-    sh:path sh:maxExclusive .
-
-shaclmate:ShaclCoreShape-maxInclusive
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:name "maxInclusive" ;
-    sh:nodeKind sh:Literal ;
-    sh:path sh:maxInclusive .
-
-shaclmate:ShaclCoreShape-maxLength
-    a sh:PropertyShape ;
-    sh:datatype xsd:integer ;
-    sh:maxCount 1 ;
-    sh:name "maxLength" ;
-    sh:path sh:maxLength .
-
-shaclmate:ShaclCoreShape-minCount
-    a sh:PropertyShape ;
-    sh:datatype xsd:integer ;
-    sh:maxCount 1 ;
-    sh:name "minCount" ;
-    sh:path sh:minCount .
-
-shaclmate:ShaclCoreShape-minExclusive
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:name "minExclusive" ;
-    sh:nodeKind sh:Literal ;
-    sh:path sh:minExclusive .
-
-shaclmate:ShaclCoreShape-minInclusive
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:name "minInclusive" ;
-    sh:nodeKind sh:Literal ;
-    sh:path sh:minInclusive .
-
-shaclmate:ShaclCoreShape-minLength
-    a sh:PropertyShape ;
-    sh:datatype xsd:integer ;
-    sh:maxCount 1 ;
-    sh:name "minLength" ;
-    sh:path sh:minLength .
-
-shaclmate:ShaclCoreShape-nodeKind
-    a sh:PropertyShape ;
-    sh:in (sh:BlankNode
-        sh:BlankNodeOrIRI
-        sh:BlankNodeOrLiteral
-        sh:IRI
-        sh:IRIOrLiteral
-        sh:Literal
-    ) ;
-    sh:maxCount 1 ;
-    sh:name "nodeKind" ;
-    sh:path sh:nodeKind .
-
-shaclmate:ShaclCoreShape-nodes
-    a sh:PropertyShape ;
-    sh:name "nodes" ;
-    sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:path sh:node .
-
-shaclmate:ShaclCoreShape-not
-    a sh:PropertyShape ;
-    sh:name "not" ;
-    sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:path sh:not .
-
-shaclmate:ShaclCoreShape-or
-    a sh:PropertyShape ;
-    sh:name "or" ;
-    sh:node shaclmate:IdentifierList ;
-    sh:path sh:or .
-
-shaclmate:ShaclCoreShape-patterns
-    a sh:PropertyShape ;
-    sh:datatype xsd:string ;
-    sh:name "patterns" ;
-    sh:path sh:pattern .
-
-shaclmate:ShaclCoreShape-targetClasses
-    a sh:PropertyShape ;
-    sh:name "targetClass" ;
-    sh:nodeKind sh:IRI ;
-    sh:path sh:targetClass .
-
-shaclmate:ShaclCoreShape-targetNodes
-    a sh:PropertyShape ;
-    sh:name "targetNodes" ;
-    sh:nodeKind sh:IRIOrLiteral ;
-    sh:path sh:targetNode .
-
-shaclmate:ShaclCoreShape-targetObjectsOf
-    a sh:PropertyShape ;
-    sh:name "targetObjectsOf" ;
-    sh:nodeKind sh:IRI ;
-    sh:path sh:targetObjectsOf .
-
-shaclmate:ShaclCoreShape-targetSubjectsOf
-    a sh:PropertyShape ;
-    sh:name "targetSubjectsOf" ;
-    sh:nodeKind sh:IRI ;
-    sh:path sh:targetSubjectsOf .
-
-shaclmate:ShaclCoreShape-xone
-    a sh:PropertyShape ;
-    sh:name "xone" ;
-    sh:node shaclmate:IdentifierList ;
-    sh:path sh:xone .
 
 shaclmate:StringList
     shaclmate:name "StringList" ;
