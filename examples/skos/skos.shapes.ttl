@@ -29,7 +29,7 @@ skos-shacl:OrderedCollectionMemberList-first
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "first" ;
-    sh:or ([
+    sh:xone ([
             sh:class skos:Collection
         ]
         [
@@ -44,7 +44,7 @@ skos-shacl:OrderedCollectionMemberList-rest
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "rest" ;
-    sh:or ([
+    sh:xone ([
             sh:class skos-shacl:OrderedCollectionMemberList
         ]
         [
@@ -61,7 +61,7 @@ skos-shacl:Resource
     sh:nodeKind sh:IRI ;
     sh:property [
         sh:name "altLabel" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:altLabel
     ], [
         sh:class skos-xl:Label ;
@@ -69,23 +69,23 @@ skos-shacl:Resource
         sh:path skos-xl:altLabel
     ], [
         sh:name "changeNote" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:changeNote
     ], [
         sh:name "definition" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:definition
     ], [
         sh:name "editorialNote" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:editorialNote
     ], [
         sh:name "example" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:example
     ], [
         sh:name "hiddenLabel" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:hiddenLabel
     ], [
         sh:class skos-xl:Label ;
@@ -93,7 +93,7 @@ skos-shacl:Resource
         sh:path skos-xl:hiddenLabel
     ], [
         sh:name "historyNote" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:historyNote
     ], [
         sh:datatype rdf:langString ;
@@ -101,11 +101,11 @@ skos-shacl:Resource
         sh:path skos:notation
     ], [
         sh:name "note" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:notation
     ], [
         sh:name "prefLabel" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:prefLabel
     ], [
         sh:class skos-xl:Label ;
@@ -113,7 +113,7 @@ skos-shacl:Resource
         sh:path skos-xl:prefLabel
     ], [
         sh:name "scopeNote" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos:scopeNote
     ] .
 
@@ -124,7 +124,7 @@ skos:Collection
     sh:nodeKind sh:IRI ;
     sh:property [
         sh:name "member" ;
-        sh:or ([
+        sh:xone ([
                 sh:class skos:Collection
             ]
             [
@@ -222,7 +222,7 @@ skos-xl:Label
     sh:property [
         sh:minCount 1 ;
         sh:name "literalForm" ;
-        sh:or dash:StringOrLangString ;
+        sh:xone dash:StringOrLangString ;
         sh:path skos-xl:literalForm
     ] .
 

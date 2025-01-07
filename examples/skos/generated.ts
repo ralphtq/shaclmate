@@ -1992,34 +1992,6 @@ export namespace OrderedCollection {
           { unique: true },
         )
         .head()
-        .chain((value) =>
-          value
-            .toResource()
-            .map((resource) =>
-              resource.isInstanceOf(
-                dataFactory.namedNode(
-                  "http://kos-kit.github.io/skos-shacl/ns#OrderedCollectionMemberList",
-                ),
-              ),
-            )
-            .orDefault(false)
-            ? purify.Right<
-                rdfjsResource.Resource.Value,
-                rdfjsResource.Resource.ValueError
-              >(value)
-            : purify.Left<
-                rdfjsResource.Resource.ValueError,
-                rdfjsResource.Resource.Value
-              >(
-                new rdfjsResource.Resource.ValueError({
-                  focusResource: _resource,
-                  message: "unexpected RDF type",
-                  predicate: dataFactory.namedNode(
-                    "http://kos-kit.github.io/skos-shacl/ns#OrderedCollectionMemberList",
-                  ),
-                }),
-              ),
-        )
         .chain((value) => value.toList())
         .map((values) =>
           values.flatMap((_value) =>
@@ -2117,12 +2089,7 @@ export namespace OrderedCollection {
             this.variable("MemberList"),
           ).chainObject(
             (_object) =>
-              new sparqlBuilder.RdfListGraphPatterns({
-                rdfListType: dataFactory.namedNode(
-                  "http://kos-kit.github.io/skos-shacl/ns#OrderedCollectionMemberList",
-                ),
-                rdfList: _object,
-              }),
+              new sparqlBuilder.RdfListGraphPatterns({ rdfList: _object }),
           ),
         ),
       );
@@ -2153,18 +2120,20 @@ export class ConceptScheme extends Resource {
   }
 
   override equals(other: ConceptScheme): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.arrayEquals(
-        this.hasTopConcept,
-        other.hasTopConcept,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "hasTopConcept",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.arrayEquals(
+          this.hasTopConcept,
+          other.hasTopConcept,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "hasTopConcept",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -2364,7 +2333,7 @@ export namespace ConceptScheme {
   }
 }
 export class Label {
-  private _identifier: rdfjs.BlankNode | rdfjs.NamedNode | undefined;
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly literalForm: readonly rdfjs.Literal[];
   readonly type = "Label";
 
