@@ -21,7 +21,7 @@ export class PropertyShape<
     PropertyShapeT,
     ShapeT
   >;
-  private readonly generatedPropertyShape: generated.ShaclCorePropertyShape;
+  private readonly generatedShaclCorePropertyShape: generated.ShaclCorePropertyShape;
 
   constructor(
     resource: Resource,
@@ -34,43 +34,46 @@ export class PropertyShape<
     >,
   ) {
     super(resource, shapesGraph);
-    this.generatedPropertyShape = generated.ShaclCorePropertyShape.fromRdf({
-      ignoreRdfType: true,
-      resource,
-    }).unsafeCoerce();
+    this.generatedShaclCorePropertyShape =
+      generated.ShaclCorePropertyShape.fromRdf({
+        ignoreRdfType: true,
+        resource,
+      }).unsafeCoerce();
     this.constraints = new Shape.Constraints(
-      this.generatedPropertyShape,
+      this.generatedShaclCorePropertyShape,
       resource,
       shapesGraph,
     );
   }
 
   get defaultValue(): Maybe<BlankNode | Literal | NamedNode> {
-    return this.generatedPropertyShape.defaultValue;
+    return this.generatedShaclCorePropertyShape.defaultValue;
   }
 
   get descriptions(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedPropertyShape.descriptions);
+    return NonEmptyList.fromArray(
+      this.generatedShaclCorePropertyShape.descriptions,
+    );
   }
 
   get groups(): Maybe<NonEmptyList<PropertyGroupT>> {
     return NonEmptyList.fromArray(
-      this.generatedPropertyShape.groups.flatMap((identifier) =>
+      this.generatedShaclCorePropertyShape.groups.flatMap((identifier) =>
         this.shapesGraph.propertyGroupByIdentifier(identifier).toList(),
       ),
     );
   }
 
   get names(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedPropertyShape.names);
+    return NonEmptyList.fromArray(this.generatedShaclCorePropertyShape.names);
   }
 
   get order(): Maybe<number> {
-    return this.generatedPropertyShape.order;
+    return this.generatedShaclCorePropertyShape.order;
   }
 
   get path(): PropertyPath {
-    return this.generatedPropertyShape.path;
+    return this.generatedShaclCorePropertyShape.path;
   }
 
   override toString(): string {

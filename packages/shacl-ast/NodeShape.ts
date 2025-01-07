@@ -64,7 +64,7 @@ export namespace NodeShape {
     ShapeT
   > {
     constructor(
-      private readonly generatedNodeShape: generated.ShaclCoreNodeShape,
+      private readonly generatedShaclCoreNodeShape: generated.ShaclCoreNodeShape,
       resource: Resource,
       shapesGraph: ShapesGraph<
         NodeShapeT,
@@ -74,11 +74,11 @@ export namespace NodeShape {
         ShapeT
       >,
     ) {
-      super(generatedNodeShape, resource, shapesGraph);
+      super(generatedShaclCoreNodeShape, resource, shapesGraph);
     }
 
     get closed(): Maybe<boolean> {
-      return this.generatedNodeShape.closed;
+      return this.generatedShaclCoreNodeShape.closed;
     }
 
     get properties(): Maybe<NonEmptyList<PropertyShapeT>> {
