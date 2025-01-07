@@ -35,8 +35,8 @@ shaclmate:BaseShaclCoreShape-classes
 shaclmate:BaseShaclCoreShape-comments
     a sh:PropertyShape ;
     sh:name "comments" ;
-    sh:or dash:StringOrLangString ;
-    sh:path rdfs:comment .
+    sh:path rdfs:comment ;
+    sh:xone dash:StringOrLangString .
 
 shaclmate:BaseShaclCoreShape-datatype
     a sh:PropertyShape ;
@@ -80,8 +80,8 @@ shaclmate:BaseShaclCoreShape-isDefinedBy
 shaclmate:BaseShaclCoreShape-labels
     a sh:PropertyShape ;
     sh:name "labels" ;
-    sh:or dash:StringOrLangString ;
-    sh:path rdfs:label .
+    sh:path rdfs:label ;
+    sh:xone dash:StringOrLangString .
 
 shaclmate:BaseShaclCoreShape-languageIn
     a sh:PropertyShape ;
@@ -233,14 +233,14 @@ shaclmate:IdentifierList-rest
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "rest" ;
-    sh:or ([
+    sh:path rdf:rest ;
+    sh:xone ([
             sh:class shaclmate:IdentifierList
         ]
         [
             sh:hasValue ( )
         ]
-    ) ;
-    sh:path rdf:rest .
+    ) .
 
 shaclmate:IriList
     shaclmate:name "IriList" ;
@@ -262,14 +262,14 @@ shaclmate:IriList-rest
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "rest" ;
-    sh:or ([
+    sh:path rdf:rest ;
+    sh:xone ([
             sh:class shaclmate:IriList
         ]
         [
             sh:hasValue ( )
         ]
-    ) ;
-    sh:path rdf:rest .
+    ) .
 
 shaclmate:OwlOntology
     shaclmate:fromRdfType owl:Ontology ;
@@ -280,8 +280,8 @@ shaclmate:OwlOntology
 shaclmate:OwlOntology-labels
     a sh:PropertyShape ;
     sh:name "labels" ;
-    sh:or dash:StringOrLangString ;
-    sh:path rdfs:label .
+    sh:path rdfs:label ;
+    sh:xone dash:StringOrLangString .
 
 shaclmate:ShaclCoreNodeShape
     shaclmate:fromRdfType sh:NodeShape ;
@@ -319,14 +319,14 @@ shaclmate:ShaclCorePropertyGroup
 shaclmate:ShaclCorePropertyGroup-comments
     a sh:PropertyShape ;
     sh:name "comments" ;
-    sh:or dash:StringOrLangString ;
-    sh:path rdfs:comment .
+    sh:path rdfs:comment ;
+    sh:xone dash:StringOrLangString .
 
 shaclmate:ShaclCorePropertyGroup-labels
     a sh:PropertyShape ;
     sh:name "labels" ;
-    sh:or dash:StringOrLangString ;
-    sh:path rdfs:label .
+    sh:path rdfs:label ;
+    sh:xone dash:StringOrLangString .
 
 shaclmate:ShaclCorePropertyPath
     shaclmate:extern true ;
@@ -351,8 +351,8 @@ shaclmate:ShaclCorePropertyShape-defaultValue
 shaclmate:ShaclCorePropertyShape-descriptions
     a sh:PropertyShape ;
     sh:name "descriptions" ;
-    sh:or dash:StringOrLangString ;
-    sh:path sh:description .
+    sh:path sh:description ;
+    sh:xone dash:StringOrLangString .
 
 shaclmate:ShaclCorePropertyShape-groups
     a sh:PropertyShape ;
@@ -363,8 +363,8 @@ shaclmate:ShaclCorePropertyShape-groups
 shaclmate:ShaclCorePropertyShape-names
     a sh:PropertyShape ;
     sh:name "names" ;
-    sh:or dash:StringOrLangString ;
-    sh:path sh:name .
+    sh:path sh:name ;
+    sh:xone dash:StringOrLangString .
 
 shaclmate:ShaclCorePropertyShape-order
     a sh:PropertyShape ;
@@ -390,7 +390,7 @@ shaclmate:ShaclCorePropertyShape-uniqueLang
 shaclmate:ShaclCoreShape
     shaclmate:name "ShaclCoreShape" ;
     a sh:NodeShape ;
-    sh:or (shaclmate:ShaclCoreNodeShape
+    sh:xone (shaclmate:ShaclCoreNodeShape
         shaclmate:ShaclCorePropertyShape
     ) .
 
@@ -414,14 +414,14 @@ shaclmate:StringList-rest
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "rest" ;
-    sh:or ([
+    sh:path rdf:rest ;
+    sh:xone ([
             sh:class shaclmate:StringList
         ]
         [
             sh:hasValue ( )
         ]
-    ) ;
-    sh:path rdf:rest .
+    ) .
 
 shaclmate:TermList
     shaclmate:name "TermList" ;
@@ -442,12 +442,12 @@ shaclmate:TermList-rest
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "rest" ;
-    sh:or ([
+    sh:path rdf:rest ;
+    sh:xone ([
             sh:class shaclmate:TermList
         ]
         [
             sh:hasValue ( )
         ]
-    ) ;
-    sh:path rdf:rest .
+    ) .
 
