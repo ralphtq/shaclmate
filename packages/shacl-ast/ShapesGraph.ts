@@ -13,7 +13,9 @@ export interface ShapesGraph<
 
   nodeShapeByIdentifier(identifier: BlankNode | NamedNode): Maybe<NodeShapeT>;
   ontologyByIdentifier(identifier: BlankNode | NamedNode): Maybe<OntologyT>;
-  propertyGroupByIdentifier(identifier: NamedNode): Maybe<PropertyGroupT>;
+  propertyGroupByIdentifier(
+    identifier: BlankNode | NamedNode,
+  ): Maybe<PropertyGroupT>;
   propertyShapeByIdentifier(
     identifier: BlankNode | NamedNode,
   ): Maybe<PropertyShapeT>;

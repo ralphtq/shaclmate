@@ -19,26 +19,26 @@ describe("RdfjsShape", () => {
     const nodeShape = shapesGraph
       .nodeShapeByIdentifier(nodeShapeIdentifier)
       .unsafeCoerce();
-    const propertyShape = nodeShape.constraints.properties.find(
-      (propertyShape) => {
+    const propertyShape = nodeShape.constraints.properties
+      .unsafeCoerce()
+      .find((propertyShape) => {
         const propertyShapePath = propertyShape.path;
         return (
           propertyShapePath.kind === "PredicatePath" &&
           propertyShapePath.iri.equals(path)
         );
-      },
-    );
+      });
     expect(propertyShape).toBeDefined();
     return propertyShape!;
   };
 
   it("should have a description", ({ expect }) => {
-    expect(
-      findPropertyShape(
-        dash.ScriptAPIShape,
-        dash.generateClass,
-      ).description.extractNullable()?.value,
-    ).toMatch(/^The API generator/);
+    const descriptions = findPropertyShape(
+      dash.ScriptAPIShape,
+      dash.generateClass,
+    ).descriptions.unsafeCoerce();
+    expect(descriptions).toHaveLength(1);
+    expect(descriptions[0].value).toMatch(/^The API generator/);
   });
 
   it("should be defined by an ontology", ({ expect }) => {
@@ -64,10 +64,12 @@ describe("RdfjsShape", () => {
   });
 
   it("should have a name", ({ expect }) => {
-    expect(
-      findPropertyShape(schema.Person, schema.givenName).name.extractNullable()
-        ?.value,
-    ).toStrictEqual("given name");
+    const names = findPropertyShape(
+      schema.Person,
+      schema.givenName,
+    ).names.unsafeCoerce();
+    expect(names).toHaveLength(1);
+    expect(names[0].value).toStrictEqual("given name");
   });
 
   // No shape in the test data with a clean sh:and
@@ -98,14 +100,14 @@ describe("RdfjsShape", () => {
   });
 
   it("constraints: should have an sh:hasValue", ({ expect }) => {
-    expect(
-      findPropertyShape(
-        dataFactory.namedNode(
-          "http://topbraid.org/examples/schemashacl#FemalePerson",
-        ),
-        schema.gender,
-      ).constraints.hasValue.extractNullable()?.value,
-    ).toStrictEqual("female");
+    const hasValues = findPropertyShape(
+      dataFactory.namedNode(
+        "http://topbraid.org/examples/schemashacl#FemalePerson",
+      ),
+      schema.gender,
+    ).constraints.hasValues.unsafeCoerce();
+    expect(hasValues).toHaveLength(1);
+    expect(hasValues[0].value).toStrictEqual("female");
   });
 
   it("constraints: should have an sh:in", ({ expect }) => {

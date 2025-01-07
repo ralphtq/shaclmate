@@ -28,7 +28,7 @@ export function transformPropertyShapeToAstTermType(
       ? shape.defaultValue
       : Maybe.empty()
     ).alt(inherited !== null ? inherited.defaultValue : Maybe.empty()),
-    hasValue: shape.constraints.hasValue,
+    hasValues: shape.constraints.hasValues,
     in_: shape.constraints.in_,
     kind: "TermType",
     nodeKinds:

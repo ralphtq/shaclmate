@@ -22,7 +22,7 @@ export function transformPropertyShapeToAstCompositeType(
     shape instanceof input.PropertyShape ? shape.defaultValue : Maybe.empty()
   ).alt(inherited !== null ? inherited.defaultValue : Maybe.empty());
 
-  const hasValue = shape.constraints.hasValue;
+  const hasValue = shape.constraints.hasValues;
   const extern = shape.extern.alt(
     inherited !== null ? inherited.extern : Maybe.empty(),
   );
@@ -63,8 +63,8 @@ export function transformPropertyShapeToAstCompositeType(
       return Either.of({
         defaultValue: defaultValue.filter(
           (term) => term.termType === "NamedNode",
-        ),
-        hasValue: Maybe.empty(),
+        ) as Maybe<NamedNode>,
+        hasValues: Maybe.empty(),
         in_: Maybe.empty(),
         kind: "IdentifierType",
         nodeKinds,
@@ -184,7 +184,7 @@ export function transformPropertyShapeToAstCompositeType(
     return Either.of({
       datatype: Maybe.empty(),
       defaultValue: defaultValue.filter((term) => term.termType === "Literal"),
-      hasValue: Maybe.empty(),
+      hasValues: Maybe.empty(),
       in_: Maybe.empty(),
       kind: "LiteralType",
       languageIn: Maybe.empty(),
@@ -206,8 +206,8 @@ export function transformPropertyShapeToAstCompositeType(
     return Either.of({
       defaultValue: defaultValue.filter(
         (term) => term.termType === "NamedNode",
-      ),
-      hasValue: Maybe.empty(),
+      ) as Maybe<NamedNode>,
+      hasValues: Maybe.empty(),
       in_: Maybe.empty(),
       kind: "IdentifierType",
       nodeKinds: new Set<"BlankNode" | "NamedNode">(

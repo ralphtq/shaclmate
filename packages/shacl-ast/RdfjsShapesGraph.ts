@@ -93,7 +93,9 @@ export class RdfjsShapesGraph<
     return Maybe.fromNullable(this.ontologiesByIdentifier.get(identifier));
   }
 
-  propertyGroupByIdentifier(identifier: NamedNode): Maybe<PropertyGroupT> {
+  propertyGroupByIdentifier(
+    identifier: BlankNode | NamedNode,
+  ): Maybe<PropertyGroupT> {
     return Maybe.fromNullable(this.propertyGroupsByIdentifier.get(identifier));
   }
 

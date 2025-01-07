@@ -18,9 +18,11 @@ export function propertyShapeNodeKinds(shape: input.Shape): Set<NodeKind> {
     }
   }
 
-  shape.constraints.hasValue.ifJust((hasValue) =>
-    nodeKinds.add(hasValue.termType),
-  );
+  shape.constraints.hasValues.ifJust((hasValues) => {
+    for (const hasValue of hasValues) {
+      nodeKinds.add(hasValue.termType);
+    }
+  });
   if (nodeKinds.size > 0) {
     return nodeKinds;
   }

@@ -1,6 +1,6 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
 import { xsd } from "@tpluscode/rdf-ns-builders";
-import { Maybe } from "purify-ts";
+import { Maybe, type NonEmptyList } from "purify-ts";
 import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
 import { Import } from "./Import.js";
@@ -14,26 +14,26 @@ export class TermType<
 > extends Type {
   readonly defaultValue: Maybe<TermT>;
   readonly equalsFunction: string = "purifyHelpers.Equatable.booleanEquals";
-  readonly hasValue: Maybe<TermT>;
-  readonly in_: Maybe<readonly TermT[]>;
+  readonly hasValues: Maybe<NonEmptyList<TermT>>;
+  readonly in_: Maybe<NonEmptyList<TermT>>;
   readonly mutable: boolean = false;
   readonly nodeKinds: Set<TermT["termType"]>;
 
   constructor({
     defaultValue,
-    hasValue,
+    hasValues,
     in_,
     nodeKinds,
     ...superParameters
   }: {
     defaultValue: Maybe<TermT>;
-    hasValue: Maybe<TermT>;
-    in_: Maybe<readonly TermT[]>;
+    hasValues: Maybe<NonEmptyList<TermT>>;
+    in_: Maybe<NonEmptyList<TermT>>;
     nodeKinds: Set<TermT["termType"]>;
   } & ConstructorParameters<typeof Type>[0]) {
     super(superParameters);
     this.defaultValue = defaultValue;
-    this.hasValue = hasValue;
+    this.hasValues = hasValues;
     this.in_ = in_;
     this.nodeKinds = new Set([...nodeKinds]);
     invariant(this.nodeKinds.size > 0);
@@ -129,10 +129,11 @@ export class TermType<
       this.propertyFilterRdfResourceValuesExpression({ variables }),
     ];
     // Have an rdfjsResource.Resource.Values here
-    this.hasValue
-      .ifJust((hasValue) => {
+    this.hasValues
+      .ifJust((hasValues) => {
+        invariant(hasValues.length === 1);
         chain.push(
-          `find(_value => _value.toTerm().equals(${this.rdfjsTermExpression(hasValue)}))`,
+          `find(_value => _value.toTerm().equals(${this.rdfjsTermExpression(hasValues[0])}))`,
         );
       })
       .ifNothing(() => chain.push("head()"));

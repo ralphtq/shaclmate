@@ -2,6 +2,7 @@ import { Maybe } from "purify-ts";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
 import * as input from "../input/index.js";
+import { pickLiteral } from "./pickLiteral.js";
 
 export function shapeAstName(
   this: ShapesGraphToAstTransformer,
@@ -19,7 +20,7 @@ export function shapeAstName(
       });
     }
 
-    shName = shape.name.map((literal) => literal.value);
+    shName = pickLiteral(shape.names).map((literal) => literal.value);
   }
 
   return {
@@ -30,7 +31,7 @@ export function shapeAstName(
           )
         : Maybe.empty(),
     identifier: shape.resource.identifier,
-    label: shape.label.map((literal) => literal.value),
+    label: pickLiteral(shape.labels).map((literal) => literal.value),
     propertyPath,
     shName: shName,
     shaclmateName: shape.shaclmateName,

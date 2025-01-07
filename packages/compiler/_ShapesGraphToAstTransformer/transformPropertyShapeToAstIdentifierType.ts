@@ -1,5 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { Either, Left, Maybe } from "purify-ts";
+import { Either, Left, Maybe, NonEmptyList } from "purify-ts";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
 import * as input from "../input/index.js";
@@ -21,23 +21,26 @@ export function transformPropertyShapeToAstIdentifierType(
   )
     .alt(inherited !== null ? inherited.defaultValue : Maybe.empty())
     .filter((value) => value.termType === "NamedNode");
-  const identifierHasValue = shape.constraints.hasValue.filter(
-    (value) => value.termType === "NamedNode",
+  const identifierHasValues: Maybe<NonEmptyList<NamedNode>> =
+    shape.constraints.hasValues.chain((hasValues) =>
+      NonEmptyList.fromArray(
+        hasValues.filter((term) => term.termType === "NamedNode"),
+      ),
+    );
+  const identifierIn = shape.constraints.in_.chain((in_) =>
+    NonEmptyList.fromArray(in_.filter((term) => term.termType === "NamedNode")),
   );
-  const identifierIn = shape.constraints.in_
-    .map((in_) => in_.filter((term) => term.termType === "NamedNode"))
-    .filter((in_) => in_.length > 0);
   const nodeKinds = propertyShapeNodeKinds(shape);
 
   if (
-    identifierHasValue.isJust() ||
+    identifierHasValues.isJust() ||
     identifierDefaultValue.isJust() ||
     identifierIn.isJust() ||
     (nodeKinds.size > 0 && nodeKinds.size <= 2 && !nodeKinds.has("Literal"))
   ) {
     return Either.of({
       defaultValue: identifierDefaultValue,
-      hasValue: identifierHasValue,
+      hasValues: identifierHasValues,
       in_: identifierIn,
       kind: "IdentifierType",
       nodeKinds: nodeKinds as Set<"BlankNode" | "NamedNode">,

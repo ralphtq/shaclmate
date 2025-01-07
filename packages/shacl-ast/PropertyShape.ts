@@ -1,11 +1,11 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { sh } from "@tpluscode/rdf-ns-builders";
-import type { Maybe } from "purify-ts";
+import { type Maybe, NonEmptyList } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
-import { PropertyPath } from "./PropertyPath.js";
+import type { PropertyPath } from "./PropertyPath.js";
 import { Shape } from "./Shape.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
+import * as generated from "./generated.js";
 
 export class PropertyShape<
   NodeShapeT extends ShapeT,
@@ -21,6 +21,7 @@ export class PropertyShape<
     PropertyShapeT,
     ShapeT
   >;
+  private readonly generatedPropertyShape: generated.ShaclCorePropertyShape;
 
   constructor(
     resource: Resource,
@@ -33,51 +34,42 @@ export class PropertyShape<
     >,
   ) {
     super(resource, shapesGraph);
-    this.constraints = new Shape.Constraints(resource, shapesGraph);
+    this.generatedPropertyShape = generated.ShaclCorePropertyShape.fromRdf({
+      resource,
+    }).unsafeCoerce();
+    this.constraints = new Shape.Constraints(
+      this.generatedPropertyShape,
+      resource,
+      shapesGraph,
+    );
   }
 
   get defaultValue(): Maybe<BlankNode | Literal | NamedNode> {
-    return this.resource
-      .value(sh.defaultValue)
-      .map((value) => value.toTerm())
-      .toMaybe();
+    return this.generatedPropertyShape.defaultValue;
   }
 
-  get description(): Maybe<Literal> {
-    return this.resource
-      .value(sh.description)
-      .chain((value) => value.toLiteral())
-      .toMaybe();
+  get descriptions(): Maybe<NonEmptyList<Literal>> {
+    return NonEmptyList.fromArray(this.generatedPropertyShape.descriptions);
   }
 
-  get group(): Maybe<PropertyGroupT> {
-    return this.resource
-      .value(sh.group)
-      .chain((value) => value.toIri())
-      .toMaybe()
-      .chain((node) => this.shapesGraph.propertyGroupByIdentifier(node));
+  get groups(): Maybe<NonEmptyList<PropertyGroupT>> {
+    return NonEmptyList.fromArray(
+      this.generatedPropertyShape.groups.flatMap((identifier) =>
+        this.shapesGraph.propertyGroupByIdentifier(identifier).toList(),
+      ),
+    );
   }
 
-  get name(): Maybe<Literal> {
-    return this.resource
-      .value(sh.name)
-      .chain((value) => value.toLiteral())
-      .toMaybe();
+  get names(): Maybe<NonEmptyList<Literal>> {
+    return NonEmptyList.fromArray(this.generatedPropertyShape.names);
   }
 
   get order(): Maybe<number> {
-    return this.resource
-      .value(sh.order)
-      .chain((value) => value.toNumber())
-      .toMaybe();
+    return this.generatedPropertyShape.order;
   }
 
   get path(): PropertyPath {
-    return this.resource
-      .value(sh.path)
-      .chain((value) => value.toResource())
-      .chain((resource) => PropertyPath.fromRdf({ resource }))
-      .unsafeCoerce();
+    return this.generatedPropertyShape.path;
   }
 
   override toString(): string {

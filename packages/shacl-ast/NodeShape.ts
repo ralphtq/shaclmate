@@ -1,9 +1,10 @@
 import { sh } from "@tpluscode/rdf-ns-builders";
-import type { Maybe } from "purify-ts";
+import { type Maybe, NonEmptyList } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { OntologyLike } from "./OntologyLike.js";
 import { Shape } from "./Shape.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
+import * as generated from "./generated.js";
 
 export class NodeShape<
   NodeShapeT extends ShapeT,
@@ -19,6 +20,7 @@ export class NodeShape<
     PropertyShapeT,
     ShapeT
   >;
+  private readonly generatedNodeShape: generated.ShaclCoreNodeShape;
 
   constructor(
     resource: Resource,
@@ -31,7 +33,14 @@ export class NodeShape<
     >,
   ) {
     super(resource, shapesGraph);
-    this.constraints = new NodeShape.Constraints(resource, shapesGraph);
+    this.generatedNodeShape = generated.ShaclCoreNodeShape.fromRdf({
+      resource,
+    }).unsafeCoerce();
+    this.constraints = new NodeShape.Constraints(
+      this.generatedNodeShape,
+      resource,
+      shapesGraph,
+    );
   }
 
   override toString(): string {
@@ -53,23 +62,43 @@ export namespace NodeShape {
     PropertyShapeT,
     ShapeT
   > {
-    get closed(): Maybe<boolean> {
-      return this.resource
-        .value(sh.closed)
-        .chain((value) => value.toBoolean())
-        .toMaybe();
+    constructor(
+      private readonly generatedNodeShape: generated.ShaclCoreNodeShape,
+      resource: Resource,
+      shapesGraph: ShapesGraph<
+        NodeShapeT,
+        OntologyT,
+        PropertyGroupT,
+        PropertyShapeT,
+        ShapeT
+      >,
+    ) {
+      super(generatedNodeShape, resource, shapesGraph);
     }
 
-    get properties(): readonly PropertyShapeT[] {
-      return [...this.resource.values(sh.property)].flatMap((value) =>
-        value
-          .toIdentifier()
-          .toMaybe()
-          .chain((shapeNode) =>
-            this.shapesGraph.propertyShapeByIdentifier(shapeNode),
-          )
-          .toList(),
+    get closed(): Maybe<boolean> {
+      return this.generatedNodeShape.closed;
+    }
+
+    get properties(): Maybe<NonEmptyList<PropertyShapeT>> {
+      return NonEmptyList.fromArray(
+        [...this.resource.values(sh.property)].flatMap((value) =>
+          value
+            .toIdentifier()
+            .toMaybe()
+            .chain((shapeNode) =>
+              this.shapesGraph.propertyShapeByIdentifier(shapeNode),
+            )
+            .toList(),
+        ),
       );
+      // return NonEmptyList.fromArray(
+      //   this.generatedNodeShape.properties.flatMap((identifiers) =>
+      //     identifiers.flatMap((identifier) =>
+      //       this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
+      //     ),
+      //   ),
+      // );
     }
   }
 }

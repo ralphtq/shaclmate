@@ -1,10 +1,10 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { rdfs, sh } from "@tpluscode/rdf-ns-builders";
 import { Maybe, NonEmptyList } from "purify-ts";
 import type { Resource } from "rdfjs-resource";
 import type { NodeKind } from "./NodeKind.js";
 import type { OntologyLike } from "./OntologyLike.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
+import * as generated from "./generated.js";
 
 export abstract class Shape<
   NodeShapeT extends ShapeT,
@@ -21,6 +21,7 @@ export abstract class Shape<
     ShapeT
   >;
   readonly targets: Shape.Targets;
+  private readonly generatedShape: generated.ShaclCoreShape;
 
   constructor(
     readonly resource: Resource,
@@ -32,30 +33,26 @@ export abstract class Shape<
       ShapeT
     >,
   ) {
-    this.targets = new Shape.Targets(resource);
+    this.generatedShape = generated.ShaclCoreShape.fromRdf({
+      resource,
+    }).unsafeCoerce();
+    this.targets = new Shape.Targets(this.generatedShape);
   }
 
-  get comment(): Maybe<Literal> {
-    return this.resource
-      .value(rdfs.comment)
-      .chain((value) => value.toLiteral())
-      .toMaybe();
+  get comments(): Maybe<NonEmptyList<Literal>> {
+    return NonEmptyList.fromArray(this.generatedShape.comments);
   }
 
-  get identifier(): Resource.Identifier {
-    return this.resource.identifier;
+  get identifier(): BlankNode | NamedNode {
+    return this.generatedShape.identifier;
   }
 
   get isDefinedBy(): Maybe<OntologyT> {
-    const isDefinedByValue = this.resource.value(rdfs.isDefinedBy);
-    if (isDefinedByValue.isRight()) {
+    if (this.generatedShape.isDefinedBy.isJust()) {
       // If there's an rdfs:isDefinedBy statement on the shape then don't fall back to anything else
-      return isDefinedByValue
-        .chain((value) => value.toIdentifier())
-        .toMaybe()
-        .chain((identifier) =>
-          this.shapesGraph.ontologyByIdentifier(identifier),
-        );
+      return this.shapesGraph.ontologyByIdentifier(
+        this.generatedShape.isDefinedBy.unsafeCoerce(),
+      );
     }
 
     // No rdfs:isDefinedBy statement on the shape
@@ -81,11 +78,8 @@ export abstract class Shape<
     return Maybe.empty();
   }
 
-  get label(): Maybe<Literal> {
-    return this.resource
-      .value(rdfs.label)
-      .chain((value) => value.toLiteral())
-      .toMaybe();
+  get labels(): Maybe<NonEmptyList<Literal>> {
+    return NonEmptyList.fromArray(this.generatedShape.labels);
   }
 }
 
@@ -98,6 +92,7 @@ export namespace Shape {
     ShapeT,
   > {
     constructor(
+      private readonly generatedShape: generated.ShaclCoreShape,
       protected readonly resource: Resource,
       protected readonly shapesGraph: ShapesGraph<
         NodeShapeT,
@@ -109,211 +104,143 @@ export namespace Shape {
     ) {}
 
     get and(): Maybe<NonEmptyList<ShapeT>> {
-      return this.listTakingLogicalConstraint(sh.and);
-    }
-
-    get classes(): Maybe<NonEmptyList<NamedNode>> {
       return NonEmptyList.fromArray(
-        [...this.resource.values(sh.class)].flatMap((value) =>
-          value.toIri().toMaybe().toList(),
+        this.generatedShape.and.flatMap((identifiers) =>
+          identifiers.flatMap((identifier) =>
+            this.shapesGraph.shapeByIdentifier(identifier).toList(),
+          ),
         ),
       );
     }
 
-    get datatype(): Maybe<NamedNode> {
-      return this.resource
-        .value(sh.datatype)
-        .chain((value) => value.toIri())
-        .toMaybe();
+    get classes(): Maybe<NonEmptyList<NamedNode>> {
+      return NonEmptyList.fromArray(this.generatedShape.classes);
     }
 
-    get hasValue(): Maybe<BlankNode | Literal | NamedNode> {
-      return this.resource
-        .value(sh.hasValue)
-        .map((value) => value.toTerm())
-        .toMaybe();
+    get datatype(): Maybe<NamedNode> {
+      return this.generatedShape.datatype;
+    }
+
+    get hasValues(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
+      return NonEmptyList.fromArray(this.generatedShape.hasValues);
     }
 
     get in_(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
-      return this.resource
-        .value(sh.in)
-        .chain((value) => value.toList())
-        .map((values) => values.map((value) => value.toTerm()))
-        .toMaybe()
-        .chain(NonEmptyList.fromArray);
+      return this.generatedShape.in_.chain(NonEmptyList.fromArray);
     }
 
     get languageIn(): Maybe<NonEmptyList<string>> {
-      return this.resource
-        .value(sh.languageIn)
-        .chain((value) => value.toList())
-        .map((values) =>
-          values.flatMap((value) => value.toString().toMaybe().toList()),
-        )
-        .toMaybe()
-        .chain(NonEmptyList.fromArray);
+      return this.generatedShape.languageIn.chain(NonEmptyList.fromArray);
     }
 
     get maxCount(): Maybe<number> {
-      return this.resource
-        .value(sh.maxCount)
-        .chain((value) => value.toNumber())
-        .toMaybe();
+      return this.generatedShape.maxCount;
     }
 
     get maxExclusive(): Maybe<Literal> {
-      return this.resource
-        .value(sh.maxExclusive)
-        .chain((value) => value.toLiteral())
-        .toMaybe();
+      return this.generatedShape.maxExclusive;
     }
 
     get maxInclusive(): Maybe<Literal> {
-      return this.resource
-        .value(sh.maxInclusive)
-        .chain((value) => value.toLiteral())
-        .toMaybe();
+      return this.generatedShape.maxInclusive;
     }
 
     get minCount(): Maybe<number> {
-      return this.resource
-        .value(sh.minCount)
-        .chain((value) => value.toNumber())
-        .toMaybe();
+      return this.generatedShape.minCount;
     }
 
     get minExclusive(): Maybe<Literal> {
-      return this.resource
-        .value(sh.minExclusive)
-        .chain((value) => value.toLiteral())
-        .toMaybe();
+      return this.generatedShape.minExclusive;
     }
 
     get minInclusive(): Maybe<Literal> {
-      return this.resource
-        .value(sh.minInclusive)
-        .chain((value) => value.toLiteral())
-        .toMaybe();
+      return this.generatedShape.minInclusive;
     }
 
     get nodeKinds(): Maybe<Set<NodeKind>> {
-      const nodeKinds = new Set<NodeKind>();
-      for (const nodeKindValue of this.resource.values(sh.nodeKind)) {
-        nodeKindValue.toIri().ifRight((nodeKindIri) => {
-          if (nodeKindIri.equals(sh.BlankNode)) {
+      return this.generatedShape.nodeKind.chain((iri) => {
+        const nodeKinds = new Set<NodeKind>();
+        switch (iri.value) {
+          case "http://www.w3.org/ns/shacl#BlankNode":
             nodeKinds.add("BlankNode");
-          } else if (nodeKindIri.equals(sh.BlankNodeOrIRI)) {
+            break;
+          case "http://www.w3.org/ns/shacl#BlankNodeOrIRI":
             nodeKinds.add("BlankNode");
             nodeKinds.add("NamedNode");
-          } else if (nodeKindIri.equals(sh.BlankNodeOrLiteral)) {
+            break;
+          case "http://www.w3.org/ns/shacl#BlankNodeOrLiteral":
             nodeKinds.add("BlankNode");
             nodeKinds.add("Literal");
-          } else if (nodeKindIri.equals(sh.IRI)) {
+            break;
+          case "http://www.w3.org/ns/shacl#IRI":
             nodeKinds.add("NamedNode");
-          } else if (nodeKindIri.equals(sh.IRIOrLiteral)) {
+            break;
+          case "http://www.w3.org/ns/shacl#IRIOrLiteral":
+            nodeKinds.add("Literal");
             nodeKinds.add("NamedNode");
+            break;
+          case "http://www.w3.org/ns/shacl#Literal":
             nodeKinds.add("Literal");
-          } else if (nodeKindIri.equals(sh.Literal)) {
-            nodeKinds.add("Literal");
-          }
-        });
-      }
-      return nodeKinds.size > 0 ? Maybe.of(nodeKinds) : Maybe.empty();
+            break;
+        }
+        return nodeKinds.size > 0 ? Maybe.of(nodeKinds) : Maybe.empty();
+      });
     }
 
     get nodes(): Maybe<NonEmptyList<NodeShapeT>> {
       return NonEmptyList.fromArray(
-        [...this.resource.values(sh.node)].flatMap((value) =>
-          value
-            .toIdentifier()
-            .toMaybe()
-            .chain((identifier) =>
-              this.shapesGraph.nodeShapeByIdentifier(identifier),
-            )
-            .toList(),
+        this.generatedShape.nodes.flatMap((identifier) =>
+          this.shapesGraph.nodeShapeByIdentifier(identifier).toList(),
         ),
       );
     }
 
     get not(): Maybe<NonEmptyList<ShapeT>> {
       return NonEmptyList.fromArray(
-        [...this.resource.values(sh.not)].flatMap((value) =>
-          value
-            .toIdentifier()
-            .toMaybe()
-            .chain((identifier) =>
-              this.shapesGraph.shapeByIdentifier(identifier),
-            )
-            .toList(),
+        this.generatedShape.not.flatMap((identifier) =>
+          this.shapesGraph.shapeByIdentifier(identifier).toList(),
         ),
       );
     }
 
     get or(): Maybe<NonEmptyList<ShapeT>> {
-      return this.listTakingLogicalConstraint(sh.or);
+      return NonEmptyList.fromArray(
+        this.generatedShape.or.flatMap((identifiers) =>
+          identifiers.flatMap((identifier) =>
+            this.shapesGraph.shapeByIdentifier(identifier).toList(),
+          ),
+        ),
+      );
     }
 
     get xone(): Maybe<NonEmptyList<ShapeT>> {
-      return this.listTakingLogicalConstraint(sh.xone);
-    }
-
-    private listTakingLogicalConstraint(
-      predicate: NamedNode,
-    ): Maybe<NonEmptyList<ShapeT>> {
-      return this.resource
-        .value(predicate)
-        .chain((value) => value.toList())
-        .map((values) =>
-          values.flatMap((value) =>
-            value
-              .toIdentifier()
-              .toMaybe()
-              .chain((identifier) =>
-                this.shapesGraph.shapeByIdentifier(identifier),
-              )
-              .toList(),
+      return NonEmptyList.fromArray(
+        this.generatedShape.xone.flatMap((identifiers) =>
+          identifiers.flatMap((identifier) =>
+            this.shapesGraph.shapeByIdentifier(identifier).toList(),
           ),
-        )
-        .toMaybe()
-        .chain(NonEmptyList.fromArray);
+        ),
+      );
     }
   }
 
   export class Targets {
-    constructor(protected readonly resource: Resource) {}
+    constructor(private readonly generatedShape: generated.ShaclCoreShape) {}
 
     get targetClasses(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(
-        [...this.resource.values(sh.targetClass)].flatMap((value) =>
-          value.toIri().toMaybe().toList(),
-        ),
-      );
+      return NonEmptyList.fromArray(this.generatedShape.classes);
     }
 
     get targetNodes(): Maybe<NonEmptyList<Literal | NamedNode>> {
-      return NonEmptyList.fromArray(
-        [...this.resource.values(sh.targetNode)].flatMap((value) =>
-          (value.toLiteral().toMaybe() as Maybe<Literal | NamedNode>)
-            .altLazy(() => value.toIri().toMaybe())
-            .toList(),
-        ),
-      );
+      return NonEmptyList.fromArray(this.generatedShape.targetNodes);
     }
 
     get targetObjectsOf(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(
-        [...this.resource.values(sh.targetObjectsOf)].flatMap((value) =>
-          value.toIri().toMaybe().toList(),
-        ),
-      );
+      return NonEmptyList.fromArray(this.generatedShape.targetObjectsOf);
     }
 
     get targetSubjectsOf(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(
-        [...this.resource.values(sh.targetSubjectsOf)].flatMap((value) =>
-          value.toIri().toMaybe().toList(),
-        ),
-      );
+      return NonEmptyList.fromArray(this.generatedShape.targetSubjectsOf);
     }
   }
 }
