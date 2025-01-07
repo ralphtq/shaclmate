@@ -83,7 +83,6 @@ const packages: readonly Package[] = [
     devDependencies: {
       external: {
         oxigraph: "^0.4.0",
-        "rdf-isomorphic": "1.3.1",
       },
       internal: ["runtime"],
     },
