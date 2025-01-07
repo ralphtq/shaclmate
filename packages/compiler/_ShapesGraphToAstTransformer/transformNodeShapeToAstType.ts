@@ -22,7 +22,6 @@ function transformNodeShapeToListType(
   // Put a placeholder in the cache to deal with cyclic references
   const listType: ast.ListType = {
     comment: pickLiteral(nodeShape.comments).map((literal) => literal.value),
-    fromRdfType: nodeShape.fromRdfType,
     identifierNodeKind: nodeShape.nodeKinds.has("BlankNode")
       ? "BlankNode"
       : "NamedNode",

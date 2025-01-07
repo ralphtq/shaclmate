@@ -18,14 +18,6 @@ export interface ListType {
   readonly comment: Maybe<string>;
 
   /**
-   * The expected rdf:type of instances of this ListType and its sub-lists.
-   *
-   * This is usually the identifier of an sh:NodeShape that is also an rdfs:Class (i.e., a node shape with implicit
-   * class targets).
-   */
-  readonly fromRdfType: Maybe<NamedNode>;
-
-  /**
    * Type of identifier (blank or named node) to use for lists and sub-lists.
    */
   readonly identifierNodeKind: "BlankNode" | "NamedNode";
