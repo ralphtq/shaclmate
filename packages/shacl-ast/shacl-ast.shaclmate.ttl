@@ -355,7 +355,6 @@ shaclmate:ShaclCorePropertyShape-descriptions
     sh:path sh:description .
 
 shaclmate:ShaclCorePropertyShape-groups
-    shaclmate:extern true ;
     a sh:PropertyShape ;
     sh:name "groups" ;
     sh:nodeKind sh:BlankNodeOrIRI ;
