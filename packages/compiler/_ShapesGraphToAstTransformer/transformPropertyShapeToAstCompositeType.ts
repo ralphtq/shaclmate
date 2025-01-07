@@ -129,13 +129,15 @@ export function transformPropertyShapeToAstCompositeType(
         transformNodeShapeToAstCompositeMemberType(nodeShape),
       );
     compositeTypeKind = "IntersectionType";
-  } else if (shape.constraints.or.isJust()) {
-    memberTypeEithers = shape.constraints.or.unsafeCoerce().map((memberShape) =>
-      this.transformPropertyShapeToAstType(memberShape, {
-        defaultValue,
-        extern: extern,
-      }),
-    );
+  } else if (shape.constraints.xone.isJust()) {
+    memberTypeEithers = shape.constraints.xone
+      .unsafeCoerce()
+      .map((memberShape) =>
+        this.transformPropertyShapeToAstType(memberShape, {
+          defaultValue,
+          extern: extern,
+        }),
+      );
     compositeTypeKind = "UnionType";
   } else {
     return Left(new Error(`unable to transform ${shape} into an AST type`));

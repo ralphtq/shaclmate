@@ -2,10 +2,10 @@ import { describe, it } from "vitest";
 import { harnesses } from "./harnesses.js";
 
 describe("toJson", () => {
-  it("or properties", ({ expect }) => {
-    const jsonObject = harnesses.nodeShapeWithOrProperties.instance.toJson();
+  it("union properties", ({ expect }) => {
+    const jsonObject = harnesses.nodeShapeWithUnionProperties.instance.toJson();
     expect(jsonObject["@id"]).toStrictEqual("http://example.com/instance");
-    expect(jsonObject.type).toStrictEqual("NodeShapeWithOrProperties");
+    expect(jsonObject.type).toStrictEqual("NodeShapeWithUnionProperties");
     expect(jsonObject.orLiteralsProperty).toStrictEqual({
       "@type": "http://www.w3.org/2001/XMLSchema#integer",
       "@value": "1",

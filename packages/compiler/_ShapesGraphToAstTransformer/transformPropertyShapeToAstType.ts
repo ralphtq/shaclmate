@@ -45,7 +45,7 @@ export function transformPropertyShapeToAstType(
       if (maxCount.isNothing() && minCount.isNothing()) {
         // The shape has no cardinality constraints
         if (inherited === null) {
-          // The shape is top-level (not an sh:or/sh:and of a top-level shape)
+          // The shape is top-level (not an sh:xone/sh:and of a top-level shape)
           // Treat it as a Set, the default in RDF.
           // We want Set to be the outermost type unless it's explicitly requested with sh:minCount 0.
           return {
