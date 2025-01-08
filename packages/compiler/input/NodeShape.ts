@@ -1,6 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import { NodeShape as ShaclCoreNodeShape } from "@shaclmate/shacl-ast";
-import { Maybe, type NonEmptyList } from "purify-ts";
+import { Maybe } from "purify-ts";
 import type {
   MintingStrategy,
   TsFeature,
@@ -187,10 +187,7 @@ export class NodeShape extends ShaclCoreNodeShape<
 
   get toRdfTypes(): readonly NamedNode[] {
     // Look for one or more explicit shaclmate:toRdfType's
-    const toRdfTypes: NamedNode[] = [];
-    this.generatedShaclmateNodeShape.toRdfTypes.ifJust((toRdfTypes_) =>
-      toRdfTypes.push(...toRdfTypes_),
-    );
+    const toRdfTypes = this.generatedShaclmateNodeShape.toRdfTypes.concat();
 
     // Ensure the toRdfTypes includes the fromRdfType if there is one
     this.fromRdfType.ifJust((fromRdfType) => {
@@ -220,7 +217,7 @@ export class NodeShape extends ShaclCoreNodeShape<
     );
   }
 
-  get tsImports(): Maybe<NonEmptyList<string>> {
+  get tsImports(): readonly string[] {
     return this.generatedShaclmateNodeShape.tsImports;
   }
 

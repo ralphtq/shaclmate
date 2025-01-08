@@ -39,23 +39,21 @@ function transformNodeShapeToListType(
   this.nodeShapeAstTypesByIdentifier.set(nodeShape.identifier, listType);
 
   const properties: ast.ObjectType.Property[] = [];
-  nodeShape.constraints.properties.ifJust((propertyShapes) => {
-    for (const propertyShape of propertyShapes) {
-      const propertyEither =
-        this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
-      if (propertyEither.isLeft()) {
-        logger.warn(
-          "error transforming %s %s: %s",
-          nodeShape,
-          propertyShape,
-          (propertyEither.extract() as Error).message,
-        );
-        continue;
-        // return property;
-      }
-      properties.push(propertyEither.unsafeCoerce());
+  for (const propertyShape of nodeShape.constraints.properties) {
+    const propertyEither =
+      this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
+    if (propertyEither.isLeft()) {
+      logger.warn(
+        "error transforming %s %s: %s",
+        nodeShape,
+        propertyShape,
+        (propertyEither.extract() as Error).message,
+      );
+      continue;
+      // return property;
     }
-  });
+    properties.push(propertyEither.unsafeCoerce());
+  }
 
   if (properties.length !== 2) {
     return Left(new Error(`${nodeShape} does not have exactly two properties`));
@@ -135,18 +133,18 @@ export function transformNodeShapeToAstType(
   const export_ = nodeShape.export.orDefault(true);
 
   if (
-    nodeShape.constraints.and.isJust() ||
-    nodeShape.constraints.xone.isJust()
+    nodeShape.constraints.and.length > 0 ||
+    nodeShape.constraints.xone.length > 0
   ) {
     let compositeTypeShapes: readonly input.Shape[];
     let compositeTypeKind:
       | ast.ObjectIntersectionType["kind"]
       | ast.ObjectUnionType["kind"];
-    if (nodeShape.constraints.and.isJust()) {
-      compositeTypeShapes = nodeShape.constraints.and.unsafeCoerce();
+    if (nodeShape.constraints.and.length > 0) {
+      compositeTypeShapes = nodeShape.constraints.and;
       compositeTypeKind = "ObjectIntersectionType";
     } else {
-      compositeTypeShapes = nodeShape.constraints.xone.unsafeCoerce();
+      compositeTypeShapes = nodeShape.constraints.xone;
       compositeTypeKind = "ObjectUnionType";
     }
 
@@ -245,23 +243,21 @@ export function transformNodeShapeToAstType(
   );
 
   // Populate properties
-  nodeShape.constraints.properties.ifJust((propertyShapes) => {
-    for (const propertyShape of propertyShapes) {
-      const propertyEither =
-        this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
-      if (propertyEither.isLeft()) {
-        logger.warn(
-          "error transforming %s %s: %s",
-          nodeShape,
-          propertyShape,
-          (propertyEither.extract() as Error).message,
-        );
-        continue;
-        // return property;
-      }
-      objectType.properties.push(propertyEither.unsafeCoerce());
+  for (const propertyShape of nodeShape.constraints.properties) {
+    const propertyEither =
+      this.transformPropertyShapeToAstObjectTypeProperty(propertyShape);
+    if (propertyEither.isLeft()) {
+      logger.warn(
+        "error transforming %s %s: %s",
+        nodeShape,
+        propertyShape,
+        (propertyEither.extract() as Error).message,
+      );
+      continue;
+      // return property;
     }
-  });
+    objectType.properties.push(propertyEither.unsafeCoerce());
+  }
 
   return Either.of(objectType);
 }

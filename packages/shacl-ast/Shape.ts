@@ -1,6 +1,6 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
 import type * as rdfjs from "@rdfjs/types";
-import { Maybe, NonEmptyList } from "purify-ts";
+import { Maybe } from "purify-ts";
 import type { NodeKind } from "./NodeKind.js";
 import type { OntologyLike } from "./OntologyLike.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
@@ -35,7 +35,7 @@ export abstract class Shape<
     >,
   ) {}
 
-  get comments(): Maybe<NonEmptyList<Literal>> {
+  get comments(): readonly Literal[] {
     return this.generatedShaclCoreShape.comments;
   }
 
@@ -74,7 +74,7 @@ export abstract class Shape<
     return Maybe.empty();
   }
 
-  get labels(): Maybe<NonEmptyList<Literal>> {
+  get labels(): readonly Literal[] {
     return this.generatedShaclCoreShape.labels;
   }
 }
@@ -101,11 +101,11 @@ export namespace Shape {
       >,
     ) {}
 
-    get and(): Maybe<NonEmptyList<ShapeT>> {
+    get and(): readonly ShapeT[] {
       return this.shapeListTakingConstraint(this.generatedShaclCoreShape.and);
     }
 
-    get classes(): Maybe<NonEmptyList<NamedNode>> {
+    get classes(): readonly NamedNode[] {
       return this.generatedShaclCoreShape.classes;
     }
 
@@ -113,18 +113,16 @@ export namespace Shape {
       return this.generatedShaclCoreShape.datatype;
     }
 
-    get hasValues(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
+    get hasValues(): readonly (BlankNode | Literal | NamedNode)[] {
       return this.generatedShaclCoreShape.hasValues;
     }
 
-    get in_(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
-      return this.generatedShaclCoreShape.in_.chain(NonEmptyList.fromArray);
+    get in_(): readonly (BlankNode | Literal | NamedNode)[] {
+      return this.generatedShaclCoreShape.in_.orDefault([]);
     }
 
-    get languageIn(): Maybe<NonEmptyList<string>> {
-      return this.generatedShaclCoreShape.languageIn.chain(
-        NonEmptyList.fromArray,
-      );
+    get languageIn(): Maybe<readonly string[]> {
+      return this.generatedShaclCoreShape.languageIn;
     }
 
     get maxCount(): Maybe<number> {
@@ -181,46 +179,32 @@ export namespace Shape {
       });
     }
 
-    get nodes(): Maybe<NonEmptyList<NodeShapeT>> {
-      return this.generatedShaclCoreShape.nodes.chain((identifiers) =>
-        NonEmptyList.fromArray(
-          identifiers.flatMap((identifier) =>
-            this.shapesGraph.nodeShapeByIdentifier(identifier).toList(),
-          ),
-        ),
+    get nodes(): readonly NodeShapeT[] {
+      return this.generatedShaclCoreShape.nodes.flatMap((identifier) =>
+        this.shapesGraph.nodeShapeByIdentifier(identifier).toList(),
       );
     }
 
-    get not(): Maybe<NonEmptyList<ShapeT>> {
-      return this.generatedShaclCoreShape.not.chain((identifiers) =>
-        NonEmptyList.fromArray(
-          identifiers.flatMap((identifier) =>
-            this.shapesGraph.shapeByIdentifier(identifier).toList(),
-          ),
-        ),
+    get not(): readonly ShapeT[] {
+      return this.generatedShaclCoreShape.not.flatMap((identifier) =>
+        this.shapesGraph.shapeByIdentifier(identifier).toList(),
       );
     }
 
-    get or(): Maybe<NonEmptyList<ShapeT>> {
+    get or(): readonly ShapeT[] {
       return this.shapeListTakingConstraint(this.generatedShaclCoreShape.or);
     }
 
-    get xone(): Maybe<NonEmptyList<ShapeT>> {
+    get xone(): readonly ShapeT[] {
       return this.shapeListTakingConstraint(this.generatedShaclCoreShape.xone);
     }
 
     private shapeListTakingConstraint(
-      identifiers: Maybe<
-        NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
-      >,
-    ): Maybe<NonEmptyList<ShapeT>> {
-      return identifiers.chain((identifiers) =>
-        NonEmptyList.fromArray(
-          identifiers.flatMap((identifiers) =>
-            identifiers.flatMap((identifier) =>
-              this.shapesGraph.shapeByIdentifier(identifier).toList(),
-            ),
-          ),
+      identifiers: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[],
+    ): readonly ShapeT[] {
+      return identifiers.flatMap((identifiers) =>
+        identifiers.flatMap((identifier) =>
+          this.shapesGraph.shapeByIdentifier(identifier).toList(),
         ),
       );
     }

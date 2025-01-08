@@ -1,5 +1,5 @@
 import { PropertyShape as ShaclCorePropertyShape } from "@shaclmate/shacl-ast";
-import type { Maybe } from "purify-ts";
+import { Maybe } from "purify-ts";
 import type { PropertyVisibility } from "../enums/index.js";
 import type { Shape } from "./Shape.js";
 import type * as generated from "./generated.js";
@@ -21,7 +21,10 @@ export class PropertyShape extends ShaclCorePropertyShape<
     private readonly generatedShaclmatePropertyShape: generated.ShaclmatePropertyShape,
     shapesGraph: ShapesGraph,
   ) {
-    super(generatedShaclmatePropertyShape, shapesGraph);
+    super(
+      { ...generatedShaclmatePropertyShape, uniqueLang: Maybe.empty() },
+      shapesGraph,
+    );
   }
 
   get extern(): Maybe<boolean> {

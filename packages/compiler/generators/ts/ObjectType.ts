@@ -1,6 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import { camelCase } from "change-case";
-import { Maybe, type NonEmptyList } from "purify-ts";
+import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import {
   type ClassDeclarationStructure,
@@ -34,7 +34,7 @@ export class ObjectType extends DeclaredType {
   protected readonly label: Maybe<string>;
   protected readonly mintingStrategy: Maybe<MintingStrategy>;
   protected readonly toRdfTypes: readonly NamedNode[];
-  private readonly imports: Maybe<NonEmptyList<string>>;
+  private readonly imports: readonly string[];
   private readonly lazyAncestorObjectTypes: () => readonly ObjectType[];
   private readonly lazyDescendantObjectTypes: () => readonly ObjectType[];
   private readonly lazyParentObjectTypes: () => readonly ObjectType[];
@@ -61,7 +61,7 @@ export class ObjectType extends DeclaredType {
     declarationType: TsObjectDeclarationType;
     extern: boolean;
     fromRdfType: Maybe<NamedNode>;
-    imports: Maybe<NonEmptyList<string>>;
+    imports: readonly string[];
     label: Maybe<string>;
     lazyAncestorObjectTypes: () => readonly ObjectType[];
     lazyDescendantObjectTypes: () => readonly ObjectType[];
@@ -272,9 +272,7 @@ export class ObjectType extends DeclaredType {
   }
 
   override get useImports(): readonly Import[] {
-    return this.imports
-      .map((imports) => imports as readonly Import[])
-      .orDefault([]);
+    return this.imports;
   }
 
   protected get thisVariable(): string {

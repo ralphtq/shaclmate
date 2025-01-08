@@ -1,5 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { type Maybe, NonEmptyList } from "purify-ts";
+import type { Maybe } from "purify-ts";
 import type { OntologyLike } from "./OntologyLike.js";
 import type { PropertyPath } from "./PropertyPath.js";
 import { Shape } from "./Shape.js";
@@ -45,21 +45,17 @@ export class PropertyShape<
     return this.generatedShaclCorePropertyShape.defaultValue;
   }
 
-  get descriptions(): Maybe<NonEmptyList<Literal>> {
+  get descriptions(): readonly Literal[] {
     return this.generatedShaclCorePropertyShape.descriptions;
   }
 
-  get groups(): Maybe<NonEmptyList<PropertyGroupT>> {
-    return this.generatedShaclCorePropertyShape.groups.chain((identifiers) =>
-      NonEmptyList.fromArray(
-        identifiers.flatMap((identifier) =>
-          this.shapesGraph.propertyGroupByIdentifier(identifier).toList(),
-        ),
-      ),
+  get groups(): readonly PropertyGroupT[] {
+    return this.generatedShaclCorePropertyShape.groups.flatMap((identifier) =>
+      this.shapesGraph.propertyGroupByIdentifier(identifier).toList(),
     );
   }
 
-  get names(): Maybe<NonEmptyList<Literal>> {
+  get names(): readonly Literal[] {
     return this.generatedShaclCorePropertyShape.names;
   }
 

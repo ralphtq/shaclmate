@@ -69,16 +69,12 @@ export class TypeFactory {
         astType.defaultValue.ifJust((defaultValue) =>
           datatypes.add(defaultValue.datatype),
         );
-        astType.hasValues.ifJust((hasValues) => {
-          for (const hasValue of hasValues) {
-            datatypes.add(hasValue.datatype);
-          }
-        });
-        astType.in_.ifJust((in_) => {
-          for (const value of in_) {
-            datatypes.add(value.datatype);
-          }
-        });
+        for (const hasValue of astType.hasValues) {
+          datatypes.add(hasValue.datatype);
+        }
+        for (const value of astType.in_) {
+          datatypes.add(value.datatype);
+        }
 
         if (datatypes.size === 1) {
           const datatype = [...datatypes][0];
@@ -93,11 +89,9 @@ export class TypeFactory {
               primitiveDefaultValue: astType.defaultValue
                 .map((value) => fromRdf(value, true))
                 .filter((value) => typeof value === "boolean"),
-              primitiveIn: astType.in_.map((values) =>
-                values
-                  .map((value) => fromRdf(value, true))
-                  .filter((value) => typeof value === "boolean"),
-              ),
+              primitiveIn: astType.in_
+                .map((value) => fromRdf(value, true))
+                .filter((value) => typeof value === "boolean"),
             });
           }
 
@@ -113,14 +107,11 @@ export class TypeFactory {
                 .filter(
                   (value) => typeof value === "object" && value instanceof Date,
                 ),
-              primitiveIn: astType.in_.map((values) =>
-                values
-                  .map((value) => fromRdf(value, true))
-                  .filter(
-                    (value) =>
-                      typeof value === "object" && value instanceof Date,
-                  ),
-              ),
+              primitiveIn: astType.in_
+                .map((value) => fromRdf(value, true))
+                .filter(
+                  (value) => typeof value === "object" && value instanceof Date,
+                ),
             });
           }
 
@@ -154,11 +145,9 @@ export class TypeFactory {
                 primitiveDefaultValue: astType.defaultValue
                   .map((value) => fromRdf(value, true))
                   .filter((value) => typeof value === "number"),
-                primitiveIn: astType.in_.map((values) =>
-                  values
-                    .map((value) => fromRdf(value, true))
-                    .filter((value) => typeof value === "number"),
-                ),
+                primitiveIn: astType.in_
+                  .map((value) => fromRdf(value, true))
+                  .filter((value) => typeof value === "number"),
               });
             }
           }
@@ -173,9 +162,7 @@ export class TypeFactory {
               primitiveDefaultValue: astType.defaultValue.map(
                 (value) => value.value,
               ),
-              primitiveIn: astType.in_.map((values) =>
-                values.map((value) => value.value),
-              ),
+              primitiveIn: astType.in_.map((value) => value.value),
             });
           }
 
@@ -205,7 +192,7 @@ export class TypeFactory {
         throw new Error("not implemented");
       case "ObjectType":
         return this.createObjectTypeFromAstType(astType);
-      case "ObjectUnionType": {
+      case "ObjectUnionType":
         return new ObjectUnionType({
           comment: astType.comment,
           dataFactoryVariable: this.dataFactoryVariable,
@@ -217,7 +204,6 @@ export class TypeFactory {
             .filter((memberType) => memberType instanceof ObjectType),
           name: tsName((astType as ast.ObjectUnionType).name),
         });
-      }
       case "OptionType":
         return new OptionType({
           dataFactoryVariable: this.dataFactoryVariable,
@@ -239,14 +225,13 @@ export class TypeFactory {
           in_: astType.in_,
           nodeKinds: astType.nodeKinds,
         });
-      case "UnionType": {
+      case "UnionType":
         return new UnionType({
           dataFactoryVariable: this.dataFactoryVariable,
           memberTypes: astType.memberTypes.map((astType) =>
             this.createTypeFromAstType(astType),
           ),
         });
-      }
     }
   }
 
@@ -263,8 +248,8 @@ export class TypeFactory {
     const identifierType = new IdentifierType({
       dataFactoryVariable: this.dataFactoryVariable,
       defaultValue: Maybe.empty(),
-      hasValues: Maybe.empty(),
-      in_: Maybe.empty(),
+      hasValues: [],
+      in_: [],
       nodeKinds: astType.nodeKinds,
     });
 

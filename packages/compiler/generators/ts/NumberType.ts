@@ -29,9 +29,10 @@ export class NumberType extends PrimitiveType<number> {
 
   @Memoize()
   override get name(): string {
-    return this.primitiveIn
-      .map((values) => values.map((value) => value.toString()).join(" | "))
-      .orDefault("number");
+    if (this.primitiveIn.length > 0) {
+      return this.primitiveIn.map((value) => value.toString()).join(" | ");
+    }
+    return "number";
   }
 
   override propertyFromRdfResourceValueExpression({
@@ -40,9 +41,9 @@ export class NumberType extends PrimitiveType<number> {
     PrimitiveType<number>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     let expression = `${variables.resourceValue}.toNumber()`;
-    this.primitiveIn.ifJust((in_) => {
-      expression = `${expression}.chain(value => { switch (value) { ${in_.map((value) => `case ${value}:`).join(" ")} return purify.Either.of(value); default: return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); } })`;
-    });
+    if (this.primitiveIn.length > 0) {
+      expression = `${expression}.chain(value => { switch (value) { ${this.primitiveIn.map((value) => `case ${value}:`).join(" ")} return purify.Either.of(value); default: return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); } })`;
+    }
     return expression;
   }
 

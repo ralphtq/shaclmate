@@ -29,9 +29,10 @@ export class BooleanType extends PrimitiveType<boolean> {
 
   @Memoize()
   override get name(): string {
-    return this.primitiveIn
-      .map((values) => values.map((value) => value.toString()).join(" | "))
-      .orDefault("boolean");
+    if (this.primitiveIn.length > 0) {
+      return this.primitiveIn.map((value) => value.toString()).join(" | ");
+    }
+    return "boolean";
   }
 
   override propertyFromRdfResourceValueExpression({
@@ -40,11 +41,9 @@ export class BooleanType extends PrimitiveType<boolean> {
     PrimitiveType<boolean>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     let expression = `${variables.resourceValue}.toBoolean()`;
-    this.primitiveIn.ifJust((in_) => {
-      if (in_.length === 1) {
-        expression = `${expression}.chain(value => value === ${in_[0]} ? purify.Either.of(value) : purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })))`;
-      }
-    });
+    if (this.primitiveIn.length === 1) {
+      expression = `${expression}.chain(value => value === ${this.primitiveIn[0]} ? purify.Either.of(value) : purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })))`;
+    }
     return expression;
   }
 

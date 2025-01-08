@@ -27,20 +27,9 @@ export class SetType extends Type {
 
     if (this.minCount === 0) {
       conversions.push({
-        conversionExpression: () => "purify.Maybe.empty()",
+        conversionExpression: () => "[]",
         sourceTypeCheckExpression: (value) => `typeof ${value} === "undefined"`,
         sourceTypeName: "undefined",
-      });
-      conversions.push({
-        conversionExpression: (value) => value,
-        sourceTypeCheckExpression: (value) => `purify.Maybe.isMaybe(${value})`,
-        sourceTypeName: this.name,
-      });
-      conversions.push({
-        conversionExpression: (value) => `purify.Maybe.of(${value})`,
-        sourceTypeCheckExpression: (value) =>
-          `purify.NonEmptyList.isNonEmpty(${value})`,
-        sourceTypeName: `purify.NonEmptyList<${this.itemType.name}>`,
       });
       conversions.push({
         conversionExpression: (value) =>
@@ -65,7 +54,7 @@ export class SetType extends Type {
     if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
       return "purifyHelpers.Equatable.arrayEquals";
     }
-    return `(left, right) => purifyHelpers.Arrays.equals(${this.toArray("left")}, ${this.toArray("right")}, ${itemTypeEqualsFunction})`;
+    return `(left, right) => purifyHelpers.Arrays.equals(left, right, ${itemTypeEqualsFunction})`;
   }
 
   override get jsonName(): string {
@@ -78,11 +67,10 @@ export class SetType extends Type {
 
   @Memoize()
   override get name(): string {
-    let name = `purify.NonEmptyList<${this.itemType.name}>`;
     if (this.minCount === 0) {
-      name = `purify.Maybe<${name}>`;
+      return `readonly (${this.itemType.name})[]`;
     }
-    return name;
+    return `purify.NonEmptyList<${this.itemType.name}>`;
   }
 
   override get useImports(): readonly Import[] {
@@ -104,7 +92,7 @@ export class SetType extends Type {
       variables: { ...variables, resourceValues: "_item.toValues()" },
     });
     if (this.minCount === 0) {
-      return `purify.Either.of(purify.NonEmptyList.fromArray([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())]))`;
+      return `purify.Either.of([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())])`;
     }
     return `purify.NonEmptyList.fromArray([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())]).toEither(new rdfjsResource.Resource.ValueError({ focusResource: ${variables.resource}, message: \`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} is empty\`, predicate: ${variables.predicate} }))`;
   }
@@ -114,7 +102,7 @@ export class SetType extends Type {
     variables,
   }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
     return [
-      `for (const _item${depth} of ${this.toArray(variables.value)}) { ${this.itemType
+      `for (const _item${depth} of ${variables.value}) { ${this.itemType
         .propertyHashStatements({
           depth: depth + 1,
           variables: {
@@ -140,23 +128,16 @@ export class SetType extends Type {
   override propertyToJsonExpression({
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    return `(${this.toArray(variables.value)}).map(_item => (${this.itemType.propertyToJsonExpression({ variables: { value: "_item" } })}))`;
+    return `${variables.value}.map(_item => (${this.itemType.propertyToJsonExpression({ variables: { value: "_item" } })}))`;
   }
 
   override propertyToRdfExpression({
     variables,
   }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
-    return `(${this.toArray(variables.value)}).map((_item) => ${this.itemType.propertyToRdfExpression(
+    return `${variables.value}.map((_item) => ${this.itemType.propertyToRdfExpression(
       {
         variables: { ...variables, value: "_item" },
       },
     )})`;
-  }
-
-  private toArray(value: string) {
-    if (this.minCount === 0) {
-      return `((${value}.extract() as readonly (${this.itemType.name})[] | undefined) ?? [])`;
-    }
-    return value;
   }
 }

@@ -19,15 +19,15 @@ describe("RdfjsShape", () => {
     const nodeShape = shapesGraph
       .nodeShapeByIdentifier(nodeShapeIdentifier)
       .unsafeCoerce();
-    const propertyShape = nodeShape.constraints.properties
-      .unsafeCoerce()
-      .find((propertyShape) => {
+    const propertyShape = nodeShape.constraints.properties.find(
+      (propertyShape) => {
         const propertyShapePath = propertyShape.path;
         return (
           propertyShapePath.kind === "PredicatePath" &&
           propertyShapePath.iri.equals(path)
         );
-      });
+      },
+    );
     expect(propertyShape).toBeDefined();
     return propertyShape!;
   };
@@ -36,7 +36,7 @@ describe("RdfjsShape", () => {
     const descriptions = findPropertyShape(
       dash.ScriptAPIShape,
       dash.generateClass,
-    ).descriptions.unsafeCoerce();
+    ).descriptions;
     expect(descriptions).toHaveLength(1);
     expect(descriptions[0].value).toMatch(/^The API generator/);
   });
@@ -64,10 +64,7 @@ describe("RdfjsShape", () => {
   });
 
   it("should have a name", ({ expect }) => {
-    const names = findPropertyShape(
-      schema.Person,
-      schema.givenName,
-    ).names.unsafeCoerce();
+    const names = findPropertyShape(schema.Person, schema.givenName).names;
     expect(names).toHaveLength(1);
     expect(names[0].value).toStrictEqual("given name");
   });
@@ -75,10 +72,8 @@ describe("RdfjsShape", () => {
   // No shape in the test data with a clean sh:and
 
   it("constraints: should have an sh:class", ({ expect }) => {
-    const classes = findPropertyShape(
-      schema.Person,
-      schema.parent,
-    ).constraints.classes.unsafeCoerce();
+    const classes = findPropertyShape(schema.Person, schema.parent).constraints
+      .classes;
     expect(classes).toHaveLength(1);
     expect(classes[0].equals(schema.Person)).toStrictEqual(true);
   });
@@ -105,14 +100,14 @@ describe("RdfjsShape", () => {
         "http://topbraid.org/examples/schemashacl#FemalePerson",
       ),
       schema.gender,
-    ).constraints.hasValues.unsafeCoerce();
+    ).constraints.hasValues;
     expect(hasValues).toHaveLength(1);
     expect(hasValues[0].value).toStrictEqual("female");
   });
 
   it("constraints: should have an sh:in", ({ expect }) => {
     const propertyShape = findPropertyShape(schema.Person, schema.gender);
-    const in_ = propertyShape.constraints.in_.extract() ?? [];
+    const in_ = propertyShape.constraints.in_;
     expect(in_).toHaveLength(2);
     expect(
       in_.find(
@@ -181,10 +176,8 @@ describe("RdfjsShape", () => {
   });
 
   it("constraints: should have an sh:node", ({ expect }) => {
-    const nodeShapes = findPropertyShape(
-      schema.Vehicle,
-      schema.fuelConsumption,
-    ).constraints.nodes.unsafeCoerce();
+    const nodeShapes = findPropertyShape(schema.Vehicle, schema.fuelConsumption)
+      .constraints.nodes;
     expect(nodeShapes).toHaveLength(1);
   });
 
@@ -204,7 +197,7 @@ describe("RdfjsShape", () => {
       schema.DatedMoneySpecification,
       schema.endDate,
     );
-    const or = propertyShape.constraints.or.unsafeCoerce();
+    const or = propertyShape.constraints.or;
     expect(or).toHaveLength(2);
     expect(
       or.some((propertyShape) =>

@@ -22,7 +22,7 @@ export function transformPropertyShapeToAstCompositeType(
     shape instanceof input.PropertyShape ? shape.defaultValue : Maybe.empty()
   ).alt(inherited !== null ? inherited.defaultValue : Maybe.empty());
 
-  const hasValue = shape.constraints.hasValues;
+  const hasValues = shape.constraints.hasValues;
   const extern = shape.extern.alt(
     inherited !== null ? inherited.extern : Maybe.empty(),
   );
@@ -64,8 +64,8 @@ export function transformPropertyShapeToAstCompositeType(
         defaultValue: defaultValue.filter(
           (term) => term.termType === "NamedNode",
         ) as Maybe<NamedNode>,
-        hasValues: Maybe.empty(),
-        in_: Maybe.empty(),
+        hasValues: [],
+        in_: [],
         kind: "IdentifierType",
         nodeKinds,
       });
@@ -75,43 +75,35 @@ export function transformPropertyShapeToAstCompositeType(
     return Either.of(astType);
   };
 
-  if (shape.constraints.and.isJust()) {
-    memberTypeEithers = shape.constraints.and
-      .unsafeCoerce()
-      .map((memberShape) =>
-        this.transformPropertyShapeToAstType(memberShape, {
-          defaultValue,
-          extern: extern,
-        }),
-      );
+  if (shape.constraints.and.length > 0) {
+    memberTypeEithers = shape.constraints.and.map((memberShape) =>
+      this.transformPropertyShapeToAstType(memberShape, {
+        defaultValue,
+        extern: extern,
+      }),
+    );
     compositeTypeKind = "IntersectionType";
-  } else if (shape.constraints.classes.isJust()) {
-    memberTypeEithers = shape.constraints.classes
-      .unsafeCoerce()
-      .map((classIri) => {
-        if (
-          classIri.equals(owl.Class) ||
-          classIri.equals(owl.Thing) ||
-          classIri.equals(rdfs.Class)
-        ) {
-          return Left(
-            new Error(`class ${classIri.value} is not transformable`),
-          );
-        }
+  } else if (shape.constraints.classes.length > 0) {
+    memberTypeEithers = shape.constraints.classes.map((classIri) => {
+      if (
+        classIri.equals(owl.Class) ||
+        classIri.equals(owl.Thing) ||
+        classIri.equals(rdfs.Class)
+      ) {
+        return Left(new Error(`class ${classIri.value} is not transformable`));
+      }
 
-        const classNodeShape = this.shapesGraph
-          .nodeShapeByIdentifier(classIri)
-          .extractNullable();
-        if (classNodeShape === null) {
-          return Left(
-            new Error(
-              `class ${classIri.value} did not resolve to a node shape`,
-            ),
-          );
-        }
+      const classNodeShape = this.shapesGraph
+        .nodeShapeByIdentifier(classIri)
+        .extractNullable();
+      if (classNodeShape === null) {
+        return Left(
+          new Error(`class ${classIri.value} did not resolve to a node shape`),
+        );
+      }
 
-        return transformNodeShapeToAstCompositeMemberType(classNodeShape);
-      });
+      return transformNodeShapeToAstCompositeMemberType(classNodeShape);
+    });
     compositeTypeKind = "IntersectionType";
 
     if (Either.rights(memberTypeEithers).length === 0) {
@@ -122,22 +114,18 @@ export function transformPropertyShapeToAstCompositeType(
       );
       return memberTypeEithers[0];
     }
-  } else if (shape.constraints.nodes.isJust()) {
-    memberTypeEithers = shape.constraints.nodes
-      .unsafeCoerce()
-      .map((nodeShape) =>
-        transformNodeShapeToAstCompositeMemberType(nodeShape),
-      );
+  } else if (shape.constraints.nodes.length > 0) {
+    memberTypeEithers = shape.constraints.nodes.map((nodeShape) =>
+      transformNodeShapeToAstCompositeMemberType(nodeShape),
+    );
     compositeTypeKind = "IntersectionType";
-  } else if (shape.constraints.xone.isJust()) {
-    memberTypeEithers = shape.constraints.xone
-      .unsafeCoerce()
-      .map((memberShape) =>
-        this.transformPropertyShapeToAstType(memberShape, {
-          defaultValue,
-          extern: extern,
-        }),
-      );
+  } else if (shape.constraints.xone.length > 0) {
+    memberTypeEithers = shape.constraints.xone.map((memberShape) =>
+      this.transformPropertyShapeToAstType(memberShape, {
+        defaultValue,
+        extern: extern,
+      }),
+    );
     compositeTypeKind = "UnionType";
   } else {
     return Left(new Error(`unable to transform ${shape} into an AST type`));
@@ -171,7 +159,7 @@ export function transformPropertyShapeToAstCompositeType(
   });
 
   if (
-    hasValue.isNothing() &&
+    hasValues.length > 0 &&
     memberItemTypes.every(
       (memberItemType) =>
         memberItemType.kind === "LiteralType" &&
@@ -185,9 +173,11 @@ export function transformPropertyShapeToAstCompositeType(
     // like dash:StringOrLangString
     return Either.of({
       datatype: Maybe.empty(),
-      defaultValue: defaultValue.filter((term) => term.termType === "Literal"),
-      hasValues: Maybe.empty(),
-      in_: Maybe.empty(),
+      defaultValue: defaultValue.filter(
+        (term) => term.termType === "Literal",
+      ) as Maybe<Literal>,
+      hasValues: [],
+      in_: [],
       kind: "LiteralType",
       languageIn: Maybe.empty(),
       maxExclusive: Maybe.empty(),
@@ -199,7 +189,7 @@ export function transformPropertyShapeToAstCompositeType(
   }
 
   if (
-    hasValue.isNothing() &&
+    hasValues.length === 0 &&
     memberItemTypes.every(
       (memberItemType) => memberItemType.kind === "IdentifierType",
     )
@@ -209,8 +199,8 @@ export function transformPropertyShapeToAstCompositeType(
       defaultValue: defaultValue.filter(
         (term) => term.termType === "NamedNode",
       ) as Maybe<NamedNode>,
-      hasValues: Maybe.empty(),
-      in_: Maybe.empty(),
+      hasValues: [],
+      in_: [],
       kind: "IdentifierType",
       nodeKinds: new Set<"BlankNode" | "NamedNode">(
         memberItemTypes

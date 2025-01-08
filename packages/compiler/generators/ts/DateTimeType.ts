@@ -42,9 +42,9 @@ export class DateTimeType extends PrimitiveType<Date> {
     PrimitiveType<number>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     let expression = `${variables.resourceValue}.toDate()`;
-    this.primitiveIn.ifJust((in_) => {
-      expression = `${expression}.chain(value => { ${in_.map((value) => `if (value.getTime() === ${value.getTime()}) { return purify.Either.of(value); }`).join(" ")} return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); })`;
-    });
+    if (this.primitiveIn.length > 0) {
+      expression = `${expression}.chain(value => { ${this.primitiveIn.map((value) => `if (value.getTime() === ${value.getTime()}) { return purify.Either.of(value); }`).join(" ")} return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); })`;
+    }
     return expression;
   }
 

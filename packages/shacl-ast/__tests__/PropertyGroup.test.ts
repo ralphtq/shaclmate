@@ -14,7 +14,7 @@ describe("PropertyGroup", () => {
     const propertyGroup = shapesGraph
       .propertyGroupByIdentifier(dash.ScriptAPIGenerationRules)
       .unsafeCoerce();
-    const labels = propertyGroup.labels.unsafeCoerce();
+    const labels = propertyGroup.labels;
     expect(labels).toHaveLength(1);
     expect(labels[0].value).toStrictEqual("Script API Generation Rules");
   });

@@ -20,14 +20,12 @@ export function transformPropertyShapeToAstLiteralType(
   )
     .alt(inherited !== null ? inherited.defaultValue : Maybe.empty())
     .filter((term) => term.termType === "Literal") as Maybe<Literal>;
-  const literalHasValues = shape.constraints.hasValues.chain((hasValues) =>
-    NonEmptyList.fromArray(
-      hasValues.filter((term) => term.termType === "Literal"),
-    ),
-  );
-  const literalIn = shape.constraints.in_.chain((in_) =>
-    NonEmptyList.fromArray(in_.filter((term) => term.termType === "Literal")),
-  );
+  const literalHasValues = shape.constraints.hasValues.filter(
+    (term) => term.termType === "Literal",
+  ) as readonly Literal[];
+  const literalIn = shape.constraints.in_.filter(
+    (term) => term.termType === "Literal",
+  ) as readonly Literal[];
   const nodeKinds = propertyShapeNodeKinds(shape);
 
   if (
@@ -41,8 +39,8 @@ export function transformPropertyShapeToAstLiteralType(
       shape.constraints.minInclusive,
     ].some((constraint) => constraint.isJust()) ||
     literalDefaultValue.isJust() ||
-    literalHasValues.isJust() ||
-    literalIn.isJust() ||
+    literalHasValues.length > 0 ||
+    literalIn.length > 0 ||
     // Treat any shape with a single sh:nodeKind of sh:Literal as a literal type
     (nodeKinds.size === 1 && nodeKinds.has("Literal"))
   ) {
@@ -52,7 +50,7 @@ export function transformPropertyShapeToAstLiteralType(
       hasValues: literalHasValues,
       in_: literalIn,
       kind: "LiteralType",
-      languageIn: shape.constraints.languageIn,
+      languageIn: shape.constraints.languageIn.chain(NonEmptyList.fromArray),
       maxExclusive: shape.constraints.maxExclusive,
       maxInclusive: shape.constraints.maxInclusive,
       minExclusive: shape.constraints.minExclusive,
