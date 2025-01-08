@@ -159,7 +159,7 @@ export function transformPropertyShapeToAstCompositeType(
   });
 
   if (
-    hasValues.length > 0 &&
+    hasValues.length === 0 &&
     memberItemTypes.every(
       (memberItemType) =>
         memberItemType.kind === "LiteralType" &&

@@ -49,10 +49,10 @@ export function tsFeatures(generated: {
   const tsFeatureIncludes = generated.tsFeatureIncludes.map(iriToTsFeature);
   const tsFeatureExcludes = generated.tsFeatureExcludes.map(iriToTsFeature);
 
-  if (tsFeatureIncludes) {
+  if (tsFeatureIncludes.length > 0) {
     return Maybe.of(new Set<TsFeature>(tsFeatureIncludes));
   }
-  if (tsFeatureExcludes) {
+  if (tsFeatureExcludes.length > 0) {
     const tsFeatures = new Set<TsFeature>(TsFeature.MEMBERS);
     for (const tsFeatureExclude of tsFeatureExcludes) {
       tsFeatures.delete(tsFeatureExclude);
