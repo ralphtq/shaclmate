@@ -25,6 +25,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -55,6 +56,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -97,6 +99,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -127,6 +130,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -169,6 +173,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -199,6 +204,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -225,6 +231,7 @@
           },
           "path": "http://example.com/falseBooleanProperty",
           "type": {
+            "hasValue": [],
             "kind": "LiteralType"
           }
         },
@@ -238,6 +245,7 @@
           },
           "path": "http://example.com/dateTimeProperty",
           "type": {
+            "hasValue": [],
             "kind": "LiteralType"
           }
         },
@@ -251,6 +259,7 @@
           },
           "path": "http://example.com/numberProperty",
           "type": {
+            "hasValue": [],
             "kind": "LiteralType"
           }
         },
@@ -264,6 +273,7 @@
           },
           "path": "http://example.com/stringProperty",
           "type": {
+            "hasValue": [],
             "kind": "LiteralType"
           }
         },
@@ -277,6 +287,7 @@
           },
           "path": "http://example.com/trueBooleanProperty",
           "type": {
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -307,6 +318,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -362,6 +374,7 @@
           "path": "http://example.com/externProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "IdentifierType",
               "nodeKinds": [
                 "BlankNode",
@@ -426,6 +439,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -456,6 +470,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -545,6 +560,7 @@
           "path": "http://example.com/inBooleansProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -561,6 +577,7 @@
           "path": "http://example.com/inDateTimesProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -577,6 +594,7 @@
           "path": "http://example.com/inIrisProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "IdentifierType",
               "nodeKinds": [
                 "NamedNode"
@@ -596,6 +614,7 @@
           "path": "http://example.com/inNumbersProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -612,6 +631,7 @@
           "path": "http://example.com/inStringsProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -641,6 +661,7 @@
           "path": "http://example.com/languageInProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -657,6 +678,7 @@
           "path": "http://example.com/literalProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -690,6 +712,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#string"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "ListType"
@@ -724,6 +747,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#string"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -745,6 +769,7 @@
                   "termType": "NamedNode",
                   "value": "http://www.w3.org/2001/XMLSchema#string"
                 },
+                "hasValue": [],
                 "kind": "LiteralType"
               },
               "kind": "ListType",
@@ -780,6 +805,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         },
@@ -798,6 +824,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#string"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -818,6 +845,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#string"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -838,6 +866,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#string"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -870,6 +899,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         },
@@ -887,6 +917,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         },
@@ -904,6 +935,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -935,6 +967,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#boolean"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -955,6 +988,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#dateTime"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -971,6 +1005,7 @@
           "path": "http://example.com/iriProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "IdentifierType",
               "nodeKinds": [
                 "NamedNode"
@@ -990,6 +1025,7 @@
           "path": "http://example.com/literalProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -1010,6 +1046,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#decimal"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -1030,6 +1067,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/2001/XMLSchema#string"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -1075,6 +1113,7 @@
           "path": "http://example.com/orLiteralsProperty",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "OptionType"
@@ -1094,9 +1133,11 @@
               "kind": "UnionType",
               "types": [
                 {
+                  "hasValue": [],
                   "kind": "LiteralType"
                 },
                 {
+                  "hasValue": [],
                   "kind": "IdentifierType",
                   "nodeKinds": [
                     "NamedNode"
@@ -1125,9 +1166,11 @@
                     "termType": "NamedNode",
                     "value": "http://www.w3.org/2001/XMLSchema#integer"
                   },
+                  "hasValue": [],
                   "kind": "LiteralType"
                 },
                 {
+                  "hasValue": [],
                   "kind": "IdentifierType",
                   "nodeKinds": [
                     "NamedNode"
@@ -1165,6 +1208,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -1195,6 +1239,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -1225,6 +1270,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -1255,6 +1301,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }
@@ -1285,6 +1332,7 @@
               "termType": "NamedNode",
               "value": "http://www.w3.org/2001/XMLSchema#string"
             },
+            "hasValue": [],
             "kind": "LiteralType"
           }
         }

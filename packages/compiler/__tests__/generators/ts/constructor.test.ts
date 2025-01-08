@@ -7,7 +7,7 @@ import { harnesses } from "./harnesses.js";
 describe("constructor", () => {
   it("construct a class instance from convertible parameters", ({ expect }) => {
     const instance = harnesses.nodeShapeWithPropertyCardinalities.instance;
-    expect(instance.emptyStringSetProperty.isNothing()).toStrictEqual(true);
+    expect(instance.emptyStringSetProperty).toHaveLength(0);
     expect(instance.optionalStringProperty.isNothing()).toStrictEqual(true);
     expect(instance.nonEmptyStringSetProperty).toStrictEqual(["test1"]);
     expect(instance.requiredStringProperty).toStrictEqual("test");

@@ -32,8 +32,7 @@ export class SetType extends Type {
         sourceTypeName: "undefined",
       });
       conversions.push({
-        conversionExpression: (value) =>
-          `purify.NonEmptyList.fromArray(${value})`,
+        conversionExpression: (value) => value,
         sourceTypeCheckExpression: (value) => `Array.isArray(${value})`,
         sourceTypeName: `readonly (${this.itemType.name})[]`,
       });

@@ -2300,7 +2300,7 @@ export class NodeShapeWithPropertyCardinalities {
   /**
    * Set: minCount implicitly=0, no maxCount or maxCount > 1
    */
-  readonly emptyStringSetProperty: purify.Maybe<purify.NonEmptyList<string>>;
+  readonly emptyStringSetProperty: readonly string[];
   private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   /**
    * Set: minCount implicitly=1, no maxCount or maxCount > 1
@@ -2317,29 +2317,16 @@ export class NodeShapeWithPropertyCardinalities {
   readonly type = "NodeShapeWithPropertyCardinalities";
 
   constructor(parameters: {
-    readonly emptyStringSetProperty?:
-      | purify.Maybe<purify.NonEmptyList<string>>
-      | purify.NonEmptyList<string>
-      | readonly string[];
+    readonly emptyStringSetProperty?: readonly string[];
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
     readonly nonEmptyStringSetProperty: purify.NonEmptyList<string>;
     readonly optionalStringProperty?: purify.Maybe<string> | string;
     readonly requiredStringProperty: string;
   }) {
     if (typeof parameters.emptyStringSetProperty === "undefined") {
-      this.emptyStringSetProperty = purify.Maybe.empty();
-    } else if (purify.Maybe.isMaybe(parameters.emptyStringSetProperty)) {
-      this.emptyStringSetProperty = parameters.emptyStringSetProperty;
-    } else if (
-      purify.NonEmptyList.isNonEmpty(parameters.emptyStringSetProperty)
-    ) {
-      this.emptyStringSetProperty = purify.Maybe.of(
-        parameters.emptyStringSetProperty,
-      );
+      this.emptyStringSetProperty = [];
     } else if (Array.isArray(parameters.emptyStringSetProperty)) {
-      this.emptyStringSetProperty = purify.NonEmptyList.fromArray(
-        parameters.emptyStringSetProperty,
-      );
+      this.emptyStringSetProperty = parameters.emptyStringSetProperty;
     } else {
       this.emptyStringSetProperty = parameters.emptyStringSetProperty as never;
     }
@@ -2373,8 +2360,8 @@ export class NodeShapeWithPropertyCardinalities {
   ): purifyHelpers.Equatable.EqualsResult {
     return ((left, right) =>
       purifyHelpers.Arrays.equals(
-        (left.extract() as readonly string[] | undefined) ?? [],
-        (right.extract() as readonly string[] | undefined) ?? [],
+        left,
+        right,
         purifyHelpers.Equatable.strictEquals,
       ))(this.emptyStringSetProperty, other.emptyStringSetProperty)
       .mapLeft((propertyValuesUnequal) => ({
@@ -2455,9 +2442,7 @@ export class NodeShapeWithPropertyCardinalities {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
-    for (const _item0 of (this.emptyStringSetProperty.extract() as
-      | readonly string[]
-      | undefined) ?? []) {
+    for (const _item0 of this.emptyStringSetProperty) {
       _hasher.update(_item0);
     }
 
@@ -2482,11 +2467,9 @@ export class NodeShapeWithPropertyCardinalities {
   } {
     return JSON.parse(
       JSON.stringify({
-        emptyStringSetProperty: (
-          (this.emptyStringSetProperty.extract() as
-            | readonly string[]
-            | undefined) ?? []
-        ).map((_item) => _item),
+        emptyStringSetProperty: this.emptyStringSetProperty.map(
+          (_item) => _item,
+        ),
         "@id": this.identifier.value,
         nonEmptyStringSetProperty: this.nonEmptyStringSetProperty.map(
           (_item) => _item,
@@ -2514,11 +2497,7 @@ export class NodeShapeWithPropertyCardinalities {
     });
     _resource.add(
       dataFactory.namedNode("http://example.com/emptyStringSetProperty"),
-      (
-        (this.emptyStringSetProperty.extract() as
-          | readonly string[]
-          | undefined) ?? []
-      ).map((_item) => _item),
+      this.emptyStringSetProperty.map((_item) => _item),
     );
     _resource.add(
       dataFactory.namedNode("http://example.com/nonEmptyStringSetProperty"),
@@ -2558,24 +2537,22 @@ export namespace NodeShapeWithPropertyCardinalities {
   > {
     const _emptyStringSetPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      purify.Maybe<purify.NonEmptyList<string>>
-    > = purify.Either.of(
-      purify.NonEmptyList.fromArray([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://example.com/emptyStringSetProperty"),
-            { unique: true },
-          )
-          .flatMap((_item) =>
-            _item
-              .toValues()
-              .head()
-              .chain((_value) => _value.toString())
-              .toMaybe()
-              .toList(),
-          ),
-      ]),
-    );
+      readonly string[]
+    > = purify.Either.of([
+      ..._resource
+        .values(
+          dataFactory.namedNode("http://example.com/emptyStringSetProperty"),
+          { unique: true },
+        )
+        .flatMap((_item) =>
+          _item
+            .toValues()
+            .head()
+            .chain((_value) => _value.toString())
+            .toMaybe()
+            .toList(),
+        ),
+    ]);
     if (_emptyStringSetPropertyEither.isLeft()) {
       return _emptyStringSetPropertyEither;
     }
