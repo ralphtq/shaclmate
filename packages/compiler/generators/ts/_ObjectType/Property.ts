@@ -83,6 +83,12 @@ export abstract class Property<
     parameters: Parameters<Type["propertyHashStatements"]>[0],
   ): readonly string[];
 
+  abstract interfaceConstructorStatements(parameters: {
+    variables: {
+      parameter: string;
+    };
+  }): readonly string[];
+
   abstract sparqlGraphPatternExpression(): Maybe<string>;
 
   abstract toJsonObjectMember(parameters: {

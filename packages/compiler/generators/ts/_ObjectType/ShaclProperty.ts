@@ -159,6 +159,30 @@ export class ShaclProperty extends Property<Type> {
     return this.type.propertyHashStatements(parameters);
   }
 
+  override interfaceConstructorStatements({
+    variables,
+  }: Parameters<
+    Property<Type>["interfaceConstructorStatements"]
+  >[0]): readonly string[] {
+    const typeConversions = this.type.conversions;
+    if (typeConversions.length === 1) {
+      return [`const ${this.name} = ${variables.parameter};`];
+    }
+    const statements: string[] = [`let ${this.name}: ${this.type.name};`];
+    const conversionBranches: string[] = [];
+    for (const conversion of this.type.conversions) {
+      conversionBranches.push(
+        `if (${conversion.sourceTypeCheckExpression(variables.parameter)}) { ${this.name} = ${conversion.conversionExpression(variables.parameter)}; }`,
+      );
+    }
+    // We shouldn't need this else, since the parameter now has the never type, but have to add it to appease the TypeScript compiler
+    conversionBranches.push(
+      `{ ${this.name} =( ${variables.parameter}) as never;\n }`,
+    );
+    statements.push(conversionBranches.join(" else "));
+    return statements;
+  }
+
   override sparqlGraphPatternExpression(): Maybe<string> {
     return Maybe.of(
       this.type

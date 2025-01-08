@@ -99,6 +99,12 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     return [];
   }
 
+  override interfaceConstructorStatements(): readonly string[] {
+    return !this.abstract
+      ? [`const ${this.name} = "${this.value}" as const`]
+      : [];
+  }
+
   override sparqlGraphPatternExpression(): Maybe<string> {
     return Maybe.empty();
   }

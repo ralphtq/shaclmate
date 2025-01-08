@@ -140,12 +140,14 @@ export class IdentifierProperty extends Property<IdentifierType> {
   override get constructorParametersPropertySignature(): Maybe<
     OptionalKind<PropertySignatureStructure>
   > {
-    if (this.abstract) {
+    if (this.objectTypeDeclarationType === "class" && this.abstract) {
       return Maybe.empty();
     }
 
     return Maybe.of({
-      hasQuestionToken: this.mintingStrategy !== "none",
+      hasQuestionToken:
+        this.objectTypeDeclarationType === "class" &&
+        this.mintingStrategy !== "none",
       isReadonly: true,
       name: this.name,
       type: this.type.name,
@@ -206,6 +208,14 @@ export class IdentifierProperty extends Property<IdentifierType> {
 
   override hashStatements(): readonly string[] {
     return [];
+  }
+
+  override interfaceConstructorStatements({
+    variables,
+  }: Parameters<
+    Property<IdentifierType>["interfaceConstructorStatements"]
+  >[0]): readonly string[] {
+    return [`const ${this.name} = ${variables.parameter}`];
   }
 
   override sparqlGraphPatternExpression(): Maybe<string> {
