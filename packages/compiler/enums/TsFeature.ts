@@ -1,4 +1,5 @@
 export type TsFeature =
+  | "create"
   | "equals"
   | "fromRdf"
   | "hash"
@@ -8,6 +9,7 @@ export type TsFeature =
 
 export namespace TsFeature {
   export const MEMBERS: readonly TsFeature[] = [
+    "create",
     "equals",
     "fromRdf",
     "hash",
