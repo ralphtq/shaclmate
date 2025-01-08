@@ -58,21 +58,6 @@ export class IdentifierProperty extends Property<IdentifierType> {
     this.override = override;
   }
 
-  override get classConstructorParametersPropertySignature(): Maybe<
-    OptionalKind<PropertySignatureStructure>
-  > {
-    if (this.abstract) {
-      return Maybe.empty();
-    }
-
-    return Maybe.of({
-      hasQuestionToken: this.mintingStrategy !== "none",
-      isReadonly: true,
-      name: this.name,
-      type: this.type.name,
-    });
-  }
-
   override get classGetAccessorDeclaration(): Maybe<
     OptionalKind<GetAccessorDeclarationStructure>
   > {
@@ -152,6 +137,23 @@ export class IdentifierProperty extends Property<IdentifierType> {
     }
   }
 
+  override get constructorParametersPropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    if (this.objectTypeDeclarationType === "class" && this.abstract) {
+      return Maybe.empty();
+    }
+
+    return Maybe.of({
+      hasQuestionToken:
+        this.objectTypeDeclarationType === "class" &&
+        this.mintingStrategy !== "none",
+      isReadonly: true,
+      name: this.name,
+      type: this.type.name,
+    });
+  }
+
   override get declarationImports(): readonly Import[] {
     if (this.objectTypeDeclarationType === "class") {
       switch (this.mintingStrategy) {
@@ -206,6 +208,14 @@ export class IdentifierProperty extends Property<IdentifierType> {
 
   override hashStatements(): readonly string[] {
     return [];
+  }
+
+  override interfaceConstructorStatements({
+    variables,
+  }: Parameters<
+    Property<IdentifierType>["interfaceConstructorStatements"]
+  >[0]): readonly string[] {
+    return [`const ${this.name} = ${variables.parameter}`];
   }
 
   override sparqlGraphPatternExpression(): Maybe<string> {

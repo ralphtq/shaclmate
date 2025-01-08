@@ -43,7 +43,25 @@ export class ShaclProperty extends Property<Type> {
     this.path = path;
   }
 
-  override get classConstructorParametersPropertySignature(): Maybe<
+  override get classGetAccessorDeclaration(): Maybe<
+    OptionalKind<GetAccessorDeclarationStructure>
+  > {
+    return Maybe.empty();
+  }
+
+  override get classPropertyDeclaration(): Maybe<
+    OptionalKind<PropertyDeclarationStructure>
+  > {
+    return Maybe.of({
+      isReadonly: !this.mutable,
+      leadingTrivia: this.declarationComment,
+      name: this.name,
+      scope: Property.visibilityToScope(this.visibility),
+      type: this.type.name,
+    });
+  }
+
+  override get constructorParametersPropertySignature(): Maybe<
     OptionalKind<PropertySignatureStructure>
   > {
     let hasQuestionToken = false;
@@ -62,24 +80,6 @@ export class ShaclProperty extends Property<Type> {
       leadingTrivia: this.declarationComment,
       name: this.name,
       type: [...typeNames].sort().join(" | "),
-    });
-  }
-
-  override get classGetAccessorDeclaration(): Maybe<
-    OptionalKind<GetAccessorDeclarationStructure>
-  > {
-    return Maybe.empty();
-  }
-
-  override get classPropertyDeclaration(): Maybe<
-    OptionalKind<PropertyDeclarationStructure>
-  > {
-    return Maybe.of({
-      isReadonly: !this.mutable,
-      leadingTrivia: this.declarationComment,
-      name: this.name,
-      scope: Property.visibilityToScope(this.visibility),
-      type: this.type.name,
     });
   }
 
@@ -132,27 +132,8 @@ export class ShaclProperty extends Property<Type> {
     }
     const statements: string[] = [];
     for (const conversion of this.type.conversions) {
-      let sourceTypeCheckExpression = conversion.sourceTypeCheckExpression
-        ? conversion.sourceTypeCheckExpression(variables.parameter)
-        : undefined;
-      if (!sourceTypeCheckExpression) {
-        switch (conversion.sourceTypeName) {
-          case "boolean":
-          case "number":
-          case "string":
-          case "undefined": {
-            sourceTypeCheckExpression = `typeof ${variables.parameter} === "${conversion.sourceTypeName}"`;
-            break;
-          }
-          default: {
-            sourceTypeCheckExpression = `typeof ${variables.parameter} === "object"`;
-            break;
-          }
-        }
-      }
-
       statements.push(
-        `if (${sourceTypeCheckExpression}) { this.${this.name} = ${conversion.conversionExpression(variables.parameter)}; }`,
+        `if (${conversion.sourceTypeCheckExpression(variables.parameter)}) { this.${this.name} = ${conversion.conversionExpression(variables.parameter)}; }`,
       );
     }
     // We shouldn't need this else, since the parameter now has the never type, but have to add it to appease the TypeScript compiler
@@ -176,6 +157,30 @@ export class ShaclProperty extends Property<Type> {
     parameters: Parameters<Property<Type>["hashStatements"]>[0],
   ): readonly string[] {
     return this.type.propertyHashStatements(parameters);
+  }
+
+  override interfaceConstructorStatements({
+    variables,
+  }: Parameters<
+    Property<Type>["interfaceConstructorStatements"]
+  >[0]): readonly string[] {
+    const typeConversions = this.type.conversions;
+    if (typeConversions.length === 1) {
+      return [`const ${this.name} = ${variables.parameter};`];
+    }
+    const statements: string[] = [`let ${this.name}: ${this.type.name};`];
+    const conversionBranches: string[] = [];
+    for (const conversion of this.type.conversions) {
+      conversionBranches.push(
+        `if (${conversion.sourceTypeCheckExpression(variables.parameter)}) { ${this.name} = ${conversion.conversionExpression(variables.parameter)}; }`,
+      );
+    }
+    // We shouldn't need this else, since the parameter now has the never type, but have to add it to appease the TypeScript compiler
+    conversionBranches.push(
+      `{ ${this.name} =( ${variables.parameter}) as never;\n }`,
+    );
+    statements.push(conversionBranches.join(" else "));
+    return statements;
   }
 
   override sparqlGraphPatternExpression(): Maybe<string> {

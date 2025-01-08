@@ -145,6 +145,7 @@ export class ObjectType extends DeclaredType {
     ];
 
     const moduleStatements: StatementStructures[] = [
+      ..._ObjectType.createFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.fromRdfFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),

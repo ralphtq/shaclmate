@@ -19,13 +19,27 @@ import { toRdfFunctionOrMethodDeclaration } from "./toRdfFunctionOrMethodDeclara
 function constructorDeclaration(
   this: ObjectType,
 ): OptionalKind<ConstructorDeclarationStructure> {
-  const propertyStatements: string[] = [];
-  for (const property of this.properties) {
-    for (const statement of property.classConstructorStatements({
-      variables: { parameter: `parameters.${property.name}` },
-    })) {
-      propertyStatements.push(statement);
-    }
+  const parametersPropertySignatures = this.properties.flatMap((property) =>
+    property.constructorParametersPropertySignature
+      .map(
+        (propertySignature) =>
+          `readonly ${propertySignature.name}${propertySignature.hasQuestionToken ? "?" : ""}: ${propertySignature.type}`,
+      )
+      .toList(),
+  );
+
+  let parametersType: string;
+  if (parametersPropertySignatures.length > 0) {
+    parametersType = `{ ${parametersPropertySignatures.join(", ")} }`;
+  } else {
+    parametersType = "";
+  }
+  if (this.parentObjectTypes.length > 0) {
+    // Pass up parameters
+    parametersType = `${parametersType}${parametersType.length > 0 ? " & " : ""}ConstructorParameters<typeof ${this.parentObjectTypes[0].name}>[0]`;
+  }
+  if (parametersType.length === 0) {
+    parametersType = "object";
   }
 
   const statements: (string | StatementStructures)[] = [];
@@ -34,33 +48,13 @@ function constructorDeclaration(
     // of trying to sense whether we need to or not.
     statements.push("super(parameters);");
   }
-  statements.push(...propertyStatements);
 
-  const constructorParameterPropertySignatures = this.properties.flatMap(
-    (property) =>
-      property.classConstructorParametersPropertySignature
-        .map(
-          (propertySignature) =>
-            `readonly ${propertySignature.name}${propertySignature.hasQuestionToken ? "?" : ""}: ${propertySignature.type}`,
-        )
-        .toList(),
+  const propertyStatements = this.properties.flatMap((property) =>
+    property.classConstructorStatements({
+      variables: { parameter: `parameters.${property.name}` },
+    }),
   );
-
-  let constructorParametersType: string;
-  if (constructorParameterPropertySignatures.length > 0) {
-    constructorParametersType = `{ ${constructorParameterPropertySignatures.join(
-      ", ",
-    )} }`;
-  } else {
-    constructorParametersType = "";
-  }
-  if (this.parentObjectTypes.length > 0) {
-    // Pass up parameters
-    constructorParametersType = `${constructorParametersType}${constructorParametersType.length > 0 ? " & " : ""}ConstructorParameters<typeof ${this.parentObjectTypes[0].name}>[0]`;
-  }
-  if (constructorParametersType.length === 0) {
-    constructorParametersType = "object";
-  }
+  statements.push(...propertyStatements);
 
   return {
     leadingTrivia:
@@ -70,7 +64,7 @@ function constructorDeclaration(
     parameters: [
       {
         name: statements.length > 0 ? "parameters" : "_parameters",
-        type: constructorParametersType,
+        type: parametersType,
       },
     ],
     statements,

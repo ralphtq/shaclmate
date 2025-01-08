@@ -110,7 +110,8 @@ shaclmate:ShaclmateShape-name
 
 shaclmate:tsFeatureExcludes
     a sh:PropertyShape ;
-    sh:in (shaclmate:_TsFeature_Equals
+    sh:in (shaclmate:_TsFeature_Create
+        shaclmate:_TsFeature_Equals
         shaclmate:_TsFeature_FromRdf
         shaclmate:_TsFeature_Hash
         shaclmate:_TsFeature_SparqlGraphPatterns
@@ -122,7 +123,8 @@ shaclmate:tsFeatureExcludes
 
 shaclmate:tsFeatureIncludes
     a sh:PropertyShape ;
-    sh:in (shaclmate:_TsFeature_Equals
+    sh:in (shaclmate:_TsFeature_Create
+        shaclmate:_TsFeature_Equals
         shaclmate:_TsFeature_FromRdf
         shaclmate:_TsFeature_Hash
         shaclmate:_TsFeature_SparqlGraphPatterns

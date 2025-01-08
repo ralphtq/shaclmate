@@ -4,6 +4,7 @@ import { TsFeature } from "../enums/index.js";
 
 function iriToTsFeature(
   iri: rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
@@ -13,6 +14,8 @@ function iriToTsFeature(
   >,
 ): TsFeature {
   switch (iri.value) {
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+      return "create";
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
       return "equals";
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
@@ -30,6 +33,7 @@ function iriToTsFeature(
 
 export function tsFeatures(generated: {
   readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
@@ -38,6 +42,7 @@ export function tsFeatures(generated: {
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
   >[];
   readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
