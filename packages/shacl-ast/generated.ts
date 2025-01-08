@@ -50,12 +50,6 @@ export interface BaseShaclCoreShape {
     purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
   >;
   readonly patterns: purify.Maybe<purify.NonEmptyList<string>>;
-  readonly targetClass: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
-  readonly targetNodes: purify.Maybe<
-    purify.NonEmptyList<rdfjs.Literal | rdfjs.NamedNode>
-  >;
-  readonly targetObjectsOf: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
-  readonly targetSubjectsOf: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
   readonly type: "ShaclCoreNodeShape" | "ShaclCorePropertyShape";
   readonly xone: purify.Maybe<
     purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
@@ -121,12 +115,6 @@ export namespace BaseShaclCoreShape {
         purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
       >;
       patterns: purify.Maybe<purify.NonEmptyList<string>>;
-      targetClass: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
-      targetNodes: purify.Maybe<
-        purify.NonEmptyList<rdfjs.Literal | rdfjs.NamedNode>
-      >;
-      targetObjectsOf: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
-      targetSubjectsOf: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
       xone: purify.Maybe<
         purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
       >;
@@ -857,128 +845,6 @@ export namespace BaseShaclCoreShape {
     }
 
     const patterns = _patternsEither.unsafeCoerce();
-    const _targetClassEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>
-    > = purify.Either.of(
-      purify.NonEmptyList.fromArray([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#targetClass"),
-            { unique: true },
-          )
-          .flatMap((_item) =>
-            _item
-              .toValues()
-              .head()
-              .chain((_value) => _value.toIri())
-              .toMaybe()
-              .toList(),
-          ),
-      ]),
-    );
-    if (_targetClassEither.isLeft()) {
-      return _targetClassEither;
-    }
-
-    const targetClass = _targetClassEither.unsafeCoerce();
-    const _targetNodesEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      purify.Maybe<purify.NonEmptyList<rdfjs.Literal | rdfjs.NamedNode>>
-    > = purify.Either.of(
-      purify.NonEmptyList.fromArray([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#targetNode"),
-            { unique: true },
-          )
-          .flatMap((_item) =>
-            _item
-              .toValues()
-              .head()
-              .chain((_value) =>
-                purify.Either.of(_value.toTerm()).chain((term) => {
-                  switch (term.termType) {
-                    case "Literal":
-                    case "NamedNode":
-                      return purify.Either.of(term);
-                    default:
-                      return purify.Left(
-                        new rdfjsResource.Resource.MistypedValueError({
-                          actualValue: term,
-                          expectedValueType:
-                            "(rdfjs.Literal | rdfjs.NamedNode)",
-                          focusResource: _resource,
-                          predicate: dataFactory.namedNode(
-                            "http://www.w3.org/ns/shacl#targetNode",
-                          ),
-                        }),
-                      );
-                  }
-                }),
-              )
-              .toMaybe()
-              .toList(),
-          ),
-      ]),
-    );
-    if (_targetNodesEither.isLeft()) {
-      return _targetNodesEither;
-    }
-
-    const targetNodes = _targetNodesEither.unsafeCoerce();
-    const _targetObjectsOfEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>
-    > = purify.Either.of(
-      purify.NonEmptyList.fromArray([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#targetObjectsOf"),
-            { unique: true },
-          )
-          .flatMap((_item) =>
-            _item
-              .toValues()
-              .head()
-              .chain((_value) => _value.toIri())
-              .toMaybe()
-              .toList(),
-          ),
-      ]),
-    );
-    if (_targetObjectsOfEither.isLeft()) {
-      return _targetObjectsOfEither;
-    }
-
-    const targetObjectsOf = _targetObjectsOfEither.unsafeCoerce();
-    const _targetSubjectsOfEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>
-    > = purify.Either.of(
-      purify.NonEmptyList.fromArray([
-        ..._resource
-          .values(
-            dataFactory.namedNode(
-              "http://www.w3.org/ns/shacl#targetSubjectsOf",
-            ),
-            { unique: true },
-          )
-          .flatMap((_item) =>
-            _item
-              .toValues()
-              .head()
-              .chain((_value) => _value.toIri())
-              .toMaybe()
-              .toList(),
-          ),
-      ]),
-    );
-    if (_targetSubjectsOfEither.isLeft()) {
-      return _targetSubjectsOfEither;
-    }
-
-    const targetSubjectsOf = _targetSubjectsOfEither.unsafeCoerce();
     const _xoneEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<
@@ -1041,10 +907,6 @@ export namespace BaseShaclCoreShape {
       not,
       or,
       patterns,
-      targetClass,
-      targetNodes,
-      targetObjectsOf,
-      targetSubjectsOf,
       xone,
     });
   }
@@ -1295,10 +1157,6 @@ export namespace ShaclCorePropertyShape {
         not: _super.not,
         or: _super.or,
         patterns: _super.patterns,
-        targetClass: _super.targetClass,
-        targetNodes: _super.targetNodes,
-        targetObjectsOf: _super.targetObjectsOf,
-        targetSubjectsOf: _super.targetSubjectsOf,
         xone: _super.xone,
         defaultValue,
         descriptions,
@@ -1574,10 +1432,6 @@ export namespace ShaclCoreNodeShape {
         not: _super.not,
         or: _super.or,
         patterns: _super.patterns,
-        targetClass: _super.targetClass,
-        targetNodes: _super.targetNodes,
-        targetObjectsOf: _super.targetObjectsOf,
-        targetSubjectsOf: _super.targetSubjectsOf,
         xone: _super.xone,
         closed,
         ignoredProperties,

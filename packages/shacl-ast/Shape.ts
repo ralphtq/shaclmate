@@ -20,7 +20,6 @@ export abstract class Shape<
     PropertyShapeT,
     ShapeT
   >;
-  readonly targets: Shape.Targets;
 
   constructor(
     private readonly generatedShaclCoreShape: Omit<
@@ -34,9 +33,7 @@ export abstract class Shape<
       PropertyShapeT,
       ShapeT
     >,
-  ) {
-    this.targets = new Shape.Targets(this.generatedShaclCoreShape);
-  }
+  ) {}
 
   get comments(): Maybe<NonEmptyList<Literal>> {
     return this.generatedShaclCoreShape.comments;
@@ -226,28 +223,6 @@ export namespace Shape {
           ),
         ),
       );
-    }
-  }
-
-  export class Targets {
-    constructor(
-      private readonly generatedShape: Omit<generated.ShaclCoreShape, "type">,
-    ) {}
-
-    get targetClasses(): Maybe<NonEmptyList<NamedNode>> {
-      return this.generatedShape.classes;
-    }
-
-    get targetNodes(): Maybe<NonEmptyList<Literal | NamedNode>> {
-      return this.generatedShape.targetNodes;
-    }
-
-    get targetObjectsOf(): Maybe<NonEmptyList<NamedNode>> {
-      return this.generatedShape.targetObjectsOf;
-    }
-
-    get targetSubjectsOf(): Maybe<NonEmptyList<NamedNode>> {
-      return this.generatedShape.targetSubjectsOf;
     }
   }
 }
