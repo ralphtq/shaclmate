@@ -384,6 +384,7 @@ shaclmate:ShaclCorePropertyShape-path
 shaclmate:ShaclCorePropertyShape-uniqueLang
     a sh:PropertyShape ;
     sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
     sh:name "uniqueLang" ;
     sh:path sh:uniqueLang .
 

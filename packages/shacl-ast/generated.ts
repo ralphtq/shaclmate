@@ -1062,7 +1062,7 @@ export interface ShaclCorePropertyShape extends BaseShaclCoreShape {
   readonly order: purify.Maybe<number>;
   readonly path: PropertyPath;
   readonly type: "ShaclCorePropertyShape";
-  readonly uniqueLang: purify.Maybe<purify.NonEmptyList<boolean>>;
+  readonly uniqueLang: purify.Maybe<boolean>;
 }
 
 export namespace ShaclCorePropertyShape {
@@ -1254,23 +1254,16 @@ export namespace ShaclCorePropertyShape {
       const type = "ShaclCorePropertyShape" as const;
       const _uniqueLangEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        purify.Maybe<purify.NonEmptyList<boolean>>
+        purify.Maybe<boolean>
       > = purify.Either.of(
-        purify.NonEmptyList.fromArray([
-          ..._resource
-            .values(
-              dataFactory.namedNode("http://www.w3.org/ns/shacl#uniqueLang"),
-              { unique: true },
-            )
-            .flatMap((_item) =>
-              _item
-                .toValues()
-                .head()
-                .chain((_value) => _value.toBoolean())
-                .toMaybe()
-                .toList(),
-            ),
-        ]),
+        _resource
+          .values(
+            dataFactory.namedNode("http://www.w3.org/ns/shacl#uniqueLang"),
+            { unique: true },
+          )
+          .head()
+          .chain((_value) => _value.toBoolean())
+          .toMaybe(),
       );
       if (_uniqueLangEither.isLeft()) {
         return _uniqueLangEither;
