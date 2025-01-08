@@ -4,23 +4,23 @@ import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
 import * as rdfjsResource from "rdfjs-resource";
 export interface BaseShaclCoreShape {
-  readonly and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
-  readonly classes: readonly rdfjs.NamedNode[];
-  readonly comments: readonly rdfjs.Literal[];
+  readonly and: purify.Maybe<
+    purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+  >;
+  readonly classes: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
+  readonly comments: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
   readonly datatype: purify.Maybe<rdfjs.NamedNode>;
   readonly deactivated: purify.Maybe<boolean>;
-  readonly flags: readonly string[];
-  readonly hasValues: readonly (
-    | rdfjs.BlankNode
-    | rdfjs.NamedNode
-    | rdfjs.Literal
-  )[];
+  readonly flags: purify.Maybe<purify.NonEmptyList<string>>;
+  readonly hasValues: purify.Maybe<
+    purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
+  >;
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly in_: purify.Maybe<
     readonly (rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal)[]
   >;
   readonly isDefinedBy: purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode>;
-  readonly labels: readonly rdfjs.Literal[];
+  readonly labels: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
   readonly languageIn: purify.Maybe<readonly string[]>;
   readonly maxCount: purify.Maybe<number>;
   readonly maxExclusive: purify.Maybe<rdfjs.Literal>;
@@ -40,20 +40,30 @@ export interface BaseShaclCoreShape {
       | "http://www.w3.org/ns/shacl#Literal"
     >
   >;
-  readonly nodes: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-  readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-  readonly or: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
-  readonly patterns: readonly string[];
-  readonly targetClass: readonly rdfjs.NamedNode[];
-  readonly targetNodes: readonly (rdfjs.Literal | rdfjs.NamedNode)[];
-  readonly targetObjectsOf: readonly rdfjs.NamedNode[];
-  readonly targetSubjectsOf: readonly rdfjs.NamedNode[];
+  readonly nodes: purify.Maybe<
+    purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>
+  >;
+  readonly not: purify.Maybe<
+    purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>
+  >;
+  readonly or: purify.Maybe<
+    purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+  >;
+  readonly patterns: purify.Maybe<purify.NonEmptyList<string>>;
+  readonly targetClass: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
+  readonly targetNodes: purify.Maybe<
+    purify.NonEmptyList<rdfjs.Literal | rdfjs.NamedNode>
+  >;
+  readonly targetObjectsOf: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
+  readonly targetSubjectsOf: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
   readonly type:
     | "ShaclCoreNodeShape"
     | "ShaclCorePropertyShape"
     | "ShaclmateNodeShape"
     | "ShaclmatePropertyShape";
-  readonly xone: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
+  readonly xone: purify.Maybe<
+    purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+  >;
 }
 
 export namespace BaseShaclCoreShape {
@@ -71,19 +81,23 @@ export namespace BaseShaclCoreShape {
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
     {
-      and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
-      classes: readonly rdfjs.NamedNode[];
-      comments: readonly rdfjs.Literal[];
+      and: purify.Maybe<
+        purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+      >;
+      classes: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
+      comments: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
       datatype: purify.Maybe<rdfjs.NamedNode>;
       deactivated: purify.Maybe<boolean>;
-      flags: readonly string[];
-      hasValues: readonly (rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal)[];
+      flags: purify.Maybe<purify.NonEmptyList<string>>;
+      hasValues: purify.Maybe<
+        purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
+      >;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       in_: purify.Maybe<
         readonly (rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal)[]
       >;
       isDefinedBy: purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode>;
-      labels: readonly rdfjs.Literal[];
+      labels: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
       languageIn: purify.Maybe<readonly string[]>;
       maxCount: purify.Maybe<number>;
       maxExclusive: purify.Maybe<rdfjs.Literal>;
@@ -103,44 +117,56 @@ export namespace BaseShaclCoreShape {
           | "http://www.w3.org/ns/shacl#Literal"
         >
       >;
-      nodes: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-      not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-      or: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
-      patterns: readonly string[];
-      targetClass: readonly rdfjs.NamedNode[];
-      targetNodes: readonly (rdfjs.Literal | rdfjs.NamedNode)[];
-      targetObjectsOf: readonly rdfjs.NamedNode[];
-      targetSubjectsOf: readonly rdfjs.NamedNode[];
-      xone: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
+      nodes: purify.Maybe<
+        purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>
+      >;
+      not: purify.Maybe<purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>>;
+      or: purify.Maybe<
+        purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+      >;
+      patterns: purify.Maybe<purify.NonEmptyList<string>>;
+      targetClass: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
+      targetNodes: purify.Maybe<
+        purify.NonEmptyList<rdfjs.Literal | rdfjs.NamedNode>
+      >;
+      targetObjectsOf: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
+      targetSubjectsOf: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
+      xone: purify.Maybe<
+        purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+      >;
     }
   > {
     const _andEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#and"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIdentifier())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<
+        purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+      >
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#and"), {
+            unique: true,
+          })
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((value) => value.toList())
+              .map((values) =>
+                values.flatMap((_value) =>
+                  _value
+                    .toValues()
+                    .head()
+                    .chain((_value) => _value.toIdentifier())
+                    .toMaybe()
+                    .toList(),
+                ),
+              )
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_andEither.isLeft()) {
       return _andEither;
     }
@@ -148,21 +174,23 @@ export namespace BaseShaclCoreShape {
     const and = _andEither.unsafeCoerce();
     const _classesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.NamedNode[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#class"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIri())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#class"), {
+            unique: true,
+          })
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => _value.toIri())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_classesEither.isLeft()) {
       return _classesEither;
     }
@@ -170,35 +198,39 @@ export namespace BaseShaclCoreShape {
     const classes = _classesEither.unsafeCoerce();
     const _commentsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.Literal[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#comment"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .filter((_value) => {
-              const _languageInOrDefault = _languageIn ?? [];
-              if (_languageInOrDefault.length === 0) {
-                return true;
-              }
-              const _valueLiteral = _value.toLiteral().toMaybe().extract();
-              if (typeof _valueLiteral === "undefined") {
-                return false;
-              }
-              return _languageInOrDefault.some(
-                (_languageIn) => _languageIn === _valueLiteral.language,
-              );
-            })
-            .head()
-            .chain((_value) => _value.toLiteral())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode(
+              "http://www.w3.org/2000/01/rdf-schema#comment",
+            ),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .filter((_value) => {
+                const _languageInOrDefault = _languageIn ?? [];
+                if (_languageInOrDefault.length === 0) {
+                  return true;
+                }
+                const _valueLiteral = _value.toLiteral().toMaybe().extract();
+                if (typeof _valueLiteral === "undefined") {
+                  return false;
+                }
+                return _languageInOrDefault.some(
+                  (_languageIn) => _languageIn === _valueLiteral.language,
+                );
+              })
+              .head()
+              .chain((_value) => _value.toLiteral())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_commentsEither.isLeft()) {
       return _commentsEither;
     }
@@ -241,21 +273,23 @@ export namespace BaseShaclCoreShape {
     const deactivated = _deactivatedEither.unsafeCoerce();
     const _flagsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly string[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#flags"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toString())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<string>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#flags"), {
+            unique: true,
+          })
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => _value.toString())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_flagsEither.isLeft()) {
       return _flagsEither;
     }
@@ -263,21 +297,26 @@ export namespace BaseShaclCoreShape {
     const flags = _flagsEither.unsafeCoerce();
     const _hasValuesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal)[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#hasValue"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => purify.Either.of(_value.toTerm()))
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<
+        purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
+      >
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode("http://www.w3.org/ns/shacl#hasValue"),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => purify.Either.of(_value.toTerm()))
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_hasValuesEither.isLeft()) {
       return _hasValuesEither;
     }
@@ -335,35 +374,37 @@ export namespace BaseShaclCoreShape {
     const isDefinedBy = _isDefinedByEither.unsafeCoerce();
     const _labelsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.Literal[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .filter((_value) => {
-              const _languageInOrDefault = _languageIn ?? [];
-              if (_languageInOrDefault.length === 0) {
-                return true;
-              }
-              const _valueLiteral = _value.toLiteral().toMaybe().extract();
-              if (typeof _valueLiteral === "undefined") {
-                return false;
-              }
-              return _languageInOrDefault.some(
-                (_languageIn) => _languageIn === _valueLiteral.language,
-              );
-            })
-            .head()
-            .chain((_value) => _value.toLiteral())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .filter((_value) => {
+                const _languageInOrDefault = _languageIn ?? [];
+                if (_languageInOrDefault.length === 0) {
+                  return true;
+                }
+                const _valueLiteral = _value.toLiteral().toMaybe().extract();
+                if (typeof _valueLiteral === "undefined") {
+                  return false;
+                }
+                return _languageInOrDefault.some(
+                  (_languageIn) => _languageIn === _valueLiteral.language,
+                );
+              })
+              .head()
+              .chain((_value) => _value.toLiteral())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_labelsEither.isLeft()) {
       return _labelsEither;
     }
@@ -714,21 +755,23 @@ export namespace BaseShaclCoreShape {
     const nodeKind = _nodeKindEither.unsafeCoerce();
     const _nodesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#node"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIdentifier())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#node"), {
+            unique: true,
+          })
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => _value.toIdentifier())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_nodesEither.isLeft()) {
       return _nodesEither;
     }
@@ -736,21 +779,23 @@ export namespace BaseShaclCoreShape {
     const nodes = _nodesEither.unsafeCoerce();
     const _notEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#not"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIdentifier())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#not"), {
+            unique: true,
+          })
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => _value.toIdentifier())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_notEither.isLeft()) {
       return _notEither;
     }
@@ -758,31 +803,35 @@ export namespace BaseShaclCoreShape {
     const not = _notEither.unsafeCoerce();
     const _orEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#or"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIdentifier())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<
+        purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+      >
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#or"), {
+            unique: true,
+          })
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((value) => value.toList())
+              .map((values) =>
+                values.flatMap((_value) =>
+                  _value
+                    .toValues()
+                    .head()
+                    .chain((_value) => _value.toIdentifier())
+                    .toMaybe()
+                    .toList(),
+                ),
+              )
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_orEither.isLeft()) {
       return _orEither;
     }
@@ -790,21 +839,23 @@ export namespace BaseShaclCoreShape {
     const or = _orEither.unsafeCoerce();
     const _patternsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly string[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#pattern"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toString())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<string>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#pattern"), {
+            unique: true,
+          })
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => _value.toString())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_patternsEither.isLeft()) {
       return _patternsEither;
     }
@@ -812,22 +863,24 @@ export namespace BaseShaclCoreShape {
     const patterns = _patternsEither.unsafeCoerce();
     const _targetClassEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.NamedNode[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#targetClass"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIri())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode("http://www.w3.org/ns/shacl#targetClass"),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => _value.toIri())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_targetClassEither.isLeft()) {
       return _targetClassEither;
     }
@@ -835,41 +888,44 @@ export namespace BaseShaclCoreShape {
     const targetClass = _targetClassEither.unsafeCoerce();
     const _targetNodesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (rdfjs.Literal | rdfjs.NamedNode)[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#targetNode"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) =>
-              purify.Either.of(_value.toTerm()).chain((term) => {
-                switch (term.termType) {
-                  case "Literal":
-                  case "NamedNode":
-                    return purify.Either.of(term);
-                  default:
-                    return purify.Left(
-                      new rdfjsResource.Resource.MistypedValueError({
-                        actualValue: term,
-                        expectedValueType: "(rdfjs.Literal | rdfjs.NamedNode)",
-                        focusResource: _resource,
-                        predicate: dataFactory.namedNode(
-                          "http://www.w3.org/ns/shacl#targetNode",
-                        ),
-                      }),
-                    );
-                }
-              }),
-            )
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.Literal | rdfjs.NamedNode>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode("http://www.w3.org/ns/shacl#targetNode"),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) =>
+                purify.Either.of(_value.toTerm()).chain((term) => {
+                  switch (term.termType) {
+                    case "Literal":
+                    case "NamedNode":
+                      return purify.Either.of(term);
+                    default:
+                      return purify.Left(
+                        new rdfjsResource.Resource.MistypedValueError({
+                          actualValue: term,
+                          expectedValueType:
+                            "(rdfjs.Literal | rdfjs.NamedNode)",
+                          focusResource: _resource,
+                          predicate: dataFactory.namedNode(
+                            "http://www.w3.org/ns/shacl#targetNode",
+                          ),
+                        }),
+                      );
+                  }
+                }),
+              )
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_targetNodesEither.isLeft()) {
       return _targetNodesEither;
     }
@@ -877,22 +933,24 @@ export namespace BaseShaclCoreShape {
     const targetNodes = _targetNodesEither.unsafeCoerce();
     const _targetObjectsOfEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.NamedNode[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#targetObjectsOf"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIri())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode("http://www.w3.org/ns/shacl#targetObjectsOf"),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => _value.toIri())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_targetObjectsOfEither.isLeft()) {
       return _targetObjectsOfEither;
     }
@@ -900,22 +958,26 @@ export namespace BaseShaclCoreShape {
     const targetObjectsOf = _targetObjectsOfEither.unsafeCoerce();
     const _targetSubjectsOfEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.NamedNode[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#targetSubjectsOf"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIri())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode(
+              "http://www.w3.org/ns/shacl#targetSubjectsOf",
+            ),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((_value) => _value.toIri())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_targetSubjectsOfEither.isLeft()) {
       return _targetSubjectsOfEither;
     }
@@ -923,31 +985,35 @@ export namespace BaseShaclCoreShape {
     const targetSubjectsOf = _targetSubjectsOfEither.unsafeCoerce();
     const _xoneEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
-    > = purify.Either.of([
-      ..._resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#xone"), {
-          unique: true,
-        })
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((value) => value.toList())
-            .map((values) =>
-              values.flatMap((_value) =>
-                _value
-                  .toValues()
-                  .head()
-                  .chain((_value) => _value.toIdentifier())
-                  .toMaybe()
-                  .toList(),
-              ),
-            )
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<
+        purify.NonEmptyList<readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]>
+      >
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#xone"), {
+            unique: true,
+          })
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .head()
+              .chain((value) => value.toList())
+              .map((values) =>
+                values.flatMap((_value) =>
+                  _value
+                    .toValues()
+                    .head()
+                    .chain((_value) => _value.toIdentifier())
+                    .toMaybe()
+                    .toList(),
+                ),
+              )
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_xoneEither.isLeft()) {
       return _xoneEither;
     }
@@ -991,14 +1057,16 @@ export interface ShaclCorePropertyShape extends BaseShaclCoreShape {
   readonly defaultValue: purify.Maybe<
     rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
   >;
-  readonly descriptions: readonly rdfjs.Literal[];
-  readonly groups: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
+  readonly descriptions: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
+  readonly groups: purify.Maybe<
+    purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>
+  >;
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly names: readonly rdfjs.Literal[];
+  readonly names: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
   readonly order: purify.Maybe<number>;
   readonly path: PropertyPath;
   readonly type: "ShaclCorePropertyShape" | "ShaclmatePropertyShape";
-  readonly uniqueLang: readonly boolean[];
+  readonly uniqueLang: purify.Maybe<purify.NonEmptyList<boolean>>;
 }
 
 export namespace ShaclCorePropertyShape {
@@ -1055,56 +1123,60 @@ export namespace ShaclCorePropertyShape {
       const defaultValue = _defaultValueEither.unsafeCoerce();
       const _descriptionsEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly rdfjs.Literal[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#description"),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .filter((_value) => {
-                const _languageInOrDefault = _languageIn ?? [];
-                if (_languageInOrDefault.length === 0) {
-                  return true;
-                }
-                const _valueLiteral = _value.toLiteral().toMaybe().extract();
-                if (typeof _valueLiteral === "undefined") {
-                  return false;
-                }
-                return _languageInOrDefault.some(
-                  (_languageIn) => _languageIn === _valueLiteral.language,
-                );
-              })
-              .head()
-              .chain((_value) => _value.toLiteral())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode("http://www.w3.org/ns/shacl#description"),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .filter((_value) => {
+                  const _languageInOrDefault = _languageIn ?? [];
+                  if (_languageInOrDefault.length === 0) {
+                    return true;
+                  }
+                  const _valueLiteral = _value.toLiteral().toMaybe().extract();
+                  if (typeof _valueLiteral === "undefined") {
+                    return false;
+                  }
+                  return _languageInOrDefault.some(
+                    (_languageIn) => _languageIn === _valueLiteral.language,
+                  );
+                })
+                .head()
+                .chain((_value) => _value.toLiteral())
+                .toMaybe()
+                .toList(),
+            ),
+        ]),
+      );
       if (_descriptionsEither.isLeft()) {
         return _descriptionsEither;
       }
       const descriptions = _descriptionsEither.unsafeCoerce();
       const _groupsEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
-      > = purify.Either.of([
-        ..._resource
-          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#group"), {
-            unique: true,
-          })
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) => _value.toIdentifier())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        purify.Maybe<purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>>
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#group"), {
+              unique: true,
+            })
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) => _value.toIdentifier())
+                .toMaybe()
+                .toList(),
+            ),
+        ]),
+      );
       if (_groupsEither.isLeft()) {
         return _groupsEither;
       }
@@ -1112,34 +1184,36 @@ export namespace ShaclCorePropertyShape {
       const identifier = _resource.identifier;
       const _namesEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly rdfjs.Literal[]
-      > = purify.Either.of([
-        ..._resource
-          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#name"), {
-            unique: true,
-          })
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .filter((_value) => {
-                const _languageInOrDefault = _languageIn ?? [];
-                if (_languageInOrDefault.length === 0) {
-                  return true;
-                }
-                const _valueLiteral = _value.toLiteral().toMaybe().extract();
-                if (typeof _valueLiteral === "undefined") {
-                  return false;
-                }
-                return _languageInOrDefault.some(
-                  (_languageIn) => _languageIn === _valueLiteral.language,
-                );
-              })
-              .head()
-              .chain((_value) => _value.toLiteral())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#name"), {
+              unique: true,
+            })
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .filter((_value) => {
+                  const _languageInOrDefault = _languageIn ?? [];
+                  if (_languageInOrDefault.length === 0) {
+                    return true;
+                  }
+                  const _valueLiteral = _value.toLiteral().toMaybe().extract();
+                  if (typeof _valueLiteral === "undefined") {
+                    return false;
+                  }
+                  return _languageInOrDefault.some(
+                    (_languageIn) => _languageIn === _valueLiteral.language,
+                  );
+                })
+                .head()
+                .chain((_value) => _value.toLiteral())
+                .toMaybe()
+                .toList(),
+            ),
+        ]),
+      );
       if (_namesEither.isLeft()) {
         return _namesEither;
       }
@@ -1184,22 +1258,24 @@ export namespace ShaclCorePropertyShape {
       const type = "ShaclCorePropertyShape" as const;
       const _uniqueLangEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly boolean[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#uniqueLang"),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) => _value.toBoolean())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        purify.Maybe<purify.NonEmptyList<boolean>>
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode("http://www.w3.org/ns/shacl#uniqueLang"),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) => _value.toBoolean())
+                .toMaybe()
+                .toList(),
+            ),
+        ]),
+      );
       if (_uniqueLangEither.isLeft()) {
         return _uniqueLangEither;
       }
@@ -1478,7 +1554,7 @@ export namespace ShaclmatePropertyShape {
 }
 export interface OwlOntology {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly labels: readonly rdfjs.Literal[];
+  readonly labels: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
   readonly type: "OwlOntology" | "ShaclmateOntology";
 }
 
@@ -1515,35 +1591,37 @@ export namespace OwlOntology {
     const identifier = _resource.identifier;
     const _labelsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.Literal[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .filter((_value) => {
-              const _languageInOrDefault = _languageIn ?? [];
-              if (_languageInOrDefault.length === 0) {
-                return true;
-              }
-              const _valueLiteral = _value.toLiteral().toMaybe().extract();
-              if (typeof _valueLiteral === "undefined") {
-                return false;
-              }
-              return _languageInOrDefault.some(
-                (_languageIn) => _languageIn === _valueLiteral.language,
-              );
-            })
-            .head()
-            .chain((_value) => _value.toLiteral())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .filter((_value) => {
+                const _languageInOrDefault = _languageIn ?? [];
+                if (_languageInOrDefault.length === 0) {
+                  return true;
+                }
+                const _valueLiteral = _value.toLiteral().toMaybe().extract();
+                if (typeof _valueLiteral === "undefined") {
+                  return false;
+                }
+                return _languageInOrDefault.some(
+                  (_languageIn) => _languageIn === _valueLiteral.language,
+                );
+              })
+              .head()
+              .chain((_value) => _value.toLiteral())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_labelsEither.isLeft()) {
       return _labelsEither;
     }
@@ -1556,23 +1634,31 @@ export namespace OwlOntology {
 export interface ShaclmateOntology extends OwlOntology {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly tsDataFactoryVariable: purify.Maybe<string>;
-  readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-  >[];
-  readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-  >[];
-  readonly tsImports: readonly string[];
+  readonly tsFeatureExcludes: purify.Maybe<
+    purify.NonEmptyList<
+      rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+      >
+    >
+  >;
+  readonly tsFeatureIncludes: purify.Maybe<
+    purify.NonEmptyList<
+      rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+      >
+    >
+  >;
+  readonly tsImports: purify.Maybe<purify.NonEmptyList<string>>;
   readonly tsObjectDeclarationType: purify.Maybe<
     rdfjs.NamedNode<
       | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
@@ -1641,288 +1727,302 @@ export namespace ShaclmateOntology {
       const tsDataFactoryVariable = _tsDataFactoryVariableEither.unsafeCoerce();
       const _tsFeatureExcludesEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-        >[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+        purify.Maybe<
+          purify.NonEmptyList<
+            rdfjs.NamedNode<
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+            >
+          >
+        >
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode(
+                "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+              ),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) =>
+                  _value.toIri().chain((iri) => {
+                    switch (iri.value) {
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
+                        );
+                      default:
+                        return purify.Left(
+                          new rdfjsResource.Resource.MistypedValueError({
+                            actualValue: iri,
+                            expectedValueType:
+                              'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                            focusResource: _resource,
+                            predicate: dataFactory.namedNode(
+                              "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+                            ),
+                          }),
+                        );
+                    }
+                  }),
+                )
+                .toMaybe()
+                .toList(),
             ),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) =>
-                _value.toIri().chain((iri) => {
-                  switch (iri.value) {
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
-                      );
-                    default:
-                      return purify.Left(
-                        new rdfjsResource.Resource.MistypedValueError({
-                          actualValue: iri,
-                          expectedValueType:
-                            'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
-                          focusResource: _resource,
-                          predicate: dataFactory.namedNode(
-                            "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
-                          ),
-                        }),
-                      );
-                  }
-                }),
-              )
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        ]),
+      );
       if (_tsFeatureExcludesEither.isLeft()) {
         return _tsFeatureExcludesEither;
       }
       const tsFeatureExcludes = _tsFeatureExcludesEither.unsafeCoerce();
       const _tsFeatureIncludesEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-        >[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+        purify.Maybe<
+          purify.NonEmptyList<
+            rdfjs.NamedNode<
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+            >
+          >
+        >
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode(
+                "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+              ),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) =>
+                  _value.toIri().chain((iri) => {
+                    switch (iri.value) {
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
+                        );
+                      default:
+                        return purify.Left(
+                          new rdfjsResource.Resource.MistypedValueError({
+                            actualValue: iri,
+                            expectedValueType:
+                              'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                            focusResource: _resource,
+                            predicate: dataFactory.namedNode(
+                              "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+                            ),
+                          }),
+                        );
+                    }
+                  }),
+                )
+                .toMaybe()
+                .toList(),
             ),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) =>
-                _value.toIri().chain((iri) => {
-                  switch (iri.value) {
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
-                      );
-                    default:
-                      return purify.Left(
-                        new rdfjsResource.Resource.MistypedValueError({
-                          actualValue: iri,
-                          expectedValueType:
-                            'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
-                          focusResource: _resource,
-                          predicate: dataFactory.namedNode(
-                            "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
-                          ),
-                        }),
-                      );
-                  }
-                }),
-              )
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        ]),
+      );
       if (_tsFeatureIncludesEither.isLeft()) {
         return _tsFeatureIncludesEither;
       }
       const tsFeatureIncludes = _tsFeatureIncludesEither.unsafeCoerce();
       const _tsImportsEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly string[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#tsImport",
+        purify.Maybe<purify.NonEmptyList<string>>
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode(
+                "http://minorg.github.io/shaclmate/ns#tsImport",
+              ),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) => _value.toString())
+                .toMaybe()
+                .toList(),
             ),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) => _value.toString())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        ]),
+      );
       if (_tsImportsEither.isLeft()) {
         return _tsImportsEither;
       }
@@ -2049,7 +2149,9 @@ export interface ShaclCoreNodeShape extends BaseShaclCoreShape {
   readonly closed: purify.Maybe<boolean>;
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly ignoredProperties: purify.Maybe<readonly rdfjs.NamedNode[]>;
-  readonly properties: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
+  readonly properties: purify.Maybe<
+    purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>
+  >;
   readonly type: "ShaclCoreNodeShape" | "ShaclmateNodeShape";
 }
 
@@ -2136,22 +2238,24 @@ export namespace ShaclCoreNodeShape {
       const ignoredProperties = _ignoredPropertiesEither.unsafeCoerce();
       const _propertiesEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#property"),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) => _value.toIdentifier())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        purify.Maybe<purify.NonEmptyList<rdfjs.BlankNode | rdfjs.NamedNode>>
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode("http://www.w3.org/ns/shacl#property"),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) => _value.toIdentifier())
+                .toMaybe()
+                .toList(),
+            ),
+        ]),
+      );
       if (_propertiesEither.isLeft()) {
         return _propertiesEither;
       }
@@ -2210,24 +2314,32 @@ export interface ShaclmateNodeShape extends ShaclCoreNodeShape {
   >;
   readonly mutable: purify.Maybe<boolean>;
   readonly name: purify.Maybe<string>;
-  readonly toRdfTypes: readonly rdfjs.NamedNode[];
-  readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-  >[];
-  readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-  >[];
-  readonly tsImports: readonly string[];
+  readonly toRdfTypes: purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>;
+  readonly tsFeatureExcludes: purify.Maybe<
+    purify.NonEmptyList<
+      rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+      >
+    >
+  >;
+  readonly tsFeatureIncludes: purify.Maybe<
+    purify.NonEmptyList<
+      rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+      >
+    >
+  >;
+  readonly tsImports: purify.Maybe<purify.NonEmptyList<string>>;
   readonly tsObjectDeclarationType: purify.Maybe<
     rdfjs.NamedNode<
       | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
@@ -2450,312 +2562,328 @@ export namespace ShaclmateNodeShape {
       const name = _nameEither.unsafeCoerce();
       const _toRdfTypesEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly rdfjs.NamedNode[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#toRdfType",
+        purify.Maybe<purify.NonEmptyList<rdfjs.NamedNode>>
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode(
+                "http://minorg.github.io/shaclmate/ns#toRdfType",
+              ),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) => _value.toIri())
+                .toMaybe()
+                .toList(),
             ),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) => _value.toIri())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        ]),
+      );
       if (_toRdfTypesEither.isLeft()) {
         return _toRdfTypesEither;
       }
       const toRdfTypes = _toRdfTypesEither.unsafeCoerce();
       const _tsFeatureExcludesEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-        >[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+        purify.Maybe<
+          purify.NonEmptyList<
+            rdfjs.NamedNode<
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+            >
+          >
+        >
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode(
+                "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+              ),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) =>
+                  _value.toIri().chain((iri) => {
+                    switch (iri.value) {
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
+                        );
+                      default:
+                        return purify.Left(
+                          new rdfjsResource.Resource.MistypedValueError({
+                            actualValue: iri,
+                            expectedValueType:
+                              'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                            focusResource: _resource,
+                            predicate: dataFactory.namedNode(
+                              "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+                            ),
+                          }),
+                        );
+                    }
+                  }),
+                )
+                .toMaybe()
+                .toList(),
             ),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) =>
-                _value.toIri().chain((iri) => {
-                  switch (iri.value) {
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
-                      );
-                    default:
-                      return purify.Left(
-                        new rdfjsResource.Resource.MistypedValueError({
-                          actualValue: iri,
-                          expectedValueType:
-                            'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
-                          focusResource: _resource,
-                          predicate: dataFactory.namedNode(
-                            "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
-                          ),
-                        }),
-                      );
-                  }
-                }),
-              )
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        ]),
+      );
       if (_tsFeatureExcludesEither.isLeft()) {
         return _tsFeatureExcludesEither;
       }
       const tsFeatureExcludes = _tsFeatureExcludesEither.unsafeCoerce();
       const _tsFeatureIncludesEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-        >[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+        purify.Maybe<
+          purify.NonEmptyList<
+            rdfjs.NamedNode<
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+              | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+            >
+          >
+        >
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode(
+                "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+              ),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) =>
+                  _value.toIri().chain((iri) => {
+                    switch (iri.value) {
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
+                        );
+                      case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+                        return purify.Either.of<
+                          rdfjsResource.Resource.ValueError,
+                          rdfjs.NamedNode<
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                            | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                          >
+                        >(
+                          iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
+                        );
+                      default:
+                        return purify.Left(
+                          new rdfjsResource.Resource.MistypedValueError({
+                            actualValue: iri,
+                            expectedValueType:
+                              'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                            focusResource: _resource,
+                            predicate: dataFactory.namedNode(
+                              "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+                            ),
+                          }),
+                        );
+                    }
+                  }),
+                )
+                .toMaybe()
+                .toList(),
             ),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) =>
-                _value.toIri().chain((iri) => {
-                  switch (iri.value) {
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
-                      );
-                    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
-                      return purify.Either.of<
-                        rdfjsResource.Resource.ValueError,
-                        rdfjs.NamedNode<
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                          | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                        >
-                      >(
-                        iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
-                      );
-                    default:
-                      return purify.Left(
-                        new rdfjsResource.Resource.MistypedValueError({
-                          actualValue: iri,
-                          expectedValueType:
-                            'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
-                          focusResource: _resource,
-                          predicate: dataFactory.namedNode(
-                            "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
-                          ),
-                        }),
-                      );
-                  }
-                }),
-              )
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        ]),
+      );
       if (_tsFeatureIncludesEither.isLeft()) {
         return _tsFeatureIncludesEither;
       }
       const tsFeatureIncludes = _tsFeatureIncludesEither.unsafeCoerce();
       const _tsImportsEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly string[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode(
-              "http://minorg.github.io/shaclmate/ns#tsImport",
+        purify.Maybe<purify.NonEmptyList<string>>
+      > = purify.Either.of(
+        purify.NonEmptyList.fromArray([
+          ..._resource
+            .values(
+              dataFactory.namedNode(
+                "http://minorg.github.io/shaclmate/ns#tsImport",
+              ),
+              { unique: true },
+            )
+            .flatMap((_item) =>
+              _item
+                .toValues()
+                .head()
+                .chain((_value) => _value.toString())
+                .toMaybe()
+                .toList(),
             ),
-            { unique: true },
-          )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) => _value.toString())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+        ]),
+      );
       if (_tsImportsEither.isLeft()) {
         return _tsImportsEither;
       }
@@ -2917,9 +3045,9 @@ export namespace ShaclmateNodeShape {
   }
 }
 export interface ShaclCorePropertyGroup {
-  readonly comments: readonly rdfjs.Literal[];
+  readonly comments: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly labels: readonly rdfjs.Literal[];
+  readonly labels: purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>;
   readonly type: "ShaclCorePropertyGroup";
 }
 
@@ -2955,35 +3083,39 @@ export namespace ShaclCorePropertyGroup {
 
     const _commentsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.Literal[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#comment"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .filter((_value) => {
-              const _languageInOrDefault = _languageIn ?? [];
-              if (_languageInOrDefault.length === 0) {
-                return true;
-              }
-              const _valueLiteral = _value.toLiteral().toMaybe().extract();
-              if (typeof _valueLiteral === "undefined") {
-                return false;
-              }
-              return _languageInOrDefault.some(
-                (_languageIn) => _languageIn === _valueLiteral.language,
-              );
-            })
-            .head()
-            .chain((_value) => _value.toLiteral())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode(
+              "http://www.w3.org/2000/01/rdf-schema#comment",
+            ),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .filter((_value) => {
+                const _languageInOrDefault = _languageIn ?? [];
+                if (_languageInOrDefault.length === 0) {
+                  return true;
+                }
+                const _valueLiteral = _value.toLiteral().toMaybe().extract();
+                if (typeof _valueLiteral === "undefined") {
+                  return false;
+                }
+                return _languageInOrDefault.some(
+                  (_languageIn) => _languageIn === _valueLiteral.language,
+                );
+              })
+              .head()
+              .chain((_value) => _value.toLiteral())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_commentsEither.isLeft()) {
       return _commentsEither;
     }
@@ -2992,35 +3124,37 @@ export namespace ShaclCorePropertyGroup {
     const identifier = _resource.identifier;
     const _labelsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly rdfjs.Literal[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .filter((_value) => {
-              const _languageInOrDefault = _languageIn ?? [];
-              if (_languageInOrDefault.length === 0) {
-                return true;
-              }
-              const _valueLiteral = _value.toLiteral().toMaybe().extract();
-              if (typeof _valueLiteral === "undefined") {
-                return false;
-              }
-              return _languageInOrDefault.some(
-                (_languageIn) => _languageIn === _valueLiteral.language,
-              );
-            })
-            .head()
-            .chain((_value) => _value.toLiteral())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
+      purify.Maybe<purify.NonEmptyList<rdfjs.Literal>>
+    > = purify.Either.of(
+      purify.NonEmptyList.fromArray([
+        ..._resource
+          .values(
+            dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
+            { unique: true },
+          )
+          .flatMap((_item) =>
+            _item
+              .toValues()
+              .filter((_value) => {
+                const _languageInOrDefault = _languageIn ?? [];
+                if (_languageInOrDefault.length === 0) {
+                  return true;
+                }
+                const _valueLiteral = _value.toLiteral().toMaybe().extract();
+                if (typeof _valueLiteral === "undefined") {
+                  return false;
+                }
+                return _languageInOrDefault.some(
+                  (_languageIn) => _languageIn === _valueLiteral.language,
+                );
+              })
+              .head()
+              .chain((_value) => _value.toLiteral())
+              .toMaybe()
+              .toList(),
+          ),
+      ]),
+    );
     if (_labelsEither.isLeft()) {
       return _labelsEither;
     }
