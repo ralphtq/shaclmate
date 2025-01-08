@@ -18,7 +18,7 @@ shaclmate:BaseShaclCoreShape
     shaclmate:abstract true ;
     shaclmate:name "BaseShaclCoreShape" ;
     a owl:Class, sh:NodeShape ;
-    sh:property shaclmate:BaseShaclCoreShape-and, shaclmate:BaseShaclCoreShape-classes, shaclmate:BaseShaclCoreShape-comments, shaclmate:BaseShaclCoreShape-datatype, shaclmate:BaseShaclCoreShape-deactivated, shaclmate:BaseShaclCoreShape-flags, shaclmate:BaseShaclCoreShape-hasValues, shaclmate:BaseShaclCoreShape-in, shaclmate:BaseShaclCoreShape-isDefinedBy, shaclmate:BaseShaclCoreShape-labels, shaclmate:BaseShaclCoreShape-languageIn, shaclmate:BaseShaclCoreShape-maxCount, shaclmate:BaseShaclCoreShape-maxExclusive, shaclmate:BaseShaclCoreShape-maxInclusive, shaclmate:BaseShaclCoreShape-maxLength, shaclmate:BaseShaclCoreShape-minCount, shaclmate:BaseShaclCoreShape-minExclusive, shaclmate:BaseShaclCoreShape-minInclusive, shaclmate:BaseShaclCoreShape-minLength, shaclmate:BaseShaclCoreShape-nodeKind, shaclmate:BaseShaclCoreShape-nodes, shaclmate:BaseShaclCoreShape-not, shaclmate:BaseShaclCoreShape-or, shaclmate:BaseShaclCoreShape-patterns, shaclmate:BaseShaclCoreShape-targetClasses, shaclmate:BaseShaclCoreShape-targetNodes, shaclmate:BaseShaclCoreShape-targetObjectsOf, shaclmate:BaseShaclCoreShape-targetSubjectsOf, shaclmate:BaseShaclCoreShape-xone .
+    sh:property shaclmate:BaseShaclCoreShape-and, shaclmate:BaseShaclCoreShape-classes, shaclmate:BaseShaclCoreShape-comments, shaclmate:BaseShaclCoreShape-datatype, shaclmate:BaseShaclCoreShape-deactivated, shaclmate:BaseShaclCoreShape-flags, shaclmate:BaseShaclCoreShape-hasValues, shaclmate:BaseShaclCoreShape-in, shaclmate:BaseShaclCoreShape-isDefinedBy, shaclmate:BaseShaclCoreShape-labels, shaclmate:BaseShaclCoreShape-languageIn, shaclmate:BaseShaclCoreShape-maxCount, shaclmate:BaseShaclCoreShape-maxExclusive, shaclmate:BaseShaclCoreShape-maxInclusive, shaclmate:BaseShaclCoreShape-maxLength, shaclmate:BaseShaclCoreShape-minCount, shaclmate:BaseShaclCoreShape-minExclusive, shaclmate:BaseShaclCoreShape-minInclusive, shaclmate:BaseShaclCoreShape-minLength, shaclmate:BaseShaclCoreShape-nodeKind, shaclmate:BaseShaclCoreShape-nodes, shaclmate:BaseShaclCoreShape-not, shaclmate:BaseShaclCoreShape-or, shaclmate:BaseShaclCoreShape-patterns, shaclmate:BaseShaclCoreShape-xone .
 
 shaclmate:BaseShaclCoreShape-and
     a sh:PropertyShape ;
@@ -182,30 +182,6 @@ shaclmate:BaseShaclCoreShape-patterns
     sh:datatype xsd:string ;
     sh:name "patterns" ;
     sh:path sh:pattern .
-
-shaclmate:BaseShaclCoreShape-targetClasses
-    a sh:PropertyShape ;
-    sh:name "targetClass" ;
-    sh:nodeKind sh:IRI ;
-    sh:path sh:targetClass .
-
-shaclmate:BaseShaclCoreShape-targetNodes
-    a sh:PropertyShape ;
-    sh:name "targetNodes" ;
-    sh:nodeKind sh:IRIOrLiteral ;
-    sh:path sh:targetNode .
-
-shaclmate:BaseShaclCoreShape-targetObjectsOf
-    a sh:PropertyShape ;
-    sh:name "targetObjectsOf" ;
-    sh:nodeKind sh:IRI ;
-    sh:path sh:targetObjectsOf .
-
-shaclmate:BaseShaclCoreShape-targetSubjectsOf
-    a sh:PropertyShape ;
-    sh:name "targetSubjectsOf" ;
-    sh:nodeKind sh:IRI ;
-    sh:path sh:targetSubjectsOf .
 
 shaclmate:BaseShaclCoreShape-xone
     a sh:PropertyShape ;
@@ -384,6 +360,7 @@ shaclmate:ShaclCorePropertyShape-path
 shaclmate:ShaclCorePropertyShape-uniqueLang
     a sh:PropertyShape ;
     sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
     sh:name "uniqueLang" ;
     sh:path sh:uniqueLang .
 

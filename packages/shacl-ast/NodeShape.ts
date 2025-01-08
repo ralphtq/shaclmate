@@ -1,4 +1,4 @@
-import { type Maybe, NonEmptyList } from "purify-ts";
+import type { Maybe } from "purify-ts";
 import type { OntologyLike } from "./OntologyLike.js";
 import { Shape } from "./Shape.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
@@ -75,11 +75,9 @@ export namespace NodeShape {
       return this.generatedShaclCoreNodeShape.closed;
     }
 
-    get properties(): Maybe<NonEmptyList<PropertyShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreNodeShape.properties.flatMap((identifier) =>
-          this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
-        ),
+    get properties(): readonly PropertyShapeT[] {
+      return this.generatedShaclCoreNodeShape.properties.flatMap((identifier) =>
+        this.shapesGraph.propertyShapeByIdentifier(identifier).toList(),
       );
     }
   }

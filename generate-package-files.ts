@@ -222,6 +222,7 @@ for (const package_ of packages) {
           "test:watch": "vitest watch",
           unlink: `npm unlink -g @shaclmate/${package_.name}`,
           watch: "tsc -w --preserveWatchOutput",
+          "watch:noEmit": "tsc --noEmit -w --preserveWatchOutput",
         },
         repository: {
           type: "git",

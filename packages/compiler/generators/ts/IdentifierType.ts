@@ -11,11 +11,10 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
 
   @Memoize()
   override get name(): string {
-    if (this.in_.isJust() && this.isNamedNodeKind) {
+    if (this.in_.length > 0 && this.isNamedNodeKind) {
       // Treat sh:in as a union of the IRIs
       // rdfjs.NamedNode<"http://example.com/1" | "http://example.com/2">
       return `rdfjs.NamedNode<${this.in_
-        .unsafeCoerce()
         .map((iri) => `"${iri.value}"`)
         .join(" | ")}>`;
     }
@@ -44,9 +43,9 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
 
     if (this.isNamedNodeKind) {
       let expression = `${variables.resourceValue}.toIri()`;
-      this.in_.ifJust((in_) => {
-        expression = `${expression}.chain(iri => { switch (iri.value) { ${in_.map((iri) => `case "${iri.value}": return purify.Either.of<rdfjsResource.Resource.ValueError, ${this.name}>(iri as rdfjs.NamedNode<"${iri.value}">);`).join(" ")} default: return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: iri, expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); } } )`;
-      });
+      if (this.in_.length > 0) {
+        expression = `${expression}.chain(iri => { switch (iri.value) { ${this.in_.map((iri) => `case "${iri.value}": return purify.Either.of<rdfjsResource.Resource.ValueError, ${this.name}>(iri as rdfjs.NamedNode<"${iri.value}">);`).join(" ")} default: return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: iri, expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); } } )`;
+      }
       return expression;
     }
 

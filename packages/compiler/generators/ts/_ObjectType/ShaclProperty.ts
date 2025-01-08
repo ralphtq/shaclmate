@@ -14,10 +14,10 @@ import { tsComment } from "../tsComment.js";
 import { Property } from "./Property.js";
 
 export class ShaclProperty extends Property<Type> {
+  override readonly mutable: boolean;
   private readonly comment: Maybe<string>;
   private readonly description: Maybe<string>;
   private readonly label: Maybe<string>;
-  override readonly mutable: boolean;
   private readonly path: rdfjs.NamedNode;
 
   constructor({
@@ -108,6 +108,14 @@ export class ShaclProperty extends Property<Type> {
     };
   }
 
+  private get declarationComment(): string | undefined {
+    return this.comment
+      .alt(this.description)
+      .alt(this.label)
+      .map(tsComment)
+      .extract();
+  }
+
   @Memoize()
   private get pathExpression(): string {
     return `${this.dataFactoryVariable}.namedNode("${this.path.value}")`;
@@ -149,7 +157,7 @@ export class ShaclProperty extends Property<Type> {
     }
     // We shouldn't need this else, since the parameter now has the never type, but have to add it to appease the TypeScript compiler
     statements.push(
-      `{ this.${this.name} = ${variables.parameter}; // never\n }`,
+      `{ this.${this.name} =( ${variables.parameter}) as never;\n }`,
     );
     return [statements.join(" else ")];
   }
@@ -201,13 +209,5 @@ export class ShaclProperty extends Property<Type> {
         },
       )});`,
     ];
-  }
-
-  private get declarationComment(): string | undefined {
-    return this.comment
-      .alt(this.description)
-      .alt(this.label)
-      .map(tsComment)
-      .extract();
   }
 }

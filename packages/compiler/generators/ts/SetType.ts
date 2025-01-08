@@ -1,3 +1,4 @@
+import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
 import type { Import } from "./Import.js";
 import { Type } from "./Type.js";
@@ -18,23 +19,32 @@ export class SetType extends Type {
     super(superParameters);
     this.itemType = itemType;
     this.minCount = minCount;
+    invariant(this.minCount >= 0);
   }
 
   override get conversions(): readonly Type.Conversion[] {
-    const conversions: Type.Conversion[] = [
-      {
-        conversionExpression: (value) => value,
-        sourceTypeCheckExpression: (value) => `Array.isArray(${value})`,
-        sourceTypeName: this.name,
-      },
-    ];
+    const conversions: Type.Conversion[] = [];
+
     if (this.minCount === 0) {
       conversions.push({
         conversionExpression: () => "[]",
         sourceTypeCheckExpression: (value) => `typeof ${value} === "undefined"`,
         sourceTypeName: "undefined",
       });
+      conversions.push({
+        conversionExpression: (value) => value,
+        sourceTypeCheckExpression: (value) => `Array.isArray(${value})`,
+        sourceTypeName: `readonly (${this.itemType.name})[]`,
+      });
+    } else {
+      conversions.push({
+        conversionExpression: (value) => value,
+        sourceTypeCheckExpression: (value) =>
+          `purify.NonEmptyList.isNonEmpty(${value})`,
+        sourceTypeName: this.name,
+      });
     }
+
     return conversions;
   }
 
@@ -56,7 +66,14 @@ export class SetType extends Type {
 
   @Memoize()
   override get name(): string {
-    return `readonly (${this.itemType.name})[]`;
+    if (this.minCount === 0) {
+      return `readonly (${this.itemType.name})[]`;
+    }
+    return `purify.NonEmptyList<${this.itemType.name}>`;
+  }
+
+  override get useImports(): readonly Import[] {
+    return this.itemType.useImports;
   }
 
   override propertyChainSparqlGraphPatternExpression(
@@ -70,7 +87,13 @@ export class SetType extends Type {
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    return `purify.Either.of([...${variables.resourceValues}.flatMap(_value => ${this.itemType.propertyFromRdfExpression({ variables: { ...variables, resourceValues: "_value.toValues()" } })}.toMaybe().toList())])`;
+    const itemFromRdfExpression = this.itemType.propertyFromRdfExpression({
+      variables: { ...variables, resourceValues: "_item.toValues()" },
+    });
+    if (this.minCount === 0) {
+      return `purify.Either.of([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())])`;
+    }
+    return `purify.NonEmptyList.fromArray([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())]).toEither(new rdfjsResource.Resource.ValueError({ focusResource: ${variables.resource}, message: \`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} is empty\`, predicate: ${variables.predicate} }))`;
   }
 
   override propertyHashStatements({
@@ -78,12 +101,12 @@ export class SetType extends Type {
     variables,
   }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
     return [
-      `for (const _element${depth} of ${variables.value}) { ${this.itemType
+      `for (const _item${depth} of ${variables.value}) { ${this.itemType
         .propertyHashStatements({
           depth: depth + 1,
           variables: {
             hasher: variables.hasher,
-            value: `_element${depth}`,
+            value: `_item${depth}`,
           },
         })
         .join("\n")} }`,
@@ -110,16 +133,10 @@ export class SetType extends Type {
   override propertyToRdfExpression({
     variables,
   }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
-    const itemTypeToRdfExpression = this.itemType.propertyToRdfExpression({
-      variables: { ...variables, value: "_value" },
-    });
-    if (itemTypeToRdfExpression === "_value") {
-      return variables.value;
-    }
-    return `${variables.value}.map((_value) => ${itemTypeToRdfExpression})`;
-  }
-
-  override get useImports(): readonly Import[] {
-    return this.itemType.useImports;
+    return `${variables.value}.map((_item) => ${this.itemType.propertyToRdfExpression(
+      {
+        variables: { ...variables, value: "_item" },
+      },
+    )})`;
   }
 }

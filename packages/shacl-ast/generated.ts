@@ -44,10 +44,6 @@ export interface BaseShaclCoreShape {
   readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly or: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
   readonly patterns: readonly string[];
-  readonly targetClass: readonly rdfjs.NamedNode[];
-  readonly targetNodes: readonly (rdfjs.Literal | rdfjs.NamedNode)[];
-  readonly targetObjectsOf: readonly rdfjs.NamedNode[];
-  readonly targetSubjectsOf: readonly rdfjs.NamedNode[];
   readonly type: "ShaclCoreNodeShape" | "ShaclCorePropertyShape";
   readonly xone: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
 }
@@ -103,10 +99,6 @@ export namespace BaseShaclCoreShape {
       not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
       or: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
       patterns: readonly string[];
-      targetClass: readonly rdfjs.NamedNode[];
-      targetNodes: readonly (rdfjs.Literal | rdfjs.NamedNode)[];
-      targetObjectsOf: readonly rdfjs.NamedNode[];
-      targetSubjectsOf: readonly rdfjs.NamedNode[];
       xone: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
     }
   > {
@@ -118,8 +110,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#and"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((value) => value.toList())
@@ -150,8 +142,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#class"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((_value) => _value.toIri())
@@ -173,8 +165,8 @@ export namespace BaseShaclCoreShape {
           dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#comment"),
           { unique: true },
         )
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .filter((_value) => {
               const _languageInOrDefault = _languageIn ?? [];
@@ -243,8 +235,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#flags"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((_value) => _value.toString())
@@ -265,8 +257,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#hasValue"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((_value) => purify.Either.of(_value.toTerm()))
@@ -338,8 +330,8 @@ export namespace BaseShaclCoreShape {
           dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
           { unique: true },
         )
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .filter((_value) => {
               const _languageInOrDefault = _languageIn ?? [];
@@ -716,8 +708,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#node"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((_value) => _value.toIdentifier())
@@ -738,8 +730,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#not"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((_value) => _value.toIdentifier())
@@ -760,8 +752,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#or"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((value) => value.toList())
@@ -792,8 +784,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#pattern"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((_value) => _value.toString())
@@ -806,117 +798,6 @@ export namespace BaseShaclCoreShape {
     }
 
     const patterns = _patternsEither.unsafeCoerce();
-    const _targetClassEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      readonly rdfjs.NamedNode[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#targetClass"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIri())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
-    if (_targetClassEither.isLeft()) {
-      return _targetClassEither;
-    }
-
-    const targetClass = _targetClassEither.unsafeCoerce();
-    const _targetNodesEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      readonly (rdfjs.Literal | rdfjs.NamedNode)[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#targetNode"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) =>
-              purify.Either.of(_value.toTerm()).chain((term) => {
-                switch (term.termType) {
-                  case "Literal":
-                  case "NamedNode":
-                    return purify.Either.of(term);
-                  default:
-                    return purify.Left(
-                      new rdfjsResource.Resource.MistypedValueError({
-                        actualValue: term,
-                        expectedValueType: "(rdfjs.Literal | rdfjs.NamedNode)",
-                        focusResource: _resource,
-                        predicate: dataFactory.namedNode(
-                          "http://www.w3.org/ns/shacl#targetNode",
-                        ),
-                      }),
-                    );
-                }
-              }),
-            )
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
-    if (_targetNodesEither.isLeft()) {
-      return _targetNodesEither;
-    }
-
-    const targetNodes = _targetNodesEither.unsafeCoerce();
-    const _targetObjectsOfEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      readonly rdfjs.NamedNode[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#targetObjectsOf"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIri())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
-    if (_targetObjectsOfEither.isLeft()) {
-      return _targetObjectsOfEither;
-    }
-
-    const targetObjectsOf = _targetObjectsOfEither.unsafeCoerce();
-    const _targetSubjectsOfEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      readonly rdfjs.NamedNode[]
-    > = purify.Either.of([
-      ..._resource
-        .values(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#targetSubjectsOf"),
-          { unique: true },
-        )
-        .flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toIri())
-            .toMaybe()
-            .toList(),
-        ),
-    ]);
-    if (_targetSubjectsOfEither.isLeft()) {
-      return _targetSubjectsOfEither;
-    }
-
-    const targetSubjectsOf = _targetSubjectsOfEither.unsafeCoerce();
     const _xoneEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
@@ -925,8 +806,8 @@ export namespace BaseShaclCoreShape {
         .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#xone"), {
           unique: true,
         })
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .head()
             .chain((value) => value.toList())
@@ -975,10 +856,6 @@ export namespace BaseShaclCoreShape {
       not,
       or,
       patterns,
-      targetClass,
-      targetNodes,
-      targetObjectsOf,
-      targetSubjectsOf,
       xone,
     });
   }
@@ -994,7 +871,7 @@ export interface ShaclCorePropertyShape extends BaseShaclCoreShape {
   readonly order: purify.Maybe<number>;
   readonly path: PropertyPath;
   readonly type: "ShaclCorePropertyShape";
-  readonly uniqueLang: readonly boolean[];
+  readonly uniqueLang: purify.Maybe<boolean>;
 }
 
 export namespace ShaclCorePropertyShape {
@@ -1058,8 +935,8 @@ export namespace ShaclCorePropertyShape {
             dataFactory.namedNode("http://www.w3.org/ns/shacl#description"),
             { unique: true },
           )
-          .flatMap((_value) =>
-            _value
+          .flatMap((_item) =>
+            _item
               .toValues()
               .filter((_value) => {
                 const _languageInOrDefault = _languageIn ?? [];
@@ -1092,8 +969,8 @@ export namespace ShaclCorePropertyShape {
           .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#group"), {
             unique: true,
           })
-          .flatMap((_value) =>
-            _value
+          .flatMap((_item) =>
+            _item
               .toValues()
               .head()
               .chain((_value) => _value.toIdentifier())
@@ -1114,8 +991,8 @@ export namespace ShaclCorePropertyShape {
           .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#name"), {
             unique: true,
           })
-          .flatMap((_value) =>
-            _value
+          .flatMap((_item) =>
+            _item
               .toValues()
               .filter((_value) => {
                 const _languageInOrDefault = _languageIn ?? [];
@@ -1180,22 +1057,17 @@ export namespace ShaclCorePropertyShape {
       const type = "ShaclCorePropertyShape" as const;
       const _uniqueLangEither: purify.Either<
         rdfjsResource.Resource.ValueError,
-        readonly boolean[]
-      > = purify.Either.of([
-        ..._resource
+        purify.Maybe<boolean>
+      > = purify.Either.of(
+        _resource
           .values(
             dataFactory.namedNode("http://www.w3.org/ns/shacl#uniqueLang"),
             { unique: true },
           )
-          .flatMap((_value) =>
-            _value
-              .toValues()
-              .head()
-              .chain((_value) => _value.toBoolean())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
+          .head()
+          .chain((_value) => _value.toBoolean())
+          .toMaybe(),
+      );
       if (_uniqueLangEither.isLeft()) {
         return _uniqueLangEither;
       }
@@ -1226,10 +1098,6 @@ export namespace ShaclCorePropertyShape {
         not: _super.not,
         or: _super.or,
         patterns: _super.patterns,
-        targetClass: _super.targetClass,
-        targetNodes: _super.targetNodes,
-        targetObjectsOf: _super.targetObjectsOf,
-        targetSubjectsOf: _super.targetSubjectsOf,
         xone: _super.xone,
         defaultValue,
         descriptions,
@@ -1289,8 +1157,8 @@ export namespace ShaclCorePropertyGroup {
           dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#comment"),
           { unique: true },
         )
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .filter((_value) => {
               const _languageInOrDefault = _languageIn ?? [];
@@ -1326,8 +1194,8 @@ export namespace ShaclCorePropertyGroup {
           dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
           { unique: true },
         )
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .filter((_value) => {
               const _languageInOrDefault = _languageIn ?? [];
@@ -1455,8 +1323,8 @@ export namespace ShaclCoreNodeShape {
             dataFactory.namedNode("http://www.w3.org/ns/shacl#property"),
             { unique: true },
           )
-          .flatMap((_value) =>
-            _value
+          .flatMap((_item) =>
+            _item
               .toValues()
               .head()
               .chain((_value) => _value.toIdentifier())
@@ -1495,10 +1363,6 @@ export namespace ShaclCoreNodeShape {
         not: _super.not,
         or: _super.or,
         patterns: _super.patterns,
-        targetClass: _super.targetClass,
-        targetNodes: _super.targetNodes,
-        targetObjectsOf: _super.targetObjectsOf,
-        targetSubjectsOf: _super.targetSubjectsOf,
         xone: _super.xone,
         closed,
         ignoredProperties,
@@ -1554,8 +1418,8 @@ export namespace OwlOntology {
           dataFactory.namedNode("http://www.w3.org/2000/01/rdf-schema#label"),
           { unique: true },
         )
-        .flatMap((_value) =>
-          _value
+        .flatMap((_item) =>
+          _item
             .toValues()
             .filter((_value) => {
               const _languageInOrDefault = _languageIn ?? [];

@@ -2120,20 +2120,18 @@ export class ConceptScheme extends Resource {
   }
 
   override equals(other: ConceptScheme): purifyHelpers.Equatable.EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        purifyHelpers.Equatable.arrayEquals(
-          this.hasTopConcept,
-          other.hasTopConcept,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "hasTopConcept",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+    return super.equals(other).chain(() =>
+      purifyHelpers.Equatable.arrayEquals(
+        this.hasTopConcept,
+        other.hasTopConcept,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "hasTopConcept",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<

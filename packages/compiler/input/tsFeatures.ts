@@ -54,7 +54,7 @@ export function tsFeatures(generated: {
   }
   if (tsFeatureExcludes.length > 0) {
     const tsFeatures = new Set<TsFeature>(TsFeature.MEMBERS);
-    for (const tsFeatureExclude of tsFeatureIncludes) {
+    for (const tsFeatureExclude of tsFeatureExcludes) {
       tsFeatures.delete(tsFeatureExclude);
     }
     return Maybe.of(tsFeatures);

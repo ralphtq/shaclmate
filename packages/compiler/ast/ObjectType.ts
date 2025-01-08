@@ -1,6 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import type { PredicatePath } from "@shaclmate/shacl-ast";
-import type { Maybe, NonEmptyList } from "purify-ts";
+import type { Maybe } from "purify-ts";
 import { Resource } from "rdfjs-resource";
 import genericToposort from "toposort";
 import type {
@@ -135,7 +135,7 @@ export interface ObjectType {
    *
    * import { MyType } from "./MyType.js"
    */
-  readonly tsImports: Maybe<NonEmptyList<string>>;
+  readonly tsImports: readonly string[];
 
   /**
    * Whether to generate a TypeScript class or interface for this type.

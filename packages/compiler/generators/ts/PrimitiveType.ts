@@ -9,7 +9,7 @@ export abstract class PrimitiveType<
   override readonly equalsFunction: string =
     "purifyHelpers.Equatable.strictEquals";
   readonly primitiveDefaultValue: Maybe<ValueT>;
-  readonly primitiveIn: Maybe<readonly ValueT[]>;
+  readonly primitiveIn: readonly ValueT[];
 
   constructor({
     primitiveDefaultValue,
@@ -17,7 +17,7 @@ export abstract class PrimitiveType<
     ...superParameters
   }: {
     primitiveDefaultValue: Maybe<ValueT>;
-    primitiveIn: Maybe<readonly ValueT[]>;
+    primitiveIn: readonly ValueT[];
   } & ConstructorParameters<typeof LiteralType>[0]) {
     super(superParameters);
     this.primitiveDefaultValue = primitiveDefaultValue;

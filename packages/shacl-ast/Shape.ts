@@ -1,5 +1,6 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { Maybe, NonEmptyList } from "purify-ts";
+import type * as rdfjs from "@rdfjs/types";
+import { Maybe } from "purify-ts";
 import type { NodeKind } from "./NodeKind.js";
 import type { OntologyLike } from "./OntologyLike.js";
 import type { ShapesGraph } from "./ShapesGraph.js";
@@ -19,7 +20,6 @@ export abstract class Shape<
     PropertyShapeT,
     ShapeT
   >;
-  readonly targets: Shape.Targets;
 
   constructor(
     private readonly generatedShaclCoreShape: Omit<
@@ -33,12 +33,10 @@ export abstract class Shape<
       PropertyShapeT,
       ShapeT
     >,
-  ) {
-    this.targets = new Shape.Targets(this.generatedShaclCoreShape);
-  }
+  ) {}
 
-  get comments(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShaclCoreShape.comments);
+  get comments(): readonly Literal[] {
+    return this.generatedShaclCoreShape.comments;
   }
 
   get identifier(): BlankNode | NamedNode {
@@ -76,8 +74,8 @@ export abstract class Shape<
     return Maybe.empty();
   }
 
-  get labels(): Maybe<NonEmptyList<Literal>> {
-    return NonEmptyList.fromArray(this.generatedShaclCoreShape.labels);
+  get labels(): readonly Literal[] {
+    return this.generatedShaclCoreShape.labels;
   }
 }
 
@@ -103,36 +101,28 @@ export namespace Shape {
       >,
     ) {}
 
-    get and(): Maybe<NonEmptyList<ShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.and.flatMap((identifiers) =>
-          identifiers.flatMap((identifier) =>
-            this.shapesGraph.shapeByIdentifier(identifier).toList(),
-          ),
-        ),
-      );
+    get and(): readonly ShapeT[] {
+      return this.shapeListTakingConstraint(this.generatedShaclCoreShape.and);
     }
 
-    get classes(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShaclCoreShape.classes);
+    get classes(): readonly NamedNode[] {
+      return this.generatedShaclCoreShape.classes;
     }
 
     get datatype(): Maybe<NamedNode> {
       return this.generatedShaclCoreShape.datatype;
     }
 
-    get hasValues(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShaclCoreShape.hasValues);
+    get hasValues(): readonly (BlankNode | Literal | NamedNode)[] {
+      return this.generatedShaclCoreShape.hasValues;
     }
 
-    get in_(): Maybe<NonEmptyList<BlankNode | Literal | NamedNode>> {
-      return this.generatedShaclCoreShape.in_.chain(NonEmptyList.fromArray);
+    get in_(): readonly (BlankNode | Literal | NamedNode)[] {
+      return this.generatedShaclCoreShape.in_.orDefault([]);
     }
 
-    get languageIn(): Maybe<NonEmptyList<string>> {
-      return this.generatedShaclCoreShape.languageIn.chain(
-        NonEmptyList.fromArray,
-      );
+    get languageIn(): readonly string[] {
+      return this.generatedShaclCoreShape.languageIn.orDefault([]);
     }
 
     get maxCount(): Maybe<number> {
@@ -189,62 +179,34 @@ export namespace Shape {
       });
     }
 
-    get nodes(): Maybe<NonEmptyList<NodeShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.nodes.flatMap((identifier) =>
-          this.shapesGraph.nodeShapeByIdentifier(identifier).toList(),
-        ),
+    get nodes(): readonly NodeShapeT[] {
+      return this.generatedShaclCoreShape.nodes.flatMap((identifier) =>
+        this.shapesGraph.nodeShapeByIdentifier(identifier).toList(),
       );
     }
 
-    get not(): Maybe<NonEmptyList<ShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.not.flatMap((identifier) =>
+    get not(): readonly ShapeT[] {
+      return this.generatedShaclCoreShape.not.flatMap((identifier) =>
+        this.shapesGraph.shapeByIdentifier(identifier).toList(),
+      );
+    }
+
+    get or(): readonly ShapeT[] {
+      return this.shapeListTakingConstraint(this.generatedShaclCoreShape.or);
+    }
+
+    get xone(): readonly ShapeT[] {
+      return this.shapeListTakingConstraint(this.generatedShaclCoreShape.xone);
+    }
+
+    private shapeListTakingConstraint(
+      identifiers: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[],
+    ): readonly ShapeT[] {
+      return identifiers.flatMap((identifiers) =>
+        identifiers.flatMap((identifier) =>
           this.shapesGraph.shapeByIdentifier(identifier).toList(),
         ),
       );
-    }
-
-    get or(): Maybe<NonEmptyList<ShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.or.flatMap((identifiers) =>
-          identifiers.flatMap((identifier) =>
-            this.shapesGraph.shapeByIdentifier(identifier).toList(),
-          ),
-        ),
-      );
-    }
-
-    get xone(): Maybe<NonEmptyList<ShapeT>> {
-      return NonEmptyList.fromArray(
-        this.generatedShaclCoreShape.xone.flatMap((identifiers) =>
-          identifiers.flatMap((identifier) =>
-            this.shapesGraph.shapeByIdentifier(identifier).toList(),
-          ),
-        ),
-      );
-    }
-  }
-
-  export class Targets {
-    constructor(
-      private readonly generatedShape: Omit<generated.ShaclCoreShape, "type">,
-    ) {}
-
-    get targetClasses(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.classes);
-    }
-
-    get targetNodes(): Maybe<NonEmptyList<Literal | NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.targetNodes);
-    }
-
-    get targetObjectsOf(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.targetObjectsOf);
-    }
-
-    get targetSubjectsOf(): Maybe<NonEmptyList<NamedNode>> {
-      return NonEmptyList.fromArray(this.generatedShape.targetSubjectsOf);
     }
   }
 }

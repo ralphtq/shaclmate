@@ -1,6 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import { NodeShape as ShaclCoreNodeShape } from "@shaclmate/shacl-ast";
-import { Maybe, NonEmptyList } from "purify-ts";
+import { Maybe } from "purify-ts";
 import type {
   MintingStrategy,
   TsFeature,
@@ -217,8 +217,8 @@ export class NodeShape extends ShaclCoreNodeShape<
     );
   }
 
-  get tsImports(): Maybe<NonEmptyList<string>> {
-    return NonEmptyList.fromArray(this.generatedShaclmateNodeShape.tsImports);
+  get tsImports(): readonly string[] {
+    return this.generatedShaclmateNodeShape.tsImports;
   }
 
   get tsObjectDeclarationType(): Maybe<TsObjectDeclarationType> {
