@@ -5951,6 +5951,16 @@ export interface InterfaceNodeShape {
 }
 
 export namespace InterfaceNodeShape {
+  export function create(parameters: {
+    readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly stringProperty: string;
+  }): InterfaceNodeShape {
+    const identifier = parameters.identifier;
+    const stringProperty = parameters.stringProperty;
+    const type = "InterfaceNodeShape" as const;
+    return { identifier, stringProperty, type };
+  }
+
   export function equals(
     left: InterfaceNodeShape,
     right: InterfaceNodeShape,
