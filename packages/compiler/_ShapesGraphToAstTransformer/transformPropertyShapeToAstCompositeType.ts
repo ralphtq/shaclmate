@@ -179,7 +179,7 @@ export function transformPropertyShapeToAstCompositeType(
       hasValues: [],
       in_: [],
       kind: "LiteralType",
-      languageIn: Maybe.empty(),
+      languageIn: [],
       maxExclusive: Maybe.empty(),
       maxInclusive: Maybe.empty(),
       minExclusive: Maybe.empty(),

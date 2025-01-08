@@ -121,8 +121,8 @@ export namespace Shape {
       return this.generatedShaclCoreShape.in_.orDefault([]);
     }
 
-    get languageIn(): Maybe<readonly string[]> {
-      return this.generatedShaclCoreShape.languageIn;
+    get languageIn(): readonly string[] {
+      return this.generatedShaclCoreShape.languageIn.orDefault([]);
     }
 
     get maxCount(): Maybe<number> {
