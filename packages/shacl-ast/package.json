@@ -38,7 +38,8 @@
     "test:coverage": "biome check && vitest run --coverage",
     "test:watch": "vitest watch",
     "unlink": "npm unlink -g @shaclmate/shacl-ast",
-    "watch": "tsc -w --preserveWatchOutput"
+    "watch": "tsc -w --preserveWatchOutput",
+    "watch:noEmit": "tsc --noEmit -w --preserveWatchOutput"
   },
   "repository": {
     "type": "git",
