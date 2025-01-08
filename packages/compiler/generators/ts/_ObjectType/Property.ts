@@ -13,14 +13,14 @@ import type { Type } from "../Type.js";
 export abstract class Property<
   TypeT extends { readonly mutable: boolean; readonly name: string },
 > {
-  abstract readonly classConstructorParametersPropertySignature: Maybe<
-    OptionalKind<PropertySignatureStructure>
-  >;
   abstract readonly classGetAccessorDeclaration: Maybe<
     OptionalKind<GetAccessorDeclarationStructure>
   >;
   abstract readonly classPropertyDeclaration: Maybe<
     OptionalKind<PropertyDeclarationStructure>
+  >;
+  abstract readonly constructorParametersPropertySignature: Maybe<
+    OptionalKind<PropertySignatureStructure>
   >;
   abstract readonly equalsFunction: string;
   abstract readonly interfacePropertySignature: OptionalKind<PropertySignatureStructure>;

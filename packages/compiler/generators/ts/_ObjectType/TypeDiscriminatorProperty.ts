@@ -37,12 +37,6 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     this.value = value;
   }
 
-  override get classConstructorParametersPropertySignature(): Maybe<
-    OptionalKind<PropertySignatureStructure>
-  > {
-    return Maybe.empty();
-  }
-
   override get classGetAccessorDeclaration(): Maybe<
     OptionalKind<GetAccessorDeclarationStructure>
   > {
@@ -67,6 +61,12 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
           ? undefined
           : this.type.name,
     });
+  }
+
+  override get constructorParametersPropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.empty();
   }
 
   override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {

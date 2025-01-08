@@ -58,21 +58,6 @@ export class IdentifierProperty extends Property<IdentifierType> {
     this.override = override;
   }
 
-  override get classConstructorParametersPropertySignature(): Maybe<
-    OptionalKind<PropertySignatureStructure>
-  > {
-    if (this.abstract) {
-      return Maybe.empty();
-    }
-
-    return Maybe.of({
-      hasQuestionToken: this.mintingStrategy !== "none",
-      isReadonly: true,
-      name: this.name,
-      type: this.type.name,
-    });
-  }
-
   override get classGetAccessorDeclaration(): Maybe<
     OptionalKind<GetAccessorDeclarationStructure>
   > {
@@ -150,6 +135,21 @@ export class IdentifierProperty extends Property<IdentifierType> {
           type: `${this.type.name} | undefined`,
         });
     }
+  }
+
+  override get constructorParametersPropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    if (this.abstract) {
+      return Maybe.empty();
+    }
+
+    return Maybe.of({
+      hasQuestionToken: this.mintingStrategy !== "none",
+      isReadonly: true,
+      name: this.name,
+      type: this.type.name,
+    });
   }
 
   override get declarationImports(): readonly Import[] {

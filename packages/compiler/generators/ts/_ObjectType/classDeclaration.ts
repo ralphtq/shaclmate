@@ -36,9 +36,9 @@ function constructorDeclaration(
   }
   statements.push(...propertyStatements);
 
-  const constructorParameterPropertySignatures = this.properties.flatMap(
+  const constructorParametersPropertySignatures = this.properties.flatMap(
     (property) =>
-      property.classConstructorParametersPropertySignature
+      property.constructorParametersPropertySignature
         .map(
           (propertySignature) =>
             `readonly ${propertySignature.name}${propertySignature.hasQuestionToken ? "?" : ""}: ${propertySignature.type}`,
@@ -47,8 +47,8 @@ function constructorDeclaration(
   );
 
   let constructorParametersType: string;
-  if (constructorParameterPropertySignatures.length > 0) {
-    constructorParametersType = `{ ${constructorParameterPropertySignatures.join(
+  if (constructorParametersPropertySignatures.length > 0) {
+    constructorParametersType = `{ ${constructorParametersPropertySignatures.join(
       ", ",
     )} }`;
   } else {

@@ -43,7 +43,25 @@ export class ShaclProperty extends Property<Type> {
     this.path = path;
   }
 
-  override get classConstructorParametersPropertySignature(): Maybe<
+  override get classGetAccessorDeclaration(): Maybe<
+    OptionalKind<GetAccessorDeclarationStructure>
+  > {
+    return Maybe.empty();
+  }
+
+  override get classPropertyDeclaration(): Maybe<
+    OptionalKind<PropertyDeclarationStructure>
+  > {
+    return Maybe.of({
+      isReadonly: !this.mutable,
+      leadingTrivia: this.declarationComment,
+      name: this.name,
+      scope: Property.visibilityToScope(this.visibility),
+      type: this.type.name,
+    });
+  }
+
+  override get constructorParametersPropertySignature(): Maybe<
     OptionalKind<PropertySignatureStructure>
   > {
     let hasQuestionToken = false;
@@ -62,24 +80,6 @@ export class ShaclProperty extends Property<Type> {
       leadingTrivia: this.declarationComment,
       name: this.name,
       type: [...typeNames].sort().join(" | "),
-    });
-  }
-
-  override get classGetAccessorDeclaration(): Maybe<
-    OptionalKind<GetAccessorDeclarationStructure>
-  > {
-    return Maybe.empty();
-  }
-
-  override get classPropertyDeclaration(): Maybe<
-    OptionalKind<PropertyDeclarationStructure>
-  > {
-    return Maybe.of({
-      isReadonly: !this.mutable,
-      leadingTrivia: this.declarationComment,
-      name: this.name,
-      scope: Property.visibilityToScope(this.visibility),
-      type: this.type.name,
     });
   }
 
