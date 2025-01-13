@@ -191,6 +191,14 @@ export class ObjectType extends DeclaredType {
   }
 
   @Memoize()
+  get fromJsonFunctionName(): string {
+    if (this.declarationType === "class" && this.abstract) {
+      return "interfaceFromJson";
+    }
+    return "fromJson";
+  }
+
+  @Memoize()
   get fromRdfFunctionName(): string {
     if (this.declarationType === "class" && this.abstract) {
       return "interfaceFromRdf";
@@ -224,14 +232,22 @@ export class ObjectType extends DeclaredType {
   }
 
   get jsonName(): string {
-    switch (this.declarationType) {
-      case "class":
-        return `ReturnType<${this.name}["toJson"]>`;
-      case "interface":
-        return `ReturnType<typeof ${this.name}.toJson>`;
-      default:
-        throw new RangeError(this.declarationType);
+    if (this.features.has("toJson")) {
+      switch (this.declarationType) {
+        case "class":
+          return `ReturnType<${this.name}["toJson"]>`;
+        case "interface":
+          return `ReturnType<typeof ${this.name}.toJson>`;
+        default:
+          throw new RangeError(this.declarationType);
+      }
     }
+    if (this.features.has("fromJson")) {
+      return `Parameters<typeof ${this.name}.fromJson>[0]`;
+    }
+    throw new RangeError(
+      "jsonName called when neither fromJson nor toJson features are enabled",
+    );
   }
 
   get mutable(): boolean {

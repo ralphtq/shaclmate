@@ -20,8 +20,6 @@ export function fromRdfFunctionDeclaration(
     return Maybe.empty();
   }
 
-  this.ensureAtMostOneSuperObjectType();
-
   const propertiesByName: Record<
     string,
     {
