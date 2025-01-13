@@ -78,7 +78,7 @@ export function fromJsonFunctionDeclaration(
   return Maybe.of({
     isExported: true,
     kind: StructureKind.Function,
-    name: this.fromRdfFunctionName,
+    name: "fromJson",
     parameters: [
       {
         name: "_json",

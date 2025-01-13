@@ -2,7 +2,7 @@ export * from "./classDeclaration.js";
 export * from "./createFunctionDeclaration.js";
 export * from "./equalsFunctionDeclaration.js";
 export * from "./fromJsonFunctionDeclaration.js";
-export * from "./fromRdfFunctionDeclaration.js";
+export * from "./fromRdfFunctionDeclarations.js";
 export * from "./hashFunctionDeclaration.js";
 export * from "./IdentifierProperty.js";
 export * from "./interfaceDeclaration.js";

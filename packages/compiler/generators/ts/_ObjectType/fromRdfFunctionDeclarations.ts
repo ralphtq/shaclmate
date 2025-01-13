@@ -1,4 +1,3 @@
-import { Maybe } from "purify-ts";
 import { type FunctionDeclarationStructure, StructureKind } from "ts-morph";
 import type { ObjectType } from "../ObjectType.js";
 
@@ -9,15 +8,15 @@ const variables = {
   resource: "_resource",
 };
 
-export function fromRdfFunctionDeclaration(
+export function fromRdfFunctionDeclarations(
   this: ObjectType,
-): Maybe<FunctionDeclarationStructure> {
+): readonly FunctionDeclarationStructure[] {
   if (!this.features.has("fromRdf")) {
-    return Maybe.empty();
+    return [];
   }
 
   if (this.extern) {
-    return Maybe.empty();
+    return [];
   }
 
   const propertiesByName: Record<
@@ -76,27 +75,29 @@ export function fromRdfFunctionDeclaration(
 
   if (this.parentObjectTypes.length > 0) {
     statements = [
-      `return ${this.parentObjectTypes[0].name}.${this.parentObjectTypes[0].fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: ${variables.resource} }).chain(_super => { ${statements.join("\n")} })`,
+      `return ${this.parentObjectTypes[0].name}.${this.parentObjectTypes[0]}.fromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: ${variables.resource} }).chain(_super => { ${statements.join("\n")} })`,
     ];
   }
 
-  return Maybe.of({
-    isExported: true,
-    kind: StructureKind.Function,
-    name: this.fromRdfFunctionName,
-    parameters: [
-      {
-        name: `{ ignoreRdfType: ${variables.ignoreRdfType}, languageIn: ${variables.languageIn}, resource: ${variables.resource},\n// @ts-ignore\n...${variables.context} }`,
-        type: `{ [_index: string]: any; ignoreRdfType?: boolean; languageIn?: readonly string[]; resource: ${this.rdfjsResourceType().name}; }`,
-      },
-    ],
-    returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${
-      this.abstract
-        ? `{ ${Object.entries(propertiesByName)
-            .map(([name, { type }]) => `${name}: ${type}`)
-            .join(", ")} }`
-        : this.name
-    }>`,
-    statements,
-  });
+  return [
+    {
+      isExported: true,
+      kind: StructureKind.Function,
+      name: "fromRdf",
+      parameters: [
+        {
+          name: `{ ignoreRdfType: ${variables.ignoreRdfType}, languageIn: ${variables.languageIn}, resource: ${variables.resource},\n// @ts-ignore\n...${variables.context} }`,
+          type: `{ [_index: string]: any; ignoreRdfType?: boolean; languageIn?: readonly string[]; resource: ${this.rdfjsResourceType().name}; }`,
+        },
+      ],
+      returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${
+        this.abstract
+          ? `{ ${Object.entries(propertiesByName)
+              .map(([name, { type }]) => `${name}: ${type}`)
+              .join(", ")} }`
+          : this.name
+      }>`,
+      statements,
+    },
+  ];
 }

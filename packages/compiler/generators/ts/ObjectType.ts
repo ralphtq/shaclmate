@@ -147,7 +147,7 @@ export class ObjectType extends DeclaredType {
     const moduleStatements: StatementStructures[] = [
       ..._ObjectType.createFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
-      ..._ObjectType.fromRdfFunctionDeclaration.bind(this)().toList(),
+      ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
@@ -188,22 +188,6 @@ export class ObjectType extends DeclaredType {
       default:
         throw new RangeError(this.declarationType);
     }
-  }
-
-  @Memoize()
-  get fromJsonFunctionName(): string {
-    if (this.declarationType === "class" && this.abstract) {
-      return "interfaceFromJson";
-    }
-    return "fromJson";
-  }
-
-  @Memoize()
-  get fromRdfFunctionName(): string {
-    if (this.declarationType === "class" && this.abstract) {
-      return "interfaceFromRdf";
-    }
-    return "fromRdf";
   }
 
   @Memoize()
@@ -326,7 +310,7 @@ export class ObjectType extends DeclaredType {
     // Instead, assume the property has the correct range.
     // This also accommodates the case where the object of a property is a dangling identifier that's not the
     // subject of any statements.
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
   }
 
   override propertyHashStatements({

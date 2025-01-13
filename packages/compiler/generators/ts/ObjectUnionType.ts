@@ -28,11 +28,11 @@ import { tsComment } from "./tsComment.js";
  */
 export class ObjectUnionType extends DeclaredType {
   readonly kind = "ObjectUnionType";
+  private readonly _discriminatorProperty: Type.DiscriminatorProperty;
   private readonly comment: Maybe<string>;
   private readonly fromRdfFunctionName = "fromRdf";
   private readonly label: Maybe<string>;
   private readonly memberTypes: readonly ObjectType[];
-  private readonly _discriminatorProperty: Type.DiscriminatorProperty;
 
   constructor({
     comment,
@@ -113,6 +113,10 @@ export class ObjectUnionType extends DeclaredType {
     return Maybe.of(this._discriminatorProperty);
   }
 
+  override get equalsFunction(): string {
+    return `${this.name}.equals`;
+  }
+
   override get jsonName(): string {
     return this.memberTypes
       .map((memberType) => memberType.jsonName)
@@ -125,10 +129,6 @@ export class ObjectUnionType extends DeclaredType {
 
   override get useImports(): readonly Import[] {
     return [];
-  }
-
-  override get equalsFunction(): string {
-    return `${this.name}.equals`;
   }
 
   private get equalsFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
@@ -180,7 +180,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
 
     let expression = "";
     for (const memberType of this.memberTypes) {
-      const typeExpression = `(${memberType.name}.${memberType.fromRdfFunctionName}(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
+      const typeExpression = `(${memberType.name}.fromRdf(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
       expression =
         expression.length > 0
           ? `${expression}.altLazy(() => ${typeExpression})`
