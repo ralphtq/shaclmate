@@ -248,7 +248,10 @@ export class UnionNodeShapeMember2 {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         stringProperty2: this.stringProperty2,
         type: this.type,
       } satisfies ReturnType<UnionNodeShapeMember2["toJson"]>),
@@ -410,7 +413,10 @@ export class UnionNodeShapeMember1 {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         stringProperty1: this.stringProperty1,
         type: this.type,
       } satisfies ReturnType<UnionNodeShapeMember1["toJson"]>),
@@ -742,7 +748,10 @@ export class NonClassNodeShape {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         stringProperty: this.stringProperty,
         type: this.type,
       } satisfies ReturnType<NonClassNodeShape["toJson"]>),
@@ -1129,7 +1138,10 @@ export class NodeShapeWithUnionProperties {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         orLiteralsProperty: this.orLiteralsProperty
           .map((_item) => ({
             "@language": _item.language.length > 0 ? _item.language : undefined,
@@ -1785,7 +1797,10 @@ export class NodeShapeWithTermProperties {
         dateTimeProperty: this.dateTimeProperty
           .map((_item) => _item.toISOString())
           .extract(),
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         iriProperty: this.iriProperty
           .map((_item) => ({ "@id": _item.value }))
           .extract(),
@@ -2239,7 +2254,10 @@ export class NodeShapeWithPropertyVisibilities {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         privateProperty: this.privateProperty,
         protectedProperty: this.protectedProperty,
         publicProperty: this.publicProperty,
@@ -2572,7 +2590,10 @@ export class NodeShapeWithPropertyCardinalities {
         emptyStringSetProperty: this.emptyStringSetProperty.map(
           (_item) => _item,
         ),
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         nonEmptyStringSetProperty: this.nonEmptyStringSetProperty.map(
           (_item) => _item,
         ),
@@ -2930,7 +2951,10 @@ export class NodeShapeWithMutableProperties {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         mutableListProperty: this.mutableListProperty
           .map((_item) => _item.map((_item) => _item))
           .extract(),
@@ -3237,7 +3261,10 @@ export class NodeShapeWithListProperty {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         listProperty: this.listProperty.map((_item) => _item),
         type: this.type,
       } satisfies ReturnType<NodeShapeWithListProperty["toJson"]>),
@@ -3595,7 +3622,10 @@ export class NodeShapeWithLanguageInProperties {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         languageInProperty: this.languageInProperty
           .map((_item) => ({
             "@language": _item.language.length > 0 ? _item.language : undefined,
@@ -4011,7 +4041,10 @@ export class NodeShapeWithInProperties {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         inBooleansProperty: this.inBooleansProperty
           .map((_item) => _item)
           .extract(),
@@ -4504,7 +4537,10 @@ export class NodeShapeWithHasValueProperties {
         hasLiteralProperty: this.hasLiteralProperty
           .map((_item) => _item)
           .extract(),
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         type: this.type,
       } satisfies ReturnType<NodeShapeWithHasValueProperties["toJson"]>),
     );
@@ -4720,7 +4756,10 @@ export class InlineNodeShape {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         stringProperty: this.stringProperty,
         type: this.type,
       } satisfies ReturnType<InlineNodeShape["toJson"]>),
@@ -4882,7 +4921,10 @@ export class ExternNodeShape {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         stringProperty: this.stringProperty,
         type: this.type,
       } satisfies ReturnType<ExternNodeShape["toJson"]>),
@@ -5139,9 +5181,15 @@ export class NodeShapeWithExternProperties {
           .map((_item) => _item.toJson())
           .extract(),
         externProperty: this.externProperty
-          .map((_item) => ({ "@id": _item.value }))
+          .map((_item) => ({
+            "@id":
+              _item.termType === "BlankNode" ? `_:${_item.value}` : _item.value,
+          }))
           .extract(),
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         inlineProperty: this.inlineProperty
           .map((_item) => _item.toJson())
           .extract(),
@@ -5431,7 +5479,10 @@ export class NodeShapeWithExplicitRdfTypes {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         stringProperty: this.stringProperty,
         type: this.type,
       } satisfies ReturnType<NodeShapeWithExplicitRdfTypes["toJson"]>),
@@ -5762,7 +5813,10 @@ export class NodeShapeWithDefaultValueProperties {
       JSON.stringify({
         dateTimeProperty: this.dateTimeProperty.toISOString(),
         falseBooleanProperty: this.falseBooleanProperty,
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         numberProperty: this.numberProperty,
         stringProperty: this.stringProperty,
         trueBooleanProperty: this.trueBooleanProperty,
@@ -6348,7 +6402,10 @@ export namespace InterfaceNodeShape {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id": _interfaceNodeShape.identifier.value,
+        "@id":
+          _interfaceNodeShape.identifier.termType === "BlankNode"
+            ? `_:${_interfaceNodeShape.identifier.value}`
+            : _interfaceNodeShape.identifier.value,
         stringProperty: _interfaceNodeShape.stringProperty,
         type: _interfaceNodeShape.type,
       } satisfies ReturnType<typeof InterfaceNodeShape.toJson>),
@@ -6451,7 +6508,10 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
     return JSON.parse(
       JSON.stringify({
         abcStringProperty: this.abcStringProperty,
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         type: this.type,
       } satisfies ReturnType<
         AbstractBaseClassWithPropertiesNodeShape["toJson"]
@@ -7119,7 +7179,10 @@ export abstract class AbstractBaseClassForExternObjectType {
     return JSON.parse(
       JSON.stringify({
         abcStringProperty: this.abcStringProperty,
-        "@id": this.identifier.value,
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
         type: this.type,
       } satisfies ReturnType<AbstractBaseClassForExternObjectType["toJson"]>),
     );

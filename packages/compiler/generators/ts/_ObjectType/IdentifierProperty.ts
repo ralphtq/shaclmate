@@ -198,6 +198,12 @@ export class IdentifierProperty extends Property<IdentifierType> {
       .orDefault([]);
   }
 
+  override fromJsonStatements(
+    _parameters: Parameters<Property<IdentifierType>["fromJsonStatements"]>[0],
+  ): readonly string[] {
+    return [];
+  }
+
   override fromRdfStatements({
     variables,
   }: Parameters<
@@ -225,7 +231,8 @@ export class IdentifierProperty extends Property<IdentifierType> {
   override toJsonObjectMember({
     variables,
   }: Parameters<Property<IdentifierType>["toJsonObjectMember"]>[0]): string {
-    return `"@id": ${variables.value}.value`;
+    const typeToJson = this.type.propertyToJsonExpression({ variables });
+    return typeToJson.substring(1, typeToJson.length - 1);
   }
 
   override toRdfStatements(): readonly string[] {

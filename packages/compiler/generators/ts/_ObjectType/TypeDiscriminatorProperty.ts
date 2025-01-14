@@ -89,6 +89,10 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     return [];
   }
 
+  override fromJsonStatements(): readonly string[] {
+    return this.fromRdfStatements();
+  }
+
   override fromRdfStatements(): readonly string[] {
     return !this.abstract && this.objectTypeDeclarationType === "interface"
       ? [`const ${this.name} = "${this.value}" as const`]

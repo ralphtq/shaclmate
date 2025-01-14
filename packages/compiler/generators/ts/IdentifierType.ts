@@ -29,7 +29,16 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
   }: Parameters<
     TermType<BlankNode | NamedNode>["propertyToJsonExpression"]
   >[0]): string {
-    return `{ "@id": ${variables.value}.value }`;
+    if (this.nodeKinds.size === 2) {
+      return `{ "@id": ${variables.value}.termType === "BlankNode" ? \`_:\${${variables.value}.value}\` : ${variables.value}.value }`;
+    }
+    const nodeKind = [...this.nodeKinds][0];
+    switch (nodeKind) {
+      case "BlankNode":
+        return `{ "@id": \`_:\${${variables.value}.value}\` }`;
+      case "NamedNode":
+        return `{ "@id": ${variables.value}.value }`;
+    }
   }
 
   protected override propertyFromRdfResourceValueExpression({

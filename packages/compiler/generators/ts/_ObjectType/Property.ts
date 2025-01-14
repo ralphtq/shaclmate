@@ -71,6 +71,12 @@ export abstract class Property<
     };
   }): readonly string[];
 
+  abstract fromJsonStatements(parameters: {
+    variables: {
+      value: string;
+    };
+  }): readonly string[];
+
   abstract fromRdfStatements(parameters: {
     variables: {
       context: string;
