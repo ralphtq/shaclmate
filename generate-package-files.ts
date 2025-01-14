@@ -103,7 +103,7 @@ const packages: readonly Package[] = [
         "js-sha256": "^0.11.0",
         n3: externalDependencyVersions["n3"],
         "purify-ts": externalDependencyVersions["purify-ts"],
-        "purify-ts-helpers": "1.0.7",
+        "purify-ts-helpers": "1.0.8",
         "rdf-literal": "^1.3.2",
         "rdfjs-resource": externalDependencyVersions["rdfjs-resource"],
         uuid: "^9.0.1",

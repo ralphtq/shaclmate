@@ -30,7 +30,7 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
     return left.equals(right);
   }
 
-  static fromRdf({
+  static override fromRdf({
     extra,
     resource,
   }: {
