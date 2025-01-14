@@ -21,23 +21,23 @@ export function fromRdfFunctionDeclarations(
 
   const initializers: string[] = [];
   const propertySignatures: string[] = [];
-  const interfaceFromRdfFunctionReturnType: string[] = [];
-  const interfaceFromRdfFunctionStatements: string[] = [];
+  const propertiesFromRdfFunctionReturnType: string[] = [];
+  const propertiesFromRdfFunctionStatements: string[] = [];
 
   this.parentObjectTypes.forEach((parentObjectType, parentObjectTypeI) => {
-    interfaceFromRdfFunctionStatements.push(
-      `const _super${parentObjectTypeI}Either = ${parentObjectType.name}.interfaceFromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: ${variables.resource} });`,
+    propertiesFromRdfFunctionStatements.push(
+      `const _super${parentObjectTypeI}Either = ${parentObjectType.name}.propertiesFromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: ${variables.resource} });`,
       `if (_super${parentObjectTypeI}Either.isLeft()) { return _super${parentObjectTypeI}Either; }`,
       `const _super${parentObjectTypeI} = _super${parentObjectTypeI}Either.unsafeCoerce()`,
     );
     initializers.push(`..._super${parentObjectTypeI}`);
-    interfaceFromRdfFunctionReturnType.push(
-      `purifyHelpers.Eithers.UnwrapR<ReturnType<typeof ${parentObjectType.name}.interfaceFromRdf>>`,
+    propertiesFromRdfFunctionReturnType.push(
+      `purifyHelpers.Eithers.UnwrapR<ReturnType<typeof ${parentObjectType.name}.propertiesFromRdf>>`,
     );
   });
 
   this.fromRdfType.ifJust((rdfType) => {
-    interfaceFromRdfFunctionStatements.push(
+    propertiesFromRdfFunctionStatements.push(
       `if (!${variables.ignoreRdfType} && !${variables.resource}.isInstanceOf(${this.rdfjsTermExpression(rdfType)})) { return purify.Left(new rdfjsResource.Resource.ValueError({ focusResource: ${variables.resource}, message: \`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} has unexpected RDF type\`, predicate: ${this.rdfjsTermExpression(rdfType)} })); }`,
     );
   });
@@ -52,16 +52,16 @@ export function fromRdfFunctionDeclarations(
       variables: propertyFromRdfVariables,
     });
     if (propertyFromRdfStatements.length > 0) {
-      interfaceFromRdfFunctionStatements.push(...propertyFromRdfStatements);
+      propertiesFromRdfFunctionStatements.push(...propertyFromRdfStatements);
       initializers.push(property.name);
       propertySignatures.push(`${property.name}: ${property.type.name};`);
     }
   }
-  interfaceFromRdfFunctionStatements.push(
+  propertiesFromRdfFunctionStatements.push(
     `return purify.Either.of({ ${initializers.join(", ")} })`,
   );
   if (propertySignatures.length > 0) {
-    interfaceFromRdfFunctionReturnType.splice(
+    propertiesFromRdfFunctionReturnType.splice(
       0,
       0,
       `{ ${propertySignatures.join(" ")} }`,
@@ -73,49 +73,32 @@ export function fromRdfFunctionDeclarations(
   fromRdfFunctionDeclarations.push({
     isExported: true,
     kind: StructureKind.Function,
-    name: "interfaceFromRdf",
+    name: "propertiesFromRdf",
     parameters: [
       {
         name: `{ ignoreRdfType: ${variables.ignoreRdfType}, languageIn: ${variables.languageIn}, resource: ${variables.resource},\n// @ts-ignore\n...${variables.context} }`,
         type: `{ [_index: string]: any; ignoreRdfType?: boolean; languageIn?: readonly string[]; resource: ${this.rdfjsResourceType().name}; }`,
       },
     ],
-    returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${interfaceFromRdfFunctionReturnType.join(" & ")}>`,
-    statements: interfaceFromRdfFunctionStatements,
+    returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${propertiesFromRdfFunctionReturnType.join(" & ")}>`,
+    statements: propertiesFromRdfFunctionStatements,
   });
 
-  if (this.declarationType === "class" && !this.abstract) {
-    fromRdfFunctionDeclarations.push(
-      {
-        isExported: true,
-        kind: StructureKind.Function,
-        name: "classFromRdf",
-        parameters: [
-          {
-            name: "parameters",
-            type: `Parameters<typeof ${this.name}.interfaceFromRdf>[0]`,
-          },
-        ],
-        returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>`,
-        statements: [
-          `return ${this.name}.interfaceFromRdf(parameters).map(_ => new ${this.name}(_));`,
-        ],
-      },
-      {
-        isExported: true,
-        kind: StructureKind.Function,
-        name: "fromRdf",
-        parameters: [
-          {
-            name: "parameters",
-            type: `Parameters<typeof ${this.name}.interfaceFromRdf>[0]`,
-          },
-        ],
-        returnType: `ReturnType<typeof ${this.name}.classFromRdf>`,
-        statements: [`return ${this.name}.classFromRdf(parameters);`],
-      },
-    );
-  } else {
+  if (!this.abstract) {
+    let fromRdfStatements: string[];
+    switch (this.declarationType) {
+      case "class":
+        fromRdfStatements = [
+          `return ${this.name}.propertiesFromRdf(parameters).map(properties => new ${this.name}(properties));`,
+        ];
+        break;
+      case "interface":
+        fromRdfStatements = [
+          `return ${this.name}.propertiesFromRdf(parameters);`,
+        ];
+        break;
+    }
+
     fromRdfFunctionDeclarations.push({
       isExported: true,
       kind: StructureKind.Function,
@@ -123,11 +106,11 @@ export function fromRdfFunctionDeclarations(
       parameters: [
         {
           name: "parameters",
-          type: `Parameters<typeof ${this.name}.interfaceFromRdf>[0]`,
+          type: `Parameters<typeof ${this.name}.propertiesFromRdf>[0]`,
         },
       ],
-      returnType: `ReturnType<typeof ${this.name}.interfaceFromRdf>`,
-      statements: [`return ${this.name}.interfaceFromRdf(parameters);`],
+      returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>`,
+      statements: fromRdfStatements,
     });
   }
 

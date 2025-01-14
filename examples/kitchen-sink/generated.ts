@@ -118,7 +118,7 @@ export class UuidV4IriNodeShape {
 }
 
 export namespace UuidV4IriNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -151,18 +151,12 @@ export namespace UuidV4IriNodeShape {
     return purify.Either.of({ identifier, stringProperty });
   }
 
-  export function classFromRdf(
-    parameters: Parameters<typeof UuidV4IriNodeShape.interfaceFromRdf>[0],
-  ): purify.Either<rdfjsResource.Resource.ValueError, UuidV4IriNodeShape> {
-    return UuidV4IriNodeShape.interfaceFromRdf(parameters).map(
-      (_) => new UuidV4IriNodeShape(_),
-    );
-  }
-
   export function fromRdf(
-    parameters: Parameters<typeof UuidV4IriNodeShape.interfaceFromRdf>[0],
-  ): ReturnType<typeof UuidV4IriNodeShape.classFromRdf> {
-    return UuidV4IriNodeShape.classFromRdf(parameters);
+    parameters: Parameters<typeof UuidV4IriNodeShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, UuidV4IriNodeShape> {
+    return UuidV4IriNodeShape.propertiesFromRdf(parameters).map(
+      (properties) => new UuidV4IriNodeShape(properties),
+    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -286,7 +280,7 @@ export class UnionNodeShapeMember2 {
 }
 
 export namespace UnionNodeShapeMember2 {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -319,18 +313,12 @@ export namespace UnionNodeShapeMember2 {
     return purify.Either.of({ identifier, stringProperty2 });
   }
 
-  export function classFromRdf(
-    parameters: Parameters<typeof UnionNodeShapeMember2.interfaceFromRdf>[0],
-  ): purify.Either<rdfjsResource.Resource.ValueError, UnionNodeShapeMember2> {
-    return UnionNodeShapeMember2.interfaceFromRdf(parameters).map(
-      (_) => new UnionNodeShapeMember2(_),
-    );
-  }
-
   export function fromRdf(
-    parameters: Parameters<typeof UnionNodeShapeMember2.interfaceFromRdf>[0],
-  ): ReturnType<typeof UnionNodeShapeMember2.classFromRdf> {
-    return UnionNodeShapeMember2.classFromRdf(parameters);
+    parameters: Parameters<typeof UnionNodeShapeMember2.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, UnionNodeShapeMember2> {
+    return UnionNodeShapeMember2.propertiesFromRdf(parameters).map(
+      (properties) => new UnionNodeShapeMember2(properties),
+    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -454,7 +442,7 @@ export class UnionNodeShapeMember1 {
 }
 
 export namespace UnionNodeShapeMember1 {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -487,18 +475,12 @@ export namespace UnionNodeShapeMember1 {
     return purify.Either.of({ identifier, stringProperty1 });
   }
 
-  export function classFromRdf(
-    parameters: Parameters<typeof UnionNodeShapeMember1.interfaceFromRdf>[0],
-  ): purify.Either<rdfjsResource.Resource.ValueError, UnionNodeShapeMember1> {
-    return UnionNodeShapeMember1.interfaceFromRdf(parameters).map(
-      (_) => new UnionNodeShapeMember1(_),
-    );
-  }
-
   export function fromRdf(
-    parameters: Parameters<typeof UnionNodeShapeMember1.interfaceFromRdf>[0],
-  ): ReturnType<typeof UnionNodeShapeMember1.classFromRdf> {
-    return UnionNodeShapeMember1.classFromRdf(parameters);
+    parameters: Parameters<typeof UnionNodeShapeMember1.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, UnionNodeShapeMember1> {
+    return UnionNodeShapeMember1.propertiesFromRdf(parameters).map(
+      (properties) => new UnionNodeShapeMember1(properties),
+    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -627,7 +609,7 @@ export class Sha256IriNodeShape {
 }
 
 export namespace Sha256IriNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -660,18 +642,12 @@ export namespace Sha256IriNodeShape {
     return purify.Either.of({ identifier, stringProperty });
   }
 
-  export function classFromRdf(
-    parameters: Parameters<typeof Sha256IriNodeShape.interfaceFromRdf>[0],
-  ): purify.Either<rdfjsResource.Resource.ValueError, Sha256IriNodeShape> {
-    return Sha256IriNodeShape.interfaceFromRdf(parameters).map(
-      (_) => new Sha256IriNodeShape(_),
-    );
-  }
-
   export function fromRdf(
-    parameters: Parameters<typeof Sha256IriNodeShape.interfaceFromRdf>[0],
-  ): ReturnType<typeof Sha256IriNodeShape.classFromRdf> {
-    return Sha256IriNodeShape.classFromRdf(parameters);
+    parameters: Parameters<typeof Sha256IriNodeShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, Sha256IriNodeShape> {
+    return Sha256IriNodeShape.propertiesFromRdf(parameters).map(
+      (properties) => new Sha256IriNodeShape(properties),
+    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -798,7 +774,7 @@ export class NonClassNodeShape {
 }
 
 export namespace NonClassNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -831,18 +807,12 @@ export namespace NonClassNodeShape {
     return purify.Either.of({ identifier, stringProperty });
   }
 
-  export function classFromRdf(
-    parameters: Parameters<typeof NonClassNodeShape.interfaceFromRdf>[0],
-  ): purify.Either<rdfjsResource.Resource.ValueError, NonClassNodeShape> {
-    return NonClassNodeShape.interfaceFromRdf(parameters).map(
-      (_) => new NonClassNodeShape(_),
-    );
-  }
-
   export function fromRdf(
-    parameters: Parameters<typeof NonClassNodeShape.interfaceFromRdf>[0],
-  ): ReturnType<typeof NonClassNodeShape.classFromRdf> {
-    return NonClassNodeShape.classFromRdf(parameters);
+    parameters: Parameters<typeof NonClassNodeShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, NonClassNodeShape> {
+    return NonClassNodeShape.propertiesFromRdf(parameters).map(
+      (properties) => new NonClassNodeShape(properties),
+    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -1238,7 +1208,7 @@ export class NodeShapeWithUnionProperties {
 }
 
 export namespace NodeShapeWithUnionProperties {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1402,25 +1372,17 @@ export namespace NodeShapeWithUnionProperties {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithUnionProperties.interfaceFromRdf
+      typeof NodeShapeWithUnionProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithUnionProperties
   > {
-    return NodeShapeWithUnionProperties.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithUnionProperties(_),
+    return NodeShapeWithUnionProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithUnionProperties(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithUnionProperties.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithUnionProperties.classFromRdf> {
-    return NodeShapeWithUnionProperties.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -1909,7 +1871,7 @@ export class NodeShapeWithTermProperties {
 }
 
 export namespace NodeShapeWithTermProperties {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -2080,25 +2042,17 @@ export namespace NodeShapeWithTermProperties {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithTermProperties.interfaceFromRdf
+      typeof NodeShapeWithTermProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithTermProperties
   > {
-    return NodeShapeWithTermProperties.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithTermProperties(_),
+    return NodeShapeWithTermProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithTermProperties(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithTermProperties.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithTermProperties.classFromRdf> {
-    return NodeShapeWithTermProperties.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -2327,7 +2281,7 @@ export class NodeShapeWithPropertyVisibilities {
 }
 
 export namespace NodeShapeWithPropertyVisibilities {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -2398,25 +2352,17 @@ export namespace NodeShapeWithPropertyVisibilities {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithPropertyVisibilities.interfaceFromRdf
+      typeof NodeShapeWithPropertyVisibilities.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithPropertyVisibilities
   > {
-    return NodeShapeWithPropertyVisibilities.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithPropertyVisibilities(_),
+    return NodeShapeWithPropertyVisibilities.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithPropertyVisibilities(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithPropertyVisibilities.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithPropertyVisibilities.classFromRdf> {
-    return NodeShapeWithPropertyVisibilities.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -2676,7 +2622,7 @@ export class NodeShapeWithPropertyCardinalities {
 }
 
 export namespace NodeShapeWithPropertyCardinalities {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -2795,25 +2741,17 @@ export namespace NodeShapeWithPropertyCardinalities {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithPropertyCardinalities.interfaceFromRdf
+      typeof NodeShapeWithPropertyCardinalities.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithPropertyCardinalities
   > {
-    return NodeShapeWithPropertyCardinalities.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithPropertyCardinalities(_),
+    return NodeShapeWithPropertyCardinalities.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithPropertyCardinalities(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithPropertyCardinalities.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithPropertyCardinalities.classFromRdf> {
-    return NodeShapeWithPropertyCardinalities.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -3096,7 +3034,7 @@ export class NodeShapeWithMutableProperties {
 }
 
 export namespace NodeShapeWithMutableProperties {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -3169,25 +3107,17 @@ export namespace NodeShapeWithMutableProperties {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithMutableProperties.interfaceFromRdf
+      typeof NodeShapeWithMutableProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithMutableProperties
   > {
-    return NodeShapeWithMutableProperties.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithMutableProperties(_),
+    return NodeShapeWithMutableProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithMutableProperties(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithMutableProperties.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithMutableProperties.classFromRdf> {
-    return NodeShapeWithMutableProperties.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -3394,7 +3324,7 @@ export class NodeShapeWithListProperty {
 }
 
 export namespace NodeShapeWithListProperty {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -3440,25 +3370,17 @@ export namespace NodeShapeWithListProperty {
     return purify.Either.of({ identifier, listProperty });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithListProperty.interfaceFromRdf
+      typeof NodeShapeWithListProperty.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithListProperty
   > {
-    return NodeShapeWithListProperty.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithListProperty(_),
+    return NodeShapeWithListProperty.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithListProperty(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithListProperty.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithListProperty.classFromRdf> {
-    return NodeShapeWithListProperty.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -3728,7 +3650,7 @@ export class NodeShapeWithLanguageInProperties {
 }
 
 export namespace NodeShapeWithLanguageInProperties {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -3816,25 +3738,17 @@ export namespace NodeShapeWithLanguageInProperties {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithLanguageInProperties.interfaceFromRdf
+      typeof NodeShapeWithLanguageInProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithLanguageInProperties
   > {
-    return NodeShapeWithLanguageInProperties.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithLanguageInProperties(_),
+    return NodeShapeWithLanguageInProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithLanguageInProperties(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithLanguageInProperties.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithLanguageInProperties.classFromRdf> {
-    return NodeShapeWithLanguageInProperties.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -4159,7 +4073,7 @@ export class NodeShapeWithInProperties {
 }
 
 export namespace NodeShapeWithInProperties {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -4397,25 +4311,17 @@ export namespace NodeShapeWithInProperties {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithInProperties.interfaceFromRdf
+      typeof NodeShapeWithInProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithInProperties
   > {
-    return NodeShapeWithInProperties.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithInProperties(_),
+    return NodeShapeWithInProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithInProperties(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithInProperties.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithInProperties.classFromRdf> {
-    return NodeShapeWithInProperties.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -4633,7 +4539,7 @@ export class NodeShapeWithHasValueProperties {
 }
 
 export namespace NodeShapeWithHasValueProperties {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -4701,25 +4607,17 @@ export namespace NodeShapeWithHasValueProperties {
     return purify.Either.of({ hasIriProperty, hasLiteralProperty, identifier });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithHasValueProperties.interfaceFromRdf
+      typeof NodeShapeWithHasValueProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithHasValueProperties
   > {
-    return NodeShapeWithHasValueProperties.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithHasValueProperties(_),
+    return NodeShapeWithHasValueProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithHasValueProperties(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithHasValueProperties.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithHasValueProperties.classFromRdf> {
-    return NodeShapeWithHasValueProperties.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -4854,7 +4752,7 @@ export class InlineNodeShape {
 }
 
 export namespace InlineNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -4887,18 +4785,12 @@ export namespace InlineNodeShape {
     return purify.Either.of({ identifier, stringProperty });
   }
 
-  export function classFromRdf(
-    parameters: Parameters<typeof InlineNodeShape.interfaceFromRdf>[0],
-  ): purify.Either<rdfjsResource.Resource.ValueError, InlineNodeShape> {
-    return InlineNodeShape.interfaceFromRdf(parameters).map(
-      (_) => new InlineNodeShape(_),
-    );
-  }
-
   export function fromRdf(
-    parameters: Parameters<typeof InlineNodeShape.interfaceFromRdf>[0],
-  ): ReturnType<typeof InlineNodeShape.classFromRdf> {
-    return InlineNodeShape.classFromRdf(parameters);
+    parameters: Parameters<typeof InlineNodeShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, InlineNodeShape> {
+    return InlineNodeShape.propertiesFromRdf(parameters).map(
+      (properties) => new InlineNodeShape(properties),
+    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -5022,7 +4914,7 @@ export class ExternNodeShape {
 }
 
 export namespace ExternNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -5055,18 +4947,12 @@ export namespace ExternNodeShape {
     return purify.Either.of({ identifier, stringProperty });
   }
 
-  export function classFromRdf(
-    parameters: Parameters<typeof ExternNodeShape.interfaceFromRdf>[0],
-  ): purify.Either<rdfjsResource.Resource.ValueError, ExternNodeShape> {
-    return ExternNodeShape.interfaceFromRdf(parameters).map(
-      (_) => new ExternNodeShape(_),
-    );
-  }
-
   export function fromRdf(
-    parameters: Parameters<typeof ExternNodeShape.interfaceFromRdf>[0],
-  ): ReturnType<typeof ExternNodeShape.classFromRdf> {
-    return ExternNodeShape.classFromRdf(parameters);
+    parameters: Parameters<typeof ExternNodeShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, ExternNodeShape> {
+    return ExternNodeShape.propertiesFromRdf(parameters).map(
+      (properties) => new ExternNodeShape(properties),
+    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -5301,7 +5187,7 @@ export class NodeShapeWithExternProperties {
 }
 
 export namespace NodeShapeWithExternProperties {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -5399,25 +5285,17 @@ export namespace NodeShapeWithExternProperties {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithExternProperties.interfaceFromRdf
+      typeof NodeShapeWithExternProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithExternProperties
   > {
-    return NodeShapeWithExternProperties.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithExternProperties(_),
+    return NodeShapeWithExternProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithExternProperties(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithExternProperties.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithExternProperties.classFromRdf> {
-    return NodeShapeWithExternProperties.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -5601,7 +5479,7 @@ export class NodeShapeWithExplicitRdfTypes {
 }
 
 export namespace NodeShapeWithExplicitRdfTypes {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -5649,25 +5527,17 @@ export namespace NodeShapeWithExplicitRdfTypes {
     return purify.Either.of({ identifier, stringProperty });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithExplicitRdfTypes.interfaceFromRdf
+      typeof NodeShapeWithExplicitRdfTypes.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithExplicitRdfTypes
   > {
-    return NodeShapeWithExplicitRdfTypes.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithExplicitRdfTypes(_),
+    return NodeShapeWithExplicitRdfTypes.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithExplicitRdfTypes(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithExplicitRdfTypes.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithExplicitRdfTypes.classFromRdf> {
-    return NodeShapeWithExplicitRdfTypes.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -5944,7 +5814,7 @@ export class NodeShapeWithDefaultValueProperties {
 }
 
 export namespace NodeShapeWithDefaultValueProperties {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -6117,25 +5987,17 @@ export namespace NodeShapeWithDefaultValueProperties {
     });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithDefaultValueProperties.interfaceFromRdf
+      typeof NodeShapeWithDefaultValueProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     NodeShapeWithDefaultValueProperties
   > {
-    return NodeShapeWithDefaultValueProperties.interfaceFromRdf(parameters).map(
-      (_) => new NodeShapeWithDefaultValueProperties(_),
-    );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof NodeShapeWithDefaultValueProperties.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof NodeShapeWithDefaultValueProperties.classFromRdf> {
-    return NodeShapeWithDefaultValueProperties.classFromRdf(parameters);
+    return NodeShapeWithDefaultValueProperties.propertiesFromRdf(
+      parameters,
+    ).map((properties) => new NodeShapeWithDefaultValueProperties(properties));
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -6293,7 +6155,7 @@ export class IriNodeShape {
 }
 
 export namespace IriNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -6326,18 +6188,12 @@ export namespace IriNodeShape {
     return purify.Either.of({ identifier, stringProperty });
   }
 
-  export function classFromRdf(
-    parameters: Parameters<typeof IriNodeShape.interfaceFromRdf>[0],
-  ): purify.Either<rdfjsResource.Resource.ValueError, IriNodeShape> {
-    return IriNodeShape.interfaceFromRdf(parameters).map(
-      (_) => new IriNodeShape(_),
-    );
-  }
-
   export function fromRdf(
-    parameters: Parameters<typeof IriNodeShape.interfaceFromRdf>[0],
-  ): ReturnType<typeof IriNodeShape.classFromRdf> {
-    return IriNodeShape.classFromRdf(parameters);
+    parameters: Parameters<typeof IriNodeShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, IriNodeShape> {
+    return IriNodeShape.propertiesFromRdf(parameters).map(
+      (properties) => new IriNodeShape(properties),
+    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -6416,7 +6272,7 @@ export namespace InterfaceNodeShape {
       );
   }
 
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -6455,9 +6311,9 @@ export namespace InterfaceNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof InterfaceNodeShape.interfaceFromRdf>[0],
-  ): ReturnType<typeof InterfaceNodeShape.interfaceFromRdf> {
-    return InterfaceNodeShape.interfaceFromRdf(parameters);
+    parameters: Parameters<typeof InterfaceNodeShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, InterfaceNodeShape> {
+    return InterfaceNodeShape.propertiesFromRdf(parameters);
   }
 
   export function hash<
@@ -6628,7 +6484,7 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
 }
 
 namespace AbstractBaseClassWithPropertiesNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -6659,18 +6515,6 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     const abcStringProperty = _abcStringPropertyEither.unsafeCoerce();
     const identifier = _resource.identifier;
     return purify.Either.of({ abcStringProperty, identifier });
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof AbstractBaseClassWithPropertiesNodeShape.interfaceFromRdf
-    >[0],
-  ): ReturnType<
-    typeof AbstractBaseClassWithPropertiesNodeShape.interfaceFromRdf
-  > {
-    return AbstractBaseClassWithPropertiesNodeShape.interfaceFromRdf(
-      parameters,
-    );
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -6729,7 +6573,7 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
 }
 
 namespace AbstractBaseClassWithoutPropertiesNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -6746,12 +6590,12 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
     } & purifyHelpers.Eithers.UnwrapR<
       ReturnType<
-        typeof AbstractBaseClassWithPropertiesNodeShape.interfaceFromRdf
+        typeof AbstractBaseClassWithPropertiesNodeShape.propertiesFromRdf
       >
     >
   > {
     const _super0Either =
-      AbstractBaseClassWithPropertiesNodeShape.interfaceFromRdf({
+      AbstractBaseClassWithPropertiesNodeShape.propertiesFromRdf({
         ..._context,
         ignoreRdfType: true,
         languageIn: _languageIn,
@@ -6764,18 +6608,6 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     const _super0 = _super0Either.unsafeCoerce();
     const identifier = _resource.identifier;
     return purify.Either.of({ ..._super0, identifier });
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof AbstractBaseClassWithoutPropertiesNodeShape.interfaceFromRdf
-    >[0],
-  ): ReturnType<
-    typeof AbstractBaseClassWithoutPropertiesNodeShape.interfaceFromRdf
-  > {
-    return AbstractBaseClassWithoutPropertiesNodeShape.interfaceFromRdf(
-      parameters,
-    );
   }
 
   export class SparqlGraphPatterns extends AbstractBaseClassWithPropertiesNodeShape.SparqlGraphPatterns {
@@ -6897,7 +6729,7 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -6915,12 +6747,12 @@ export namespace ConcreteParentClassNodeShape {
       parentStringProperty: string;
     } & purifyHelpers.Eithers.UnwrapR<
       ReturnType<
-        typeof AbstractBaseClassWithoutPropertiesNodeShape.interfaceFromRdf
+        typeof AbstractBaseClassWithoutPropertiesNodeShape.propertiesFromRdf
       >
     >
   > {
     const _super0Either =
-      AbstractBaseClassWithoutPropertiesNodeShape.interfaceFromRdf({
+      AbstractBaseClassWithoutPropertiesNodeShape.propertiesFromRdf({
         ..._context,
         ignoreRdfType: true,
         languageIn: _languageIn,
@@ -6969,25 +6801,17 @@ export namespace ConcreteParentClassNodeShape {
     return purify.Either.of({ ..._super0, identifier, parentStringProperty });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof ConcreteParentClassNodeShape.interfaceFromRdf
+      typeof ConcreteParentClassNodeShape.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     ConcreteParentClassNodeShape
   > {
-    return ConcreteParentClassNodeShape.interfaceFromRdf(parameters).map(
-      (_) => new ConcreteParentClassNodeShape(_),
+    return ConcreteParentClassNodeShape.propertiesFromRdf(parameters).map(
+      (properties) => new ConcreteParentClassNodeShape(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof ConcreteParentClassNodeShape.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof ConcreteParentClassNodeShape.classFromRdf> {
-    return ConcreteParentClassNodeShape.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends AbstractBaseClassWithoutPropertiesNodeShape.SparqlGraphPatterns {
@@ -7121,7 +6945,7 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -7138,10 +6962,10 @@ export namespace ConcreteChildClassNodeShape {
       childStringProperty: string;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
     } & purifyHelpers.Eithers.UnwrapR<
-      ReturnType<typeof ConcreteParentClassNodeShape.interfaceFromRdf>
+      ReturnType<typeof ConcreteParentClassNodeShape.propertiesFromRdf>
     >
   > {
-    const _super0Either = ConcreteParentClassNodeShape.interfaceFromRdf({
+    const _super0Either = ConcreteParentClassNodeShape.propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -7187,25 +7011,17 @@ export namespace ConcreteChildClassNodeShape {
     return purify.Either.of({ ..._super0, childStringProperty, identifier });
   }
 
-  export function classFromRdf(
+  export function fromRdf(
     parameters: Parameters<
-      typeof ConcreteChildClassNodeShape.interfaceFromRdf
+      typeof ConcreteChildClassNodeShape.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     ConcreteChildClassNodeShape
   > {
-    return ConcreteChildClassNodeShape.interfaceFromRdf(parameters).map(
-      (_) => new ConcreteChildClassNodeShape(_),
+    return ConcreteChildClassNodeShape.propertiesFromRdf(parameters).map(
+      (properties) => new ConcreteChildClassNodeShape(properties),
     );
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof ConcreteChildClassNodeShape.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof ConcreteChildClassNodeShape.classFromRdf> {
-    return ConcreteChildClassNodeShape.classFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends ConcreteParentClassNodeShape.SparqlGraphPatterns {
@@ -7334,7 +7150,7 @@ export abstract class AbstractBaseClassForExternObjectType {
 }
 
 export namespace AbstractBaseClassForExternObjectType {
-  export function interfaceFromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -7365,14 +7181,6 @@ export namespace AbstractBaseClassForExternObjectType {
     const abcStringProperty = _abcStringPropertyEither.unsafeCoerce();
     const identifier = _resource.identifier;
     return purify.Either.of({ abcStringProperty, identifier });
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof AbstractBaseClassForExternObjectType.interfaceFromRdf
-    >[0],
-  ): ReturnType<typeof AbstractBaseClassForExternObjectType.interfaceFromRdf> {
-    return AbstractBaseClassForExternObjectType.interfaceFromRdf(parameters);
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
