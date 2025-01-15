@@ -105,7 +105,7 @@ export class TermType<
       .map((nodeKind) => `"${nodeKind}"`)
       .join(
         " | ",
-      )} } | { readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string, termType: "Literal" }`;
+      )} } | { readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string, readonly termType: "Literal" }`;
   }
 
   @Memoize()
@@ -229,13 +229,13 @@ export class TermType<
       let valueToNodeKind: string;
       switch (nodeKind) {
         case "BlankNode":
-          valueToNodeKind = `{ "@id": \`_:\${${variables.value}.value}\` }`;
+          valueToNodeKind = `{ "@id": \`_:\${${variables.value}.value}\`, termType: "${nodeKind}" as const }`;
           break;
         case "Literal":
-          valueToNodeKind = `{ "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value }`;
+          valueToNodeKind = `{ "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value, termType: "${nodeKind}" as const }`;
           break;
         case "NamedNode":
-          valueToNodeKind = `{ "@id": ${variables.value}.value }`;
+          valueToNodeKind = `{ "@id": ${variables.value}.value, termType: "${nodeKind}" as const }`;
           break;
         default:
           throw new RangeError(nodeKind);
