@@ -96,10 +96,16 @@ export class TermType<
 
   get jsonName(): string {
     invariant(
-      this.nodeKinds.size === 3,
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
       "IdentifierType and LiteralType should override",
     );
-    return '{ readonly "@id": string, readonly termType: "BlankNode" | "NamedNode" } | { readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string, termType: "Literal" }';
+    return `{ readonly "@id": string, readonly termType: ${[...this.nodeKinds]
+      .filter((nodeKind) => nodeKind !== "Literal")
+      .map((nodeKind) => `"${nodeKind}"`)
+      .join(
+        " | ",
+      )} } | { readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string, termType: "Literal" }`;
   }
 
   @Memoize()
@@ -121,7 +127,8 @@ export class TermType<
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
     invariant(
-      this.nodeKinds.size === 3,
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
       "IdentifierType and LiteralType should override",
     );
     let expression = "";
@@ -213,7 +220,8 @@ export class TermType<
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
     invariant(
-      this.nodeKinds.size === 3,
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
       "IdentifierType and LiteralType should override",
     );
     let expression = "";
@@ -274,7 +282,8 @@ export class TermType<
     variables: { predicate: string; resource: string; resourceValue: string };
   }): string {
     invariant(
-      this.nodeKinds.size === 3,
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
       "IdentifierType and LiteralType should override",
     );
     let expression = `purify.Either.of(${variables.resourceValue}.toTerm())`;
