@@ -106,7 +106,7 @@ export function fromJsonFunctionDeclarations(
     fromJsonFunctionDeclarations.push({
       isExported: true,
       kind: StructureKind.Function,
-      name: "fromJson",
+      name: this.fromJsonFunctionName,
       parameters: [
         {
           name: variables.jsonObject,

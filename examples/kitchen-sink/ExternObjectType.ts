@@ -32,12 +32,13 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
 
   static fromJson(
     jsonObject: Parameters<
-      typeof AbstractBaseClassForExternObjectType.propertiesFromJson
+      typeof AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypePropertiesFromJson
     >[0],
   ): ExternObjectType {
     return new ExternObjectType(
-      AbstractBaseClassForExternObjectType.propertiesFromJson(jsonObject)
-        .identifier,
+      AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypePropertiesFromJson(
+        jsonObject,
+      ).identifier,
     );
   }
 

@@ -192,6 +192,16 @@ export class ObjectType extends DeclaredType {
   }
 
   @Memoize()
+  get fromJsonFunctionName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `${camelCase(this.name)}FromJson`;
+    return "fromJson";
+  }
+
+  @Memoize()
   get hashFunctionName(): string {
     if (
       this.ancestorObjectTypes.length > 0 ||

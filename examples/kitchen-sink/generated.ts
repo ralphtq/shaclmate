@@ -82,7 +82,7 @@ export class UuidV4IriNodeShape {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty: string;
-    readonly type: string;
+    readonly type: "UuidV4IriNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -118,6 +118,24 @@ export class UuidV4IriNodeShape {
 }
 
 export namespace UuidV4IriNodeShape {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty: string;
+    readonly type: "UuidV4IriNodeShape";
+  }): { identifier: rdfjs.NamedNode; stringProperty: string } {
+    const identifier = dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = _jsonObject["stringProperty"];
+    return { identifier, stringProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof UuidV4IriNodeShape.propertiesFromJson>[0],
+  ): UuidV4IriNodeShape {
+    return new UuidV4IriNodeShape(
+      UuidV4IriNodeShape.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -244,7 +262,7 @@ export class UnionNodeShapeMember2 {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty2: string;
-    readonly type: string;
+    readonly type: "UnionNodeShapeMember2";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -283,6 +301,29 @@ export class UnionNodeShapeMember2 {
 }
 
 export namespace UnionNodeShapeMember2 {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty2: string;
+    readonly type: "UnionNodeShapeMember2";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    stringProperty2: string;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty2 = _jsonObject["stringProperty2"];
+    return { identifier, stringProperty2 };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof UnionNodeShapeMember2.propertiesFromJson>[0],
+  ): UnionNodeShapeMember2 {
+    return new UnionNodeShapeMember2(
+      UnionNodeShapeMember2.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -409,7 +450,7 @@ export class UnionNodeShapeMember1 {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty1: string;
-    readonly type: string;
+    readonly type: "UnionNodeShapeMember1";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -448,6 +489,29 @@ export class UnionNodeShapeMember1 {
 }
 
 export namespace UnionNodeShapeMember1 {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty1: string;
+    readonly type: "UnionNodeShapeMember1";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    stringProperty1: string;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty1 = _jsonObject["stringProperty1"];
+    return { identifier, stringProperty1 };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof UnionNodeShapeMember1.propertiesFromJson>[0],
+  ): UnionNodeShapeMember1 {
+    return new UnionNodeShapeMember1(
+      UnionNodeShapeMember1.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -579,7 +643,7 @@ export class Sha256IriNodeShape {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty: string;
-    readonly type: string;
+    readonly type: "Sha256IriNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -615,6 +679,24 @@ export class Sha256IriNodeShape {
 }
 
 export namespace Sha256IriNodeShape {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty: string;
+    readonly type: "Sha256IriNodeShape";
+  }): { identifier: rdfjs.NamedNode; stringProperty: string } {
+    const identifier = dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = _jsonObject["stringProperty"];
+    return { identifier, stringProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof Sha256IriNodeShape.propertiesFromJson>[0],
+  ): Sha256IriNodeShape {
+    return new Sha256IriNodeShape(
+      Sha256IriNodeShape.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -744,7 +826,7 @@ export class NonClassNodeShape {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty: string;
-    readonly type: string;
+    readonly type: "NonClassNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -783,6 +865,29 @@ export class NonClassNodeShape {
 }
 
 export namespace NonClassNodeShape {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty: string;
+    readonly type: "NonClassNodeShape";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    stringProperty: string;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = _jsonObject["stringProperty"];
+    return { identifier, stringProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof NonClassNodeShape.propertiesFromJson>[0],
+  ): NonClassNodeShape {
+    return new NonClassNodeShape(
+      NonClassNodeShape.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -849,7 +954,7 @@ export class NodeShapeWithUnionProperties {
   readonly orTermsProperty: purify.Maybe<rdfjs.Literal | rdfjs.NamedNode>;
   readonly orUnrelatedProperty: purify.Maybe<
     | { type: "0-number"; value: number }
-    | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode }
+    | { type: "1-NonClassNodeShape"; value: NonClassNodeShape }
   >;
   readonly type = "NodeShapeWithUnionProperties";
 
@@ -864,15 +969,19 @@ export class NodeShapeWithUnionProperties {
       | string;
     readonly orTermsProperty?:
       | (rdfjs.Literal | rdfjs.NamedNode)
-      | purify.Maybe<rdfjs.Literal | rdfjs.NamedNode>;
+      | Date
+      | boolean
+      | number
+      | purify.Maybe<rdfjs.Literal | rdfjs.NamedNode>
+      | string;
     readonly orUnrelatedProperty?:
       | (
           | { type: "0-number"; value: number }
-          | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode }
+          | { type: "1-NonClassNodeShape"; value: NonClassNodeShape }
         )
       | purify.Maybe<
           | { type: "0-number"; value: number }
-          | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode }
+          | { type: "1-NonClassNodeShape"; value: NonClassNodeShape }
         >;
   }) {
     this._identifier = parameters.identifier;
@@ -907,6 +1016,25 @@ export class NodeShapeWithUnionProperties {
 
     if (purify.Maybe.isMaybe(parameters.orTermsProperty)) {
       this.orTermsProperty = parameters.orTermsProperty;
+    } else if (typeof parameters.orTermsProperty === "boolean") {
+      this.orTermsProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.orTermsProperty),
+      );
+    } else if (
+      typeof parameters.orTermsProperty === "object" &&
+      parameters.orTermsProperty instanceof Date
+    ) {
+      this.orTermsProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.orTermsProperty),
+      );
+    } else if (typeof parameters.orTermsProperty === "number") {
+      this.orTermsProperty = purify.Maybe.of(
+        rdfLiteral.toRdf(parameters.orTermsProperty),
+      );
+    } else if (typeof parameters.orTermsProperty === "string") {
+      this.orTermsProperty = purify.Maybe.of(
+        dataFactory.literal(parameters.orTermsProperty),
+      );
     } else if (typeof parameters.orTermsProperty === "object") {
       this.orTermsProperty = purify.Maybe.of(parameters.orTermsProperty);
     } else if (typeof parameters.orTermsProperty === "undefined") {
@@ -970,32 +1098,7 @@ export class NodeShapeWithUnionProperties {
           purifyHelpers.Maybes.equals(
             left,
             right,
-            (
-              left: rdfjs.Literal | rdfjs.NamedNode,
-              right: rdfjs.Literal | rdfjs.NamedNode,
-            ) => {
-              if (left.termType === "Literal" && right.termType === "Literal") {
-                return purifyHelpers.Equatable.booleanEquals(left, right);
-              }
-              if (
-                left.termType === "NamedNode" &&
-                right.termType === "NamedNode"
-              ) {
-                return purifyHelpers.Equatable.booleanEquals(left, right);
-              }
-
-              return purify.Left({
-                left,
-                right,
-                propertyName: "type",
-                propertyValuesUnequal: {
-                  left: typeof left,
-                  right: typeof right,
-                  type: "BooleanEquals" as const,
-                },
-                type: "Property" as const,
-              });
-            },
+            purifyHelpers.Equatable.booleanEquals,
           ))(this.orTermsProperty, other.orTermsProperty).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
@@ -1014,10 +1117,10 @@ export class NodeShapeWithUnionProperties {
             (
               left:
                 | { type: "0-number"; value: number }
-                | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode },
+                | { type: "1-NonClassNodeShape"; value: NonClassNodeShape },
               right:
                 | { type: "0-number"; value: number }
-                | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode },
+                | { type: "1-NonClassNodeShape"; value: NonClassNodeShape },
             ) => {
               if (left.type === "0-number" && right.type === "0-number") {
                 return purifyHelpers.Equatable.strictEquals(
@@ -1026,13 +1129,10 @@ export class NodeShapeWithUnionProperties {
                 );
               }
               if (
-                left.type === "1-(rdfjs.NamedNode)" &&
-                right.type === "1-(rdfjs.NamedNode)"
+                left.type === "1-NonClassNodeShape" &&
+                right.type === "1-NonClassNodeShape"
               ) {
-                return purifyHelpers.Equatable.booleanEquals(
-                  left.value,
-                  right.value,
-                );
+                return purifyHelpers.Equatable.equals(left.value, right.value);
               }
 
               return purify.Left({
@@ -1076,22 +1176,14 @@ export class NodeShapeWithUnionProperties {
     },
   >(_hasher: HasherT): HasherT {
     this.orLiteralsProperty.ifJust((_value0) => {
+      _hasher.update(_value0.datatype.value);
+      _hasher.update(_value0.language);
       _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
     this.orTermsProperty.ifJust((_value0) => {
-      switch (_value0.termType) {
-        case "Literal": {
-          _hasher.update(_value0.termType);
-          _hasher.update(_value0.value);
-          break;
-        }
-        case "NamedNode": {
-          _hasher.update(_value0.termType);
-          _hasher.update(_value0.value);
-          break;
-        }
-      }
+      _hasher.update(_value0.termType);
+      _hasher.update(_value0.value);
     });
     this.orUnrelatedProperty.ifJust((_value0) => {
       switch (_value0.type) {
@@ -1099,9 +1191,8 @@ export class NodeShapeWithUnionProperties {
           _hasher.update(_value0.value.toString());
           break;
         }
-        case "1-(rdfjs.NamedNode)": {
-          _hasher.update(_value0.value.termType);
-          _hasher.update(_value0.value.value);
+        case "1-NonClassNodeShape": {
+          _value0.value.hash(_hasher);
           break;
         }
       }
@@ -1113,28 +1204,32 @@ export class NodeShapeWithUnionProperties {
     readonly "@id": string;
     readonly orLiteralsProperty:
       | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
+          readonly "@language": string | undefined;
+          readonly "@type": string | undefined;
+          readonly "@value": string;
         }
       | undefined;
     readonly orTermsProperty:
       | (
+          | { readonly "@id": string; readonly termType: "NamedNode" }
           | {
-              "@language": string | undefined;
-              "@type": string | undefined;
-              "@value": string;
+              readonly "@language": string | undefined;
+              readonly "@type": string | undefined;
+              readonly "@value": string;
+              readonly termType: "Literal";
             }
-          | { "@id": string }
         )
       | undefined;
     readonly orUnrelatedProperty:
       | (
           | { type: "0-number"; value: number }
-          | { type: "1-(rdfjs.NamedNode)"; value: { "@id": string } }
+          | {
+              type: "1-NonClassNodeShape";
+              value: ReturnType<NonClassNodeShape["toJson"]>;
+            }
         )
       | undefined;
-    readonly type: string;
+    readonly type: "NodeShapeWithUnionProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -1155,7 +1250,7 @@ export class NodeShapeWithUnionProperties {
         orTermsProperty: this.orTermsProperty
           .map((_item) =>
             _item.termType === "NamedNode"
-              ? { "@id": _item.value }
+              ? { "@id": _item.value, termType: "NamedNode" as const }
               : {
                   "@language":
                     _item.language.length > 0 ? _item.language : undefined,
@@ -1165,15 +1260,16 @@ export class NodeShapeWithUnionProperties {
                       ? _item.datatype.value
                       : undefined,
                   "@value": _item.value,
+                  termType: "Literal" as const,
                 },
           )
           .extract(),
         orUnrelatedProperty: this.orUnrelatedProperty
           .map((_item) =>
-            _item.type === "1-(rdfjs.NamedNode)"
+            _item.type === "1-NonClassNodeShape"
               ? {
-                  type: "1-(rdfjs.NamedNode)" as const,
-                  value: { "@id": _item.value.value },
+                  type: "1-NonClassNodeShape" as const,
+                  value: _item.value.toJson(),
                 }
               : { type: "0-number" as const, value: _item.value },
           )
@@ -1201,14 +1297,17 @@ export class NodeShapeWithUnionProperties {
     );
     _resource.add(
       dataFactory.namedNode("http://example.com/orTermsProperty"),
-      this.orTermsProperty.map((_value) =>
-        _value.termType === "NamedNode" ? _value : _value,
-      ),
+      this.orTermsProperty,
     );
     _resource.add(
       dataFactory.namedNode("http://example.com/orUnrelatedProperty"),
       this.orUnrelatedProperty.map((_value) =>
-        _value.type === "1-(rdfjs.NamedNode)" ? _value.value : _value.value,
+        _value.type === "1-NonClassNodeShape"
+          ? _value.value.toRdf({
+              mutateGraph: mutateGraph,
+              resourceSet: resourceSet,
+            })
+          : _value.value,
       ),
     );
     return _resource;
@@ -1220,6 +1319,102 @@ export class NodeShapeWithUnionProperties {
 }
 
 export namespace NodeShapeWithUnionProperties {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly orLiteralsProperty:
+      | {
+          readonly "@language": string | undefined;
+          readonly "@type": string | undefined;
+          readonly "@value": string;
+        }
+      | undefined;
+    readonly orTermsProperty:
+      | (
+          | { readonly "@id": string; readonly termType: "NamedNode" }
+          | {
+              readonly "@language": string | undefined;
+              readonly "@type": string | undefined;
+              readonly "@value": string;
+              readonly termType: "Literal";
+            }
+        )
+      | undefined;
+    readonly orUnrelatedProperty:
+      | (
+          | { type: "0-number"; value: number }
+          | {
+              type: "1-NonClassNodeShape";
+              value: ReturnType<NonClassNodeShape["toJson"]>;
+            }
+        )
+      | undefined;
+    readonly type: "NodeShapeWithUnionProperties";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    orLiteralsProperty: purify.Maybe<rdfjs.Literal>;
+    orTermsProperty: purify.Maybe<rdfjs.Literal | rdfjs.NamedNode>;
+    orUnrelatedProperty: purify.Maybe<
+      | { type: "0-number"; value: number }
+      | { type: "1-NonClassNodeShape"; value: NonClassNodeShape }
+    >;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const orLiteralsProperty = purify.Maybe.fromNullable(
+      _jsonObject["orLiteralsProperty"],
+    ).map((_item) =>
+      dataFactory.literal(
+        _item["@value"],
+        typeof _item["@language"] !== "undefined"
+          ? _item["@language"]
+          : typeof _item["@type"] !== "undefined"
+            ? dataFactory.namedNode(_item["@type"])
+            : "",
+      ),
+    );
+    const orTermsProperty = purify.Maybe.fromNullable(
+      _jsonObject["orTermsProperty"],
+    ).map((_item) =>
+      _item.termType === "NamedNode"
+        ? dataFactory.namedNode(_item["@id"])
+        : dataFactory.literal(
+            _item["@value"],
+            typeof _item["@language"] !== "undefined"
+              ? _item["@language"]
+              : typeof _item["@type"] !== "undefined"
+                ? dataFactory.namedNode(_item["@type"])
+                : "",
+          ),
+    );
+    const orUnrelatedProperty = purify.Maybe.fromNullable(
+      _jsonObject["orUnrelatedProperty"],
+    ).map((_item) =>
+      _item.type === "1-NonClassNodeShape"
+        ? {
+            type: "1-NonClassNodeShape" as const,
+            value: NonClassNodeShape.fromJson(_item.value),
+          }
+        : { type: "0-number" as const, value: _item.value },
+    );
+    return {
+      identifier,
+      orLiteralsProperty,
+      orTermsProperty,
+      orUnrelatedProperty,
+    };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithUnionProperties.propertiesFromJson
+    >[0],
+  ): NodeShapeWithUnionProperties {
+    return new NodeShapeWithUnionProperties(
+      NodeShapeWithUnionProperties.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -1239,7 +1434,7 @@ export namespace NodeShapeWithUnionProperties {
       orTermsProperty: purify.Maybe<rdfjs.Literal | rdfjs.NamedNode>;
       orUnrelatedProperty: purify.Maybe<
         | { type: "0-number"; value: number }
-        | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode }
+        | { type: "1-NonClassNodeShape"; value: NonClassNodeShape }
       >;
     }
   > {
@@ -1279,42 +1474,30 @@ export namespace NodeShapeWithUnionProperties {
       rdfjsResource.Resource.ValueError,
       purify.Maybe<rdfjs.Literal | rdfjs.NamedNode>
     > = purify.Either.of(
-      (
-        _resource
-          .values(dataFactory.namedNode("http://example.com/orTermsProperty"), {
-            unique: true,
-          })
-          .filter((_value) => {
-            const _languageInOrDefault = _languageIn ?? [];
-            if (_languageInOrDefault.length === 0) {
-              return true;
+      _resource
+        .values(dataFactory.namedNode("http://example.com/orTermsProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) =>
+          purify.Either.of(_value.toTerm()).chain((term) => {
+            switch (term.termType) {
+              case "Literal":
+              case "NamedNode":
+                return purify.Either.of(term);
+              default:
+                return purify.Left(
+                  new rdfjsResource.Resource.MistypedValueError({
+                    actualValue: term,
+                    expectedValueType: "(rdfjs.Literal | rdfjs.NamedNode)",
+                    focusResource: _resource,
+                    predicate: dataFactory.namedNode(
+                      "http://example.com/orTermsProperty",
+                    ),
+                  }),
+                );
             }
-            const _valueLiteral = _value.toLiteral().toMaybe().extract();
-            if (typeof _valueLiteral === "undefined") {
-              return false;
-            }
-            return _languageInOrDefault.some(
-              (_languageIn) => _languageIn === _valueLiteral.language,
-            );
-          })
-          .head()
-          .chain((_value) => _value.toLiteral()) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          rdfjs.Literal | rdfjs.NamedNode
-        >
-      )
-        .altLazy(
-          () =>
-            _resource
-              .values(
-                dataFactory.namedNode("http://example.com/orTermsProperty"),
-                { unique: true },
-              )
-              .head()
-              .chain((_value) => _value.toIri()) as purify.Either<
-              rdfjsResource.Resource.ValueError,
-              rdfjs.Literal | rdfjs.NamedNode
-            >,
+          }),
         )
         .toMaybe(),
     );
@@ -1327,7 +1510,7 @@ export namespace NodeShapeWithUnionProperties {
       rdfjsResource.Resource.ValueError,
       purify.Maybe<
         | { type: "0-number"; value: number }
-        | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode }
+        | { type: "1-NonClassNodeShape"; value: NonClassNodeShape }
       >
     > = purify.Either.of(
       (
@@ -1342,11 +1525,11 @@ export namespace NodeShapeWithUnionProperties {
             (value) =>
               ({ type: "0-number" as const, value }) as
                 | { type: "0-number"; value: number }
-                | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode },
+                | { type: "1-NonClassNodeShape"; value: NonClassNodeShape },
           ) as purify.Either<
           rdfjsResource.Resource.ValueError,
           | { type: "0-number"; value: number }
-          | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode }
+          | { type: "1-NonClassNodeShape"; value: NonClassNodeShape }
         >
       )
         .altLazy(
@@ -1357,16 +1540,24 @@ export namespace NodeShapeWithUnionProperties {
                 { unique: true },
               )
               .head()
-              .chain((_value) => _value.toIri())
+              .chain((value) => value.toResource())
+              .chain((_resource) =>
+                NonClassNodeShape.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
+              )
               .map(
                 (value) =>
-                  ({ type: "1-(rdfjs.NamedNode)" as const, value }) as
+                  ({ type: "1-NonClassNodeShape" as const, value }) as
                     | { type: "0-number"; value: number }
-                    | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode },
+                    | { type: "1-NonClassNodeShape"; value: NonClassNodeShape },
               ) as purify.Either<
               rdfjsResource.Resource.ValueError,
               | { type: "0-number"; value: number }
-              | { type: "1-(rdfjs.NamedNode)"; value: rdfjs.NamedNode }
+              | { type: "1-NonClassNodeShape"; value: NonClassNodeShape }
             >,
         )
         .toMaybe(),
@@ -1414,17 +1605,10 @@ export namespace NodeShapeWithUnionProperties {
       );
       this.add(
         sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.union(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/orTermsProperty"),
-              this.variable("OrTermsProperty"),
-            ),
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/orTermsProperty"),
-              this.variable("OrTermsProperty"),
-            ),
+          sparqlBuilder.GraphPattern.basic(
+            this.subject,
+            dataFactory.namedNode("http://example.com/orTermsProperty"),
+            this.variable("OrTermsProperty"),
           ),
         ),
       );
@@ -1436,10 +1620,17 @@ export namespace NodeShapeWithUnionProperties {
               dataFactory.namedNode("http://example.com/orUnrelatedProperty"),
               this.variable("OrUnrelatedProperty"),
             ),
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/orUnrelatedProperty"),
-              this.variable("OrUnrelatedProperty"),
+            sparqlBuilder.GraphPattern.group(
+              sparqlBuilder.GraphPattern.basic(
+                this.subject,
+                dataFactory.namedNode("http://example.com/orUnrelatedProperty"),
+                this.variable("OrUnrelatedProperty"),
+              ).chainObject(
+                (_object) =>
+                  new NonClassNodeShape.SparqlGraphPatterns(_object, {
+                    ignoreRdfType: true,
+                  }),
+              ),
             ),
           ),
         ),
@@ -1749,6 +1940,8 @@ export class NodeShapeWithTermProperties {
       _hasher.update(_value0.value);
     });
     this.literalProperty.ifJust((_value0) => {
+      _hasher.update(_value0.datatype.value);
+      _hasher.update(_value0.language);
       _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
@@ -1769,12 +1962,12 @@ export class NodeShapeWithTermProperties {
     readonly booleanProperty: boolean | undefined;
     readonly dateTimeProperty: string | undefined;
     readonly "@id": string;
-    readonly iriProperty: { "@id": string } | undefined;
+    readonly iriProperty: { readonly "@id": string } | undefined;
     readonly literalProperty:
       | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
+          readonly "@language": string | undefined;
+          readonly "@type": string | undefined;
+          readonly "@value": string;
         }
       | undefined;
     readonly numberProperty: number | undefined;
@@ -1782,14 +1975,18 @@ export class NodeShapeWithTermProperties {
     readonly termProperty:
       | (
           | {
-              "@language": string | undefined;
-              "@type": string | undefined;
-              "@value": string;
+              readonly "@id": string;
+              readonly termType: "BlankNode" | "NamedNode";
             }
-          | { "@id": string }
+          | {
+              readonly "@language": string | undefined;
+              readonly "@type": string | undefined;
+              readonly "@value": string;
+              readonly termType: "Literal";
+            }
         )
       | undefined;
-    readonly type: string;
+    readonly type: "NodeShapeWithTermProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -1828,10 +2025,11 @@ export class NodeShapeWithTermProperties {
                       ? _item.datatype.value
                       : undefined,
                   "@value": _item.value,
+                  termType: "Literal" as const,
                 }
               : _item.termType === "NamedNode"
-                ? { "@id": _item.value }
-                : { "@id": `_:${_item.value}` },
+                ? { "@id": _item.value, termType: "NamedNode" as const }
+                : { "@id": `_:${_item.value}`, termType: "BlankNode" as const },
           )
           .extract(),
         type: this.type,
@@ -1888,6 +2086,115 @@ export class NodeShapeWithTermProperties {
 }
 
 export namespace NodeShapeWithTermProperties {
+  export function propertiesFromJson(_jsonObject: {
+    readonly booleanProperty: boolean | undefined;
+    readonly dateTimeProperty: string | undefined;
+    readonly "@id": string;
+    readonly iriProperty: { readonly "@id": string } | undefined;
+    readonly literalProperty:
+      | {
+          readonly "@language": string | undefined;
+          readonly "@type": string | undefined;
+          readonly "@value": string;
+        }
+      | undefined;
+    readonly numberProperty: number | undefined;
+    readonly stringProperty: string | undefined;
+    readonly termProperty:
+      | (
+          | {
+              readonly "@id": string;
+              readonly termType: "BlankNode" | "NamedNode";
+            }
+          | {
+              readonly "@language": string | undefined;
+              readonly "@type": string | undefined;
+              readonly "@value": string;
+              readonly termType: "Literal";
+            }
+        )
+      | undefined;
+    readonly type: "NodeShapeWithTermProperties";
+  }): {
+    booleanProperty: purify.Maybe<boolean>;
+    dateTimeProperty: purify.Maybe<Date>;
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    iriProperty: purify.Maybe<rdfjs.NamedNode>;
+    literalProperty: purify.Maybe<rdfjs.Literal>;
+    numberProperty: purify.Maybe<number>;
+    stringProperty: purify.Maybe<string>;
+    termProperty: purify.Maybe<
+      rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
+    >;
+  } {
+    const booleanProperty = purify.Maybe.fromNullable(
+      _jsonObject["booleanProperty"],
+    ).map((_item) => _item);
+    const dateTimeProperty = purify.Maybe.fromNullable(
+      _jsonObject["dateTimeProperty"],
+    ).map((_item) => new Date(_item));
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const iriProperty = purify.Maybe.fromNullable(
+      _jsonObject["iriProperty"],
+    ).map((_item) => dataFactory.namedNode(_item["@id"]));
+    const literalProperty = purify.Maybe.fromNullable(
+      _jsonObject["literalProperty"],
+    ).map((_item) =>
+      dataFactory.literal(
+        _item["@value"],
+        typeof _item["@language"] !== "undefined"
+          ? _item["@language"]
+          : typeof _item["@type"] !== "undefined"
+            ? dataFactory.namedNode(_item["@type"])
+            : "",
+      ),
+    );
+    const numberProperty = purify.Maybe.fromNullable(
+      _jsonObject["numberProperty"],
+    ).map((_item) => _item);
+    const stringProperty = purify.Maybe.fromNullable(
+      _jsonObject["stringProperty"],
+    ).map((_item) => _item);
+    const termProperty = purify.Maybe.fromNullable(
+      _jsonObject["termProperty"],
+    ).map((_item) =>
+      _item.termType === "Literal"
+        ? dataFactory.literal(
+            _item["@value"],
+            typeof _item["@language"] !== "undefined"
+              ? _item["@language"]
+              : typeof _item["@type"] !== "undefined"
+                ? dataFactory.namedNode(_item["@type"])
+                : "",
+          )
+        : _item.termType === "NamedNode"
+          ? dataFactory.namedNode(_item["@id"])
+          : dataFactory.blankNode(_item["@id"].substring(2)),
+    );
+    return {
+      booleanProperty,
+      dateTimeProperty,
+      identifier,
+      iriProperty,
+      literalProperty,
+      numberProperty,
+      stringProperty,
+      termProperty,
+    };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithTermProperties.propertiesFromJson
+    >[0],
+  ): NodeShapeWithTermProperties {
+    return new NodeShapeWithTermProperties(
+      NodeShapeWithTermProperties.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -2252,7 +2559,7 @@ export class NodeShapeWithPropertyVisibilities {
     readonly privateProperty: string;
     readonly protectedProperty: string;
     readonly publicProperty: string;
-    readonly type: string;
+    readonly type: "NodeShapeWithPropertyVisibilities";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -2301,6 +2608,37 @@ export class NodeShapeWithPropertyVisibilities {
 }
 
 export namespace NodeShapeWithPropertyVisibilities {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly privateProperty: string;
+    readonly protectedProperty: string;
+    readonly publicProperty: string;
+    readonly type: "NodeShapeWithPropertyVisibilities";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    privateProperty: string;
+    protectedProperty: string;
+    publicProperty: string;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const privateProperty = _jsonObject["privateProperty"];
+    const protectedProperty = _jsonObject["protectedProperty"];
+    const publicProperty = _jsonObject["publicProperty"];
+    return { identifier, privateProperty, protectedProperty, publicProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithPropertyVisibilities.propertiesFromJson
+    >[0],
+  ): NodeShapeWithPropertyVisibilities {
+    return new NodeShapeWithPropertyVisibilities(
+      NodeShapeWithPropertyVisibilities.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -2582,10 +2920,10 @@ export class NodeShapeWithPropertyCardinalities {
   toJson(): {
     readonly emptyStringSetProperty: readonly string[];
     readonly "@id": string;
-    readonly nonEmptyStringSetProperty: readonly string[];
+    readonly nonEmptyStringSetProperty: purify.NonEmptyList<string>;
     readonly optionalStringProperty: string | undefined;
     readonly requiredStringProperty: string;
-    readonly type: string;
+    readonly type: "NodeShapeWithPropertyCardinalities";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -2645,6 +2983,52 @@ export class NodeShapeWithPropertyCardinalities {
 }
 
 export namespace NodeShapeWithPropertyCardinalities {
+  export function propertiesFromJson(_jsonObject: {
+    readonly emptyStringSetProperty: readonly string[];
+    readonly "@id": string;
+    readonly nonEmptyStringSetProperty: purify.NonEmptyList<string>;
+    readonly optionalStringProperty: string | undefined;
+    readonly requiredStringProperty: string;
+    readonly type: "NodeShapeWithPropertyCardinalities";
+  }): {
+    emptyStringSetProperty: readonly string[];
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    nonEmptyStringSetProperty: purify.NonEmptyList<string>;
+    optionalStringProperty: purify.Maybe<string>;
+    requiredStringProperty: string;
+  } {
+    const emptyStringSetProperty = purify.NonEmptyList.fromArray(
+      _jsonObject["emptyStringSetProperty"].map((_item) => _item),
+    ).unsafeCoerce();
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const nonEmptyStringSetProperty = purify.NonEmptyList.fromArray(
+      _jsonObject["nonEmptyStringSetProperty"].map((_item) => _item),
+    ).unsafeCoerce();
+    const optionalStringProperty = purify.Maybe.fromNullable(
+      _jsonObject["optionalStringProperty"],
+    ).map((_item) => _item);
+    const requiredStringProperty = _jsonObject["requiredStringProperty"];
+    return {
+      emptyStringSetProperty,
+      identifier,
+      nonEmptyStringSetProperty,
+      optionalStringProperty,
+      requiredStringProperty,
+    };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithPropertyCardinalities.propertiesFromJson
+    >[0],
+  ): NodeShapeWithPropertyCardinalities {
+    return new NodeShapeWithPropertyCardinalities(
+      NodeShapeWithPropertyCardinalities.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -2949,7 +3333,7 @@ export class NodeShapeWithMutableProperties {
     readonly "@id": string;
     readonly mutableListProperty: readonly string[] | undefined;
     readonly mutableStringProperty: string | undefined;
-    readonly type: string;
+    readonly type: "NodeShapeWithMutableProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -3060,6 +3444,38 @@ export class NodeShapeWithMutableProperties {
 }
 
 export namespace NodeShapeWithMutableProperties {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly mutableListProperty: readonly string[] | undefined;
+    readonly mutableStringProperty: string | undefined;
+    readonly type: "NodeShapeWithMutableProperties";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    mutableListProperty: purify.Maybe<string[]>;
+    mutableStringProperty: purify.Maybe<string>;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const mutableListProperty = purify.Maybe.fromNullable(
+      _jsonObject["mutableListProperty"],
+    ).map((_item) => _item.map((_item) => _item));
+    const mutableStringProperty = purify.Maybe.fromNullable(
+      _jsonObject["mutableStringProperty"],
+    ).map((_item) => _item);
+    return { identifier, mutableListProperty, mutableStringProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithMutableProperties.propertiesFromJson
+    >[0],
+  ): NodeShapeWithMutableProperties {
+    return new NodeShapeWithMutableProperties(
+      NodeShapeWithMutableProperties.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -3259,7 +3675,7 @@ export class NodeShapeWithListProperty {
   toJson(): {
     readonly "@id": string;
     readonly listProperty: readonly string[];
-    readonly type: string;
+    readonly type: "NodeShapeWithListProperty";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -3353,6 +3769,31 @@ export class NodeShapeWithListProperty {
 }
 
 export namespace NodeShapeWithListProperty {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly listProperty: readonly string[];
+    readonly type: "NodeShapeWithListProperty";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    listProperty: readonly string[];
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const listProperty = _jsonObject["listProperty"].map((_item) => _item);
+    return { identifier, listProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithListProperty.propertiesFromJson
+    >[0],
+  ): NodeShapeWithListProperty {
+    return new NodeShapeWithListProperty(
+      NodeShapeWithListProperty.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -3594,10 +4035,14 @@ export class NodeShapeWithLanguageInProperties {
     },
   >(_hasher: HasherT): HasherT {
     this.languageInProperty.ifJust((_value0) => {
+      _hasher.update(_value0.datatype.value);
+      _hasher.update(_value0.language);
       _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
     this.literalProperty.ifJust((_value0) => {
+      _hasher.update(_value0.datatype.value);
+      _hasher.update(_value0.language);
       _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
@@ -3608,19 +4053,19 @@ export class NodeShapeWithLanguageInProperties {
     readonly "@id": string;
     readonly languageInProperty:
       | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
+          readonly "@language": string | undefined;
+          readonly "@type": string | undefined;
+          readonly "@value": string;
         }
       | undefined;
     readonly literalProperty:
       | {
-          "@language": string | undefined;
-          "@type": string | undefined;
-          "@value": string;
+          readonly "@language": string | undefined;
+          readonly "@type": string | undefined;
+          readonly "@value": string;
         }
       | undefined;
-    readonly type: string;
+    readonly type: "NodeShapeWithLanguageInProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -3682,6 +4127,68 @@ export class NodeShapeWithLanguageInProperties {
 }
 
 export namespace NodeShapeWithLanguageInProperties {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly languageInProperty:
+      | {
+          readonly "@language": string | undefined;
+          readonly "@type": string | undefined;
+          readonly "@value": string;
+        }
+      | undefined;
+    readonly literalProperty:
+      | {
+          readonly "@language": string | undefined;
+          readonly "@type": string | undefined;
+          readonly "@value": string;
+        }
+      | undefined;
+    readonly type: "NodeShapeWithLanguageInProperties";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    languageInProperty: purify.Maybe<rdfjs.Literal>;
+    literalProperty: purify.Maybe<rdfjs.Literal>;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const languageInProperty = purify.Maybe.fromNullable(
+      _jsonObject["languageInProperty"],
+    ).map((_item) =>
+      dataFactory.literal(
+        _item["@value"],
+        typeof _item["@language"] !== "undefined"
+          ? _item["@language"]
+          : typeof _item["@type"] !== "undefined"
+            ? dataFactory.namedNode(_item["@type"])
+            : "",
+      ),
+    );
+    const literalProperty = purify.Maybe.fromNullable(
+      _jsonObject["literalProperty"],
+    ).map((_item) =>
+      dataFactory.literal(
+        _item["@value"],
+        typeof _item["@language"] !== "undefined"
+          ? _item["@language"]
+          : typeof _item["@type"] !== "undefined"
+            ? dataFactory.namedNode(_item["@type"])
+            : "",
+      ),
+    );
+    return { identifier, languageInProperty, literalProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithLanguageInProperties.propertiesFromJson
+    >[0],
+  ): NodeShapeWithLanguageInProperties {
+    return new NodeShapeWithLanguageInProperties(
+      NodeShapeWithLanguageInProperties.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -4034,12 +4541,18 @@ export class NodeShapeWithInProperties {
 
   toJson(): {
     readonly "@id": string;
-    readonly inBooleansProperty: boolean | undefined;
+    readonly inBooleansProperty: true | undefined;
     readonly inDateTimesProperty: string | undefined;
-    readonly inIrisProperty: { "@id": string } | undefined;
-    readonly inNumbersProperty: number | undefined;
-    readonly inStringsProperty: string | undefined;
-    readonly type: string;
+    readonly inIrisProperty:
+      | {
+          readonly "@id":
+            | "http://example.com/NodeShapeWithInPropertiesIri1"
+            | "http://example.com/NodeShapeWithInPropertiesIri2";
+        }
+      | undefined;
+    readonly inNumbersProperty: (1 | 2) | undefined;
+    readonly inStringsProperty: ("text" | "html") | undefined;
+    readonly type: "NodeShapeWithInProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -4108,6 +4621,71 @@ export class NodeShapeWithInProperties {
 }
 
 export namespace NodeShapeWithInProperties {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly inBooleansProperty: true | undefined;
+    readonly inDateTimesProperty: string | undefined;
+    readonly inIrisProperty:
+      | {
+          readonly "@id":
+            | "http://example.com/NodeShapeWithInPropertiesIri1"
+            | "http://example.com/NodeShapeWithInPropertiesIri2";
+        }
+      | undefined;
+    readonly inNumbersProperty: (1 | 2) | undefined;
+    readonly inStringsProperty: ("text" | "html") | undefined;
+    readonly type: "NodeShapeWithInProperties";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    inBooleansProperty: purify.Maybe<true>;
+    inDateTimesProperty: purify.Maybe<Date>;
+    inIrisProperty: purify.Maybe<
+      rdfjs.NamedNode<
+        | "http://example.com/NodeShapeWithInPropertiesIri1"
+        | "http://example.com/NodeShapeWithInPropertiesIri2"
+      >
+    >;
+    inNumbersProperty: purify.Maybe<1 | 2>;
+    inStringsProperty: purify.Maybe<"text" | "html">;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const inBooleansProperty = purify.Maybe.fromNullable(
+      _jsonObject["inBooleansProperty"],
+    ).map((_item) => _item);
+    const inDateTimesProperty = purify.Maybe.fromNullable(
+      _jsonObject["inDateTimesProperty"],
+    ).map((_item) => new Date(_item));
+    const inIrisProperty = purify.Maybe.fromNullable(
+      _jsonObject["inIrisProperty"],
+    ).map((_item) => dataFactory.namedNode(_item["@id"]));
+    const inNumbersProperty = purify.Maybe.fromNullable(
+      _jsonObject["inNumbersProperty"],
+    ).map((_item) => _item);
+    const inStringsProperty = purify.Maybe.fromNullable(
+      _jsonObject["inStringsProperty"],
+    ).map((_item) => _item);
+    return {
+      identifier,
+      inBooleansProperty,
+      inDateTimesProperty,
+      inIrisProperty,
+      inNumbersProperty,
+      inStringsProperty,
+    };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithInProperties.propertiesFromJson
+    >[0],
+  ): NodeShapeWithInProperties {
+    return new NodeShapeWithInProperties(
+      NodeShapeWithInProperties.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -4526,10 +5104,10 @@ export class NodeShapeWithHasValueProperties {
   }
 
   toJson(): {
-    readonly hasIriProperty: { "@id": string } | undefined;
+    readonly hasIriProperty: { readonly "@id": string } | undefined;
     readonly hasLiteralProperty: string | undefined;
     readonly "@id": string;
-    readonly type: string;
+    readonly type: "NodeShapeWithHasValueProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -4577,6 +5155,38 @@ export class NodeShapeWithHasValueProperties {
 }
 
 export namespace NodeShapeWithHasValueProperties {
+  export function propertiesFromJson(_jsonObject: {
+    readonly hasIriProperty: { readonly "@id": string } | undefined;
+    readonly hasLiteralProperty: string | undefined;
+    readonly "@id": string;
+    readonly type: "NodeShapeWithHasValueProperties";
+  }): {
+    hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
+    hasLiteralProperty: purify.Maybe<string>;
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  } {
+    const hasIriProperty = purify.Maybe.fromNullable(
+      _jsonObject["hasIriProperty"],
+    ).map((_item) => dataFactory.namedNode(_item["@id"]));
+    const hasLiteralProperty = purify.Maybe.fromNullable(
+      _jsonObject["hasLiteralProperty"],
+    ).map((_item) => _item);
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    return { hasIriProperty, hasLiteralProperty, identifier };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithHasValueProperties.propertiesFromJson
+    >[0],
+  ): NodeShapeWithHasValueProperties {
+    return new NodeShapeWithHasValueProperties(
+      NodeShapeWithHasValueProperties.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -4754,7 +5364,7 @@ export class InlineNodeShape {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty: string;
-    readonly type: string;
+    readonly type: "InlineNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -4793,6 +5403,27 @@ export class InlineNodeShape {
 }
 
 export namespace InlineNodeShape {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty: string;
+    readonly type: "InlineNodeShape";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    stringProperty: string;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = _jsonObject["stringProperty"];
+    return { identifier, stringProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof InlineNodeShape.propertiesFromJson>[0],
+  ): InlineNodeShape {
+    return new InlineNodeShape(InlineNodeShape.propertiesFromJson(_jsonObject));
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -4919,7 +5550,7 @@ export class ExternNodeShape {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty: string;
-    readonly type: string;
+    readonly type: "ExternNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -4958,6 +5589,27 @@ export class ExternNodeShape {
 }
 
 export namespace ExternNodeShape {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty: string;
+    readonly type: "ExternNodeShape";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    stringProperty: string;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = _jsonObject["stringProperty"];
+    return { identifier, stringProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof ExternNodeShape.propertiesFromJson>[0],
+  ): ExternNodeShape {
+    return new ExternNodeShape(ExternNodeShape.propertiesFromJson(_jsonObject));
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -5172,10 +5824,10 @@ export class NodeShapeWithExternProperties {
     readonly externObjectTypeProperty:
       | ReturnType<ExternObjectType["toJson"]>
       | undefined;
-    readonly externProperty: { "@id": string } | undefined;
+    readonly externProperty: { readonly "@id": string } | undefined;
     readonly "@id": string;
     readonly inlineProperty: ReturnType<InlineNodeShape["toJson"]> | undefined;
-    readonly type: string;
+    readonly type: "NodeShapeWithExternProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -5184,9 +5836,9 @@ export class NodeShapeWithExternProperties {
           .extract(),
         externProperty: this.externProperty
           .map((_item) =>
-            _item.termType === "NamedNode"
-              ? { "@id": _item.value }
-              : { "@id": `_:${_item.value}` },
+            _item.termType === "BlankNode"
+              ? { "@id": `_:${_item.value}` }
+              : { "@id": _item.value },
           )
           .extract(),
         "@id":
@@ -5238,6 +5890,54 @@ export class NodeShapeWithExternProperties {
 }
 
 export namespace NodeShapeWithExternProperties {
+  export function propertiesFromJson(_jsonObject: {
+    readonly externObjectTypeProperty:
+      | ReturnType<ExternObjectType["toJson"]>
+      | undefined;
+    readonly externProperty: { readonly "@id": string } | undefined;
+    readonly "@id": string;
+    readonly inlineProperty: ReturnType<InlineNodeShape["toJson"]> | undefined;
+    readonly type: "NodeShapeWithExternProperties";
+  }): {
+    externObjectTypeProperty: purify.Maybe<ExternObjectType>;
+    externProperty: purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode>;
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    inlineProperty: purify.Maybe<InlineNodeShape>;
+  } {
+    const externObjectTypeProperty = purify.Maybe.fromNullable(
+      _jsonObject["externObjectTypeProperty"],
+    ).map((_item) => ExternObjectType.fromJson(_item));
+    const externProperty = purify.Maybe.fromNullable(
+      _jsonObject["externProperty"],
+    ).map((_item) =>
+      _item["@id"].startsWith("_:")
+        ? dataFactory.blankNode(_item["@id"].substring(2))
+        : dataFactory.namedNode(_item["@id"]),
+    );
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const inlineProperty = purify.Maybe.fromNullable(
+      _jsonObject["inlineProperty"],
+    ).map((_item) => InlineNodeShape.fromJson(_item));
+    return {
+      externObjectTypeProperty,
+      externProperty,
+      identifier,
+      inlineProperty,
+    };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithExternProperties.propertiesFromJson
+    >[0],
+  ): NodeShapeWithExternProperties {
+    return new NodeShapeWithExternProperties(
+      NodeShapeWithExternProperties.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -5478,7 +6178,7 @@ export class NodeShapeWithExplicitRdfTypes {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty: string;
-    readonly type: string;
+    readonly type: "NodeShapeWithExplicitRdfTypes";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -5533,6 +6233,31 @@ export class NodeShapeWithExplicitRdfTypes {
 }
 
 export namespace NodeShapeWithExplicitRdfTypes {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty: string;
+    readonly type: "NodeShapeWithExplicitRdfTypes";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    stringProperty: string;
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = _jsonObject["stringProperty"];
+    return { identifier, stringProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithExplicitRdfTypes.propertiesFromJson
+    >[0],
+  ): NodeShapeWithExplicitRdfTypes {
+    return new NodeShapeWithExplicitRdfTypes(
+      NodeShapeWithExplicitRdfTypes.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -5810,7 +6535,7 @@ export class NodeShapeWithDefaultValueProperties {
     readonly numberProperty: number;
     readonly stringProperty: string;
     readonly trueBooleanProperty: boolean;
-    readonly type: string;
+    readonly type: "NodeShapeWithDefaultValueProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -5871,6 +6596,50 @@ export class NodeShapeWithDefaultValueProperties {
 }
 
 export namespace NodeShapeWithDefaultValueProperties {
+  export function propertiesFromJson(_jsonObject: {
+    readonly dateTimeProperty: string;
+    readonly falseBooleanProperty: boolean;
+    readonly "@id": string;
+    readonly numberProperty: number;
+    readonly stringProperty: string;
+    readonly trueBooleanProperty: boolean;
+    readonly type: "NodeShapeWithDefaultValueProperties";
+  }): {
+    dateTimeProperty: Date;
+    falseBooleanProperty: boolean;
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    numberProperty: number;
+    stringProperty: string;
+    trueBooleanProperty: boolean;
+  } {
+    const dateTimeProperty = new Date(_jsonObject["dateTimeProperty"]);
+    const falseBooleanProperty = _jsonObject["falseBooleanProperty"];
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const numberProperty = _jsonObject["numberProperty"];
+    const stringProperty = _jsonObject["stringProperty"];
+    const trueBooleanProperty = _jsonObject["trueBooleanProperty"];
+    return {
+      dateTimeProperty,
+      falseBooleanProperty,
+      identifier,
+      numberProperty,
+      stringProperty,
+      trueBooleanProperty,
+    };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<
+      typeof NodeShapeWithDefaultValueProperties.propertiesFromJson
+    >[0],
+  ): NodeShapeWithDefaultValueProperties {
+    return new NodeShapeWithDefaultValueProperties(
+      NodeShapeWithDefaultValueProperties.propertiesFromJson(_jsonObject),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -6176,7 +6945,7 @@ export class IriNodeShape {
   toJson(): {
     readonly "@id": string;
     readonly stringProperty: string;
-    readonly type: string;
+    readonly type: "IriNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -6212,6 +6981,22 @@ export class IriNodeShape {
 }
 
 export namespace IriNodeShape {
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty: string;
+    readonly type: "IriNodeShape";
+  }): { identifier: rdfjs.NamedNode; stringProperty: string } {
+    const identifier = dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = _jsonObject["stringProperty"];
+    return { identifier, stringProperty };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof IriNodeShape.propertiesFromJson>[0],
+  ): IriNodeShape {
+    return new IriNodeShape(IriNodeShape.propertiesFromJson(_jsonObject));
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -6329,6 +7114,29 @@ export namespace InterfaceNodeShape {
       );
   }
 
+  export function propertiesFromJson(_jsonObject: {
+    readonly "@id": string;
+    readonly stringProperty: string;
+    readonly type: "InterfaceNodeShape";
+  }): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    stringProperty: string;
+    type: "InterfaceNodeShape";
+  } {
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = _jsonObject["stringProperty"];
+    const type = "InterfaceNodeShape" as const;
+    return { identifier, stringProperty, type };
+  }
+
+  export function fromJson(
+    _jsonObject: Parameters<typeof InterfaceNodeShape.propertiesFromJson>[0],
+  ): InterfaceNodeShape {
+    return InterfaceNodeShape.propertiesFromJson(_jsonObject);
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -6401,7 +7209,7 @@ export namespace InterfaceNodeShape {
   export function toJson(_interfaceNodeShape: InterfaceNodeShape): {
     readonly "@id": string;
     readonly stringProperty: string;
-    readonly type: string;
+    readonly type: "InterfaceNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -6506,7 +7314,9 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
   toJson(): {
     readonly abcStringProperty: string;
     readonly "@id": string;
-    readonly type: string;
+    readonly type:
+      | "ConcreteChildClassNodeShape"
+      | "ConcreteParentClassNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -6547,6 +7357,23 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
 }
 
 namespace AbstractBaseClassWithPropertiesNodeShape {
+  export function abstractBaseClassWithPropertiesNodeShapePropertiesFromJson(_jsonObject: {
+    readonly abcStringProperty: string;
+    readonly "@id": string;
+    readonly type:
+      | "ConcreteChildClassNodeShape"
+      | "ConcreteParentClassNodeShape";
+  }): {
+    abcStringProperty: string;
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  } {
+    const abcStringProperty = _jsonObject["abcStringProperty"];
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    return { abcStringProperty, identifier };
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -6636,6 +7463,23 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
 }
 
 namespace AbstractBaseClassWithoutPropertiesNodeShape {
+  export function abstractBaseClassWithoutPropertiesNodeShapePropertiesFromJson(
+    _jsonObject: Parameters<
+      typeof AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapePropertiesFromJson
+    >[0],
+  ): { identifier: rdfjs.BlankNode | rdfjs.NamedNode } & ReturnType<
+    typeof AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapePropertiesFromJson
+  > {
+    const _super0 =
+      AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapePropertiesFromJson(
+        _jsonObject,
+      );
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    return { ..._super0, identifier };
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -6792,6 +7636,39 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
+  export function concreteParentClassNodeShapePropertiesFromJson(
+    _jsonObject: { readonly parentStringProperty: string } & Parameters<
+      typeof AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapePropertiesFromJson
+    >[0],
+  ): {
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    parentStringProperty: string;
+  } & ReturnType<
+    typeof AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapePropertiesFromJson
+  > {
+    const _super0 =
+      AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapePropertiesFromJson(
+        _jsonObject,
+      );
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const parentStringProperty = _jsonObject["parentStringProperty"];
+    return { ..._super0, identifier, parentStringProperty };
+  }
+
+  export function concreteParentClassNodeShapeFromJson(
+    _jsonObject: Parameters<
+      typeof ConcreteParentClassNodeShape.concreteParentClassNodeShapePropertiesFromJson
+    >[0],
+  ): ConcreteParentClassNodeShape {
+    return new ConcreteParentClassNodeShape(
+      ConcreteParentClassNodeShape.concreteParentClassNodeShapePropertiesFromJson(
+        _jsonObject,
+      ),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -7008,6 +7885,39 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
+  export function concreteChildClassNodeShapePropertiesFromJson(
+    _jsonObject: { readonly childStringProperty: string } & Parameters<
+      typeof ConcreteParentClassNodeShape.concreteParentClassNodeShapePropertiesFromJson
+    >[0],
+  ): {
+    childStringProperty: string;
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  } & ReturnType<
+    typeof ConcreteParentClassNodeShape.concreteParentClassNodeShapePropertiesFromJson
+  > {
+    const _super0 =
+      ConcreteParentClassNodeShape.concreteParentClassNodeShapePropertiesFromJson(
+        _jsonObject,
+      );
+    const childStringProperty = _jsonObject["childStringProperty"];
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    return { ..._super0, childStringProperty, identifier };
+  }
+
+  export function concreteChildClassNodeShapeFromJson(
+    _jsonObject: Parameters<
+      typeof ConcreteChildClassNodeShape.concreteChildClassNodeShapePropertiesFromJson
+    >[0],
+  ): ConcreteChildClassNodeShape {
+    return new ConcreteChildClassNodeShape(
+      ConcreteChildClassNodeShape.concreteChildClassNodeShapePropertiesFromJson(
+        _jsonObject,
+      ),
+    );
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
@@ -7177,7 +8087,7 @@ export abstract class AbstractBaseClassForExternObjectType {
   toJson(): {
     readonly abcStringProperty: string;
     readonly "@id": string;
-    readonly type: string;
+    readonly type: "ExternObjectType";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -7216,6 +8126,21 @@ export abstract class AbstractBaseClassForExternObjectType {
 }
 
 export namespace AbstractBaseClassForExternObjectType {
+  export function abstractBaseClassForExternObjectTypePropertiesFromJson(_jsonObject: {
+    readonly abcStringProperty: string;
+    readonly "@id": string;
+    readonly type: "ExternObjectType";
+  }): {
+    abcStringProperty: string;
+    identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  } {
+    const abcStringProperty = _jsonObject["abcStringProperty"];
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    return { abcStringProperty, identifier };
+  }
+
   export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,

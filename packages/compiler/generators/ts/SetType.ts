@@ -57,7 +57,10 @@ export class SetType extends Type {
   }
 
   override get jsonName(): string {
-    return `readonly (${this.itemType.jsonName})[]`;
+    if (this.minCount === 0) {
+      return `readonly (${this.itemType.jsonName})[]`;
+    }
+    return `purify.NonEmptyList<${this.itemType.jsonName}>`;
   }
 
   override get mutable(): boolean {
@@ -87,7 +90,7 @@ export class SetType extends Type {
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    return `${variables.value}.map(_item => (${this.itemType.propertyFromJsonExpression({ variables: { value: "_item" } })}))`;
+    return `purify.NonEmptyList.fromArray(${variables.value}.map(_item => (${this.itemType.propertyFromJsonExpression({ variables: { value: "_item" } })}))).unsafeCoerce()`;
   }
 
   override propertyFromRdfExpression({
