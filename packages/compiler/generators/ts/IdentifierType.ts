@@ -10,6 +10,12 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
   }
 
   override get jsonName(): string {
+    if (this.in_.length > 0 && this.isNamedNodeKind) {
+      // Treat sh:in as a union of the IRIs
+      // rdfjs.NamedNode<"http://example.com/1" | "http://example.com/2">
+      return `{ readonly "@id": ${this.in_.map((iri) => `"${iri.value}"`).join(" | ")} }`;
+    }
+
     return `{ readonly "@id": string }`;
   }
 

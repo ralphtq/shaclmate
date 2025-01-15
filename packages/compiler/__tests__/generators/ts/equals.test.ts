@@ -90,8 +90,11 @@ describe("equals", () => {
           new kitchenSink.NodeShapeWithUnionProperties({
             identifier,
             orUnrelatedProperty: {
-              type: "1-(rdfjs.NamedNode)",
-              value: dataFactory.namedNode("http://example.com/term"),
+              type: "1-NonClassNodeShape",
+              value: new kitchenSink.NonClassNodeShape({
+                identifier: dataFactory.blankNode(),
+                stringProperty: "test",
+              }),
             },
           }),
         )

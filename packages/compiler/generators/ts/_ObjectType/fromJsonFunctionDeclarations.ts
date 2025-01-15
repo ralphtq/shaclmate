@@ -35,14 +35,14 @@ export function fromJsonFunctionDeclarations(
 
   this.parentObjectTypes.forEach((parentObjectType, parentObjectTypeI) => {
     propertiesFromJsonFunctionParameter.push(
-      `Parameters<typeof ${parentObjectType.name}.propertiesFromJson>[0]`,
+      `Parameters<typeof ${parentObjectType.name}.${parentObjectType.propertiesFromJsonFunctionName}>[0]`,
     );
     propertiesFromJsonFunctionStatements.push(
-      `const _super${parentObjectTypeI} = ${parentObjectType.name}.propertiesFromJson(${variables.jsonObject});`,
+      `const _super${parentObjectTypeI} = ${parentObjectType.name}.${parentObjectType.propertiesFromJsonFunctionName}(${variables.jsonObject});`,
     );
     initializers.push(`..._super${parentObjectTypeI}`);
     propertiesFromJsonFunctionReturnType.push(
-      `ReturnType<typeof ${parentObjectType.name}.propertiesFromJson>`,
+      `ReturnType<typeof ${parentObjectType.name}.${parentObjectType.propertiesFromJsonFunctionName}>`,
     );
   });
 
@@ -74,7 +74,7 @@ export function fromJsonFunctionDeclarations(
   fromJsonFunctionDeclarations.push({
     isExported: true,
     kind: StructureKind.Function,
-    name: "propertiesFromJson",
+    name: this.propertiesFromJsonFunctionName,
     parameters: [
       {
         name: variables.jsonObject,
@@ -93,12 +93,12 @@ export function fromJsonFunctionDeclarations(
     switch (this.declarationType) {
       case "class":
         fromJsonStatements = [
-          `return new ${this.name}(${this.name}.propertiesFromJson(${variables.jsonObject}));`,
+          `return new ${this.name}(${this.name}.${this.propertiesFromJsonFunctionName}(${variables.jsonObject}));`,
         ];
         break;
       case "interface":
         fromJsonStatements = [
-          `return ${this.name}.propertiesFromJson(${variables.jsonObject});`,
+          `return ${this.name}.${this.propertiesFromJsonFunctionName}(${variables.jsonObject});`,
         ];
         break;
     }
@@ -110,7 +110,7 @@ export function fromJsonFunctionDeclarations(
       parameters: [
         {
           name: variables.jsonObject,
-          type: `Parameters<typeof ${this.name}.propertiesFromJson>[0]`,
+          type: `Parameters<typeof ${this.name}.${this.propertiesFromJsonFunctionName}>[0]`,
         },
       ],
       returnType: this.name,

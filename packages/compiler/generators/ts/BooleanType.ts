@@ -23,10 +23,6 @@ export class BooleanType extends PrimitiveType<boolean> {
     return conversions;
   }
 
-  override get jsonName(): string {
-    return "boolean";
-  }
-
   @Memoize()
   override get name(): string {
     if (this.primitiveIn.length > 0) {

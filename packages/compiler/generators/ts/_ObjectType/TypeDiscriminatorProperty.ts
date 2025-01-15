@@ -81,7 +81,7 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     return {
       isReadonly: true,
       name: this.name,
-      type: "string",
+      type: this.type.name,
     };
   }
 

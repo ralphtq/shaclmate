@@ -1146,7 +1146,32 @@
           "path": "http://example.com/orUnrelatedProperty",
           "type": {
             "itemType": {
-              "kind": "TermType"
+              "kind": "UnionType",
+              "types": [
+                {
+                  "datatype": {
+                    "termType": "NamedNode",
+                    "value": "http://www.w3.org/2001/XMLSchema#integer"
+                  },
+                  "hasValue": [],
+                  "kind": "LiteralType"
+                },
+                {
+                  "kind": "ObjectType",
+                  "name": {
+                    "curie": ":NonClassNodeShape",
+                    "identifier": {
+                      "termType": "NamedNode",
+                      "value": "http://example.com/NonClassNodeShape"
+                    },
+                    "shaclmateName": "NonClassNodeShape"
+                  },
+                  "nodeKinds": [
+                    "BlankNode",
+                    "NamedNode"
+                  ]
+                }
+              ]
             },
             "kind": "OptionType"
           }

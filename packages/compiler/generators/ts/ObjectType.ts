@@ -194,11 +194,10 @@ export class ObjectType extends DeclaredType {
   @Memoize()
   get hashFunctionName(): string {
     if (
-      this.lazyDescendantObjectTypes().length > 0 ||
-      this.ancestorObjectTypes.length > 0
-    ) {
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
       return `hash${this.name}`;
-    }
     return "hash";
   }
 
@@ -271,6 +270,16 @@ export class ObjectType extends DeclaredType {
       }
     }
     return properties;
+  }
+
+  @Memoize()
+  get propertiesFromJsonFunctionName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `${camelCase(this.name)}PropertiesFromJson`;
+    return "propertiesFromJson";
   }
 
   override get useImports(): readonly Import[] {
