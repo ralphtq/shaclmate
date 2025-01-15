@@ -12,6 +12,7 @@ export class InterfaceHarness<
   IdentifierT extends BlankNode | NamedNode,
 > extends Harness<T, IdentifierT> {
   readonly equals: (other: T) => Equatable.EqualsResult;
+  readonly toJson: () => any;
   readonly toRdf: (options: {
     mutateGraph: MutableResource.MutateGraph;
     resourceSet: MutableResourceSet;
@@ -19,10 +20,12 @@ export class InterfaceHarness<
 
   constructor({
     equals,
+    toJson,
     toRdf,
     ...superParameters
   }: {
     equals: (left: T, right: T) => Equatable.EqualsResult;
+    toJson: (instance: T) => any;
     toRdf: (
       instance: T,
       options: {
@@ -33,6 +36,7 @@ export class InterfaceHarness<
   } & ConstructorParameters<typeof Harness<T, IdentifierT>>[0]) {
     super(superParameters);
     this.equals = (other) => equals(this.instance, other);
+    this.toJson = () => toJson(this.instance);
     this.toRdf = (kwds) => toRdf(this.instance, kwds);
   }
 }
