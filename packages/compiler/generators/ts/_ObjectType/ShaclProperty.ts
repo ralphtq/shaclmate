@@ -8,7 +8,7 @@ import type {
   PropertySignatureStructure,
 } from "ts-morph";
 import { Memoize } from "typescript-memoize";
-import type { IdentifierType } from "../IdentifierType";
+import type { IdentifierType } from "../IdentifierType.";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
 import { tsComment } from "../tsComment.js";

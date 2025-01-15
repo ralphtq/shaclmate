@@ -91,7 +91,7 @@ export class ObjectUnionType extends DeclaredType {
 
     const moduleStatements: StatementStructures[] = [
       ...this.equalsFunctionDeclaration.toList(),
-      ...this.fromJsonFunctionDeclaration.toList(),
+      // ...this.fromJsonFunctionDeclaration.toList(),
       ...this.fromRdfFunctionDeclaration.toList(),
       ...this.hashFunctionDeclaration.toList(),
       ...this.sparqlGraphPatternsClassDeclaration.toList(),
@@ -179,6 +179,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
+  // @ts-ignore
   private get fromJsonFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
     if (!this.features.has("fromRdf")) {
       return Maybe.empty();

@@ -1829,7 +1829,9 @@ export class NodeShapeWithTermProperties {
                       : undefined,
                   "@value": _item.value,
                 }
-              : { "@id": _item.value },
+              : _item.termType === "NamedNode"
+                ? { "@id": _item.value }
+                : { "@id": `_:${_item.value}` },
           )
           .extract(),
         type: this.type,
@@ -5181,10 +5183,11 @@ export class NodeShapeWithExternProperties {
           .map((_item) => _item.toJson())
           .extract(),
         externProperty: this.externProperty
-          .map((_item) => ({
-            "@id":
-              _item.termType === "BlankNode" ? `_:${_item.value}` : _item.value,
-          }))
+          .map((_item) =>
+            _item.termType === "NamedNode"
+              ? { "@id": _item.value }
+              : { "@id": `_:${_item.value}` },
+          )
           .extract(),
         "@id":
           this.identifier.termType === "BlankNode"
@@ -7320,14 +7323,14 @@ export namespace UnionNodeShape {
     HasherT extends {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
-  >(unionNodeShape: UnionNodeShape, _hasher: HasherT): HasherT {
-    switch (unionNodeShape.type) {
+  >(_unionNodeShape: UnionNodeShape, _hasher: HasherT): HasherT {
+    switch (_unionNodeShape.type) {
       case "UnionNodeShapeMember1":
-        return unionNodeShape.hash(_hasher);
+        return _unionNodeShape.hash(_hasher);
       case "UnionNodeShapeMember2":
-        return unionNodeShape.hash(_hasher);
+        return _unionNodeShape.hash(_hasher);
       case "ExternObjectType":
-        return unionNodeShape.hash(_hasher);
+        return _unionNodeShape.hash(_hasher);
     }
   }
 
@@ -7351,19 +7354,19 @@ export namespace UnionNodeShape {
   }
 
   export function toRdf(
-    unionNodeShape: UnionNodeShape,
+    _unionNodeShape: UnionNodeShape,
     _parameters: {
       mutateGraph: rdfjsResource.MutableResource.MutateGraph;
       resourceSet: rdfjsResource.MutableResourceSet;
     },
   ): rdfjsResource.MutableResource {
-    switch (unionNodeShape.type) {
+    switch (_unionNodeShape.type) {
       case "UnionNodeShapeMember1":
-        return unionNodeShape.toRdf(_parameters);
+        return _unionNodeShape.toRdf(_parameters);
       case "UnionNodeShapeMember2":
-        return unionNodeShape.toRdf(_parameters);
+        return _unionNodeShape.toRdf(_parameters);
       case "ExternObjectType":
-        return unionNodeShape.toRdf(_parameters);
+        return _unionNodeShape.toRdf(_parameters);
     }
   }
 }

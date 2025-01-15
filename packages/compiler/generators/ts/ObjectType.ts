@@ -304,8 +304,8 @@ export class ObjectType extends DeclaredType {
   }
 
   override propertyFromJsonExpression({
-                                      variables,
-                                    }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
     return `${this.name}.fromJson(${variables.value})`;
   }
 
