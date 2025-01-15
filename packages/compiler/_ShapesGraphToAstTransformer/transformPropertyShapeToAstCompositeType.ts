@@ -1,4 +1,5 @@
 import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
+import type { NodeKind } from "@shaclmate/shacl-ast";
 import { owl, rdfs } from "@tpluscode/rdf-ns-builders";
 import { Either, Left, Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
@@ -158,56 +159,119 @@ export function transformPropertyShapeToAstCompositeType(
     }
   });
 
-  if (
-    hasValues.length === 0 &&
-    memberItemTypes.every(
-      (memberItemType) =>
-        memberItemType.kind === "LiteralType" &&
-        memberItemType.maxExclusive.isNothing() &&
-        memberItemType.maxInclusive.isNothing() &&
-        memberItemType.minExclusive.isNothing() &&
-        memberItemType.minInclusive.isNothing(),
-    )
-  ) {
-    // Special case: all the member types are Literals without further constraints,
-    // like dash:StringOrLangString
-    return Either.of({
-      datatype: Maybe.empty(),
-      defaultValue: defaultValue.filter(
-        (term) => term.termType === "Literal",
-      ) as Maybe<Literal>,
-      hasValues: [],
-      in_: [],
-      kind: "LiteralType",
-      languageIn: [],
-      maxExclusive: Maybe.empty(),
-      maxInclusive: Maybe.empty(),
-      minExclusive: Maybe.empty(),
-      minInclusive: Maybe.empty(),
-      nodeKinds: new Set<"Literal">(["Literal"]),
-    });
-  }
+  if (hasValues.length === 0) {
+    // Can't handle hasValues when coalescing types
+    const canCoalesce = (
+      memberItemType:
+        | ast.IdentifierType
+        | ast.LiteralType
+        | ast.TermType<BlankNode | Literal | NamedNode>,
+    ) => {
+      if (memberItemType.in_.length > 0) {
+        return false;
+      }
 
-  if (
-    hasValues.length === 0 &&
-    memberItemTypes.every(
-      (memberItemType) => memberItemType.kind === "IdentifierType",
-    )
-  ) {
-    // Special case: all member types are blank or named nodes without further constraints
-    return Either.of({
-      defaultValue: defaultValue.filter(
-        (term) => term.termType === "NamedNode",
-      ) as Maybe<NamedNode>,
-      hasValues: [],
-      in_: [],
-      kind: "IdentifierType",
-      nodeKinds: new Set<"BlankNode" | "NamedNode">(
-        memberItemTypes
-          .filter((memberItemType) => memberItemType.kind === "IdentifierType")
-          .flatMap((memberItemType) => [...memberItemType.nodeKinds]),
-      ),
-    });
+      switch (memberItemType.kind) {
+        case "LiteralType": {
+          if ((memberItemType as ast.LiteralType).maxExclusive.isJust()) {
+            return false;
+          }
+          if ((memberItemType as ast.LiteralType).maxInclusive.isJust()) {
+            return false;
+          }
+          if ((memberItemType as ast.LiteralType).minExclusive.isJust()) {
+            return false;
+          }
+          if ((memberItemType as ast.LiteralType).minInclusive.isJust()) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    };
+
+    if (
+      memberItemTypes.every(
+        (memberItemType) =>
+          memberItemType.kind === "IdentifierType" &&
+          canCoalesce(memberItemType),
+      )
+    ) {
+      // Special case: all member types are identifiers without further constraints
+      return Either.of({
+        defaultValue: defaultValue.filter(
+          (term) => term.termType === "NamedNode",
+        ) as Maybe<NamedNode>,
+        hasValues: [],
+        in_: [],
+        kind: "IdentifierType",
+        nodeKinds: new Set<"BlankNode" | "NamedNode">(
+          memberItemTypes
+            .filter(
+              (memberItemType) => memberItemType.kind === "IdentifierType",
+            )
+            .flatMap((memberItemType) => [
+              ...(memberItemType as ast.IdentifierType).nodeKinds,
+            ]),
+        ),
+      });
+    }
+
+    if (
+      memberItemTypes.every(
+        (memberItemType) =>
+          memberItemType.kind === "LiteralType" && canCoalesce(memberItemType),
+      )
+    ) {
+      // Special case: all the member types are Literals without further constraints,
+      // like dash:StringOrLangString
+      // Don't try to coalesce range constraints.
+      return Either.of({
+        datatype: Maybe.empty(),
+        defaultValue: defaultValue.filter(
+          (term) => term.termType === "Literal",
+        ) as Maybe<Literal>,
+        hasValues: [],
+        in_: [],
+        kind: "LiteralType",
+        languageIn: [],
+        maxExclusive: Maybe.empty(),
+        maxInclusive: Maybe.empty(),
+        minExclusive: Maybe.empty(),
+        minInclusive: Maybe.empty(),
+        nodeKinds: new Set<"Literal">(["Literal"]),
+      });
+    }
+
+    if (
+      memberItemTypes.every(
+        (memberItemType) =>
+          (memberItemType.kind === "IdentifierType" ||
+            memberItemType.kind === "LiteralType" ||
+            memberItemType.kind === "TermType") &&
+          canCoalesce(memberItemType),
+      )
+    ) {
+      // Special case: all member types are terms without further constraints
+      const nodeKinds = new Set<NodeKind>(
+        memberItemTypes.flatMap((memberItemType) => [
+          ...(memberItemType as ast.TermType<BlankNode | Literal | NamedNode>)
+            .nodeKinds,
+        ]),
+      );
+      invariant(
+        nodeKinds.has("Literal") &&
+          (nodeKinds.has("BlankNode") || nodeKinds.has("NamedNode")),
+      ); // The identifier-identifier and literal-literal cases should have been caught above
+      return Either.of({
+        defaultValue,
+        hasValues: [],
+        in_: [],
+        kind: "TermType",
+        nodeKinds,
+      });
+    }
   }
 
   return Either.of({

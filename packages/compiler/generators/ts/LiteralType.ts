@@ -19,12 +19,34 @@ export class LiteralType extends TermType<Literal> {
     this.languageIn = languageIn;
   }
 
+  override get jsonName(): string {
+    return '{ readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string }';
+  }
+
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<TermType<Literal>["propertyFromJsonExpression"]>[0]): string {
+    return `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : undefined))`;
+  }
+
   override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<
     TermType<Literal>["propertyFromRdfResourceValueExpression"]
   >[0]): string {
     return `${variables.resourceValue}.toLiteral()`;
+  }
+
+  override propertyHashStatements({
+    depth,
+    variables,
+  }: Parameters<
+    TermType<Literal>["propertyHashStatements"]
+  >[0]): readonly string[] {
+    return [
+      `${variables.hasher}.update(${variables.value}.datatype.value);`,
+      `${variables.hasher}.update(${variables.value}.language);`,
+    ].concat(super.propertyHashStatements({ depth, variables }));
   }
 
   override propertyToJsonExpression({

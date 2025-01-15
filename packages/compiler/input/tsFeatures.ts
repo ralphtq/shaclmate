@@ -2,22 +2,25 @@ import type * as rdfjs from "@rdfjs/types";
 import { Maybe } from "purify-ts";
 import { TsFeature } from "../enums/index.js";
 
-function iriToTsFeature(
-  iri: rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-  >,
-): TsFeature {
+type TsFeatureIri = rdfjs.NamedNode<
+  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+  | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+  | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+  | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
+  | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+  | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+>;
+
+function iriToTsFeature(iri: TsFeatureIri): TsFeature {
   switch (iri.value) {
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
       return "create";
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
       return "equals";
+    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson":
+      return "fromJson";
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
       return "fromRdf";
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
@@ -32,24 +35,8 @@ function iriToTsFeature(
 }
 
 export function tsFeatures(generated: {
-  readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-  >[];
-  readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-  >[];
+  readonly tsFeatureExcludes: readonly TsFeatureIri[];
+  readonly tsFeatureIncludes: readonly TsFeatureIri[];
 }): Maybe<Set<TsFeature>> {
   const tsFeatureIncludes = generated.tsFeatureIncludes.map(iriToTsFeature);
   const tsFeatureExcludes = generated.tsFeatureExcludes.map(iriToTsFeature);

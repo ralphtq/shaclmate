@@ -11,6 +11,7 @@ describe("toJson", () => {
       "@value": "1",
     });
     expect(jsonObject.orTermsProperty).toStrictEqual({
+      termType: "Literal",
       "@value": "test",
     });
   });

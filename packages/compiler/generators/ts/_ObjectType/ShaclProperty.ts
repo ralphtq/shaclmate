@@ -8,6 +8,7 @@ import type {
   PropertySignatureStructure,
 } from "ts-morph";
 import { Memoize } from "typescript-memoize";
+import type { IdentifierType } from "../IdentifierType.js";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
 import { tsComment } from "../tsComment.js";
@@ -141,6 +142,16 @@ export class ShaclProperty extends Property<Type> {
       `{ this.${this.name} =( ${variables.parameter}) as never;\n }`,
     );
     return [statements.join(" else ")];
+  }
+
+  override fromJsonStatements({
+    variables,
+  }: Parameters<
+    Property<IdentifierType>["fromJsonStatements"]
+  >[0]): readonly string[] {
+    return [
+      `const ${this.name} = ${this.type.propertyFromJsonExpression({ variables: { value: `${variables.jsonObject}["${this.name}"]` } })};`,
+    ];
   }
 
   override fromRdfStatements({

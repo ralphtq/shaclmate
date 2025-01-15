@@ -74,6 +74,15 @@ export abstract class Type {
   }
 
   /**
+   * An expression that converts a JSON object in the same format as the propertyToJsonExpression to a value of this type.
+   */
+  abstract propertyFromJsonExpression(parameters: {
+    variables: {
+      value: string;
+    };
+  }): string;
+
+  /**
    * An expression that converts a rdfjsResource.Resource.Values to an Either of value/values
    * of this type for a property.
    */

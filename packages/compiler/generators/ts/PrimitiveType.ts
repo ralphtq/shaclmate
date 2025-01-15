@@ -28,8 +28,18 @@ export abstract class PrimitiveType<
     return Maybe.empty();
   }
 
+  override get jsonName(): string {
+    return this.name;
+  }
+
   override get useImports(): readonly Import[] {
     return [];
+  }
+
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    return variables.value;
   }
 
   override propertyHashStatements({

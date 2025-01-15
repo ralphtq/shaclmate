@@ -513,7 +513,7 @@ shaclmate:toRdfType's are added an serialization.""" ;
                 sh:datatype xsd:integer
             ]
             [
-                sh:nodeKind sh:IRI
+                sh:node :NonClassNodeShape
             ]
         )
     ] .

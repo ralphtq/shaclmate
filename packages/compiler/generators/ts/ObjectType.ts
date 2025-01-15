@@ -147,7 +147,8 @@ export class ObjectType extends DeclaredType {
     const moduleStatements: StatementStructures[] = [
       ..._ObjectType.createFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
-      ..._ObjectType.fromRdfFunctionDeclaration.bind(this)().toList(),
+      ..._ObjectType.fromJsonFunctionDeclarations.bind(this)(),
+      ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
@@ -191,21 +192,22 @@ export class ObjectType extends DeclaredType {
   }
 
   @Memoize()
-  get fromRdfFunctionName(): string {
-    if (this.declarationType === "class" && this.abstract) {
-      return "interfaceFromRdf";
-    }
-    return "fromRdf";
+  get fromJsonFunctionName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `${camelCase(this.name)}FromJson`;
+    return "fromJson";
   }
 
   @Memoize()
   get hashFunctionName(): string {
     if (
-      this.lazyDescendantObjectTypes().length > 0 ||
-      this.ancestorObjectTypes.length > 0
-    ) {
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
       return `hash${this.name}`;
-    }
     return "hash";
   }
 
@@ -224,14 +226,22 @@ export class ObjectType extends DeclaredType {
   }
 
   get jsonName(): string {
-    switch (this.declarationType) {
-      case "class":
-        return `ReturnType<${this.name}["toJson"]>`;
-      case "interface":
-        return `ReturnType<typeof ${this.name}.toJson>`;
-      default:
-        throw new RangeError(this.declarationType);
+    if (this.features.has("toJson")) {
+      switch (this.declarationType) {
+        case "class":
+          return `ReturnType<${this.name}["toJson"]>`;
+        case "interface":
+          return `ReturnType<typeof ${this.name}.toJson>`;
+        default:
+          throw new RangeError(this.declarationType);
+      }
     }
+    if (this.features.has("fromJson")) {
+      return `Parameters<typeof ${this.name}.fromJson>[0]`;
+    }
+    throw new RangeError(
+      "jsonName called when neither fromJson nor toJson features are enabled",
+    );
   }
 
   get mutable(): boolean {
@@ -272,6 +282,16 @@ export class ObjectType extends DeclaredType {
     return properties;
   }
 
+  @Memoize()
+  get propertiesFromJsonFunctionName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `${camelCase(this.name)}PropertiesFromJson`;
+    return "propertiesFromJson";
+  }
+
   override get useImports(): readonly Import[] {
     return this.imports;
   }
@@ -303,6 +323,12 @@ export class ObjectType extends DeclaredType {
     );
   }
 
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    return `${this.name}.fromJson(${variables.value})`;
+  }
+
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
@@ -310,7 +336,7 @@ export class ObjectType extends DeclaredType {
     // Instead, assume the property has the correct range.
     // This also accommodates the case where the object of a property is a dangling identifier that's not the
     // subject of any statements.
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
   }
 
   override propertyHashStatements({

@@ -23,10 +23,6 @@ export class StringType extends PrimitiveType<string> {
     return conversions;
   }
 
-  override get jsonName(): string {
-    return "string";
-  }
-
   @Memoize()
   override get name(): string {
     if (this.primitiveIn.length > 0) {

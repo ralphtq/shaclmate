@@ -198,6 +198,16 @@ export class IdentifierProperty extends Property<IdentifierType> {
       .orDefault([]);
   }
 
+  override fromJsonStatements({
+    variables,
+  }: Parameters<
+    Property<IdentifierType>["fromJsonStatements"]
+  >[0]): readonly string[] {
+    return [
+      `const ${this.name} = ${this.type.propertyFromJsonExpression({ variables: { value: variables.jsonObject } })};`,
+    ];
+  }
+
   override fromRdfStatements({
     variables,
   }: Parameters<
@@ -225,7 +235,22 @@ export class IdentifierProperty extends Property<IdentifierType> {
   override toJsonObjectMember({
     variables,
   }: Parameters<Property<IdentifierType>["toJsonObjectMember"]>[0]): string {
-    return `"@id": ${variables.value}.value`;
+    const nodeKinds = [...this.type.nodeKinds];
+    const valueToNodeKinds = nodeKinds.map((nodeKind) => {
+      switch (nodeKind) {
+        case "BlankNode":
+          return `\`_:\${${variables.value}.value}\``;
+        case "NamedNode":
+          return `${variables.value}.value`;
+        default:
+          throw new RangeError(nodeKind);
+      }
+    });
+    if (valueToNodeKinds.length === 1) {
+      return `"@id": ${valueToNodeKinds[0]}`;
+    }
+    invariant(valueToNodeKinds.length === 2);
+    return `"@id": ${variables.value}.termType === "${nodeKinds[0]}" ? ${valueToNodeKinds[0]} : ${valueToNodeKinds[1]}`;
   }
 
   override toRdfStatements(): readonly string[] {

@@ -10,6 +10,9 @@ const identifier = dataFactory.namedNode("http://example.com/instance");
 
 export const harnesses = {
   concreteChildClassNodeShape: new ClassHarness({
+    fromJson:
+      kitchenSink.ConcreteChildClassNodeShape
+        .concreteChildClassNodeShapeFromJson,
     fromRdf: kitchenSink.ConcreteChildClassNodeShape.fromRdf,
     instance: new kitchenSink.ConcreteChildClassNodeShape({
       abcStringProperty: "abc",
@@ -21,6 +24,9 @@ export const harnesses = {
       kitchenSink.ConcreteChildClassNodeShape.SparqlGraphPatterns,
   }),
   concreteParentClassNodeShape: new ClassHarness({
+    fromJson:
+      kitchenSink.ConcreteParentClassNodeShape
+        .concreteParentClassNodeShapeFromJson,
     fromRdf: kitchenSink.ConcreteParentClassNodeShape.fromRdf,
     instance: new kitchenSink.ConcreteParentClassNodeShape({
       abcStringProperty: "abc",
@@ -34,6 +40,7 @@ export const harnesses = {
     kitchenSink.InterfaceNodeShape,
     BlankNode | NamedNode
   >({
+    fromJson: kitchenSink.InterfaceNodeShape.fromJson,
     equals: kitchenSink.InterfaceNodeShape.equals,
     fromRdf: kitchenSink.InterfaceNodeShape.fromRdf,
     instance: {
@@ -43,9 +50,11 @@ export const harnesses = {
     },
     sparqlGraphPatternsClass:
       kitchenSink.InterfaceNodeShape.SparqlGraphPatterns,
+    toJson: kitchenSink.InterfaceNodeShape.toJson,
     toRdf: kitchenSink.InterfaceNodeShape.toRdf,
   }),
   iriNodeShape: new ClassHarness({
+    fromJson: kitchenSink.IriNodeShape.fromJson,
     fromRdf: kitchenSink.IriNodeShape.fromRdf,
     instance: new kitchenSink.IriNodeShape({
       identifier,
@@ -54,6 +63,7 @@ export const harnesses = {
     sparqlGraphPatternsClass: kitchenSink.IriNodeShape.SparqlGraphPatterns,
   }),
   nodeShapeWithDefaultValueProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithDefaultValueProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
       identifier,
@@ -62,6 +72,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithDefaultValuePropertiesOverriddenDifferent: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithDefaultValueProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
       falseBooleanProperty: true,
@@ -74,6 +85,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithDefaultValuePropertiesOverriddenSame: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithDefaultValueProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
       falseBooleanProperty: false,
@@ -87,6 +99,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithExplicitRdfTypes: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithExplicitRdfTypes.fromJson,
     fromRdf: kitchenSink.NodeShapeWithExplicitRdfTypes.fromRdf,
     instance: new kitchenSink.NodeShapeWithExplicitRdfTypes({
       identifier,
@@ -96,6 +109,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithExplicitRdfTypes.SparqlGraphPatterns,
   }),
   nodeShapeWithExternProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithExternProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithExternProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithExternProperties({
       externObjectTypeProperty: new ExternObjectType(
@@ -113,6 +127,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithExternProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithHasValueProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithHasValueProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithHasValueProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithHasValueProperties({
       hasIriProperty: dataFactory.namedNode(
@@ -124,6 +139,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithHasValueProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithInIrisProperty: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithInProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithInProperties({
       identifier,
@@ -135,6 +151,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithInProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithInLiteralsProperty: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithInProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithInProperties({
       identifier,
@@ -144,6 +161,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithInProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithLanguageInProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithLanguageInProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithLanguageInProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithLanguageInProperties({
       identifier,
@@ -154,6 +172,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithLanguageInProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithListProperty: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithListProperty.fromJson,
     fromRdf: kitchenSink.NodeShapeWithListProperty.fromRdf,
     instance: new kitchenSink.NodeShapeWithListProperty({
       identifier,
@@ -163,6 +182,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithListProperty.SparqlGraphPatterns,
   }),
   nodeShapeWithMutableProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithMutableProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithMutableProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithMutableProperties({
       identifier,
@@ -173,6 +193,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithMutableProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithPropertyCardinalities: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithPropertyCardinalities.fromJson,
     fromRdf: kitchenSink.NodeShapeWithPropertyCardinalities.fromRdf,
     instance: new kitchenSink.NodeShapeWithPropertyCardinalities({
       identifier,
@@ -185,6 +206,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithPropertyCardinalities.SparqlGraphPatterns,
   }),
   nodeShapeWithPropertyVisibilities: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithPropertyVisibilities.fromJson,
     fromRdf: kitchenSink.NodeShapeWithPropertyVisibilities.fromRdf,
     instance: new kitchenSink.NodeShapeWithPropertyVisibilities({
       identifier,
@@ -196,6 +218,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithPropertyVisibilities.SparqlGraphPatterns,
   }),
   nodeShapeWithTermProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithTermProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithTermProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithTermProperties({
       booleanProperty: true,
@@ -211,6 +234,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithTermProperties.SparqlGraphPatterns,
   }),
   nodeShapeWithUnionProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithUnionProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithUnionProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithUnionProperties({
       identifier,
@@ -222,6 +246,7 @@ export const harnesses = {
       kitchenSink.NodeShapeWithUnionProperties.SparqlGraphPatterns,
   }),
   nonClassNodeShape: new ClassHarness({
+    fromJson: kitchenSink.NonClassNodeShape.fromJson,
     fromRdf: kitchenSink.NonClassNodeShape.fromRdf,
     instance: new kitchenSink.NonClassNodeShape({
       identifier,
@@ -230,6 +255,7 @@ export const harnesses = {
     sparqlGraphPatternsClass: kitchenSink.NonClassNodeShape.SparqlGraphPatterns,
   }),
   sha256IriNodeShapeWithExplicitIdentifier: new ClassHarness({
+    fromJson: kitchenSink.Sha256IriNodeShape.fromJson,
     fromRdf: kitchenSink.Sha256IriNodeShape.fromRdf,
     instance: new kitchenSink.Sha256IriNodeShape({
       identifier,
@@ -239,6 +265,7 @@ export const harnesses = {
       kitchenSink.Sha256IriNodeShape.SparqlGraphPatterns,
   }),
   sha256IriNodeShapeWithoutExplicitIdentifier: new ClassHarness({
+    fromJson: kitchenSink.Sha256IriNodeShape.fromJson,
     fromRdf: kitchenSink.Sha256IriNodeShape.fromRdf,
     instance: new kitchenSink.Sha256IriNodeShape({
       stringProperty: "test",
@@ -247,6 +274,7 @@ export const harnesses = {
       kitchenSink.Sha256IriNodeShape.SparqlGraphPatterns,
   }),
   unionNodeShapeMember1: new ClassHarness({
+    fromJson: kitchenSink.UnionNodeShapeMember1.fromJson,
     fromRdf: kitchenSink.UnionNodeShapeMember1.fromRdf,
     instance: new kitchenSink.UnionNodeShapeMember1({
       identifier,
@@ -256,6 +284,7 @@ export const harnesses = {
       kitchenSink.UnionNodeShapeMember1.SparqlGraphPatterns,
   }),
   unionNodeShapeMember2: new ClassHarness({
+    fromJson: kitchenSink.UnionNodeShapeMember2.fromJson,
     fromRdf: kitchenSink.UnionNodeShapeMember2.fromRdf,
     instance: new kitchenSink.UnionNodeShapeMember2({
       identifier,
@@ -265,6 +294,7 @@ export const harnesses = {
       kitchenSink.UnionNodeShapeMember2.SparqlGraphPatterns,
   }),
   uuidv4IriNodeShapeWithExplicitIdentifier: new ClassHarness({
+    fromJson: kitchenSink.UuidV4IriNodeShape.fromJson,
     fromRdf: kitchenSink.UuidV4IriNodeShape.fromRdf,
     instance: new kitchenSink.UuidV4IriNodeShape({
       identifier,
@@ -274,6 +304,7 @@ export const harnesses = {
       kitchenSink.UuidV4IriNodeShape.SparqlGraphPatterns,
   }),
   uuidv4IriNodeShapeWithoutExplicitIdentifier: new ClassHarness({
+    fromJson: kitchenSink.UuidV4IriNodeShape.fromJson,
     fromRdf: kitchenSink.UuidV4IriNodeShape.fromRdf,
     instance: new kitchenSink.UuidV4IriNodeShape({
       stringProperty: "test",

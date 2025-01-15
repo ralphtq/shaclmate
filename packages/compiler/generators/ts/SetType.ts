@@ -57,7 +57,10 @@ export class SetType extends Type {
   }
 
   override get jsonName(): string {
-    return `readonly (${this.itemType.jsonName})[]`;
+    if (this.minCount === 0) {
+      return `readonly (${this.itemType.jsonName})[]`;
+    }
+    return `purify.NonEmptyList<${this.itemType.jsonName}>`;
   }
 
   override get mutable(): boolean {
@@ -82,6 +85,18 @@ export class SetType extends Type {
     >[0],
   ): ReturnType<Type["propertyChainSparqlGraphPatternExpression"]> {
     return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
+  }
+
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    const expression = variables.value;
+    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
+      variables: { value: "_item" },
+    });
+    return itemFromJsonExpression === "_item"
+      ? expression
+      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
   }
 
   override propertyFromRdfExpression({

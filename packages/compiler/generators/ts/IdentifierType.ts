@@ -9,6 +9,16 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
     return this.nodeKinds.size === 1 && this.nodeKinds.has("NamedNode");
   }
 
+  override get jsonName(): string {
+    if (this.in_.length > 0 && this.isNamedNodeKind) {
+      // Treat sh:in as a union of the IRIs
+      // rdfjs.NamedNode<"http://example.com/1" | "http://example.com/2">
+      return `{ readonly "@id": ${this.in_.map((iri) => `"${iri.value}"`).join(" | ")} }`;
+    }
+
+    return `{ readonly "@id": string }`;
+  }
+
   @Memoize()
   override get name(): string {
     if (this.in_.length > 0 && this.isNamedNodeKind) {
@@ -24,12 +34,41 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
       .join(" | ")})`;
   }
 
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<
+    TermType<BlankNode | NamedNode>["propertyFromJsonExpression"]
+  >[0]): string {
+    const valueToBlankNode = `${this.dataFactoryVariable}.blankNode(${variables.value}["@id"].substring(2))`;
+    const valueToNamedNode = `${this.dataFactoryVariable}.namedNode(${variables.value}["@id"])`;
+
+    if (this.nodeKinds.size === 2) {
+      return `(${variables.value}["@id"].startsWith("_:") ? ${valueToBlankNode} : ${valueToNamedNode})`;
+    }
+    switch ([...this.nodeKinds][0]) {
+      case "BlankNode":
+        return valueToBlankNode;
+      case "NamedNode":
+        return valueToNamedNode;
+    }
+  }
+
   override propertyToJsonExpression({
     variables,
   }: Parameters<
     TermType<BlankNode | NamedNode>["propertyToJsonExpression"]
   >[0]): string {
-    return `{ "@id": ${variables.value}.value }`;
+    const valueToBlankNode = `{ "@id": \`_:\${${variables.value}.value}\` }`;
+    const valueToNamedNode = `{ "@id": ${variables.value}.value }`;
+    if (this.nodeKinds.size === 2) {
+      return `(${variables.value}.termType === "BlankNode" ? ${valueToBlankNode} : ${valueToNamedNode})`;
+    }
+    switch ([...this.nodeKinds][0]) {
+      case "BlankNode":
+        return valueToBlankNode;
+      case "NamedNode":
+        return valueToNamedNode;
+    }
   }
 
   protected override propertyFromRdfResourceValueExpression({

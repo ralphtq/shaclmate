@@ -81,12 +81,16 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     return {
       isReadonly: true,
       name: this.name,
-      type: "string",
+      type: this.type.name,
     };
   }
 
   override classConstructorStatements(): readonly string[] {
     return [];
+  }
+
+  override fromJsonStatements(): readonly string[] {
+    return this.fromRdfStatements();
   }
 
   override fromRdfStatements(): readonly string[] {

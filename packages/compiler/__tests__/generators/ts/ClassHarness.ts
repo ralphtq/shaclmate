@@ -11,6 +11,7 @@ export class ClassHarness<
   T extends {
     equals: (other: T) => Equatable.EqualsResult;
     identifier: IdentifierT;
+    toJson: () => any;
     toRdf: (options: {
       mutateGraph: MutableResource.MutateGraph;
       resourceSet: MutableResourceSet;
@@ -20,6 +21,10 @@ export class ClassHarness<
 > extends Harness<T, IdentifierT> {
   override equals(other: T): Equatable.EqualsResult {
     return this.instance.equals(other);
+  }
+
+  override toJson(): any {
+    return this.instance.toJson();
   }
 
   override toRdf(options: {

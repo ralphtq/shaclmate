@@ -95,16 +95,17 @@ export class TermType<
   }
 
   get jsonName(): string {
-    const jsonName: string[] = [];
-    if (this.nodeKinds.has("Literal")) {
-      jsonName.push(
-        '{ "@language": string | undefined, "@type": string | undefined, "@value": string }',
-      );
-    }
-    if (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")) {
-      jsonName.push(`{ "@id": string }`);
-    }
-    return jsonName.join(" | ");
+    invariant(
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
+      "IdentifierType and LiteralType should override",
+    );
+    return `{ readonly "@id": string, readonly termType: ${[...this.nodeKinds]
+      .filter((nodeKind) => nodeKind !== "Literal")
+      .map((nodeKind) => `"${nodeKind}"`)
+      .join(
+        " | ",
+      )} } | { readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string, readonly termType: "Literal" }`;
   }
 
   @Memoize()
@@ -120,6 +121,39 @@ export class TermType<
       imports.push(Import.RDF_LITERAL);
     }
     return imports;
+  }
+
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    invariant(
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
+      "IdentifierType and LiteralType should override",
+    );
+    let expression = "";
+    for (const nodeKind of this.nodeKinds) {
+      let valueToNodeKind: string;
+      switch (nodeKind) {
+        case "BlankNode":
+          valueToNodeKind = `${this.dataFactoryVariable}.blankNode(${variables.value}["@id"].substring(2))`;
+          break;
+        case "Literal":
+          valueToNodeKind = `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : undefined))`;
+          break;
+        case "NamedNode":
+          valueToNodeKind = `${this.dataFactoryVariable}.namedNode(${variables.value}["@id"])`;
+          break;
+        default:
+          throw new RangeError(nodeKind);
+      }
+      if (expression.length === 0) {
+        expression = valueToNodeKind;
+      } else {
+        expression = `((${variables.value}.termType === "${nodeKind}") ? (${valueToNodeKind}) : (${expression}))`;
+      }
+    }
+    return expression;
   }
 
   override propertyFromRdfExpression({
@@ -185,8 +219,34 @@ export class TermType<
   override propertyToJsonExpression({
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    invariant(this.nodeKinds.size === 3);
-    return `${variables.value}.termType === "Literal" ? { "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value } : { "@id": ${variables.value}.value }`;
+    invariant(
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
+      "IdentifierType and LiteralType should override",
+    );
+    let expression = "";
+    for (const nodeKind of this.nodeKinds) {
+      let valueToNodeKind: string;
+      switch (nodeKind) {
+        case "BlankNode":
+          valueToNodeKind = `{ "@id": \`_:\${${variables.value}.value}\`, termType: "${nodeKind}" as const }`;
+          break;
+        case "Literal":
+          valueToNodeKind = `{ "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value, termType: "${nodeKind}" as const }`;
+          break;
+        case "NamedNode":
+          valueToNodeKind = `{ "@id": ${variables.value}.value, termType: "${nodeKind}" as const }`;
+          break;
+        default:
+          throw new RangeError(nodeKind);
+      }
+      if (expression.length === 0) {
+        expression = valueToNodeKind;
+      } else {
+        expression = `(${variables.value}.termType === "${nodeKind}") ? ${valueToNodeKind} : ${expression}`;
+      }
+    }
+    return expression;
   }
 
   override propertyToRdfExpression({
@@ -221,6 +281,11 @@ export class TermType<
   }: {
     variables: { predicate: string; resource: string; resourceValue: string };
   }): string {
+    invariant(
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
+      "IdentifierType and LiteralType should override",
+    );
     let expression = `purify.Either.of(${variables.resourceValue}.toTerm())`;
     if (this.nodeKinds.size < 3) {
       expression = `${expression}.chain(term => {

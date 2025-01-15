@@ -66,12 +66,28 @@ export class OptionType extends Type {
     return `purify.Maybe<${this.itemType.name}>`;
   }
 
+  override get useImports(): readonly Import[] {
+    return [...this.itemType.useImports, Import.PURIFY];
+  }
+
   override propertyChainSparqlGraphPatternExpression(
     parameters: Parameters<
       Type["propertyChainSparqlGraphPatternExpression"]
     >[0],
   ): ReturnType<Type["propertyChainSparqlGraphPatternExpression"]> {
     return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
+  }
+
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    const expression = `purify.Maybe.fromNullable(${variables.value})`;
+    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
+      variables: { value: "_item" },
+    });
+    return itemFromJsonExpression === "_item"
+      ? expression
+      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
   }
 
   override propertyFromRdfExpression(
@@ -121,9 +137,5 @@ export class OptionType extends Type {
       return variables.value;
     }
     return `${variables.value}.map((_value) => ${itemTypeToRdfExpression})`;
-  }
-
-  override get useImports(): readonly Import[] {
-    return [...this.itemType.useImports, Import.PURIFY];
   }
 }
