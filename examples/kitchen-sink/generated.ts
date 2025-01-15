@@ -2129,7 +2129,7 @@ export namespace NodeShapeWithTermProperties {
   } {
     const booleanProperty = purify.Maybe.fromNullable(
       _jsonObject["booleanProperty"],
-    ).map((_item) => _item);
+    );
     const dateTimeProperty = purify.Maybe.fromNullable(
       _jsonObject["dateTimeProperty"],
     ).map((_item) => new Date(_item));
@@ -2153,10 +2153,10 @@ export namespace NodeShapeWithTermProperties {
     );
     const numberProperty = purify.Maybe.fromNullable(
       _jsonObject["numberProperty"],
-    ).map((_item) => _item);
+    );
     const stringProperty = purify.Maybe.fromNullable(
       _jsonObject["stringProperty"],
-    ).map((_item) => _item);
+    );
     const termProperty = purify.Maybe.fromNullable(
       _jsonObject["termProperty"],
     ).map((_item) =>
@@ -2997,18 +2997,14 @@ export namespace NodeShapeWithPropertyCardinalities {
     optionalStringProperty: purify.Maybe<string>;
     requiredStringProperty: string;
   } {
-    const emptyStringSetProperty = purify.NonEmptyList.fromArray(
-      _jsonObject["emptyStringSetProperty"].map((_item) => _item),
-    ).unsafeCoerce();
+    const emptyStringSetProperty = _jsonObject["emptyStringSetProperty"];
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
-    const nonEmptyStringSetProperty = purify.NonEmptyList.fromArray(
-      _jsonObject["nonEmptyStringSetProperty"].map((_item) => _item),
-    ).unsafeCoerce();
+    const nonEmptyStringSetProperty = _jsonObject["nonEmptyStringSetProperty"];
     const optionalStringProperty = purify.Maybe.fromNullable(
       _jsonObject["optionalStringProperty"],
-    ).map((_item) => _item);
+    );
     const requiredStringProperty = _jsonObject["requiredStringProperty"];
     return {
       emptyStringSetProperty,
@@ -3462,7 +3458,7 @@ export namespace NodeShapeWithMutableProperties {
     ).map((_item) => _item.map((_item) => _item));
     const mutableStringProperty = purify.Maybe.fromNullable(
       _jsonObject["mutableStringProperty"],
-    ).map((_item) => _item);
+    );
     return { identifier, mutableListProperty, mutableStringProperty };
   }
 
@@ -4653,7 +4649,7 @@ export namespace NodeShapeWithInProperties {
       : dataFactory.namedNode(_jsonObject["@id"]);
     const inBooleansProperty = purify.Maybe.fromNullable(
       _jsonObject["inBooleansProperty"],
-    ).map((_item) => _item);
+    );
     const inDateTimesProperty = purify.Maybe.fromNullable(
       _jsonObject["inDateTimesProperty"],
     ).map((_item) => new Date(_item));
@@ -4662,10 +4658,10 @@ export namespace NodeShapeWithInProperties {
     ).map((_item) => dataFactory.namedNode(_item["@id"]));
     const inNumbersProperty = purify.Maybe.fromNullable(
       _jsonObject["inNumbersProperty"],
-    ).map((_item) => _item);
+    );
     const inStringsProperty = purify.Maybe.fromNullable(
       _jsonObject["inStringsProperty"],
-    ).map((_item) => _item);
+    );
     return {
       identifier,
       inBooleansProperty,
@@ -5170,7 +5166,7 @@ export namespace NodeShapeWithHasValueProperties {
     ).map((_item) => dataFactory.namedNode(_item["@id"]));
     const hasLiteralProperty = purify.Maybe.fromNullable(
       _jsonObject["hasLiteralProperty"],
-    ).map((_item) => _item);
+    );
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);

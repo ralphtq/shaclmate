@@ -121,6 +121,14 @@ export class ListType extends Type {
   override propertyToJsonExpression({
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+    let expression = variables.value;
+    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
+      variables: { value: "_item" },
+    });
+    if (itemFromJsonExpression !== "_item") {
+      expression = `${expression}.map(_item => (${itemFromJsonExpression}))`;
+    }
+
     return `${variables.value}.map(_item => (${this.itemType.propertyToJsonExpression({ variables: { value: "_item" } })}))`;
   }
 

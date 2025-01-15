@@ -81,7 +81,13 @@ export class OptionType extends Type {
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    return `purify.Maybe.fromNullable(${variables.value}).map(_item => (${this.itemType.propertyFromJsonExpression({ variables: { value: "_item" } })}))`;
+    const expression = `purify.Maybe.fromNullable(${variables.value})`;
+    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
+      variables: { value: "_item" },
+    });
+    return itemFromJsonExpression === "_item"
+      ? expression
+      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
   }
 
   override propertyFromRdfExpression(
