@@ -5,8 +5,13 @@ import { harnesses } from "./harnesses.js";
 describe("fromJson", () => {
   for (const [id, harness] of Object.entries(harnesses)) {
     it(`${id} round trip`, ({ expect }) => {
-      const fromJsonInstance: any = harness.fromJson(harness.toJson());
-      expect(harness.equals(fromJsonInstance).extract()).toStrictEqual(true);
+      const jsonObject = harness.toJson();
+      const fromJsonInstance: any = harness.fromJson(jsonObject);
+      const equalsResult = harness.equals(fromJsonInstance).extract();
+      if (equalsResult !== true) {
+        console.log("not equal");
+      }
+      expect(equalsResult).toStrictEqual(true);
     });
   }
 });

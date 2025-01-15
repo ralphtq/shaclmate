@@ -1370,7 +1370,7 @@ export namespace NodeShapeWithUnionProperties {
           ? _item["@language"]
           : typeof _item["@type"] !== "undefined"
             ? dataFactory.namedNode(_item["@type"])
-            : "",
+            : undefined,
       ),
     );
     const orTermsProperty = purify.Maybe.fromNullable(
@@ -1384,7 +1384,7 @@ export namespace NodeShapeWithUnionProperties {
               ? _item["@language"]
               : typeof _item["@type"] !== "undefined"
                 ? dataFactory.namedNode(_item["@type"])
-                : "",
+                : undefined,
           ),
     );
     const orUnrelatedProperty = purify.Maybe.fromNullable(
@@ -2148,7 +2148,7 @@ export namespace NodeShapeWithTermProperties {
           ? _item["@language"]
           : typeof _item["@type"] !== "undefined"
             ? dataFactory.namedNode(_item["@type"])
-            : "",
+            : undefined,
       ),
     );
     const numberProperty = purify.Maybe.fromNullable(
@@ -2167,7 +2167,7 @@ export namespace NodeShapeWithTermProperties {
               ? _item["@language"]
               : typeof _item["@type"] !== "undefined"
                 ? dataFactory.namedNode(_item["@type"])
-                : "",
+                : undefined,
           )
         : _item.termType === "NamedNode"
           ? dataFactory.namedNode(_item["@id"])
@@ -4157,7 +4157,7 @@ export namespace NodeShapeWithLanguageInProperties {
           ? _item["@language"]
           : typeof _item["@type"] !== "undefined"
             ? dataFactory.namedNode(_item["@type"])
-            : "",
+            : undefined,
       ),
     );
     const literalProperty = purify.Maybe.fromNullable(
@@ -4169,7 +4169,7 @@ export namespace NodeShapeWithLanguageInProperties {
           ? _item["@language"]
           : typeof _item["@type"] !== "undefined"
             ? dataFactory.namedNode(_item["@type"])
-            : "",
+            : undefined,
       ),
     );
     return { identifier, languageInProperty, literalProperty };

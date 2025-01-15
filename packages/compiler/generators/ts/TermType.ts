@@ -139,7 +139,7 @@ export class TermType<
           valueToNodeKind = `${this.dataFactoryVariable}.blankNode(${variables.value}["@id"].substring(2))`;
           break;
         case "Literal":
-          valueToNodeKind = `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : ""))`;
+          valueToNodeKind = `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : undefined))`;
           break;
         case "NamedNode":
           valueToNodeKind = `${this.dataFactoryVariable}.namedNode(${variables.value}["@id"])`;

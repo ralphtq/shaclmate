@@ -26,7 +26,7 @@ export class LiteralType extends TermType<Literal> {
   override propertyFromJsonExpression({
     variables,
   }: Parameters<TermType<Literal>["propertyFromJsonExpression"]>[0]): string {
-    return `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : ""))`;
+    return `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : undefined))`;
   }
 
   override propertyFromRdfResourceValueExpression({
