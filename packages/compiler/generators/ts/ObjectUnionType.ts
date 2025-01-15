@@ -9,6 +9,7 @@ import {
   StructureKind,
   type TypeAliasDeclarationStructure,
 } from "ts-morph";
+import { Memoize } from "typescript-memoize";
 import { DeclaredType } from "./DeclaredType.js";
 import type { Import } from "./Import.js";
 import type { ObjectType } from "./ObjectType.js";
@@ -30,7 +31,6 @@ export class ObjectUnionType extends DeclaredType {
   readonly kind = "ObjectUnionType";
   private readonly _discriminatorProperty: Type.DiscriminatorProperty;
   private readonly comment: Maybe<string>;
-  private readonly fromRdfFunctionName = "fromRdf";
   private readonly label: Maybe<string>;
   private readonly memberTypes: readonly ObjectType[];
 
@@ -91,6 +91,7 @@ export class ObjectUnionType extends DeclaredType {
 
     const moduleStatements: StatementStructures[] = [
       ...this.equalsFunctionDeclaration.toList(),
+      ...this.fromJsonFunctionDeclaration.toList(),
       ...this.fromRdfFunctionDeclaration.toList(),
       ...this.hashFunctionDeclaration.toList(),
       ...this.sparqlGraphPatternsClassDeclaration.toList(),
@@ -129,6 +130,11 @@ export class ObjectUnionType extends DeclaredType {
 
   override get useImports(): readonly Import[] {
     return [];
+  }
+
+  @Memoize()
+  protected get thisVariable(): string {
+    return `_${camelCase(this.name)}`;
   }
 
   private get equalsFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
@@ -173,6 +179,35 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
+  private get fromJsonFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
+    if (!this.features.has("fromRdf")) {
+      return Maybe.empty();
+    }
+
+    return Maybe.of({
+      isExported: true,
+      kind: StructureKind.Function,
+      name: "hash",
+      parameters: [
+        {
+          name: this.thisVariable,
+          type: this.name,
+        },
+        {
+          name: "jsonObject",
+          type: this.jsonName,
+        },
+      ],
+      returnType: this.name,
+      statements: `switch (${this.thisVariable}.${this._discriminatorProperty.name}) { ${this.memberTypes
+        .map(
+          (memberType) =>
+            `case "${memberType.name}": return ${memberType.name}.fromJson(jsonObject);`,
+        )
+        .join(" ")} }`,
+    });
+  }
+
   private get fromRdfFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
     if (!this.features.has("fromRdf")) {
       return Maybe.empty();
@@ -190,7 +225,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     return Maybe.of({
       isExported: true,
       kind: StructureKind.Function,
-      name: this.fromRdfFunctionName,
+      name: "fromRdf",
       parameters: [
         {
           name: "parameters",
@@ -208,16 +243,15 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     }
 
     const hasherVariable = "_hasher";
-    const thisVariable = camelCase(this.name);
 
     const caseBlocks = this.memberTypes.map((memberType) => {
       let returnExpression: string;
       switch (memberType.declarationType) {
         case "class":
-          returnExpression = `${thisVariable}.hash(${hasherVariable})`;
+          returnExpression = `${this.thisVariable}.hash(${hasherVariable})`;
           break;
         case "interface":
-          returnExpression = `${memberType.name}.${memberType.hashFunctionName}(${thisVariable}, ${hasherVariable})`;
+          returnExpression = `${memberType.name}.${memberType.hashFunctionName}(${this.thisVariable}, ${hasherVariable})`;
           break;
       }
       return `case "${memberType.name}": return ${returnExpression};`;
@@ -229,7 +263,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       name: "hash",
       parameters: [
         {
-          name: thisVariable,
+          name: this.thisVariable,
           type: this.name,
         },
         {
@@ -238,7 +272,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         },
       ],
       returnType: "HasherT",
-      statements: `switch (${thisVariable}.${this._discriminatorProperty.name}) { ${caseBlocks.join(" ")} }`,
+      statements: `switch (${this.thisVariable}.${this._discriminatorProperty.name}) { ${caseBlocks.join(" ")} }`,
       typeParameters: [
         {
           name: "HasherT",
@@ -283,16 +317,15 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     }
 
     const parametersVariable = "_parameters";
-    const thisVariable = camelCase(this.name);
 
     const caseBlocks = this.memberTypes.map((memberType) => {
       let returnExpression: string;
       switch (memberType.declarationType) {
         case "class":
-          returnExpression = `${thisVariable}.toRdf(${parametersVariable})`;
+          returnExpression = `${this.thisVariable}.toRdf(${parametersVariable})`;
           break;
         case "interface":
-          returnExpression = `${this.name}.toRdf(${thisVariable}, ${parametersVariable})`;
+          returnExpression = `${this.name}.toRdf(${this.thisVariable}, ${parametersVariable})`;
           break;
       }
       return `case "${memberType.name}": return ${returnExpression};`;
@@ -304,7 +337,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       name: "toRdf",
       parameters: [
         {
-          name: thisVariable,
+          name: this.thisVariable,
           type: this.name,
         },
         {
@@ -313,7 +346,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         },
       ],
       returnType: this.rdfjsResourceType({ mutable: true }).name,
-      statements: `switch (${thisVariable}.${this._discriminatorProperty.name}) { ${caseBlocks.join(" ")} }`,
+      statements: `switch (${this.thisVariable}.${this._discriminatorProperty.name}) { ${caseBlocks.join(" ")} }`,
     });
   }
 
@@ -339,10 +372,16 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     );
   }
 
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    return `${this.name}.fromJson(${variables.value})`;
+  }
+
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.${this.fromRdfFunctionName}({ ...${variables.context}, resource: _resource }))`;
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, resource: _resource }))`;
   }
 
   override propertyHashStatements({
@@ -363,7 +402,10 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       case "class":
         return `${variables.value}.toJson()`;
       case "interface":
-        return `${this.name}.toJson(${variables.value})`;
+        throw new Error(
+          "not implemented: need a freestanding toJson function like the toRdf function",
+        );
+      // return `${this.name}.toJson(${variables.value})`;
     }
   }
 

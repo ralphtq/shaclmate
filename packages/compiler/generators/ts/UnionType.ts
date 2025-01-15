@@ -176,6 +176,20 @@ ${this.memberTypeTraits
     }
   }
 
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    return this.ternaryExpression({
+      memberTypeExpression: (memberTypeTraits) =>
+        memberTypeTraits.memberType.propertyFromJsonExpression({
+          variables: {
+            value: memberTypeTraits.payload(variables.value),
+          },
+        }),
+      variables,
+    });
+  }
+
   override propertyFromRdfExpression(
     parameters: Parameters<Type["propertyFromRdfExpression"]>[0],
   ): string {
@@ -253,7 +267,7 @@ ${this.memberTypeTraits
       case "synthetic":
         return this.ternaryExpression({
           memberTypeExpression: (memberTypeTraits) =>
-            `{ type: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${memberTypeTraits.memberType.propertyToJsonExpression(
+            `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${memberTypeTraits.memberType.propertyToJsonExpression(
               {
                 variables: {
                   ...variables,
