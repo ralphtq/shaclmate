@@ -303,6 +303,12 @@ export class ObjectType extends DeclaredType {
     );
   }
 
+  override propertyFromJsonExpression({
+                                      variables,
+                                    }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    return `${this.name}.fromJson(${variables.value})`;
+  }
+
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {

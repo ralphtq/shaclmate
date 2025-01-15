@@ -84,6 +84,12 @@ export class SetType extends Type {
     return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
   }
 
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    return `${variables.value}.map(_item => (${this.itemType.propertyFromJsonExpression({ variables: { value: "_item" } })}))`;
+  }
+
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {

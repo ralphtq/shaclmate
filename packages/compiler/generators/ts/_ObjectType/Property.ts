@@ -73,7 +73,7 @@ export abstract class Property<
 
   abstract fromJsonStatements(parameters: {
     variables: {
-      value: string;
+      jsonObject: string;
     };
   }): readonly string[];
 

@@ -24,20 +24,23 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
       .join(" | ")})`;
   }
 
-  override propertyToJsonExpression({
+  override propertyFromJsonExpression({
     variables,
   }: Parameters<
-    TermType<BlankNode | NamedNode>["propertyToJsonExpression"]
+    TermType<BlankNode | NamedNode>["propertyFromJsonExpression"]
   >[0]): string {
+    const valueToBlankNode = `${this.dataFactoryVariable}.blankNode(${variables.value}["@id"].substring(2)`;
+    const valueToNamedNode = `${this.dataFactoryVariable}.namedNode(${variables.value}["@id"])`;
+
     if (this.nodeKinds.size === 2) {
-      return `{ "@id": ${variables.value}.termType === "BlankNode" ? \`_:\${${variables.value}.value}\` : ${variables.value}.value }`;
+      return `${variables.value}["@id"].startsWith("_:") ? ${valueToBlankNode} : ${valueToNamedNode}`;
     }
     const nodeKind = [...this.nodeKinds][0];
     switch (nodeKind) {
       case "BlankNode":
-        return `{ "@id": \`_:\${${variables.value}.value}\` }`;
+        return valueToBlankNode;
       case "NamedNode":
-        return `{ "@id": ${variables.value}.value }`;
+        return valueToNamedNode;
     }
   }
 

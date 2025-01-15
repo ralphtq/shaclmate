@@ -122,6 +122,38 @@ export class TermType<
     return imports;
   }
 
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    let expression = "";
+    for (const nodeKind of this.nodeKinds) {
+      let valueIsNodeKind: string;
+      let valueToNodeKind: string;
+      switch (nodeKind) {
+        case "BlankNode":
+          valueIsNodeKind = `typeof ${variables.value}["@id"] !== "undefined" && ${variables.value}["@id"].startsWith("_:")`;
+          valueToNodeKind = `${this.dataFactoryVariable}.blankNode(${variables.value}["@id"].substring(2))`;
+          break;
+        case "Literal":
+          valueIsNodeKind = `typeof ${variables.value}["@value"] !== "undefined" && !${variables.value}["@id"].startsWith("_:")`;
+          valueToNodeKind = `${this.dataFactoryVariable}.literal(${variables.value}["@value"], ${variables.value}["@language"] ?? dataFactory.namedNode(${variables.value}["@type"]))`;
+          break;
+        case "NamedNode":
+          valueIsNodeKind = `typeof ${variables.value}["@id"] !== "undefined" && !${variables.value}["@id"].startsWith("_:")`;
+          valueToNodeKind = `${this.dataFactoryVariable}.namedNode(${variables.value}["@id"])`;
+          break;
+        default:
+          throw new RangeError(nodeKind);
+      }
+      if (expression.length === 0) {
+        expression = valueToNodeKind;
+      } else {
+        expression = `(${valueIsNodeKind}) ? (${valueToNodeKind}) : ${expression}`;
+      }
+    }
+    return expression;
+  }
+
   override propertyFromRdfExpression({
     variables,
   }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
@@ -185,8 +217,29 @@ export class TermType<
   override propertyToJsonExpression({
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    invariant(this.nodeKinds.size === 3);
-    return `${variables.value}.termType === "Literal" ? { "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value } : { "@id": ${variables.value}.value }`;
+    let expression = "";
+    for (const nodeKind of this.nodeKinds) {
+      let valueToNodeKind: string;
+      switch (nodeKind) {
+        case "BlankNode":
+          valueToNodeKind = `{ "@id": \`_:\${${variables.value}.value}\` }`;
+          break;
+        case "Literal":
+          valueToNodeKind = `{ "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value }`;
+          break;
+        case "NamedNode":
+          valueToNodeKind = `{ "@id": ${variables.value}.value }`;
+          break;
+        default:
+          throw new RangeError(nodeKind);
+      }
+      if (expression.length === 0) {
+        expression = valueToNodeKind;
+      } else {
+        expression = `(${variables.value}.termType === "${nodeKind}") ? ${valueToNodeKind} : ${expression}`;
+      }
+    }
+    return expression;
   }
 
   override propertyToRdfExpression({

@@ -36,6 +36,12 @@ export class DateTimeType extends PrimitiveType<Date> {
     return "Date";
   }
 
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    return `new Date(${variables.value})`;
+  }
+
   override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<

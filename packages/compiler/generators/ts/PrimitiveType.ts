@@ -32,6 +32,12 @@ export abstract class PrimitiveType<
     return [];
   }
 
+  override propertyFromJsonExpression({
+    variables,
+  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    return variables.value;
+  }
+
   override propertyHashStatements({
     variables,
   }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
