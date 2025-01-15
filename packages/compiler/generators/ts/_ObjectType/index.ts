@@ -1,6 +1,7 @@
 export * from "./classDeclaration.js";
 export * from "./createFunctionDeclaration.js";
 export * from "./equalsFunctionDeclaration.js";
+export * from "./fromJsonFunctionDeclarations.js";
 export * from "./fromRdfFunctionDeclarations.js";
 export * from "./hashFunctionDeclaration.js";
 export * from "./IdentifierProperty.js";

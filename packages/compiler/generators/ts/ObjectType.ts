@@ -147,6 +147,7 @@ export class ObjectType extends DeclaredType {
     const moduleStatements: StatementStructures[] = [
       ..._ObjectType.createFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
+      ..._ObjectType.fromJsonFunctionDeclarations.bind(this)(),
       ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),

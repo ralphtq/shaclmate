@@ -95,16 +95,11 @@ export class TermType<
   }
 
   get jsonName(): string {
-    const jsonName: string[] = [];
-    if (this.nodeKinds.has("Literal")) {
-      jsonName.push(
-        '{ "@language": string | undefined, "@type": string | undefined, "@value": string }',
-      );
-    }
-    if (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")) {
-      jsonName.push(`{ "@id": string }`);
-    }
-    return jsonName.join(" | ");
+    invariant(
+      this.nodeKinds.size === 3,
+      "IdentifierType and LiteralType should override",
+    );
+    return '{ readonly "@id": string, readonly termType: "BlankNode" | "NamedNode" } | { readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string, termType: "Literal" }';
   }
 
   @Memoize()
@@ -125,21 +120,21 @@ export class TermType<
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+    invariant(
+      this.nodeKinds.size === 3,
+      "IdentifierType and LiteralType should override",
+    );
     let expression = "";
     for (const nodeKind of this.nodeKinds) {
-      let valueIsNodeKind: string;
       let valueToNodeKind: string;
       switch (nodeKind) {
         case "BlankNode":
-          valueIsNodeKind = `typeof ${variables.value}["@id"] !== "undefined" && ${variables.value}["@id"].startsWith("_:")`;
           valueToNodeKind = `${this.dataFactoryVariable}.blankNode(${variables.value}["@id"].substring(2))`;
           break;
         case "Literal":
-          valueIsNodeKind = `typeof ${variables.value}["@value"] !== "undefined" && !${variables.value}["@id"].startsWith("_:")`;
-          valueToNodeKind = `${this.dataFactoryVariable}.literal(${variables.value}["@value"], ${variables.value}["@language"] ?? dataFactory.namedNode(${variables.value}["@type"]))`;
+          valueToNodeKind = `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : ""))`;
           break;
         case "NamedNode":
-          valueIsNodeKind = `typeof ${variables.value}["@id"] !== "undefined" && !${variables.value}["@id"].startsWith("_:")`;
           valueToNodeKind = `${this.dataFactoryVariable}.namedNode(${variables.value}["@id"])`;
           break;
         default:
@@ -148,7 +143,7 @@ export class TermType<
       if (expression.length === 0) {
         expression = valueToNodeKind;
       } else {
-        expression = `(${valueIsNodeKind}) ? (${valueToNodeKind}) : ${expression}`;
+        expression = `((${variables.value}.termType === "${nodeKind}") ? (${valueToNodeKind}) : (${expression}))`;
       }
     }
     return expression;
@@ -217,6 +212,10 @@ export class TermType<
   override propertyToJsonExpression({
     variables,
   }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+    invariant(
+      this.nodeKinds.size === 3,
+      "IdentifierType and LiteralType should override",
+    );
     let expression = "";
     for (const nodeKind of this.nodeKinds) {
       let valueToNodeKind: string;
@@ -274,6 +273,10 @@ export class TermType<
   }: {
     variables: { predicate: string; resource: string; resourceValue: string };
   }): string {
+    invariant(
+      this.nodeKinds.size === 3,
+      "IdentifierType and LiteralType should override",
+    );
     let expression = `purify.Either.of(${variables.resourceValue}.toTerm())`;
     if (this.nodeKinds.size < 3) {
       expression = `${expression}.chain(term => {

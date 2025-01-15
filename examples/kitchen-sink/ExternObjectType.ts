@@ -30,6 +30,17 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
     return left.equals(right);
   }
 
+  static fromJson(
+    jsonObject: Parameters<
+      typeof AbstractBaseClassForExternObjectType.propertiesFromJson
+    >[0],
+  ): ExternObjectType {
+    return new ExternObjectType(
+      AbstractBaseClassForExternObjectType.propertiesFromJson(jsonObject)
+        .identifier,
+    );
+  }
+
   static fromRdf({
     extra,
     resource,

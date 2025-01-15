@@ -180,12 +180,18 @@ ${this.memberTypeTraits
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
     return this.ternaryExpression({
-      memberTypeExpression: (memberTypeTraits) =>
-        memberTypeTraits.memberType.propertyFromJsonExpression({
-          variables: {
-            value: memberTypeTraits.payload(variables.value),
-          },
-        }),
+      memberTypeExpression: (memberTypeTraits) => {
+        let typeExpression =
+          memberTypeTraits.memberType.propertyFromJsonExpression({
+            variables: {
+              value: memberTypeTraits.payload(variables.value),
+            },
+          });
+        if (this._discriminatorProperty.kind === "synthetic") {
+          typeExpression = `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${typeExpression} }`;
+        }
+        return typeExpression;
+      },
       variables,
     });
   }
