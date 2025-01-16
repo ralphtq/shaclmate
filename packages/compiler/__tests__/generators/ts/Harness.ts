@@ -7,12 +7,13 @@ import type {
   MutableResourceSet,
   Resource,
 } from "rdfjs-resource";
+import type { z as zod } from "zod";
 
 export abstract class Harness<
   T extends { readonly identifier: IdentifierT },
   IdentifierT extends BlankNode | NamedNode,
 > {
-  readonly fromJson: (jsonObject: any) => T;
+  readonly fromJson: (json: unknown) => Either<zod.ZodError, T>;
   readonly fromRdf: (parameters: {
     [_index: string]: any;
     resource: Resource<IdentifierT>;

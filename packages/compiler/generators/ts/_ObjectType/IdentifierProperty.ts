@@ -228,12 +228,14 @@ export class IdentifierProperty extends Property<IdentifierType> {
     return [`const ${this.name} = ${variables.parameter}`];
   }
 
-  override jsonZodSchema(
-    parameters: Parameters<Property<IdentifierType>["jsonZodSchema"]>[0],
-  ): ReturnType<Property<IdentifierType>["jsonZodSchema"]> {
+  override jsonZodSchema({
+    variables,
+  }: Parameters<Property<IdentifierType>["jsonZodSchema"]>[0]): ReturnType<
+    Property<IdentifierType>["jsonZodSchema"]
+  > {
     return {
-      key: this.name,
-      schema: this.type.jsonZodSchema(parameters),
+      key: "@id",
+      schema: `${variables.zod}.string().min(1)`,
     };
   }
 

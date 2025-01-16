@@ -344,7 +344,8 @@ export class ObjectType extends DeclaredType {
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    return `${this.name}.fromJson(${variables.value})`;
+    // Assumes the JSON object has been recursively validated already.
+    return `${this.name}.fromJson(${variables.value}).unsafeCoerce()`;
   }
 
   override propertyFromRdfExpression({

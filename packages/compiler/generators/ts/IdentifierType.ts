@@ -39,7 +39,16 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
   }: Parameters<
     TermType<BlankNode | NamedNode>["jsonZodSchema"]
   >[0]): ReturnType<TermType<BlankNode | NamedNode>["jsonZodSchema"]> {
-    return `${variables.zod}.object({ "@id": ${variables.zod}.string().min(1) })`;
+    let idSchema: string;
+    if (this.in_.length > 0 && this.isNamedNodeKind) {
+      // Treat sh:in as a union of the IRIs
+      // rdfjs.NamedNode<"http://example.com/1" | "http://example.com/2">
+      idSchema = `${variables.zod}.enum(${JSON.stringify(this.in_.map((iri) => iri.value))})`;
+    } else {
+      idSchema = `${variables.zod}.string().min(1)`;
+    }
+
+    return `${variables.zod}.object({ "@id": ${idSchema} })`;
   }
 
   override propertyFromJsonExpression({

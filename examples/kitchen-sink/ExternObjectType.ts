@@ -5,6 +5,7 @@ import type * as purify from "purify-ts";
 import { Either } from "purify-ts";
 import { Equatable } from "purify-ts-helpers";
 import type * as rdfjsResource from "rdfjs-resource";
+import type { z } from "zod";
 import { AbstractBaseClassForExternObjectType } from "./generated.js";
 
 /**
@@ -30,16 +31,10 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
     return left.equals(right);
   }
 
-  static fromJson(
-    jsonObject: Parameters<
-      typeof AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypePropertiesFromJson
-    >[0],
-  ): ExternObjectType {
-    return new ExternObjectType(
-      AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypePropertiesFromJson(
-        jsonObject,
-      ).identifier,
-    );
+  static fromJson(json: unknown): Either<z.ZodError, ExternObjectType> {
+    return AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypePropertiesFromJson(
+      json,
+    ).map((properties) => new ExternObjectType(properties.identifier));
   }
 
   static fromRdf({
