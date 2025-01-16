@@ -155,16 +155,20 @@ export class IdentifierProperty extends Property<IdentifierType> {
   }
 
   override get declarationImports(): readonly Import[] {
+    const imports = this.type.useImports.concat();
+
     if (this.objectTypeDeclarationType === "class") {
       switch (this.mintingStrategy) {
         case "sha256":
-          return [Import.SHA256];
+          imports.push(Import.SHA256);
+          break;
         case "uuidv4":
-          return [Import.UUID];
+          imports.push(Import.UUID);
+          break;
       }
     }
 
-    return [];
+    return imports;
   }
 
   override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {

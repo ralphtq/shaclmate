@@ -197,9 +197,13 @@ export class ShaclProperty extends Property<Type> {
   override jsonZodSchema(
     parameters: Parameters<Property<Type>["jsonZodSchema"]>[0],
   ): ReturnType<Property<Type>["jsonZodSchema"]> {
+    let schema = this.type.jsonZodSchema(parameters);
+    this.comment.alt(this.description).ifJust((description) => {
+      schema = `${schema}.describe(${JSON.stringify(description)})`;
+    });
     return {
       key: this.name,
-      schema: this.type.jsonZodSchema(parameters),
+      schema,
     };
   }
 

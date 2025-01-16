@@ -1,0 +1,28 @@
+{
+  "name": "jsonforms-react-seed",
+  "version": "0.1.1",
+  "private": true,
+  "dependencies": {
+    "@jsonforms/core": "3.5.1",
+    "@jsonforms/material-renderers": "3.5.1",
+    "@jsonforms/react": "3.5.1",
+    "@mui/icons-material": "^6.1.0",
+    "@mui/lab": "6.0.0-beta.22",
+    "@mui/material": "^6.1.0",
+    "@mui/x-date-pickers": "^7.17.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "zod-to-json-schema": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "6.0.7"
+  },
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "tsc && vite build",
+    "start": "vite preview --port 3000"
+  }
+}

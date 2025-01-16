@@ -1,0 +1,44 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix : <http://example.com/> .
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix shaclmate: <http://minorg.github.io/shaclmate/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/>
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a owl:Ontology .
+
+:NodeShapeWithPropertyCardinalities
+    shaclmate:name "NodeShapeWithPropertyCardinalities" ;
+    a sh:NodeShape ;
+    rdfs:comment "Shape that has properties with different cardinalities" ;
+    sh:property [
+        rdfs:comment "Required: maxCount=minCount=1" ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "requiredStringProperty" ;
+        sh:path :requiredStringProperty
+    ], [
+        rdfs:comment "Option: maxCount=1 minCount=0" ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 0 ;
+        sh:name "optionalStringProperty" ;
+        sh:path :optionalStringProperty
+    ], [
+        rdfs:comment "Set: minCount implicitly=0, no maxCount or maxCount > 1" ;
+        sh:datatype xsd:string ;
+        sh:name "emptyStringSetProperty" ;
+        sh:path :emptyStringSetProperty
+    ], [
+        rdfs:comment "Set: minCount implicitly=1, no maxCount or maxCount > 1" ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:name "nonEmptyStringSetProperty" ;
+        sh:path :nonEmptyStringSetProperty
+    ] .
+
