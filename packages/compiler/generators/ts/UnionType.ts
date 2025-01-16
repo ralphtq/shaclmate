@@ -181,14 +181,14 @@ ${this.memberTypeTraits
   }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
     switch (this._discriminatorProperty.kind) {
       case "shared":
-        return `${variables.zod}.union([${this.memberTypes
+        return `${variables.zod}.discriminatedUnion("${this._discriminatorProperty.name}", [${this.memberTypes
           .map((memberType) => memberType.jsonZodSchema({ variables }))
           .join(", ")}])`;
       case "synthetic":
-        return `${variables.zod}.union([${this.memberTypeTraits
+        return `${variables.zod}.discriminatedUnion("${this._discriminatorProperty.name}", [${this.memberTypeTraits
           .map(
             (memberTypeTraits) =>
-              `z.object({ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}", value: ${memberTypeTraits.memberType.jsonZodSchema({ variables })} })`,
+              `${variables.zod}.object({ ${this._discriminatorProperty.name}: ${variables.zod}.literal("${memberTypeTraits.discriminatorPropertyValues[0]}"), value: ${memberTypeTraits.memberType.jsonZodSchema({ variables })} })`,
           )
           .join(", ")}])`;
       default:

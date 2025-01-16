@@ -295,10 +295,11 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       declarationKind: VariableDeclarationKind.Const,
       declarations: [
         {
-          initializer: `zod.union([${this.memberTypes.map((memberType) => `${memberType.name}.jsonZodSchema`).join(", ")}])`,
+          initializer: `zod.discriminatedUnion("${this._discriminatorProperty.name}", [${this.memberTypes.map((memberType) => `${memberType.name}.jsonZodSchema`).join(", ")}])`,
           name: "jsonZodSchema",
         },
       ],
+      isExported: true,
       kind: StructureKind.VariableStatement,
     });
   }

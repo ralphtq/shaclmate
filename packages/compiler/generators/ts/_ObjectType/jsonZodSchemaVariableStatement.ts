@@ -17,19 +17,19 @@ export function jsonZodSchemaVariableStatement(
     return Maybe.empty();
   }
 
+  const variables = { zod: "zod" };
   return Maybe.of({
     declarationKind: VariableDeclarationKind.Const,
     declarations: [
       {
-        initializer: `{ ${this.properties
-          .map((property) =>
-            property.jsonZodSchema({ variables: { zod: "zod" } }),
-          )
+        initializer: `${variables.zod}.object({ ${this.properties
+          .map((property) => property.jsonZodSchema({ variables }))
           .map(({ key, schema }) => `"${key}": ${schema}`)
-          .join(",")} }`,
+          .join(",")} })`,
         name: "jsonZodSchema",
       },
     ],
+    isExported: true,
     kind: StructureKind.VariableStatement,
   });
 }
