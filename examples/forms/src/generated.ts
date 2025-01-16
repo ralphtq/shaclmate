@@ -156,9 +156,7 @@ export namespace NodeShapeWithPropertyCardinalities {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       emptyStringSetProperty: readonly string[];
