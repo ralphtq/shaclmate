@@ -34,8 +34,8 @@ export class BooleanType extends PrimitiveType<boolean> {
   override jsonZodSchema({
     variables,
   }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
-    if (this.primitiveIn.length > 0) {
-      return `${variables.zod}.union([${this.primitiveIn.map((value) => `${variables.zod}.literal(${value})`).join(", ")}])`;
+    if (this.primitiveIn.length === 1) {
+      return `${variables.zod}.literal(${this.primitiveIn[0]})`;
     }
     return `${variables.zod}.boolean()`;
   }

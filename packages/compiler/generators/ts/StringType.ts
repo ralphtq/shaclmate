@@ -34,10 +34,14 @@ export class StringType extends PrimitiveType<string> {
   override jsonZodSchema({
     variables,
   }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
-    if (this.primitiveIn.length > 0) {
-      return `${variables.zod}.enum(${JSON.stringify(this.primitiveIn)})`;
+    switch (this.primitiveIn.length) {
+      case 0:
+        return `${variables.zod}.string()`;
+      case 1:
+        return `${variables.zod}.literal(${this.primitiveIn[0]})`;
+      default:
+        return `${variables.zod}.enum(${JSON.stringify(this.primitiveIn)})`;
     }
-    return `${variables.zod}.string()`;
   }
 
   override propertyFromRdfResourceValueExpression({
