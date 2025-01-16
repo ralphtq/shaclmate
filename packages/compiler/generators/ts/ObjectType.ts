@@ -248,6 +248,16 @@ export class ObjectType extends DeclaredType {
     );
   }
 
+  @Memoize()
+  get jsonZodSchemaVariableName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `${camelCase(this.name)}JsonZodSchema`;
+    return "jsonZodSchema";
+  }
+
   get mutable(): boolean {
     return this.properties.some((property) => property.mutable);
   }
@@ -312,7 +322,7 @@ export class ObjectType extends DeclaredType {
   }
 
   override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
-    return `${this.name}.jsonZodSchema`;
+    return `${this.name}.${this.jsonZodSchemaVariableName}`;
   }
 
   override propertyChainSparqlGraphPatternExpression({

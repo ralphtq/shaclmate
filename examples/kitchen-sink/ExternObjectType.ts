@@ -110,6 +110,9 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
 }
 
 export namespace ExternObjectType {
+  export const jsonZodSchema =
+    AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypeJsonZodSchema;
+
   export class SparqlGraphPatterns extends AbstractBaseClassForExternObjectType.SparqlGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
