@@ -7612,7 +7612,7 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
 }
 
 namespace AbstractBaseClassWithPropertiesNodeShape {
-  export function abstractBaseClassWithPropertiesNodeShapePropertiesFromJson(
+  export function propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -7731,7 +7731,7 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
 }
 
 namespace AbstractBaseClassWithoutPropertiesNodeShape {
-  export function abstractBaseClassWithoutPropertiesNodeShapePropertiesFromJson(
+  export function propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -7739,7 +7739,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
     } & purifyHelpers.Eithers.UnwrapR<
       ReturnType<
-        typeof AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapePropertiesFromJson
+        typeof AbstractBaseClassWithPropertiesNodeShape.propertiesFromJson
       >
     >
   > {
@@ -7751,9 +7751,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
 
     const _jsonObject = _jsonSafeParseResult.data;
     const _super0Either =
-      AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapePropertiesFromJson(
-        _jsonObject,
-      );
+      AbstractBaseClassWithPropertiesNodeShape.propertiesFromJson(_jsonObject);
     if (_super0Either.isLeft()) {
       return _super0Either;
     }
@@ -7932,7 +7930,7 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function concreteParentClassNodeShapePropertiesFromJson(
+  export function propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -7941,7 +7939,7 @@ export namespace ConcreteParentClassNodeShape {
       parentStringProperty: string;
     } & purifyHelpers.Eithers.UnwrapR<
       ReturnType<
-        typeof AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapePropertiesFromJson
+        typeof AbstractBaseClassWithoutPropertiesNodeShape.propertiesFromJson
       >
     >
   > {
@@ -7953,7 +7951,7 @@ export namespace ConcreteParentClassNodeShape {
 
     const _jsonObject = _jsonSafeParseResult.data;
     const _super0Either =
-      AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapePropertiesFromJson(
+      AbstractBaseClassWithoutPropertiesNodeShape.propertiesFromJson(
         _jsonObject,
       );
     if (_super0Either.isLeft()) {
@@ -7968,12 +7966,12 @@ export namespace ConcreteParentClassNodeShape {
     return purify.Either.of({ ..._super0, identifier, parentStringProperty });
   }
 
-  export function concreteParentClassNodeShapeFromJson(
+  export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ConcreteParentClassNodeShape> {
-    return ConcreteParentClassNodeShape.concreteParentClassNodeShapePropertiesFromJson(
-      json,
-    ).map((properties) => new ConcreteParentClassNodeShape(properties));
+    return ConcreteParentClassNodeShape.propertiesFromJson(json).map(
+      (properties) => new ConcreteParentClassNodeShape(properties),
+    );
   }
 
   export function propertiesFromRdf({
@@ -8204,7 +8202,7 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function concreteChildClassNodeShapePropertiesFromJson(
+  export function propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -8212,9 +8210,7 @@ export namespace ConcreteChildClassNodeShape {
       childStringProperty: string;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
     } & purifyHelpers.Eithers.UnwrapR<
-      ReturnType<
-        typeof ConcreteParentClassNodeShape.concreteParentClassNodeShapePropertiesFromJson
-      >
+      ReturnType<typeof ConcreteParentClassNodeShape.propertiesFromJson>
     >
   > {
     const _jsonSafeParseResult =
@@ -8225,9 +8221,7 @@ export namespace ConcreteChildClassNodeShape {
 
     const _jsonObject = _jsonSafeParseResult.data;
     const _super0Either =
-      ConcreteParentClassNodeShape.concreteParentClassNodeShapePropertiesFromJson(
-        _jsonObject,
-      );
+      ConcreteParentClassNodeShape.propertiesFromJson(_jsonObject);
     if (_super0Either.isLeft()) {
       return _super0Either;
     }
@@ -8240,12 +8234,12 @@ export namespace ConcreteChildClassNodeShape {
     return purify.Either.of({ ..._super0, childStringProperty, identifier });
   }
 
-  export function concreteChildClassNodeShapeFromJson(
+  export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ConcreteChildClassNodeShape> {
-    return ConcreteChildClassNodeShape.concreteChildClassNodeShapePropertiesFromJson(
-      json,
-    ).map((properties) => new ConcreteChildClassNodeShape(properties));
+    return ConcreteChildClassNodeShape.propertiesFromJson(json).map(
+      (properties) => new ConcreteChildClassNodeShape(properties),
+    );
   }
 
   export function propertiesFromRdf({
@@ -8465,7 +8459,7 @@ export abstract class AbstractBaseClassForExternObjectType {
 }
 
 export namespace AbstractBaseClassForExternObjectType {
-  export function abstractBaseClassForExternObjectTypePropertiesFromJson(
+  export function propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
