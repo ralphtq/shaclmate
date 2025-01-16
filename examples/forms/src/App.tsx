@@ -6,9 +6,11 @@ import { JsonForms } from "@jsonforms/react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { DataFactory as dataFactory } from "n3";
+import { NonEmptyList } from "purify-ts";
 import { type FC, useMemo, useState } from "react";
-import schema from "./schema.json";
-import uischema from "./uischema.json";
+import { zodToJsonSchema } from "zod-to-json-schema";
+import * as generated from "./generated.js";
 
 const classes = {
   container: {
@@ -36,13 +38,13 @@ const classes = {
   },
 };
 
-const initialData = {
-  name: "Send email to Adrian",
-  description: "Confirm if you have passed the subject\nHereby ...",
-  done: true,
-  recurrence: "Daily",
-  rating: 3,
-};
+const initialData = generated.NodeShapeWithPropertyCardinalities.toJson(
+  generated.NodeShapeWithPropertyCardinalities.create({
+    identifier: dataFactory.namedNode("http://example.com/test"),
+    nonEmptyStringSetProperty: NonEmptyList.fromArray(["test"]).unsafeCoerce(),
+    requiredStringProperty: "test",
+  }),
+);
 
 const renderers = materialRenderers;
 
@@ -79,8 +81,12 @@ const App: FC = () => {
         <Typography variant={"h4"}>Rendered form</Typography>
         <div style={classes.demoform}>
           <JsonForms
-            schema={schema}
-            uischema={uischema}
+            schema={
+              zodToJsonSchema(
+                generated.NodeShapeWithPropertyCardinalities.jsonZodSchema(),
+              ) as any
+            }
+            // uischema={uischema}
             data={data}
             renderers={renderers}
             cells={materialCells}

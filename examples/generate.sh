@@ -11,7 +11,7 @@ format_rdf() {
 }
 
 format_rdf $PWD/examples/forms/forms.shaclmate.ttl
-./packages/cli/cli.sh generate $PWD/examples/forms/forms.shaclmate.ttl >examples/forms/generated.ts
+./packages/cli/cli.sh generate $PWD/examples/forms/forms.shaclmate.ttl >examples/forms/src/generated.ts
 
 # Kitchen sink
 #format_rdf $PWD/examples/kitchen-sink/kitchen-sink.shaclmate.ttl
