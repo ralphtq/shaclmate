@@ -125,7 +125,7 @@ export namespace UuidV4IriNodeShape {
     zod.ZodError,
     { identifier: rdfjs.NamedNode; stringProperty: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -185,11 +185,13 @@ export namespace UuidV4IriNodeShape {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty: zod.string(),
-    type: zod.literal("UuidV4IriNodeShape"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string(),
+      type: zod.literal("UuidV4IriNodeShape"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -321,7 +323,7 @@ export namespace UnionNodeShapeMember2 {
     zod.ZodError,
     { identifier: rdfjs.BlankNode | rdfjs.NamedNode; stringProperty2: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -383,11 +385,13 @@ export namespace UnionNodeShapeMember2 {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty2: zod.string(),
-    type: zod.literal("UnionNodeShapeMember2"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty2: zod.string(),
+      type: zod.literal("UnionNodeShapeMember2"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -519,7 +523,7 @@ export namespace UnionNodeShapeMember1 {
     zod.ZodError,
     { identifier: rdfjs.BlankNode | rdfjs.NamedNode; stringProperty1: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -581,11 +585,13 @@ export namespace UnionNodeShapeMember1 {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty1: zod.string(),
-    type: zod.literal("UnionNodeShapeMember1"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty1: zod.string(),
+      type: zod.literal("UnionNodeShapeMember1"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -719,7 +725,7 @@ export namespace Sha256IriNodeShape {
     zod.ZodError,
     { identifier: rdfjs.NamedNode; stringProperty: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -779,11 +785,13 @@ export namespace Sha256IriNodeShape {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty: zod.string(),
-    type: zod.literal("Sha256IriNodeShape"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string(),
+      type: zod.literal("Sha256IriNodeShape"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -918,7 +926,7 @@ export namespace NonClassNodeShape {
     zod.ZodError,
     { identifier: rdfjs.BlankNode | rdfjs.NamedNode; stringProperty: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -980,11 +988,13 @@ export namespace NonClassNodeShape {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty: zod.string(),
-    type: zod.literal("NonClassNodeShape"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string(),
+      type: zod.literal("NonClassNodeShape"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -1390,7 +1400,7 @@ export namespace NodeShapeWithUnionProperties {
       >;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -1624,40 +1634,42 @@ export namespace NodeShapeWithUnionProperties {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    orLiteralsProperty: zod
-      .object({
-        "@language": zod.string().optional(),
-        "@type": zod.string().optional(),
-        "@value": zod.string(),
-      })
-      .optional(),
-    orTermsProperty: zod
-      .discriminatedUnion("termType", [
-        zod.object({
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      orLiteralsProperty: zod
+        .object({
           "@language": zod.string().optional(),
           "@type": zod.string().optional(),
           "@value": zod.string(),
-          termType: zod.literal("Literal"),
-        }),
-        zod.object({
-          "@id": zod.string().min(1),
-          termType: zod.literal("NamedNode"),
-        }),
-      ])
-      .optional(),
-    orUnrelatedProperty: zod
-      .discriminatedUnion("type", [
-        zod.object({ type: zod.literal("0-number"), value: zod.number() }),
-        zod.object({
-          type: zod.literal("1-NonClassNodeShape"),
-          value: NonClassNodeShape.jsonZodSchema,
-        }),
-      ])
-      .optional(),
-    type: zod.literal("NodeShapeWithUnionProperties"),
-  });
+        })
+        .optional(),
+      orTermsProperty: zod
+        .discriminatedUnion("termType", [
+          zod.object({
+            "@language": zod.string().optional(),
+            "@type": zod.string().optional(),
+            "@value": zod.string(),
+            termType: zod.literal("Literal"),
+          }),
+          zod.object({
+            "@id": zod.string().min(1),
+            termType: zod.literal("NamedNode"),
+          }),
+        ])
+        .optional(),
+      orUnrelatedProperty: zod
+        .discriminatedUnion("type", [
+          zod.object({ type: zod.literal("0-number"), value: zod.number() }),
+          zod.object({
+            type: zod.literal("1-NonClassNodeShape"),
+            value: NonClassNodeShape.jsonZodSchema(),
+          }),
+        ])
+        .optional(),
+      type: zod.literal("NodeShapeWithUnionProperties"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -2174,7 +2186,7 @@ export namespace NodeShapeWithTermProperties {
       >;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -2430,40 +2442,42 @@ export namespace NodeShapeWithTermProperties {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    booleanProperty: zod.boolean().optional(),
-    dateTimeProperty: zod.string().datetime().optional(),
-    "@id": zod.string().min(1),
-    iriProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
-    literalProperty: zod
-      .object({
-        "@language": zod.string().optional(),
-        "@type": zod.string().optional(),
-        "@value": zod.string(),
-      })
-      .optional(),
-    numberProperty: zod.number().optional(),
-    stringProperty: zod.string().optional(),
-    termProperty: zod
-      .discriminatedUnion("termType", [
-        zod.object({
-          "@id": zod.string().min(1),
-          termType: zod.literal("BlankNode"),
-        }),
-        zod.object({
-          "@id": zod.string().min(1),
-          termType: zod.literal("NamedNode"),
-        }),
-        zod.object({
+  export function jsonZodSchema() {
+    return zod.object({
+      booleanProperty: zod.boolean().optional(),
+      dateTimeProperty: zod.string().datetime().optional(),
+      "@id": zod.string().min(1),
+      iriProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
+      literalProperty: zod
+        .object({
           "@language": zod.string().optional(),
           "@type": zod.string().optional(),
           "@value": zod.string(),
-          termType: zod.literal("Literal"),
-        }),
-      ])
-      .optional(),
-    type: zod.literal("NodeShapeWithTermProperties"),
-  });
+        })
+        .optional(),
+      numberProperty: zod.number().optional(),
+      stringProperty: zod.string().optional(),
+      termProperty: zod
+        .discriminatedUnion("termType", [
+          zod.object({
+            "@id": zod.string().min(1),
+            termType: zod.literal("BlankNode"),
+          }),
+          zod.object({
+            "@id": zod.string().min(1),
+            termType: zod.literal("NamedNode"),
+          }),
+          zod.object({
+            "@language": zod.string().optional(),
+            "@type": zod.string().optional(),
+            "@value": zod.string(),
+            termType: zod.literal("Literal"),
+          }),
+        ])
+        .optional(),
+      type: zod.literal("NodeShapeWithTermProperties"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -2705,7 +2719,7 @@ export namespace NodeShapeWithPropertyVisibilities {
       publicProperty: string;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -2817,13 +2831,15 @@ export namespace NodeShapeWithPropertyVisibilities {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    privateProperty: zod.string(),
-    protectedProperty: zod.string(),
-    publicProperty: zod.string(),
-    type: zod.literal("NodeShapeWithPropertyVisibilities"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      privateProperty: zod.string(),
+      protectedProperty: zod.string(),
+      publicProperty: zod.string(),
+      type: zod.literal("NodeShapeWithPropertyVisibilities"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -3097,7 +3113,7 @@ export namespace NodeShapeWithPropertyCardinalities {
       requiredStringProperty: string;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -3263,14 +3279,16 @@ export namespace NodeShapeWithPropertyCardinalities {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    emptyStringSetProperty: zod.string().array(),
-    "@id": zod.string().min(1),
-    nonEmptyStringSetProperty: zod.string().array().nonempty().min(1),
-    optionalStringProperty: zod.string().optional(),
-    requiredStringProperty: zod.string(),
-    type: zod.literal("NodeShapeWithPropertyCardinalities"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      emptyStringSetProperty: zod.string().array(),
+      "@id": zod.string().min(1),
+      nonEmptyStringSetProperty: zod.string().array().nonempty().min(1),
+      optionalStringProperty: zod.string().optional(),
+      requiredStringProperty: zod.string(),
+      type: zod.literal("NodeShapeWithPropertyCardinalities"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -3565,7 +3583,7 @@ export namespace NodeShapeWithMutableProperties {
       mutableStringProperty: purify.Maybe<string>;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -3681,12 +3699,14 @@ export namespace NodeShapeWithMutableProperties {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    mutableListProperty: zod.string().array().optional(),
-    mutableStringProperty: zod.string().optional(),
-    type: zod.literal("NodeShapeWithMutableProperties"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      mutableListProperty: zod.string().array().optional(),
+      mutableStringProperty: zod.string().optional(),
+      type: zod.literal("NodeShapeWithMutableProperties"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -3904,7 +3924,7 @@ export namespace NodeShapeWithListProperty {
       listProperty: readonly string[];
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -3984,11 +4004,13 @@ export namespace NodeShapeWithListProperty {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    listProperty: zod.string().array(),
-    type: zod.literal("NodeShapeWithListProperty"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      listProperty: zod.string().array(),
+      type: zod.literal("NodeShapeWithListProperty"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -4274,7 +4296,7 @@ export namespace NodeShapeWithLanguageInProperties {
       literalProperty: purify.Maybe<rdfjs.Literal>;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -4423,24 +4445,26 @@ export namespace NodeShapeWithLanguageInProperties {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    languageInProperty: zod
-      .object({
-        "@language": zod.string().optional(),
-        "@type": zod.string().optional(),
-        "@value": zod.string(),
-      })
-      .optional(),
-    literalProperty: zod
-      .object({
-        "@language": zod.string().optional(),
-        "@type": zod.string().optional(),
-        "@value": zod.string(),
-      })
-      .optional(),
-    type: zod.literal("NodeShapeWithLanguageInProperties"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      languageInProperty: zod
+        .object({
+          "@language": zod.string().optional(),
+          "@type": zod.string().optional(),
+          "@value": zod.string(),
+        })
+        .optional(),
+      literalProperty: zod
+        .object({
+          "@language": zod.string().optional(),
+          "@type": zod.string().optional(),
+          "@value": zod.string(),
+        })
+        .optional(),
+      type: zod.literal("NodeShapeWithLanguageInProperties"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -4791,7 +4815,7 @@ export namespace NodeShapeWithInProperties {
       inStringsProperty: purify.Maybe<"text" | "html">;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -5084,22 +5108,24 @@ export namespace NodeShapeWithInProperties {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    inBooleansProperty: zod.literal(true).optional(),
-    inDateTimesProperty: zod.string().datetime().optional(),
-    inIrisProperty: zod
-      .object({
-        "@id": zod.enum([
-          "http://example.com/NodeShapeWithInPropertiesIri1",
-          "http://example.com/NodeShapeWithInPropertiesIri2",
-        ]),
-      })
-      .optional(),
-    inNumbersProperty: zod.union([zod.literal(1), zod.literal(2)]).optional(),
-    inStringsProperty: zod.enum(["text", "html"]).optional(),
-    type: zod.literal("NodeShapeWithInProperties"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      inBooleansProperty: zod.literal(true).optional(),
+      inDateTimesProperty: zod.string().datetime().optional(),
+      inIrisProperty: zod
+        .object({
+          "@id": zod.enum([
+            "http://example.com/NodeShapeWithInPropertiesIri1",
+            "http://example.com/NodeShapeWithInPropertiesIri2",
+          ]),
+        })
+        .optional(),
+      inNumbersProperty: zod.union([zod.literal(1), zod.literal(2)]).optional(),
+      inStringsProperty: zod.enum(["text", "html"]).optional(),
+      type: zod.literal("NodeShapeWithInProperties"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -5329,7 +5355,7 @@ export namespace NodeShapeWithHasValueProperties {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -5436,12 +5462,14 @@ export namespace NodeShapeWithHasValueProperties {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    hasIriProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
-    hasLiteralProperty: zod.string().optional(),
-    "@id": zod.string().min(1),
-    type: zod.literal("NodeShapeWithHasValueProperties"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      hasIriProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
+      hasLiteralProperty: zod.string().optional(),
+      "@id": zod.string().min(1),
+      type: zod.literal("NodeShapeWithHasValueProperties"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -5584,7 +5612,7 @@ export namespace InlineNodeShape {
     zod.ZodError,
     { identifier: rdfjs.BlankNode | rdfjs.NamedNode; stringProperty: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -5646,11 +5674,13 @@ export namespace InlineNodeShape {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty: zod.string(),
-    type: zod.literal("InlineNodeShape"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string(),
+      type: zod.literal("InlineNodeShape"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -5782,7 +5812,7 @@ export namespace ExternNodeShape {
     zod.ZodError,
     { identifier: rdfjs.BlankNode | rdfjs.NamedNode; stringProperty: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -5844,11 +5874,13 @@ export namespace ExternNodeShape {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty: zod.string(),
-    type: zod.literal("ExternNodeShape"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string(),
+      type: zod.literal("ExternNodeShape"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -6100,7 +6132,7 @@ export namespace NodeShapeWithExternProperties {
       inlineProperty: purify.Maybe<InlineNodeShape>;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -6249,13 +6281,15 @@ export namespace NodeShapeWithExternProperties {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    externObjectTypeProperty: ExternObjectType.jsonZodSchema.optional(),
-    externProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
-    "@id": zod.string().min(1),
-    inlineProperty: InlineNodeShape.jsonZodSchema.optional(),
-    type: zod.literal("NodeShapeWithExternProperties"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      externObjectTypeProperty: ExternObjectType.jsonZodSchema().optional(),
+      externProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
+      "@id": zod.string().min(1),
+      inlineProperty: InlineNodeShape.jsonZodSchema().optional(),
+      type: zod.literal("NodeShapeWithExternProperties"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -6447,7 +6481,7 @@ export namespace NodeShapeWithExplicitRdfTypes {
     zod.ZodError,
     { identifier: rdfjs.BlankNode | rdfjs.NamedNode; stringProperty: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -6529,11 +6563,13 @@ export namespace NodeShapeWithExplicitRdfTypes {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty: zod.string(),
-    type: zod.literal("NodeShapeWithExplicitRdfTypes"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string(),
+      type: zod.literal("NodeShapeWithExplicitRdfTypes"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -6825,7 +6861,7 @@ export namespace NodeShapeWithDefaultValueProperties {
       trueBooleanProperty: boolean;
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -7043,15 +7079,17 @@ export namespace NodeShapeWithDefaultValueProperties {
     ).map((properties) => new NodeShapeWithDefaultValueProperties(properties));
   }
 
-  export const jsonZodSchema = zod.object({
-    dateTimeProperty: zod.string().datetime(),
-    falseBooleanProperty: zod.boolean(),
-    "@id": zod.string().min(1),
-    numberProperty: zod.number(),
-    stringProperty: zod.string(),
-    trueBooleanProperty: zod.boolean(),
-    type: zod.literal("NodeShapeWithDefaultValueProperties"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      dateTimeProperty: zod.string().datetime(),
+      falseBooleanProperty: zod.boolean(),
+      "@id": zod.string().min(1),
+      numberProperty: zod.number(),
+      stringProperty: zod.string(),
+      trueBooleanProperty: zod.boolean(),
+      type: zod.literal("NodeShapeWithDefaultValueProperties"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -7214,7 +7252,7 @@ export namespace IriNodeShape {
     zod.ZodError,
     { identifier: rdfjs.NamedNode; stringProperty: string }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -7274,11 +7312,13 @@ export namespace IriNodeShape {
     );
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty: zod.string(),
-    type: zod.literal("IriNodeShape"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string(),
+      type: zod.literal("IriNodeShape"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -7366,7 +7406,7 @@ export namespace InterfaceNodeShape {
       type: "InterfaceNodeShape";
     }
   > {
-    const _jsonSafeParseResult = jsonZodSchema.safeParse(_json);
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -7430,11 +7470,13 @@ export namespace InterfaceNodeShape {
     return InterfaceNodeShape.propertiesFromRdf(parameters);
   }
 
-  export const jsonZodSchema = zod.object({
-    "@id": zod.string().min(1),
-    stringProperty: zod.string(),
-    type: zod.literal("InterfaceNodeShape"),
-  });
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string(),
+      type: zod.literal("InterfaceNodeShape"),
+    });
+  }
 
   export function hash<
     HasherT extends {
@@ -7619,7 +7661,7 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     { abcStringProperty: string; identifier: rdfjs.BlankNode | rdfjs.NamedNode }
   > {
     const _jsonSafeParseResult =
-      abstractBaseClassWithPropertiesNodeShapeJsonZodSchema.safeParse(_json);
+      abstractBaseClassWithPropertiesNodeShapeJsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -7665,8 +7707,8 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     return purify.Either.of({ abcStringProperty, identifier });
   }
 
-  export const abstractBaseClassWithPropertiesNodeShapeJsonZodSchema =
-    zod.object({
+  export function abstractBaseClassWithPropertiesNodeShapeJsonZodSchema() {
+    return zod.object({
       abcStringProperty: zod.string(),
       "@id": zod.string().min(1),
       type: zod.enum([
@@ -7674,6 +7716,7 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
         "ConcreteParentClassNodeShape",
       ]),
     });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -7744,7 +7787,9 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     >
   > {
     const _jsonSafeParseResult =
-      abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema.safeParse(_json);
+      abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema().safeParse(
+        _json,
+      );
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -7800,8 +7845,8 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     return purify.Either.of({ ..._super0, identifier });
   }
 
-  export const abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema =
-    AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapeJsonZodSchema.merge(
+  export function abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema() {
+    return AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapeJsonZodSchema().merge(
       zod.object({
         "@id": zod.string().min(1),
         type: zod.enum([
@@ -7810,6 +7855,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
         ]),
       }),
     );
+  }
 
   export class SparqlGraphPatterns extends AbstractBaseClassWithPropertiesNodeShape.SparqlGraphPatterns {
     constructor(
@@ -7944,7 +7990,7 @@ export namespace ConcreteParentClassNodeShape {
     >
   > {
     const _jsonSafeParseResult =
-      concreteParentClassNodeShapeJsonZodSchema.safeParse(_json);
+      concreteParentClassNodeShapeJsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -8059,8 +8105,8 @@ export namespace ConcreteParentClassNodeShape {
     );
   }
 
-  export const concreteParentClassNodeShapeJsonZodSchema =
-    AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema.merge(
+  export function concreteParentClassNodeShapeJsonZodSchema() {
+    return AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema().merge(
       zod.object({
         "@id": zod.string().min(1),
         parentStringProperty: zod.string(),
@@ -8070,6 +8116,7 @@ export namespace ConcreteParentClassNodeShape {
         ]),
       }),
     );
+  }
 
   export class SparqlGraphPatterns extends AbstractBaseClassWithoutPropertiesNodeShape.SparqlGraphPatterns {
     constructor(
@@ -8214,7 +8261,7 @@ export namespace ConcreteChildClassNodeShape {
     >
   > {
     const _jsonSafeParseResult =
-      concreteChildClassNodeShapeJsonZodSchema.safeParse(_json);
+      concreteChildClassNodeShapeJsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -8321,14 +8368,15 @@ export namespace ConcreteChildClassNodeShape {
     );
   }
 
-  export const concreteChildClassNodeShapeJsonZodSchema =
-    ConcreteParentClassNodeShape.concreteParentClassNodeShapeJsonZodSchema.merge(
+  export function concreteChildClassNodeShapeJsonZodSchema() {
+    return ConcreteParentClassNodeShape.concreteParentClassNodeShapeJsonZodSchema().merge(
       zod.object({
         childStringProperty: zod.string(),
         "@id": zod.string().min(1),
         type: zod.literal("ConcreteChildClassNodeShape"),
       }),
     );
+  }
 
   export class SparqlGraphPatterns extends ConcreteParentClassNodeShape.SparqlGraphPatterns {
     constructor(
@@ -8466,7 +8514,7 @@ export namespace AbstractBaseClassForExternObjectType {
     { abcStringProperty: string; identifier: rdfjs.BlankNode | rdfjs.NamedNode }
   > {
     const _jsonSafeParseResult =
-      abstractBaseClassForExternObjectTypeJsonZodSchema.safeParse(_json);
+      abstractBaseClassForExternObjectTypeJsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
@@ -8512,11 +8560,13 @@ export namespace AbstractBaseClassForExternObjectType {
     return purify.Either.of({ abcStringProperty, identifier });
   }
 
-  export const abstractBaseClassForExternObjectTypeJsonZodSchema = zod.object({
-    abcStringProperty: zod.string(),
-    "@id": zod.string().min(1),
-    type: zod.literal("ExternObjectType"),
-  });
+  export function abstractBaseClassForExternObjectTypeJsonZodSchema() {
+    return zod.object({
+      abcStringProperty: zod.string(),
+      "@id": zod.string().min(1),
+      type: zod.literal("ExternObjectType"),
+    });
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
@@ -8603,11 +8653,13 @@ export namespace UnionNodeShape {
     }
   }
 
-  export const jsonZodSchema = zod.discriminatedUnion("type", [
-    UnionNodeShapeMember1.jsonZodSchema,
-    UnionNodeShapeMember2.jsonZodSchema,
-    ExternObjectType.jsonZodSchema,
-  ]);
+  export function jsonZodSchema() {
+    return zod.discriminatedUnion("type", [
+      UnionNodeShapeMember1.jsonZodSchema(),
+      UnionNodeShapeMember2.jsonZodSchema(),
+      ExternObjectType.jsonZodSchema(),
+    ]);
+  }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter) {

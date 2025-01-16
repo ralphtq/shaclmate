@@ -152,7 +152,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.fromJsonFunctionDeclarations.bind(this)(),
       ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
-      ..._ObjectType.jsonZodSchemaVariableStatement.bind(this)().toList(),
+      ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
@@ -239,7 +239,7 @@ export class ObjectType extends DeclaredType {
   }
 
   @Memoize()
-  get jsonZodSchemaVariableName(): string {
+  get jsonZodSchemaFunctionName(): string {
     if (
       this.ancestorObjectTypes.length > 0 ||
       this.descendantObjectTypes.length > 0
@@ -301,8 +301,10 @@ export class ObjectType extends DeclaredType {
     }
   }
 
-  override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
-    return `${this.name}.${this.jsonZodSchemaVariableName}`;
+  override jsonZodSchema(
+    _parameters: Parameters<Type["jsonZodSchema"]>[0],
+  ): ReturnType<Type["jsonZodSchema"]> {
+    return `${this.name}.${this.jsonZodSchemaFunctionName}()`;
   }
 
   override propertyChainSparqlGraphPatternExpression({

@@ -8,8 +8,6 @@ import {
   type StatementStructures,
   StructureKind,
   type TypeAliasDeclarationStructure,
-  VariableDeclarationKind,
-  type VariableStatementStructure,
 } from "ts-morph";
 import { Memoize } from "typescript-memoize";
 import { DeclaredType } from "./DeclaredType.js";
@@ -96,7 +94,7 @@ export class ObjectUnionType extends DeclaredType {
       // ...this.fromJsonFunctionDeclaration.toList(),
       ...this.fromRdfFunctionDeclaration.toList(),
       ...this.hashFunctionDeclaration.toList(),
-      ...this.jsonZodSchemaVariableStatement.toList(),
+      ...this.jsonZodSchemaFunctionDeclaration.toList(),
       ...this.sparqlGraphPatternsClassDeclaration.toList(),
       ...this.toRdfFunctionDeclaration.toList(),
     ];
@@ -286,21 +284,17 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
-  private get jsonZodSchemaVariableStatement(): Maybe<VariableStatementStructure> {
+  private get jsonZodSchemaFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
     if (!this.features.has("fromJson")) {
       return Maybe.empty();
     }
 
+    const variables = { zod: "zod" };
     return Maybe.of({
-      declarationKind: VariableDeclarationKind.Const,
-      declarations: [
-        {
-          initializer: `zod.discriminatedUnion("${this._discriminatorProperty.name}", [${this.memberTypes.map((memberType) => `${memberType.name}.${memberType.jsonZodSchemaVariableName}`).join(", ")}])`,
-          name: "jsonZodSchema",
-        },
-      ],
       isExported: true,
-      kind: StructureKind.VariableStatement,
+      kind: StructureKind.Function,
+      name: "jsonZodSchema",
+      statements: `return ${variables.zod}.discriminatedUnion("${this._discriminatorProperty.name}", [${this.memberTypes.map((memberType) => memberType.jsonZodSchema({ variables })).join(", ")}]);`,
     });
   }
 
@@ -383,7 +377,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
   }
 
   override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
-    return `${this.name}.jsonZodSchema`;
+    return `${this.name}.jsonZodSchema()`;
   }
 
   override propertyChainSparqlGraphPatternExpression({
