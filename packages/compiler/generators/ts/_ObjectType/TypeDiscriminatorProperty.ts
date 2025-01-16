@@ -119,10 +119,11 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
   >[0]): ReturnType<Property<TypeDiscriminatorProperty.Type>["jsonZodSchema"]> {
     return {
       key: this.name,
-      schema:
+      schema: `${
         this.type.values.length > 1
           ? `${variables.zod}.enum(${JSON.stringify(this.type.values)})`
-          : `${variables.zod}.literal("${this.type.values[0]}")`,
+          : `${variables.zod}.literal("${this.type.values[0]}")`
+      }.default("${this.value}")`,
     };
   }
 

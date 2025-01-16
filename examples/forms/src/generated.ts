@@ -338,12 +338,27 @@ export namespace NodeShapeWithPropertyCardinalities {
 
   export function jsonZodSchema() {
     return zod.object({
-      emptyStringSetProperty: zod.string().array(),
+      emptyStringSetProperty: zod
+        .string()
+        .array()
+        .describe("Set: minCount implicitly=0, no maxCount or maxCount > 1"),
       "@id": zod.string().min(1),
-      nonEmptyStringSetProperty: zod.string().array().nonempty().min(1),
-      optionalStringProperty: zod.string().optional(),
-      requiredStringProperty: zod.string(),
-      type: zod.literal("NodeShapeWithPropertyCardinalities"),
+      nonEmptyStringSetProperty: zod
+        .string()
+        .array()
+        .nonempty()
+        .min(1)
+        .describe("Set: minCount implicitly=1, no maxCount or maxCount > 1"),
+      optionalStringProperty: zod
+        .string()
+        .optional()
+        .describe("Option: maxCount=1 minCount=0"),
+      requiredStringProperty: zod
+        .string()
+        .describe("Required: maxCount=minCount=1"),
+      type: zod
+        .literal("NodeShapeWithPropertyCardinalities")
+        .default("NodeShapeWithPropertyCardinalities"),
     });
   }
 
