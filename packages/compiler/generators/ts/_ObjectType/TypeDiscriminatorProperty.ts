@@ -6,6 +6,7 @@ import type {
   PropertyDeclarationStructure,
   PropertySignatureStructure,
 } from "ts-morph";
+import { Memoize } from "typescript-memoize";
 import type { TsObjectDeclarationType } from "../../../enums/index.js";
 import { Property } from "./Property.js";
 
@@ -21,15 +22,17 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     abstract,
     objectTypeDeclarationType,
     override,
+    type,
     value,
     ...superParameters
   }: {
     abstract: boolean;
     objectTypeDeclarationType: TsObjectDeclarationType;
     override: boolean;
+    type: TypeDiscriminatorProperty.Type;
     value: string;
   } & ConstructorParameters<typeof Property>[0]) {
-    super(superParameters);
+    super({ ...superParameters, type });
     invariant(this.visibility === "public");
     this.abstract = abstract;
     this.objectTypeDeclarationType = objectTypeDeclarationType;
@@ -109,6 +112,20 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
       : [];
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<
+    Property<TypeDiscriminatorProperty.Type>["jsonZodSchema"]
+  >[0]): ReturnType<Property<TypeDiscriminatorProperty.Type>["jsonZodSchema"]> {
+    return {
+      key: this.name,
+      schema:
+        this.type.values.length > 1
+          ? `${variables.zod}.enum(${JSON.stringify(this.type.values)})`
+          : `${variables.zod}.literal("${this.type.values[0]}")`,
+    };
+  }
+
   override sparqlGraphPatternExpression(): Maybe<string> {
     return Maybe.empty();
   }
@@ -127,8 +144,24 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
 }
 
 export namespace TypeDiscriminatorProperty {
-  export interface Type {
+  export class Type {
     readonly mutable: boolean;
-    readonly name: string;
+    readonly values: readonly string[];
+
+    constructor({
+      mutable,
+      values,
+    }: {
+      mutable: boolean;
+      values: readonly string[];
+    }) {
+      this.mutable = mutable;
+      this.values = values;
+    }
+
+    @Memoize()
+    get name(): string {
+      return this.values.map((name) => `"${name}"`).join(" | ");
+    }
   }
 }

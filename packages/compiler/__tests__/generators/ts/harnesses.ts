@@ -10,9 +10,7 @@ const identifier = dataFactory.namedNode("http://example.com/instance");
 
 export const harnesses = {
   concreteChildClassNodeShape: new ClassHarness({
-    fromJson:
-      kitchenSink.ConcreteChildClassNodeShape
-        .concreteChildClassNodeShapeFromJson,
+    fromJson: kitchenSink.ConcreteChildClassNodeShape.fromJson,
     fromRdf: kitchenSink.ConcreteChildClassNodeShape.fromRdf,
     instance: new kitchenSink.ConcreteChildClassNodeShape({
       abcStringProperty: "abc",
@@ -24,9 +22,7 @@ export const harnesses = {
       kitchenSink.ConcreteChildClassNodeShape.SparqlGraphPatterns,
   }),
   concreteParentClassNodeShape: new ClassHarness({
-    fromJson:
-      kitchenSink.ConcreteParentClassNodeShape
-        .concreteParentClassNodeShapeFromJson,
+    fromJson: kitchenSink.ConcreteParentClassNodeShape.fromJson,
     fromRdf: kitchenSink.ConcreteParentClassNodeShape.fromRdf,
     instance: new kitchenSink.ConcreteParentClassNodeShape({
       abcStringProperty: "abc",

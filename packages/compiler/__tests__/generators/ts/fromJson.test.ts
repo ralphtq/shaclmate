@@ -6,7 +6,7 @@ describe("fromJson", () => {
   for (const [id, harness] of Object.entries(harnesses)) {
     it(`${id} round trip`, ({ expect }) => {
       const jsonObject = harness.toJson();
-      const fromJsonInstance: any = harness.fromJson(jsonObject);
+      const fromJsonInstance: any = harness.fromJson(jsonObject).unsafeCoerce();
       const equalsResult = harness.equals(fromJsonInstance).extract();
       if (equalsResult !== true) {
         console.log("not equal");

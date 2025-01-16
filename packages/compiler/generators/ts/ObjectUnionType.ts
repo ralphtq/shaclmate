@@ -94,6 +94,7 @@ export class ObjectUnionType extends DeclaredType {
       // ...this.fromJsonFunctionDeclaration.toList(),
       ...this.fromRdfFunctionDeclaration.toList(),
       ...this.hashFunctionDeclaration.toList(),
+      ...this.jsonZodSchemaFunctionDeclaration.toList(),
       ...this.sparqlGraphPatternsClassDeclaration.toList(),
       ...this.toRdfFunctionDeclaration.toList(),
     ];
@@ -283,6 +284,20 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
+  private get jsonZodSchemaFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
+    if (!this.features.has("fromJson")) {
+      return Maybe.empty();
+    }
+
+    const variables = { zod: "zod" };
+    return Maybe.of({
+      isExported: true,
+      kind: StructureKind.Function,
+      name: "jsonZodSchema",
+      statements: `return ${variables.zod}.discriminatedUnion("${this._discriminatorProperty.name}", [${this.memberTypes.map((memberType) => memberType.jsonZodSchema({ variables })).join(", ")}]);`,
+    });
+  }
+
   private get sparqlGraphPatternsClassDeclaration(): Maybe<ClassDeclarationStructure> {
     if (!this.features.has("sparql-graph-patterns")) {
       return Maybe.empty();
@@ -361,6 +376,10 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     };
   }
 
+  override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
+    return `${this.name}.jsonZodSchema()`;
+  }
+
   override propertyChainSparqlGraphPatternExpression({
     variables,
   }: Parameters<
@@ -376,7 +395,8 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    return `${this.name}.fromJson(${variables.value})`;
+    // Assumes the JSON object has been recursively validated already.
+    return `${this.name}.fromJson(${variables.value}).unsafeCoerce()`;
   }
 
   override propertyFromRdfExpression({

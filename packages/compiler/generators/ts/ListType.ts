@@ -69,6 +69,12 @@ export class ListType extends Type {
     return imports;
   }
 
+  override jsonZodSchema(
+    parameters: Parameters<Type["jsonZodSchema"]>[0],
+  ): ReturnType<Type["jsonZodSchema"]> {
+    return `${this.itemType.jsonZodSchema(parameters)}.array()`;
+  }
+
   override propertyChainSparqlGraphPatternExpression({
     variables,
   }: Parameters<

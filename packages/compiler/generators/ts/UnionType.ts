@@ -176,6 +176,26 @@ ${this.memberTypeTraits
     }
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
+    switch (this._discriminatorProperty.kind) {
+      case "shared":
+        return `${variables.zod}.discriminatedUnion("${this._discriminatorProperty.name}", [${this.memberTypes
+          .map((memberType) => memberType.jsonZodSchema({ variables }))
+          .join(", ")}])`;
+      case "synthetic":
+        return `${variables.zod}.discriminatedUnion("${this._discriminatorProperty.name}", [${this.memberTypeTraits
+          .map(
+            (memberTypeTraits) =>
+              `${variables.zod}.object({ ${this._discriminatorProperty.name}: ${variables.zod}.literal("${memberTypeTraits.discriminatorPropertyValues[0]}"), value: ${memberTypeTraits.memberType.jsonZodSchema({ variables })} })`,
+          )
+          .join(", ")}])`;
+      default:
+        throw new RangeError(this._discriminatorProperty.kind);
+    }
+  }
+
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {

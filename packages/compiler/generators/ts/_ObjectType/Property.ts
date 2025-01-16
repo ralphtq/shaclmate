@@ -95,6 +95,11 @@ export abstract class Property<
     };
   }): readonly string[];
 
+  abstract jsonZodSchema(parameters: { variables: { zod: string } }): {
+    readonly key: string;
+    readonly schema: string;
+  };
+
   abstract sparqlGraphPatternExpression(): Maybe<string>;
 
   abstract toJsonObjectMember(parameters: {

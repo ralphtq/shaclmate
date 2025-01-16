@@ -51,7 +51,13 @@ export namespace Import {
 
   export const UUID: Import = {
     kind: StructureKind.ImportDeclaration,
-    namespaceImport: "uuid",
     moduleSpecifier: "uuid",
+    namespaceImport: "uuid",
+  };
+
+  export const ZOD: Import = {
+    kind: StructureKind.ImportDeclaration,
+    moduleSpecifier: "zod",
+    namedImports: [{ alias: "zod", name: "z" }],
   };
 }

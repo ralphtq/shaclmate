@@ -228,6 +228,17 @@ export class IdentifierProperty extends Property<IdentifierType> {
     return [`const ${this.name} = ${variables.parameter}`];
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<Property<IdentifierType>["jsonZodSchema"]>[0]): ReturnType<
+    Property<IdentifierType>["jsonZodSchema"]
+  > {
+    return {
+      key: "@id",
+      schema: `${variables.zod}.string().min(1)`,
+    };
+  }
+
   override sparqlGraphPatternExpression(): Maybe<string> {
     return Maybe.empty();
   }

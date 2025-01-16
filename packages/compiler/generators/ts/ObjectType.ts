@@ -124,6 +124,9 @@ export class ObjectType extends DeclaredType {
     if (this.features.has("equals")) {
       imports.push(Import.PURIFY_HELPERS);
     }
+    if (this.features.has("fromRdf")) {
+      imports.push(Import.ZOD);
+    }
     if (this.features.has("fromRdf") || this.features.has("toRdf")) {
       imports.push(Import.PURIFY);
       imports.push(Import.RDFJS_RESOURCE);
@@ -149,6 +152,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.fromJsonFunctionDeclarations.bind(this)(),
       ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
+      ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
@@ -189,16 +193,6 @@ export class ObjectType extends DeclaredType {
       default:
         throw new RangeError(this.declarationType);
     }
-  }
-
-  @Memoize()
-  get fromJsonFunctionName(): string {
-    if (
-      this.ancestorObjectTypes.length > 0 ||
-      this.descendantObjectTypes.length > 0
-    )
-      return `${camelCase(this.name)}FromJson`;
-    return "fromJson";
   }
 
   @Memoize()
@@ -244,6 +238,16 @@ export class ObjectType extends DeclaredType {
     );
   }
 
+  @Memoize()
+  get jsonZodSchemaFunctionName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `${camelCase(this.name)}JsonZodSchema`;
+    return "jsonZodSchema";
+  }
+
   get mutable(): boolean {
     return this.properties.some((property) => property.mutable);
   }
@@ -282,16 +286,6 @@ export class ObjectType extends DeclaredType {
     return properties;
   }
 
-  @Memoize()
-  get propertiesFromJsonFunctionName(): string {
-    if (
-      this.ancestorObjectTypes.length > 0 ||
-      this.descendantObjectTypes.length > 0
-    )
-      return `${camelCase(this.name)}PropertiesFromJson`;
-    return "propertiesFromJson";
-  }
-
   override get useImports(): readonly Import[] {
     return this.imports;
   }
@@ -305,6 +299,12 @@ export class ObjectType extends DeclaredType {
       default:
         throw new RangeError(this.declarationType);
     }
+  }
+
+  override jsonZodSchema(
+    _parameters: Parameters<Type["jsonZodSchema"]>[0],
+  ): ReturnType<Type["jsonZodSchema"]> {
+    return `${this.name}.${this.jsonZodSchemaFunctionName}()`;
   }
 
   override propertyChainSparqlGraphPatternExpression({
@@ -326,7 +326,8 @@ export class ObjectType extends DeclaredType {
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    return `${this.name}.fromJson(${variables.value})`;
+    // Assumes the JSON object has been recursively validated already.
+    return `${this.name}.fromJson(${variables.value}).unsafeCoerce()`;
   }
 
   override propertyFromRdfExpression({
