@@ -354,9 +354,7 @@ export namespace NodeShapeWithPropertyCardinalities {
       requiredStringProperty: zod
         .string()
         .describe("Required: maxCount=minCount=1"),
-      type: zod
-        .literal("NodeShapeWithPropertyCardinalities")
-        .default("NodeShapeWithPropertyCardinalities"),
+      type: zod.literal("NodeShapeWithPropertyCardinalities"),
     });
   }
 

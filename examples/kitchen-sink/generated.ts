@@ -3273,11 +3273,24 @@ export namespace NodeShapeWithPropertyCardinalities {
 
   export function jsonZodSchema() {
     return zod.object({
-      emptyStringSetProperty: zod.string().array(),
+      emptyStringSetProperty: zod
+        .string()
+        .array()
+        .describe("Set: minCount implicitly=0, no maxCount or maxCount > 1"),
       "@id": zod.string().min(1),
-      nonEmptyStringSetProperty: zod.string().array().nonempty().min(1),
-      optionalStringProperty: zod.string().optional(),
-      requiredStringProperty: zod.string(),
+      nonEmptyStringSetProperty: zod
+        .string()
+        .array()
+        .nonempty()
+        .min(1)
+        .describe("Set: minCount implicitly=1, no maxCount or maxCount > 1"),
+      optionalStringProperty: zod
+        .string()
+        .optional()
+        .describe("Option: maxCount=1 minCount=0"),
+      requiredStringProperty: zod
+        .string()
+        .describe("Required: maxCount=minCount=1"),
       type: zod.literal("NodeShapeWithPropertyCardinalities"),
     });
   }
@@ -3692,8 +3705,17 @@ export namespace NodeShapeWithMutableProperties {
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
-      mutableListProperty: zod.string().array().optional(),
-      mutableStringProperty: zod.string().optional(),
+      mutableListProperty: zod
+        .string()
+        .array()
+        .optional()
+        .describe(
+          "List-valued property that can't be reassigned but whose value can be mutated",
+        ),
+      mutableStringProperty: zod
+        .string()
+        .optional()
+        .describe("String-valued property that can be re-assigned"),
       type: zod.literal("NodeShapeWithMutableProperties"),
     });
   }
@@ -4447,7 +4469,8 @@ export namespace NodeShapeWithLanguageInProperties {
           "@type": zod.string().optional(),
           "@value": zod.string(),
         })
-        .optional(),
+        .optional()
+        .describe("literal property for testing runtime languageIn"),
       type: zod.literal("NodeShapeWithLanguageInProperties"),
     });
   }
