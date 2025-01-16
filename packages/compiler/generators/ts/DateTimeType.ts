@@ -36,6 +36,12 @@ export class DateTimeType extends PrimitiveType<Date> {
     return "Date";
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
+    return `${variables.zod}.string().datetime()`;
+  }
+
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {

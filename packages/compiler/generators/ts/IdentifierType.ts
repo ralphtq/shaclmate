@@ -34,6 +34,14 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
       .join(" | ")})`;
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<
+    TermType<BlankNode | NamedNode>["jsonZodSchema"]
+  >[0]): ReturnType<TermType<BlankNode | NamedNode>["jsonZodSchema"]> {
+    return `${variables.zod}.object({ "@id": ${variables.zod}.string().min(1) })`;
+  }
+
   override propertyFromJsonExpression({
     variables,
   }: Parameters<

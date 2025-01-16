@@ -123,6 +123,29 @@ export class TermType<
     return imports;
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
+    invariant(
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
+      "IdentifierType and LiteralType should override",
+    );
+    return `${variables.zod}.union([${[...this.nodeKinds]
+      .map((nodeKind) => {
+        switch (nodeKind) {
+          case "BlankNode":
+          case "NamedNode":
+            return `${variables.zod}.object({ "@id": ${variables.zod}.string().min(1), termType: z.literal("${nodeKind}") })`;
+          case "Literal":
+            return `${variables.zod}.object({ "@language": ${variables.zod}.string().optional(), "@type": ${variables.zod}.string().optional(), "@value": ${variables.zod}.string(), termType: z.literal("Literal") })`;
+          default:
+            throw new RangeError(nodeKind);
+        }
+      })
+      .join(", ")}`;
+  }
+
   override propertyFromJsonExpression({
     variables,
   }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {

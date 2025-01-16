@@ -79,6 +79,12 @@ export class SetType extends Type {
     return this.itemType.useImports;
   }
 
+  override jsonZodSchema(
+    parameters: Parameters<Type["jsonZodSchema"]>[0],
+  ): ReturnType<Type["jsonZodSchema"]> {
+    return `${this.itemType.jsonZodSchema(parameters)}.array().min(${this.minCount})`;
+  }
+
   override propertyChainSparqlGraphPatternExpression(
     parameters: Parameters<
       Type["propertyChainSparqlGraphPatternExpression"]

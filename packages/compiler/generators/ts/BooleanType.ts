@@ -31,6 +31,15 @@ export class BooleanType extends PrimitiveType<boolean> {
     return "boolean";
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
+    if (this.primitiveIn.length > 0) {
+      return `${variables.zod}.union([${this.primitiveIn.map((value) => `${variables.zod}.literal(${value})`).join(", ")}])`;
+    }
+    return `${variables.zod}.boolean()`;
+  }
+
   override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<

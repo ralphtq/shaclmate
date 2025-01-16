@@ -31,6 +31,15 @@ export class NumberType extends PrimitiveType<number> {
     return "number";
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
+    if (this.primitiveIn.length > 0) {
+      return `${variables.zod}.union([${this.primitiveIn.map((value) => `${variables.zod}.literal(${value})`).join(", ")}])`;
+    }
+    return `${variables.zod}.number()`;
+  }
+
   override propertyFromRdfResourceValueExpression({
     variables,
   }: Parameters<

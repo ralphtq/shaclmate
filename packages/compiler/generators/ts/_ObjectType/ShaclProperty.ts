@@ -194,6 +194,15 @@ export class ShaclProperty extends Property<Type> {
     return statements;
   }
 
+  override jsonZodSchema(
+    parameters: Parameters<Property<Type>["jsonZodSchema"]>[0],
+  ): ReturnType<Property<Type>["jsonZodSchema"]> {
+    return {
+      key: this.name,
+      schema: this.type.jsonZodSchema(parameters),
+    };
+  }
+
   override sparqlGraphPatternExpression(): Maybe<string> {
     return Maybe.of(
       this.type

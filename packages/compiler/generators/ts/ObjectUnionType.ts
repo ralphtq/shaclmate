@@ -8,6 +8,8 @@ import {
   type StatementStructures,
   StructureKind,
   type TypeAliasDeclarationStructure,
+  VariableDeclarationKind,
+  type VariableStatementStructure,
 } from "ts-morph";
 import { Memoize } from "typescript-memoize";
 import { DeclaredType } from "./DeclaredType.js";
@@ -94,6 +96,7 @@ export class ObjectUnionType extends DeclaredType {
       // ...this.fromJsonFunctionDeclaration.toList(),
       ...this.fromRdfFunctionDeclaration.toList(),
       ...this.hashFunctionDeclaration.toList(),
+      ...this.jsonZodSchemaVariableStatement.toList(),
       ...this.sparqlGraphPatternsClassDeclaration.toList(),
       ...this.toRdfFunctionDeclaration.toList(),
     ];
@@ -283,6 +286,23 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
+  private get jsonZodSchemaVariableStatement(): Maybe<VariableStatementStructure> {
+    if (!this.features.has("fromJson")) {
+      return Maybe.empty();
+    }
+
+    return Maybe.of({
+      declarationKind: VariableDeclarationKind.Const,
+      declarations: [
+        {
+          initializer: `zod.union([${this.memberTypes.map((memberType) => `${memberType.name}.jsonZodSchema`).join(", ")}])`,
+          name: "jsonZodSchema",
+        },
+      ],
+      kind: StructureKind.VariableStatement,
+    });
+  }
+
   private get sparqlGraphPatternsClassDeclaration(): Maybe<ClassDeclarationStructure> {
     if (!this.features.has("sparql-graph-patterns")) {
       return Maybe.empty();
@@ -359,6 +379,10 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       name: this.name,
       type: this.memberTypes.map((memberType) => memberType.name).join(" | "),
     };
+  }
+
+  override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
+    return `${this.name}.jsonZodSchema`;
   }
 
   override propertyChainSparqlGraphPatternExpression({

@@ -23,6 +23,14 @@ export class LiteralType extends TermType<Literal> {
     return '{ readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string }';
   }
 
+  override jsonZodSchema({
+    variables,
+  }: Parameters<TermType<Literal>["jsonZodSchema"]>[0]): ReturnType<
+    TermType<Literal>["jsonZodSchema"]
+  > {
+    return `${variables.zod}.object({ "@language": ${variables.zod}.string().optional(), "@type": ${variables.zod}.string().optional(), "@value": ${variables.zod}.string() })`;
+  }
+
   override propertyFromJsonExpression({
     variables,
   }: Parameters<TermType<Literal>["propertyFromJsonExpression"]>[0]): string {

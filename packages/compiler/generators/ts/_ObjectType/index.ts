@@ -6,6 +6,7 @@ export * from "./fromRdfFunctionDeclarations.js";
 export * from "./hashFunctionDeclaration.js";
 export * from "./IdentifierProperty.js";
 export * from "./interfaceDeclaration.js";
+export * from "./jsonZodSchemaVariableStatement.js";
 export * from "./Property.js";
 export * from "./ShaclProperty.js";
 export * from "./sparqlGraphPatternsClassDeclaration.js";

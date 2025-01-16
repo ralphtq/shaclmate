@@ -343,13 +343,10 @@ export class TypeFactory {
               name: astType.tsTypeDiscriminatorPropertyName,
               objectTypeDeclarationType: objectType.declarationType,
               override: objectType.parentObjectTypes.length > 0,
-              type: {
+              type: new ObjectType.TypeDiscriminatorProperty.Type({
                 mutable: false,
-                name: [...typeDiscriminatorValues]
-                  .sort()
-                  .map((name) => `"${name}"`)
-                  .join("|"),
-              },
+                values: [...typeDiscriminatorValues].sort(),
+              }),
               visibility: "public",
               value: objectType.discriminatorValue,
             }),

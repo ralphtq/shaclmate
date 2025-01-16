@@ -34,12 +34,10 @@ export abstract class Type {
    * Name of the type.
    */
   abstract readonly name: string;
-
   /**
    * Imports necessary to use this type.
    */
   abstract readonly useImports: readonly Import[];
-
   protected readonly dataFactoryVariable: string;
 
   constructor({
@@ -56,6 +54,11 @@ export abstract class Type {
   get discriminatorProperty(): Maybe<Type.DiscriminatorProperty> {
     return Maybe.empty();
   }
+
+  /**
+   * Zod schema for propertyToJsonExpression.
+   */
+  abstract jsonZodSchema(parameters: { variables: { zod: string } }): string;
 
   /**
    * An optional sparqlBuilder.GraphPattern expression that's chained to the object of another pattern, such as a list item.

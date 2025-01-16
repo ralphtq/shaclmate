@@ -124,6 +124,9 @@ export class ObjectType extends DeclaredType {
     if (this.features.has("equals")) {
       imports.push(Import.PURIFY_HELPERS);
     }
+    if (this.features.has("fromRdf")) {
+      imports.push(Import.ZOD);
+    }
     if (this.features.has("fromRdf") || this.features.has("toRdf")) {
       imports.push(Import.PURIFY);
       imports.push(Import.RDFJS_RESOURCE);
@@ -149,6 +152,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.fromJsonFunctionDeclarations.bind(this)(),
       ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
+      ..._ObjectType.jsonZodSchemaVariableStatement.bind(this)().toList(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
@@ -305,6 +309,10 @@ export class ObjectType extends DeclaredType {
       default:
         throw new RangeError(this.declarationType);
     }
+  }
+
+  override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
+    return `${this.name}.jsonZodSchema`;
   }
 
   override propertyChainSparqlGraphPatternExpression({
