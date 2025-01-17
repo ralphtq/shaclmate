@@ -4,6 +4,7 @@ import { NonEmptyList } from "purify-ts";
 import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObjectType.js";
 import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
 import { ClassHarness } from "./ClassHarness.js";
+import { ClassUnionHarness } from "./ClassUnionHarness.js";
 import { InterfaceHarness } from "./InterfaceHarness.js";
 
 const identifier = dataFactory.namedNode("http://example.com/instance");
@@ -269,25 +270,25 @@ export const harnesses = {
     sparqlGraphPatternsClass:
       kitchenSink.Sha256IriNodeShape.SparqlGraphPatterns,
   }),
-  unionNodeShapeMember1: new ClassHarness({
-    fromJson: kitchenSink.UnionNodeShapeMember1.fromJson,
-    fromRdf: kitchenSink.UnionNodeShapeMember1.fromRdf,
+  unionNodeShapeMember1: new ClassUnionHarness({
+    equals: kitchenSink.UnionNodeShape.equals,
+    fromJson: kitchenSink.UnionNodeShape.fromJson,
+    fromRdf: kitchenSink.UnionNodeShape.fromRdf,
     instance: new kitchenSink.UnionNodeShapeMember1({
       identifier,
       stringProperty1: "test",
     }),
-    sparqlGraphPatternsClass:
-      kitchenSink.UnionNodeShapeMember1.SparqlGraphPatterns,
+    sparqlGraphPatternsClass: kitchenSink.UnionNodeShape.SparqlGraphPatterns,
   }),
-  unionNodeShapeMember2: new ClassHarness({
-    fromJson: kitchenSink.UnionNodeShapeMember2.fromJson,
-    fromRdf: kitchenSink.UnionNodeShapeMember2.fromRdf,
+  unionNodeShapeMember2: new ClassUnionHarness({
+    equals: kitchenSink.UnionNodeShape.equals,
+    fromJson: kitchenSink.UnionNodeShape.fromJson,
+    fromRdf: kitchenSink.UnionNodeShape.fromRdf,
     instance: new kitchenSink.UnionNodeShapeMember2({
       identifier,
       stringProperty2: "test",
     }),
-    sparqlGraphPatternsClass:
-      kitchenSink.UnionNodeShapeMember2.SparqlGraphPatterns,
+    sparqlGraphPatternsClass: kitchenSink.UnionNodeShape.SparqlGraphPatterns,
   }),
   uuidv4IriNodeShapeWithExplicitIdentifier: new ClassHarness({
     fromJson: kitchenSink.UuidV4IriNodeShape.fromJson,

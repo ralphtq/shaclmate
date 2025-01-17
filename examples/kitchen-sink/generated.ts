@@ -8599,7 +8599,6 @@ export namespace UnionNodeShape {
   }
 
   export function fromJson(
-    _unionNodeShape: UnionNodeShape,
     json: unknown,
   ): purify.Either<zod.ZodError, UnionNodeShape> {
     return (

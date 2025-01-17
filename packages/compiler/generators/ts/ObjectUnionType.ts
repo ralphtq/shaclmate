@@ -191,10 +191,6 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       name: "fromJson",
       parameters: [
         {
-          name: this.thisVariable,
-          type: this.name,
-        },
-        {
           name: "json",
           type: "unknown",
         },
