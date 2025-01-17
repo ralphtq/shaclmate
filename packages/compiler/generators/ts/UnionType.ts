@@ -219,20 +219,17 @@ ${this.memberTypeTraits
   override propertyFromRdfExpression(
     parameters: Parameters<Type["propertyFromRdfExpression"]>[0],
   ): string {
-    let expression = "";
-    for (const memberTypeTraits of this.memberTypeTraits) {
+    return this.memberTypeTraits.reduce((expression, memberTypeTraits) => {
       let typeExpression =
         memberTypeTraits.memberType.propertyFromRdfExpression(parameters);
       if (this._discriminatorProperty.kind === "synthetic") {
         typeExpression = `${typeExpression}.map(value => ({ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value }) as (${this.name}))`;
       }
       typeExpression = `(${typeExpression} as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
-      expression =
-        expression.length > 0
-          ? `${expression}.altLazy(() => ${typeExpression})`
-          : typeExpression;
-    }
-    return expression;
+      return expression.length > 0
+        ? `${expression}.altLazy(() => ${typeExpression})`
+        : typeExpression;
+    }, "");
   }
 
   override propertyHashStatements({
@@ -328,21 +325,18 @@ ${this.memberTypeTraits
     memberTypeExpression: (memberTypeTraits: MemberTypeTraits) => string;
     variables: { value: string };
   }): string {
-    let expression = "";
-    for (const memberTypeTraits of this.memberTypeTraits) {
+    return this.memberTypeTraits.reduce((expression, memberTypeTraits) => {
       if (expression.length === 0) {
-        expression = memberTypeExpression(memberTypeTraits);
-      } else {
-        expression = `(${memberTypeTraits.discriminatorPropertyValues
-          .map(
-            (value) =>
-              `${variables.value}.${this._discriminatorProperty.name} === "${value}"`,
-          )
-          .join(
-            " || ",
-          )}) ? ${memberTypeExpression(memberTypeTraits)} : ${expression}`;
+        return memberTypeExpression(memberTypeTraits);
       }
-    }
-    return expression;
+      return `(${memberTypeTraits.discriminatorPropertyValues
+        .map(
+          (value) =>
+            `${variables.value}.${this._discriminatorProperty.name} === "${value}"`,
+        )
+        .join(
+          " || ",
+        )}) ? ${memberTypeExpression(memberTypeTraits)} : ${expression}`;
+    }, "");
   }
 }

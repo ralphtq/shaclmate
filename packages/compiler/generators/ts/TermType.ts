@@ -156,8 +156,7 @@ export class TermType<
         (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
       "IdentifierType and LiteralType should override",
     );
-    let expression = "";
-    for (const nodeKind of this.nodeKinds) {
+    return [...this.nodeKinds].reduce((expression, nodeKind) => {
       let valueToNodeKind: string;
       switch (nodeKind) {
         case "BlankNode":
@@ -172,13 +171,10 @@ export class TermType<
         default:
           throw new RangeError(nodeKind);
       }
-      if (expression.length === 0) {
-        expression = valueToNodeKind;
-      } else {
-        expression = `((${variables.value}.termType === "${nodeKind}") ? (${valueToNodeKind}) : (${expression}))`;
-      }
-    }
-    return expression;
+      return expression.length === 0
+        ? valueToNodeKind
+        : `((${variables.value}.termType === "${nodeKind}") ? (${valueToNodeKind}) : (${expression}))`;
+    }, "");
   }
 
   override propertyFromRdfExpression({
@@ -249,8 +245,7 @@ export class TermType<
         (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
       "IdentifierType and LiteralType should override",
     );
-    let expression = "";
-    for (const nodeKind of this.nodeKinds) {
+    return [...this.nodeKinds].reduce((expression, nodeKind) => {
       let valueToNodeKind: string;
       switch (nodeKind) {
         case "BlankNode":
@@ -265,13 +260,10 @@ export class TermType<
         default:
           throw new RangeError(nodeKind);
       }
-      if (expression.length === 0) {
-        expression = valueToNodeKind;
-      } else {
-        expression = `(${variables.value}.termType === "${nodeKind}") ? ${valueToNodeKind} : ${expression}`;
-      }
-    }
-    return expression;
+      return expression.length === 0
+        ? valueToNodeKind
+        : `(${variables.value}.termType === "${nodeKind}") ? ${valueToNodeKind} : ${expression}`;
+    }, "");
   }
 
   override propertyToRdfExpression({
