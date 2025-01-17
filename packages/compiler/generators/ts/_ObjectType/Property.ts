@@ -13,22 +13,67 @@ import type { Type } from "../Type.js";
 export abstract class Property<
   TypeT extends { readonly mutable: boolean; readonly name: string },
 > {
+  /**
+   * Optional get accessor to include in a class declaration of the object type.
+   */
   abstract readonly classGetAccessorDeclaration: Maybe<
     OptionalKind<GetAccessorDeclarationStructure>
   >;
+
+  /**
+   * Optional property declaration to include in a class declaration of the object type.
+   */
   abstract readonly classPropertyDeclaration: Maybe<
     OptionalKind<PropertyDeclarationStructure>
   >;
+
+  /**
+   * Optional property to include in the parameters object of a class constructor.
+   */
   abstract readonly constructorParametersPropertySignature: Maybe<
     OptionalKind<PropertySignatureStructure>
   >;
+
+  /**
+   * Function declaration that takes two values of the property and compares them, returning and purifyHelpers.Equatable.EqualsResult.
+   */
   abstract readonly equalsFunction: string;
+
+  /**
+   * Signature of the property in an interface version of the object.
+   */
   abstract readonly interfacePropertySignature: OptionalKind<PropertySignatureStructure>;
+
+  /**
+   * Signature of the property when serialized to JSON (the type of toJsonObjectMember).
+   */
   abstract readonly jsonPropertySignature: OptionalKind<PropertySignatureStructure>;
+
+  /**
+   * Control object for a JSON Forms UI schema (https://jsonforms.io/docs/uischema/controls).
+   */
+  abstract readonly jsonUiSchemaControl: string;
+
+  /**
+   * Is the property reassignable?
+   */
   abstract readonly mutable: boolean;
+
+  /**
+   * TypeScript identifier-safe name of the property.
+   */
   readonly name: string;
+
+  /**
+   * Property type
+.   */
   readonly type: TypeT;
+
+  /**
+   * Property visibility: private, protected, public.
+   */
   readonly visibility: PropertyVisibility;
+
   protected readonly dataFactoryVariable: string;
 
   constructor({
@@ -48,6 +93,9 @@ export abstract class Property<
     this.visibility = visibility;
   }
 
+  /**
+   * Imports this property requires when declared in an object.
+   */
   get declarationImports(): readonly Import[] {
     return [];
   }
@@ -65,18 +113,27 @@ export abstract class Property<
     }
   }
 
+  /**
+   * Statements to assign the parameter of described by constructorParametersPropertySignature to a class member.
+   */
   abstract classConstructorStatements(parameters: {
     variables: {
       parameter: string;
     };
   }): readonly string[];
 
+  /**
+   * Statements to deserialize JSON for this property (as described by toJsonObjectMember) to a typed value of the property.
+   */
   abstract fromJsonStatements(parameters: {
     variables: {
       jsonObject: string;
     };
   }): readonly string[];
 
+  /**
+   * Statements to deserialize RDF for this property to a typed value of the property.
+   */
   abstract fromRdfStatements(parameters: {
     variables: {
       context: string;
@@ -85,27 +142,45 @@ export abstract class Property<
     };
   }): readonly string[];
 
+  /**
+   * Statements to hash this property using a hasher instance.
+   */
   abstract hashStatements(
     parameters: Parameters<Type["propertyHashStatements"]>[0],
   ): readonly string[];
 
+  /**
+   * Companion to classConstructorStatements with a similar purpose in an interface's create() function.
+   */
   abstract interfaceConstructorStatements(parameters: {
     variables: {
       parameter: string;
     };
   }): readonly string[];
 
+  /**
+   * zod Object key: schema pair on the property serialized by toJsonObjectMember.
+   */
   abstract jsonZodSchema(parameters: { variables: { zod: string } }): {
     readonly key: string;
     readonly schema: string;
   };
 
+  /**
+   * Optional graph pattern expression to retrieve this property.
+   */
   abstract sparqlGraphPatternExpression(): Maybe<string>;
 
+  /**
+   * property: expression to serialize a property to a JSON object member.
+   */
   abstract toJsonObjectMember(parameters: {
     variables: { value: string };
   }): string;
 
+  /**
+   * Statements to serialize this property to an RDF resource.
+   */
   abstract toRdfStatements(parameters: {
     variables: Omit<
       Parameters<Type["propertyToRdfExpression"]>[0]["variables"],

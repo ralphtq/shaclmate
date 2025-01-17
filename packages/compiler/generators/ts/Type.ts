@@ -34,6 +34,7 @@ export abstract class Type {
    * Name of the type.
    */
   abstract readonly name: string;
+
   /**
    * Imports necessary to use this type.
    */
@@ -56,7 +57,7 @@ export abstract class Type {
   }
 
   /**
-   * Zod schema for propertyToJsonExpression.
+   * Zod schema for the JSON version of the type (the result of propertyToJson).
    */
   abstract jsonZodSchema(parameters: { variables: { zod: string } }): string;
 
