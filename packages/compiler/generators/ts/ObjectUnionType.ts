@@ -91,7 +91,7 @@ export class ObjectUnionType extends DeclaredType {
 
     const moduleStatements: StatementStructures[] = [
       ...this.equalsFunctionDeclaration.toList(),
-      // ...this.fromJsonFunctionDeclaration.toList(),
+      ...this.fromJsonFunctionDeclaration.toList(),
       ...this.fromRdfFunctionDeclaration.toList(),
       ...this.hashFunctionDeclaration.toList(),
       ...this.jsonZodSchemaFunctionDeclaration.toList(),
@@ -180,48 +180,40 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
-  // @ts-ignore
   private get fromJsonFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
-    if (!this.features.has("fromRdf")) {
+    if (!this.features.has("fromJson")) {
       return Maybe.empty();
     }
 
     return Maybe.of({
       isExported: true,
       kind: StructureKind.Function,
-      name: "hash",
+      name: "fromJson",
       parameters: [
         {
           name: this.thisVariable,
           type: this.name,
         },
         {
-          name: "jsonObject",
-          type: this.jsonName,
+          name: "json",
+          type: "unknown",
         },
       ],
-      returnType: this.name,
-      statements: `switch (${this.thisVariable}.${this._discriminatorProperty.name}) { ${this.memberTypes
-        .map(
-          (memberType) =>
-            `case "${memberType.name}": return ${memberType.name}.fromJson(jsonObject);`,
-        )
-        .join(" ")} }`,
+      returnType: `purify.Either<zod.ZodError, ${this.name}>`,
+      statements: [
+        `return ${this.memberTypes.reduce((expression, memberType) => {
+          const memberTypeExpression = `(${memberType.name}.fromJson(json) as purify.Either<zod.ZodError, ${this.name}>)`;
+          return expression.length > 0
+            ? `${expression}.altLazy(() => ${memberTypeExpression})`
+            : memberTypeExpression;
+        }, "")};`,
+      ],
     });
   }
 
   private get fromRdfFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
     if (!this.features.has("fromRdf")) {
       return Maybe.empty();
-    }
-
-    let expression = "";
-    for (const memberType of this.memberTypes) {
-      const typeExpression = `(${memberType.name}.fromRdf(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
-      expression =
-        expression.length > 0
-          ? `${expression}.altLazy(() => ${typeExpression})`
-          : typeExpression;
     }
 
     return Maybe.of({
@@ -235,7 +227,14 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         },
       ],
       returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>`,
-      statements: [`return ${expression};`],
+      statements: [
+        `return ${this.memberTypes.reduce((expression, memberType) => {
+          const memberTypeExpression = `(${memberType.name}.fromRdf(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
+          return expression.length > 0
+            ? `${expression}.altLazy(() => ${memberTypeExpression})`
+            : memberTypeExpression;
+        }, "")};`,
+      ],
     });
   }
 

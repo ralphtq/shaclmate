@@ -8598,6 +8598,32 @@ export namespace UnionNodeShape {
     );
   }
 
+  export function fromJson(
+    _unionNodeShape: UnionNodeShape,
+    json: unknown,
+  ): purify.Either<zod.ZodError, UnionNodeShape> {
+    return (
+      UnionNodeShapeMember1.fromJson(json) as purify.Either<
+        zod.ZodError,
+        UnionNodeShape
+      >
+    )
+      .altLazy(
+        () =>
+          UnionNodeShapeMember2.fromJson(json) as purify.Either<
+            zod.ZodError,
+            UnionNodeShape
+          >,
+      )
+      .altLazy(
+        () =>
+          ExternObjectType.fromJson(json) as purify.Either<
+            zod.ZodError,
+            UnionNodeShape
+          >,
+      );
+  }
+
   export function fromRdf(parameters: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
