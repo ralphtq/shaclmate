@@ -96,6 +96,7 @@ export class ObjectUnionType extends DeclaredType {
       ...this.hashFunctionDeclaration.toList(),
       ...this.jsonZodSchemaFunctionDeclaration.toList(),
       ...this.sparqlGraphPatternsClassDeclaration.toList(),
+      ...this.toJsonFunctionDeclaration.toList(),
       ...this.toRdfFunctionDeclaration.toList(),
     ];
 
@@ -322,6 +323,39 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
+  private get toJsonFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
+    if (!this.features.has("toJson")) {
+      return Maybe.empty();
+    }
+
+    const caseBlocks = this.memberTypes.map((memberType) => {
+      let returnExpression: string;
+      switch (memberType.declarationType) {
+        case "class":
+          returnExpression = `${this.thisVariable}.toJson()`;
+          break;
+        case "interface":
+          returnExpression = `${memberType.name}.toJson(${this.thisVariable})`;
+          break;
+      }
+      return `case "${memberType.name}": return ${returnExpression};`;
+    });
+
+    return Maybe.of({
+      isExported: true,
+      kind: StructureKind.Function,
+      name: "toJson",
+      parameters: [
+        {
+          name: this.thisVariable,
+          type: this.name,
+        },
+      ],
+      returnType: this.jsonName,
+      statements: `switch (${this.thisVariable}.${this._discriminatorProperty.name}) { ${caseBlocks.join(" ")} }`,
+    });
+  }
+
   private get toRdfFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
     if (!this.features.has("toRdf")) {
       return Maybe.empty();
@@ -336,7 +370,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
           returnExpression = `${this.thisVariable}.toRdf(${parametersVariable})`;
           break;
         case "interface":
-          returnExpression = `${this.name}.toRdf(${this.thisVariable}, ${parametersVariable})`;
+          returnExpression = `${memberType.name}.toRdf(${this.thisVariable}, ${parametersVariable})`;
           break;
       }
       return `case "${memberType.name}": return ${returnExpression};`;

@@ -50,6 +50,40 @@ export const harnesses = {
     toJson: kitchenSink.InterfaceNodeShape.toJson,
     toRdf: kitchenSink.InterfaceNodeShape.toRdf,
   }),
+  interfaceUnionNodeShapeMember1: new InterfaceHarness<
+    kitchenSink.InterfaceUnionNodeShape,
+    BlankNode | NamedNode
+  >({
+    fromJson: kitchenSink.InterfaceUnionNodeShape.fromJson,
+    equals: kitchenSink.InterfaceUnionNodeShape.equals,
+    fromRdf: kitchenSink.InterfaceUnionNodeShape.fromRdf,
+    instance: {
+      identifier,
+      stringProperty1: "Test1",
+      type: "InterfaceUnionNodeShapeMember1",
+    },
+    sparqlGraphPatternsClass:
+      kitchenSink.InterfaceUnionNodeShape.SparqlGraphPatterns,
+    toJson: kitchenSink.InterfaceUnionNodeShape.toJson,
+    toRdf: kitchenSink.InterfaceUnionNodeShape.toRdf,
+  }),
+  interfaceUnionNodeShapeMember2: new InterfaceHarness<
+    kitchenSink.InterfaceUnionNodeShape,
+    BlankNode | NamedNode
+  >({
+    fromJson: kitchenSink.InterfaceUnionNodeShape.fromJson,
+    equals: kitchenSink.InterfaceUnionNodeShape.equals,
+    fromRdf: kitchenSink.InterfaceUnionNodeShape.fromRdf,
+    instance: {
+      identifier,
+      stringProperty2: "Test2",
+      type: "InterfaceUnionNodeShapeMember2",
+    },
+    sparqlGraphPatternsClass:
+      kitchenSink.InterfaceUnionNodeShape.SparqlGraphPatterns,
+    toJson: kitchenSink.InterfaceUnionNodeShape.toJson,
+    toRdf: kitchenSink.InterfaceUnionNodeShape.toRdf,
+  }),
   iriNodeShape: new ClassHarness({
     fromJson: kitchenSink.IriNodeShape.fromJson,
     fromRdf: kitchenSink.IriNodeShape.fromRdf,

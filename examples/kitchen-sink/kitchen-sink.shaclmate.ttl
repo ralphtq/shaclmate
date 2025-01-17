@@ -100,6 +100,39 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
         sh:path :stringProperty
     ] .
 
+:InterfaceUnionNodeShape
+    shaclmate:name "InterfaceUnionNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a sh:NodeShape ;
+    rdfs:comment "Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
+    sh:xone (:InterfaceUnionNodeShapeMember1
+        :InterfaceUnionNodeShapeMember2
+    ) .
+
+:InterfaceUnionNodeShapeMember1
+    shaclmate:name "InterfaceUnionNodeShapeMember1" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a sh:NodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "stringProperty1" ;
+        sh:path :stringProperty1
+    ] .
+
+:InterfaceUnionNodeShapeMember2
+    shaclmate:name "InterfaceUnionNodeShapeMember2" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a sh:NodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "stringProperty2" ;
+        sh:path :stringProperty2
+    ] .
+
 :IriNodeShape
     shaclmate:name "IriNodeShape" ;
     a sh:NodeShape ;

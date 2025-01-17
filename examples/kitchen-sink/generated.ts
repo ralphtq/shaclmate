@@ -7335,6 +7335,428 @@ export namespace IriNodeShape {
     }
   }
 }
+export interface InterfaceUnionNodeShapeMember2 {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly stringProperty2: string;
+  readonly type: "InterfaceUnionNodeShapeMember2";
+}
+
+export namespace InterfaceUnionNodeShapeMember2 {
+  export function create(parameters: {
+    readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly stringProperty2: string;
+  }): InterfaceUnionNodeShapeMember2 {
+    const identifier = parameters.identifier;
+    const stringProperty2 = parameters.stringProperty2;
+    const type = "InterfaceUnionNodeShapeMember2" as const;
+    return { identifier, stringProperty2, type };
+  }
+
+  export function equals(
+    left: InterfaceUnionNodeShapeMember2,
+    right: InterfaceUnionNodeShapeMember2,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.booleanEquals(
+      left.identifier,
+      right.identifier,
+    )
+      .mapLeft((propertyValuesUnequal) => ({
+        left: left,
+        right: right,
+        propertyName: "identifier",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      }))
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          left.stringProperty2,
+          right.stringProperty2,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: left,
+          right: right,
+          propertyName: "stringProperty2",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(left.type, right.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  export function propertiesFromJson(_json: unknown): purify.Either<
+    zod.ZodError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty2: string;
+      type: "InterfaceUnionNodeShapeMember2";
+    }
+  > {
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+    if (!_jsonSafeParseResult.success) {
+      return purify.Left(_jsonSafeParseResult.error);
+    }
+
+    const _jsonObject = _jsonSafeParseResult.data;
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty2 = _jsonObject["stringProperty2"];
+    const type = "InterfaceUnionNodeShapeMember2" as const;
+    return purify.Either.of({ identifier, stringProperty2, type });
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2> {
+    return InterfaceUnionNodeShapeMember2.propertiesFromJson(json);
+  }
+
+  export function propertiesFromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty2: string;
+      type: "InterfaceUnionNodeShapeMember2";
+    }
+  > {
+    const identifier = _resource.identifier;
+    const _stringProperty2Either: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/stringProperty2"), {
+        unique: true,
+      })
+      .head()
+      .chain((_value) => _value.toString());
+    if (_stringProperty2Either.isLeft()) {
+      return _stringProperty2Either;
+    }
+
+    const stringProperty2 = _stringProperty2Either.unsafeCoerce();
+    const type = "InterfaceUnionNodeShapeMember2" as const;
+    return purify.Either.of({ identifier, stringProperty2, type });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof InterfaceUnionNodeShapeMember2.propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    InterfaceUnionNodeShapeMember2
+  > {
+    return InterfaceUnionNodeShapeMember2.propertiesFromRdf(parameters);
+  }
+
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty2: zod.string(),
+      type: zod.literal("InterfaceUnionNodeShapeMember2"),
+    });
+  }
+
+  export function hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _hasher: HasherT,
+  ): HasherT {
+    _hasher.update(_interfaceUnionNodeShapeMember2.stringProperty2);
+    return _hasher;
+  }
+
+  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
+    constructor(
+      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
+      _options?: { ignoreRdfType?: boolean },
+    ) {
+      super(subject);
+      this.add(
+        sparqlBuilder.GraphPattern.basic(
+          this.subject,
+          dataFactory.namedNode("http://example.com/stringProperty2"),
+          this.variable("StringProperty2"),
+        ),
+      );
+    }
+  }
+
+  export function toJson(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+  ): {
+    readonly "@id": string;
+    readonly stringProperty2: string;
+    readonly type: "InterfaceUnionNodeShapeMember2";
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id":
+          _interfaceUnionNodeShapeMember2.identifier.termType === "BlankNode"
+            ? `_:${_interfaceUnionNodeShapeMember2.identifier.value}`
+            : _interfaceUnionNodeShapeMember2.identifier.value,
+        stringProperty2: _interfaceUnionNodeShapeMember2.stringProperty2,
+        type: _interfaceUnionNodeShapeMember2.type,
+      } satisfies ReturnType<typeof InterfaceUnionNodeShapeMember2.toJson>),
+    );
+  }
+
+  export function toRdf(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    {
+      mutateGraph,
+      resourceSet,
+    }: {
+      ignoreRdfType?: boolean;
+      mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource({
+      identifier: _interfaceUnionNodeShapeMember2.identifier,
+      mutateGraph,
+    });
+    _resource.add(
+      dataFactory.namedNode("http://example.com/stringProperty2"),
+      _interfaceUnionNodeShapeMember2.stringProperty2,
+    );
+    return _resource;
+  }
+}
+export interface InterfaceUnionNodeShapeMember1 {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly stringProperty1: string;
+  readonly type: "InterfaceUnionNodeShapeMember1";
+}
+
+export namespace InterfaceUnionNodeShapeMember1 {
+  export function create(parameters: {
+    readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly stringProperty1: string;
+  }): InterfaceUnionNodeShapeMember1 {
+    const identifier = parameters.identifier;
+    const stringProperty1 = parameters.stringProperty1;
+    const type = "InterfaceUnionNodeShapeMember1" as const;
+    return { identifier, stringProperty1, type };
+  }
+
+  export function equals(
+    left: InterfaceUnionNodeShapeMember1,
+    right: InterfaceUnionNodeShapeMember1,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.booleanEquals(
+      left.identifier,
+      right.identifier,
+    )
+      .mapLeft((propertyValuesUnequal) => ({
+        left: left,
+        right: right,
+        propertyName: "identifier",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      }))
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          left.stringProperty1,
+          right.stringProperty1,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: left,
+          right: right,
+          propertyName: "stringProperty1",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(left.type, right.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  export function propertiesFromJson(_json: unknown): purify.Either<
+    zod.ZodError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty1: string;
+      type: "InterfaceUnionNodeShapeMember1";
+    }
+  > {
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+    if (!_jsonSafeParseResult.success) {
+      return purify.Left(_jsonSafeParseResult.error);
+    }
+
+    const _jsonObject = _jsonSafeParseResult.data;
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty1 = _jsonObject["stringProperty1"];
+    const type = "InterfaceUnionNodeShapeMember1" as const;
+    return purify.Either.of({ identifier, stringProperty1, type });
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember1> {
+    return InterfaceUnionNodeShapeMember1.propertiesFromJson(json);
+  }
+
+  export function propertiesFromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty1: string;
+      type: "InterfaceUnionNodeShapeMember1";
+    }
+  > {
+    const identifier = _resource.identifier;
+    const _stringProperty1Either: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/stringProperty1"), {
+        unique: true,
+      })
+      .head()
+      .chain((_value) => _value.toString());
+    if (_stringProperty1Either.isLeft()) {
+      return _stringProperty1Either;
+    }
+
+    const stringProperty1 = _stringProperty1Either.unsafeCoerce();
+    const type = "InterfaceUnionNodeShapeMember1" as const;
+    return purify.Either.of({ identifier, stringProperty1, type });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof InterfaceUnionNodeShapeMember1.propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    InterfaceUnionNodeShapeMember1
+  > {
+    return InterfaceUnionNodeShapeMember1.propertiesFromRdf(parameters);
+  }
+
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty1: zod.string(),
+      type: zod.literal("InterfaceUnionNodeShapeMember1"),
+    });
+  }
+
+  export function hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _interfaceUnionNodeShapeMember1: InterfaceUnionNodeShapeMember1,
+    _hasher: HasherT,
+  ): HasherT {
+    _hasher.update(_interfaceUnionNodeShapeMember1.stringProperty1);
+    return _hasher;
+  }
+
+  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
+    constructor(
+      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
+      _options?: { ignoreRdfType?: boolean },
+    ) {
+      super(subject);
+      this.add(
+        sparqlBuilder.GraphPattern.basic(
+          this.subject,
+          dataFactory.namedNode("http://example.com/stringProperty1"),
+          this.variable("StringProperty1"),
+        ),
+      );
+    }
+  }
+
+  export function toJson(
+    _interfaceUnionNodeShapeMember1: InterfaceUnionNodeShapeMember1,
+  ): {
+    readonly "@id": string;
+    readonly stringProperty1: string;
+    readonly type: "InterfaceUnionNodeShapeMember1";
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id":
+          _interfaceUnionNodeShapeMember1.identifier.termType === "BlankNode"
+            ? `_:${_interfaceUnionNodeShapeMember1.identifier.value}`
+            : _interfaceUnionNodeShapeMember1.identifier.value,
+        stringProperty1: _interfaceUnionNodeShapeMember1.stringProperty1,
+        type: _interfaceUnionNodeShapeMember1.type,
+      } satisfies ReturnType<typeof InterfaceUnionNodeShapeMember1.toJson>),
+    );
+  }
+
+  export function toRdf(
+    _interfaceUnionNodeShapeMember1: InterfaceUnionNodeShapeMember1,
+    {
+      mutateGraph,
+      resourceSet,
+    }: {
+      ignoreRdfType?: boolean;
+      mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource({
+      identifier: _interfaceUnionNodeShapeMember1.identifier,
+      mutateGraph,
+    });
+    _resource.add(
+      dataFactory.namedNode("http://example.com/stringProperty1"),
+      _interfaceUnionNodeShapeMember1.stringProperty1,
+    );
+    return _resource;
+  }
+}
 /**
  * A node shape that's generated as a TypeScript interface instead of a class.
  */
@@ -8574,6 +8996,154 @@ export namespace AbstractBaseClassForExternObjectType {
 /**
  * Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union.
  */
+export type InterfaceUnionNodeShape =
+  | InterfaceUnionNodeShapeMember1
+  | InterfaceUnionNodeShapeMember2;
+
+export namespace InterfaceUnionNodeShape {
+  export function equals(
+    left: InterfaceUnionNodeShape,
+    right: InterfaceUnionNodeShape,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(
+      () => {
+        switch (left.type) {
+          case "InterfaceUnionNodeShapeMember1":
+            return InterfaceUnionNodeShapeMember1.equals(
+              left,
+              right as unknown as InterfaceUnionNodeShapeMember1,
+            );
+          case "InterfaceUnionNodeShapeMember2":
+            return InterfaceUnionNodeShapeMember2.equals(
+              left,
+              right as unknown as InterfaceUnionNodeShapeMember2,
+            );
+        }
+      },
+    );
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShape> {
+    return (
+      InterfaceUnionNodeShapeMember1.fromJson(json) as purify.Either<
+        zod.ZodError,
+        InterfaceUnionNodeShape
+      >
+    ).altLazy(
+      () =>
+        InterfaceUnionNodeShapeMember2.fromJson(json) as purify.Either<
+          zod.ZodError,
+          InterfaceUnionNodeShape
+        >,
+    );
+  }
+
+  export function fromRdf(parameters: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    InterfaceUnionNodeShape
+  > {
+    return (
+      InterfaceUnionNodeShapeMember1.fromRdf(parameters) as purify.Either<
+        rdfjsResource.Resource.ValueError,
+        InterfaceUnionNodeShape
+      >
+    ).altLazy(
+      () =>
+        InterfaceUnionNodeShapeMember2.fromRdf(parameters) as purify.Either<
+          rdfjsResource.Resource.ValueError,
+          InterfaceUnionNodeShape
+        >,
+    );
+  }
+
+  export function hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _interfaceUnionNodeShape: InterfaceUnionNodeShape,
+    _hasher: HasherT,
+  ): HasherT {
+    switch (_interfaceUnionNodeShape.type) {
+      case "InterfaceUnionNodeShapeMember1":
+        return InterfaceUnionNodeShapeMember1.hash(
+          _interfaceUnionNodeShape,
+          _hasher,
+        );
+      case "InterfaceUnionNodeShapeMember2":
+        return InterfaceUnionNodeShapeMember2.hash(
+          _interfaceUnionNodeShape,
+          _hasher,
+        );
+    }
+  }
+
+  export function jsonZodSchema() {
+    return zod.discriminatedUnion("type", [
+      InterfaceUnionNodeShapeMember1.jsonZodSchema(),
+      InterfaceUnionNodeShapeMember2.jsonZodSchema(),
+    ]);
+  }
+
+  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
+    constructor(subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter) {
+      super(subject);
+      this.add(
+        sparqlBuilder.GraphPattern.union(
+          new InterfaceUnionNodeShapeMember1.SparqlGraphPatterns(
+            this.subject,
+          ).toGroupGraphPattern(),
+          new InterfaceUnionNodeShapeMember2.SparqlGraphPatterns(
+            this.subject,
+          ).toGroupGraphPattern(),
+        ),
+      );
+    }
+  }
+
+  export function toJson(
+    _interfaceUnionNodeShape: InterfaceUnionNodeShape,
+  ):
+    | ReturnType<typeof InterfaceUnionNodeShapeMember1.toJson>
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2.toJson> {
+    switch (_interfaceUnionNodeShape.type) {
+      case "InterfaceUnionNodeShapeMember1":
+        return InterfaceUnionNodeShapeMember1.toJson(_interfaceUnionNodeShape);
+      case "InterfaceUnionNodeShapeMember2":
+        return InterfaceUnionNodeShapeMember2.toJson(_interfaceUnionNodeShape);
+    }
+  }
+
+  export function toRdf(
+    _interfaceUnionNodeShape: InterfaceUnionNodeShape,
+    _parameters: {
+      mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    switch (_interfaceUnionNodeShape.type) {
+      case "InterfaceUnionNodeShapeMember1":
+        return InterfaceUnionNodeShapeMember1.toRdf(
+          _interfaceUnionNodeShape,
+          _parameters,
+        );
+      case "InterfaceUnionNodeShapeMember2":
+        return InterfaceUnionNodeShapeMember2.toRdf(
+          _interfaceUnionNodeShape,
+          _parameters,
+        );
+    }
+  }
+}
+/**
+ * Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union.
+ */
 export type UnionNodeShape =
   | UnionNodeShapeMember1
   | UnionNodeShapeMember2
@@ -8689,6 +9259,22 @@ export namespace UnionNodeShape {
           ).toGroupGraphPattern(),
         ),
       );
+    }
+  }
+
+  export function toJson(
+    _unionNodeShape: UnionNodeShape,
+  ):
+    | ReturnType<UnionNodeShapeMember1["toJson"]>
+    | ReturnType<UnionNodeShapeMember2["toJson"]>
+    | ReturnType<ExternObjectType["toJson"]> {
+    switch (_unionNodeShape.type) {
+      case "UnionNodeShapeMember1":
+        return _unionNodeShape.toJson();
+      case "UnionNodeShapeMember2":
+        return _unionNodeShape.toJson();
+      case "ExternObjectType":
+        return _unionNodeShape.toJson();
     }
   }
 
