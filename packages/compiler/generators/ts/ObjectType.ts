@@ -124,8 +124,11 @@ export class ObjectType extends DeclaredType {
     if (this.features.has("equals")) {
       imports.push(Import.PURIFY_HELPERS);
     }
-    if (this.features.has("fromRdf")) {
+    if (this.features.has("fromJson") || this.features.has("jsonSchema")) {
       imports.push(Import.ZOD);
+    }
+    if (this.features.has("jsonSchema")) {
+      imports.push(Import.ZOD_TO_JSON_SCHEMA);
     }
     if (this.features.has("fromRdf") || this.features.has("toRdf")) {
       imports.push(Import.PURIFY);
@@ -153,6 +156,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.fromJsonFunctionDeclarations.bind(this)(),
       ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
+      ..._ObjectType.jsonSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonUiSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),

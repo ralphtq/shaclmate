@@ -5,6 +5,7 @@ import * as purify from "purify-ts";
 import * as purifyHelpers from "purify-ts-helpers";
 import * as rdfjsResource from "rdfjs-resource";
 import { z as zod } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
 export interface NestedNodeShape {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   /**
@@ -136,6 +137,10 @@ export namespace NestedNodeShape {
     parameters: Parameters<typeof NestedNodeShape.propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, NestedNodeShape> {
     return NestedNodeShape.propertiesFromRdf(parameters);
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -648,6 +653,10 @@ export namespace FormNodeShape {
     parameters: Parameters<typeof FormNodeShape.propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, FormNodeShape> {
     return FormNodeShape.propertiesFromRdf(parameters);
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {

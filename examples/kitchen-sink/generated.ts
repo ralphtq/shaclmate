@@ -8,6 +8,7 @@ import * as rdfLiteral from "rdf-literal";
 import * as rdfjsResource from "rdfjs-resource";
 import * as uuid from "uuid";
 import { z as zod } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
 import { ExternObjectType } from "./ExternObjectType.js";
 /**
  * A node shape that mints its identifier by generating a v4 UUID, if no identifier is supplied.
@@ -183,6 +184,10 @@ export namespace UuidV4IriNodeShape {
     return UuidV4IriNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new UuidV4IriNodeShape(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -408,6 +413,10 @@ export namespace UnionNodeShapeMember2 {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -631,6 +640,10 @@ export namespace UnionNodeShapeMember1 {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -852,6 +865,10 @@ export namespace Sha256IriNodeShape {
     return Sha256IriNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new Sha256IriNodeShape(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -1078,6 +1095,10 @@ export namespace NonClassNodeShape {
     return NonClassNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new NonClassNodeShape(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -1745,6 +1766,10 @@ export namespace NodeShapeWithUnionProperties {
     return NodeShapeWithUnionProperties.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithUnionProperties(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -2584,6 +2609,10 @@ export namespace NodeShapeWithTermProperties {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -3001,6 +3030,10 @@ export namespace NodeShapeWithPropertyVisibilities {
     return NodeShapeWithPropertyVisibilities.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithPropertyVisibilities(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -3477,6 +3510,10 @@ export namespace NodeShapeWithPropertyCardinalities {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -3946,6 +3983,10 @@ export namespace NodeShapeWithMutableProperties {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -4286,6 +4327,10 @@ export namespace NodeShapeWithListProperty {
     return NodeShapeWithListProperty.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithListProperty(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -4748,6 +4793,10 @@ export namespace NodeShapeWithLanguageInProperties {
     return NodeShapeWithLanguageInProperties.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithLanguageInProperties(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -5437,6 +5486,10 @@ export namespace NodeShapeWithInProperties {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -5828,6 +5881,10 @@ export namespace NodeShapeWithHasValueProperties {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -6067,6 +6124,10 @@ export namespace InlineNodeShape {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -6288,6 +6349,10 @@ export namespace ExternNodeShape {
     return ExternNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new ExternNodeShape(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -6718,6 +6783,10 @@ export namespace NodeShapeWithExternProperties {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -7027,6 +7096,10 @@ export namespace NodeShapeWithExplicitRdfTypes {
     return NodeShapeWithExplicitRdfTypes.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithExplicitRdfTypes(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -7566,6 +7639,10 @@ export namespace NodeShapeWithDefaultValueProperties {
     ).map((properties) => new NodeShapeWithDefaultValueProperties(properties));
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -7835,6 +7912,10 @@ export namespace IriNodeShape {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -8014,6 +8095,10 @@ export namespace InterfaceUnionNodeShapeMember2 {
     InterfaceUnionNodeShapeMember2
   > {
     return InterfaceUnionNodeShapeMember2.propertiesFromRdf(parameters);
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -8250,6 +8335,10 @@ export namespace InterfaceUnionNodeShapeMember1 {
     return InterfaceUnionNodeShapeMember1.propertiesFromRdf(parameters);
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -8480,6 +8569,10 @@ export namespace InterfaceNodeShape {
     parameters: Parameters<typeof InterfaceNodeShape.propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, InterfaceNodeShape> {
     return InterfaceNodeShape.propertiesFromRdf(parameters);
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
   }
 
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
@@ -8742,6 +8835,12 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     return purify.Either.of({ abcStringProperty, identifier });
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(
+      abstractBaseClassWithPropertiesNodeShapeJsonZodSchema(),
+    );
+  }
+
   export function abstractBaseClassWithPropertiesNodeShapeJsonUiSchema(parameters?: {
     scopePrefix?: string;
   }) {
@@ -8904,6 +9003,12 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     const _super0 = _super0Either.unsafeCoerce();
     const identifier = _resource.identifier;
     return purify.Either.of({ ..._super0, identifier });
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(
+      abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema(),
+    );
   }
 
   export function abstractBaseClassWithoutPropertiesNodeShapeJsonUiSchema(parameters?: {
@@ -9175,6 +9280,10 @@ export namespace ConcreteParentClassNodeShape {
     return ConcreteParentClassNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new ConcreteParentClassNodeShape(properties),
     );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(concreteParentClassNodeShapeJsonZodSchema());
   }
 
   export function concreteParentClassNodeShapeJsonUiSchema(parameters?: {
@@ -9455,6 +9564,10 @@ export namespace ConcreteChildClassNodeShape {
     );
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(concreteChildClassNodeShapeJsonZodSchema());
+  }
+
   export function concreteChildClassNodeShapeJsonUiSchema(parameters?: {
     scopePrefix?: string;
   }) {
@@ -9664,6 +9777,10 @@ export namespace AbstractBaseClassForExternObjectType {
     const abcStringProperty = _abcStringPropertyEither.unsafeCoerce();
     const identifier = _resource.identifier;
     return purify.Either.of({ abcStringProperty, identifier });
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(abstractBaseClassForExternObjectTypeJsonZodSchema());
   }
 
   export function abstractBaseClassForExternObjectTypeJsonUiSchema(parameters?: {

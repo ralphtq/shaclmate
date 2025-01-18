@@ -6,6 +6,7 @@ export * from "./fromRdfFunctionDeclarations.js";
 export * from "./hashFunctionDeclaration.js";
 export * from "./IdentifierProperty.js";
 export * from "./interfaceDeclaration.js";
+export * from "./jsonSchemaFunctionDeclaration.js";
 export * from "./jsonUiSchemaFunctionDeclaration.js";
 export * from "./jsonZodSchemaFunctionDeclaration.js";
 export * from "./Property.js";
