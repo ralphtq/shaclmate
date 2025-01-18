@@ -237,6 +237,14 @@ export class TermType<
     return new Type.SparqlGraphPatternExpression(expression);
   }
 
+  override sparqlConstructTemplateTriples(): readonly string[] {
+    return [];
+  }
+
+  override sparqlWherePatterns(): readonly string[] {
+    return [];
+  }
+
   override toJsonExpression({
     variables,
   }: Parameters<Type["toJsonExpression"]>[0]): string {

@@ -130,6 +130,18 @@ export class ListType extends Type {
     );
   }
 
+  override sparqlConstructTemplateTriples(
+    _parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
+  ): readonly string[] {
+    return [];
+  }
+
+  override sparqlWherePatterns(
+    _parameters: Parameters<Type["sparqlWherePatterns"]>[0],
+  ): readonly string[] {
+    return [];
+  }
+
   override toJsonExpression({
     variables,
   }: Parameters<Type["toJsonExpression"]>[0]): string {

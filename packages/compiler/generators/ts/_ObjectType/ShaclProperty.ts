@@ -220,6 +220,23 @@ export class ShaclProperty extends Property<Type> {
     };
   }
 
+  sparqlConstructTemplateTriples({
+    variables,
+  }: Parameters<
+    Property<Type>["sparqlConstructTemplateTriples"]
+  >[0]): readonly string[] {
+    const object: Omit<rdfjs.Variable, "equals"> = {
+      termType: "Variable",
+      value: `${variables.variablePrefix}${pascalCase(this.name)}`,
+    };
+    return [
+      `{ subject: ${this.rdfjsTermExpression(variables.subject)}, predicate: ${this.rdfjsTermExpression(this.path)}, object: ${this.rdfjsTermExpression(object)}`,
+      ...this.type.sparqlConstructTemplateTriples({
+        variables: { subject: object, variablePrefix: object.value },
+      }),
+    ];
+  }
+
   override sparqlGraphPatternExpression(): Maybe<string> {
     return Maybe.of(
       this.type
@@ -233,6 +250,21 @@ export class ShaclProperty extends Property<Type> {
         .toSparqlGraphPatternExpression()
         .toString(),
     );
+  }
+
+  sparqlWherePatterns({
+    variables,
+  }: Parameters<Property<Type>["sparqlWherePatterns"]>[0]): readonly string[] {
+    const object: Omit<rdfjs.Variable, "equals"> = {
+      termType: "Variable",
+      value: `${variables.variablePrefix}${pascalCase(this.name)}`,
+    };
+    return [
+      `{ subject: ${this.rdfjsTermExpression(variables.subject)}, predicate: ${this.rdfjsTermExpression(this.path)}, object: ${this.rdfjsTermExpression(object)}`,
+      ...this.type.sparqlWherePatterns({
+        variables: { subject: object, variablePrefix: object.value },
+      }),
+    ];
   }
 
   override toJsonObjectMember(

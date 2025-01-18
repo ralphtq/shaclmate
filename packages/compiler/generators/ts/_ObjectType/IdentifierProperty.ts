@@ -253,8 +253,16 @@ export class IdentifierProperty extends Property<IdentifierType> {
     };
   }
 
+  override sparqlConstructTemplateTriples(): readonly string[] {
+    return [];
+  }
+
   override sparqlGraphPatternExpression(): Maybe<string> {
     return Maybe.empty();
+  }
+
+  override sparqlWherePatterns(): readonly string[] {
+    return [];
   }
 
   override toJsonObjectMember({

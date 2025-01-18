@@ -133,6 +133,20 @@ export class OptionType extends Type {
     );
   }
 
+  override sparqlConstructTemplateTriples(
+      parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
+  ): readonly string[] {
+    return this.itemType.sparqlConstructTemplateTriples(parameters);
+  }
+
+  override sparqlWherePatterns(
+      parameters: Parameters<Type["sparqlWherePatterns"]>[0],
+  ): readonly string[] {
+      return [
+        `{ patterns: [${this.itemType.sparqlWherePatterns(parameters).join(", ")}], type: "optional" }`,
+      ];
+  }
+
   override toJsonExpression({
     variables,
   }: Parameters<Type["toJsonExpression"]>[0]): string {

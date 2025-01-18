@@ -271,6 +271,24 @@ ${this.memberTypeTraits
     );
   }
 
+  override sparqlConstructTemplateTriples(
+    parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
+  ): readonly string[] {
+    return this.memberTypes.reduce(
+      (array, memberType) =>
+        array.concat(memberType.sparqlConstructTemplateTriples(parameters)),
+      [] as string[],
+    );
+  }
+
+  override sparqlWherePatterns(
+    parameters: Parameters<Type["sparqlWherePatterns"]>[0],
+  ): readonly string[] {
+    return [
+      `{ patterns: [${this.memberTypes.flatMap((memberType) => memberType.sparqlWherePatterns(parameters)).join(", ")}], type: "union" }`,
+    ];
+  }
+
   override toJsonExpression({
     variables,
   }: Parameters<Type["toJsonExpression"]>[0]): string {

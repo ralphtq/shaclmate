@@ -160,6 +160,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.jsonUiSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
+      ..._ObjectType.sparqlFunctionDeclarations.bind(this)(),
       ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.toRdfFunctionDeclaration.bind(this)().toList(),
@@ -391,6 +392,22 @@ export class ObjectType extends DeclaredType {
       name: `rdfjsResource.${options?.mutable ? "Mutable" : ""}Resource${this.identifierType.isNamedNodeKind ? "<rdfjs.NamedNode>" : ""}`,
       named: this.identifierType.isNamedNodeKind,
     };
+  }
+
+  override sparqlConstructTemplateTriples({
+    variables,
+  }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
+    return [
+      `...${this.name}.sparqlConstructTemplateTriples({ subject: ${this.rdfjsTermExpression(variables.subject)}, variablePrefix: ${variables.variablePrefix} })`,
+    ];
+  }
+
+  override sparqlWherePatterns({
+    variables,
+  }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
+    return [
+      `...${this.name}.sparqlWherePatterns({ subject: ${this.rdfjsTermExpression(variables.subject)}, variablePrefix: ${variables.variablePrefix} })`,
+    ];
   }
 
   override toJsonExpression({

@@ -1,3 +1,4 @@
+import type { BlankNode, Literal, NamedNode, Variable } from "@rdfjs/types";
 import type { Maybe } from "purify-ts";
 import {
   type GetAccessorDeclarationStructure,
@@ -9,6 +10,7 @@ import {
 import type { PropertyVisibility } from "../../../enums/index.js";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
+import { rdfjsTermExpression } from "./rdfjsTermExpression.js";
 
 export abstract class Property<
   TypeT extends { readonly mutable: boolean; readonly name: string },
@@ -167,7 +169,7 @@ export abstract class Property<
    * An array of SPARQL.js CONSTRUCT template triples for this property as strings (so they can incorporate runtime calls).
    */
   abstract sparqlConstructTemplateTriples(parameters: {
-    variables: { variablePrefix: string };
+    variables: { subject: Omit<Variable, "equals">; variablePrefix: string };
   }): readonly string[];
 
   /**
@@ -179,14 +181,7 @@ export abstract class Property<
    * An array of SPARQL.js where patterns for this property as strings (so they can incorporate runtime calls).
    */
   abstract sparqlWherePatterns(parameters: {
-    variables: { variablePrefix: string };
-  }): readonly string[];
-
-  /**
-   * Return an array of SPARQL.js where patterns for this property as strings (so they can incorporate runtime calls).
-   */
-  abstract sparqlWherePatterns(parameters: {
-    variables: { variablePrefix: string };
+    variables: { subject: Omit<Variable, "equals">; variablePrefix: string };
   }): readonly string[];
 
   /**
@@ -205,4 +200,17 @@ export abstract class Property<
       "predicate"
     >;
   }): readonly string[];
+
+  protected rdfjsTermExpression(
+    rdfjsTerm:
+      | Omit<BlankNode, "equals">
+      | Omit<Literal, "equals">
+      | Omit<NamedNode, "equals">
+      | Omit<Variable, "equals">,
+  ): string {
+    return rdfjsTermExpression({
+      dataFactoryVariable: this.dataFactoryVariable,
+      rdfjsTerm,
+    });
+  }
 }

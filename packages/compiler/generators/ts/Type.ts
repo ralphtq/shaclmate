@@ -1,7 +1,7 @@
-import type { BlankNode, Literal, NamedNode } from "@rdfjs/types";
-import { xsd } from "@tpluscode/rdf-ns-builders";
+import type { BlankNode, Literal, NamedNode, Variable } from "@rdfjs/types";
 import { Maybe } from "purify-ts";
 import type { Import } from "./Import.js";
+import { rdfjsTermExpression } from "./_ObjectType/rdfjsTermExpression";
 
 /**
  * Abstract base class for generating TypeScript expressions and statemenst in the TypeScript generator.
@@ -139,7 +139,29 @@ export abstract class Type {
   }
 
   /**
-   * An expression that converts a property value of this type to a JSON-LD compatible value. It can assume the presence
+   * An array of SPARQL.js CONSTRUCT template triples for a value of this type, as strings (so they can incorporate runtime calls).
+   *
+   * This method is called by an ObjectType.Property. The property includes a basic graph pattern (subject, property path, property object).
+   * The property calls this method to get additional triples in which the propertyObject is the subject.
+   * For example, if the type is a nested object, it would include (propertyObject, nestedPredicate, nestedObject) triples.
+   *
+   * Term types with no additional properties should return an empty array.
+   */
+  abstract sparqlConstructTemplateTriples(parameters: {
+    variables: { subject: Omit<Variable, "equals">; variablePrefix: string };
+  }): readonly string[];
+
+  /**
+   * An array of SPARQL.js where patterns for a value of this type, as strings (so they can incorporate runtime calls).
+   *
+   * See note in sparqlConstructTemplateTriples re: how this method is used.
+   */
+  abstract sparqlWherePatterns(parameters: {
+    variables: { subject: Omit<Variable, "equals">; variablePrefix: string };
+  }): readonly string[];
+
+  /**
+   * An expression that converts a value of this type to a JSON-LD compatible value. It can assume the presence
    * of the correct JSON-LD context.
    */
   abstract toJsonExpression(parameters: {
@@ -163,19 +185,16 @@ export abstract class Type {
   }): string;
 
   protected rdfjsTermExpression(
-    rdfjsTerm: BlankNode | Literal | NamedNode,
+    rdfjsTerm:
+      | Omit<BlankNode, "equals">
+      | Omit<Literal, "equals">
+      | Omit<NamedNode, "equals">
+      | Omit<Variable, "equals">,
   ): string {
-    switch (rdfjsTerm.termType) {
-      case "BlankNode":
-        return `${this.dataFactoryVariable}.blankNode("${rdfjsTerm.value}")`;
-      case "Literal":
-        if (rdfjsTerm.datatype.equals(xsd.string)) {
-          return `${this.dataFactoryVariable}.literal("${rdfjsTerm.value}", "${rdfjsTerm.language}")`;
-        }
-        return `${this.dataFactoryVariable}.literal("${rdfjsTerm.value}", ${this.dataFactoryVariable}.namedNode("${rdfjsTerm.datatype.value}"))`;
-      case "NamedNode":
-        return `${this.dataFactoryVariable}.namedNode("${rdfjsTerm.value}")`;
-    }
+    return rdfjsTermExpression({
+      dataFactoryVariable: this.dataFactoryVariable,
+      rdfjsTerm,
+    });
   }
 }
 
