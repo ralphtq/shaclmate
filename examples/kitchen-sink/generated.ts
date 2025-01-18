@@ -185,6 +185,17 @@ export namespace UuidV4IriNodeShape {
     );
   }
 
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+      ],
+    };
+  }
+
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
@@ -383,6 +394,17 @@ export namespace UnionNodeShapeMember2 {
     return UnionNodeShapeMember2.propertiesFromRdf(parameters).map(
       (properties) => new UnionNodeShapeMember2(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty2`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -585,6 +607,17 @@ export namespace UnionNodeShapeMember1 {
     );
   }
 
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty1`, type: "Control" },
+      ],
+    };
+  }
+
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
@@ -783,6 +816,17 @@ export namespace Sha256IriNodeShape {
     return Sha256IriNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new Sha256IriNodeShape(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -986,6 +1030,17 @@ export namespace NonClassNodeShape {
     return NonClassNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new NonClassNodeShape(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -1386,7 +1441,9 @@ export class NodeShapeWithUnionProperties {
 }
 
 export namespace NodeShapeWithUnionProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -1630,6 +1687,25 @@ export namespace NodeShapeWithUnionProperties {
     return NodeShapeWithUnionProperties.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithUnionProperties(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/orLiteralsProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/orTermsProperty`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/orUnrelatedProperty`,
+          type: "Control",
+        },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -2167,7 +2243,9 @@ export class NodeShapeWithTermProperties {
 }
 
 export namespace NodeShapeWithTermProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       booleanProperty: purify.Maybe<boolean>;
@@ -2438,6 +2516,26 @@ export namespace NodeShapeWithTermProperties {
     );
   }
 
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/booleanProperty`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/dateTimeProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/iriProperty`, type: "Control" },
+        { scope: `${scopePrefix}/properties/literalProperty`, type: "Control" },
+        { scope: `${scopePrefix}/properties/numberProperty`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+        { scope: `${scopePrefix}/properties/termProperty`, type: "Control" },
+      ],
+    };
+  }
+
   export function jsonZodSchema() {
     return zod.object({
       booleanProperty: zod.boolean().optional(),
@@ -2704,7 +2802,9 @@ export class NodeShapeWithPropertyVisibilities {
 }
 
 export namespace NodeShapeWithPropertyVisibilities {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -2823,6 +2923,22 @@ export namespace NodeShapeWithPropertyVisibilities {
     return NodeShapeWithPropertyVisibilities.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithPropertyVisibilities(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/privateProperty`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/protectedProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/publicProperty`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -3095,7 +3211,9 @@ export class NodeShapeWithPropertyCardinalities {
 }
 
 export namespace NodeShapeWithPropertyCardinalities {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       emptyStringSetProperty: readonly string[];
@@ -3269,6 +3387,32 @@ export namespace NodeShapeWithPropertyCardinalities {
     return NodeShapeWithPropertyCardinalities.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithPropertyCardinalities(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        {
+          scope: `${scopePrefix}/properties/emptyStringSetProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/nonEmptyStringSetProperty`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/optionalStringProperty`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/requiredStringProperty`,
+          type: "Control",
+        },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -3578,7 +3722,9 @@ export class NodeShapeWithMutableProperties {
 }
 
 export namespace NodeShapeWithMutableProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -3700,6 +3846,24 @@ export namespace NodeShapeWithMutableProperties {
     return NodeShapeWithMutableProperties.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithMutableProperties(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/mutableListProperty`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/mutableStringProperty`,
+          type: "Control",
+        },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -3927,7 +4091,9 @@ export class NodeShapeWithListProperty {
 }
 
 export namespace NodeShapeWithListProperty {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4012,6 +4178,17 @@ export namespace NodeShapeWithListProperty {
     return NodeShapeWithListProperty.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithListProperty(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/listProperty`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -4296,7 +4473,9 @@ export class NodeShapeWithLanguageInProperties {
 }
 
 export namespace NodeShapeWithLanguageInProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4451,6 +4630,21 @@ export namespace NodeShapeWithLanguageInProperties {
     return NodeShapeWithLanguageInProperties.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithLanguageInProperties(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/languageInProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/literalProperty`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -4806,7 +5000,9 @@ export class NodeShapeWithInProperties {
 }
 
 export namespace NodeShapeWithInProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4903,20 +5099,22 @@ export namespace NodeShapeWithInProperties {
         )
         .head()
         .chain((_value) =>
-          _value.toBoolean().chain((value) =>
-            value === true
-              ? purify.Either.of(value)
-              : purify.Left(
-                  new rdfjsResource.Resource.MistypedValueError({
-                    actualValue: rdfLiteral.toRdf(value),
-                    expectedValueType: "true",
-                    focusResource: _resource,
-                    predicate: dataFactory.namedNode(
-                      "http://example.com/inBooleansProperty",
-                    ),
-                  }),
-                ),
-          ),
+          _value
+            .toBoolean()
+            .chain((value) =>
+              value === true
+                ? purify.Either.of(value)
+                : purify.Left(
+                    new rdfjsResource.Resource.MistypedValueError({
+                      actualValue: rdfLiteral.toRdf(value),
+                      expectedValueType: "true",
+                      focusResource: _resource,
+                      predicate: dataFactory.namedNode(
+                        "http://example.com/inBooleansProperty",
+                      ),
+                    }),
+                  ),
+            ),
         )
         .toMaybe(),
     );
@@ -5111,6 +5309,33 @@ export namespace NodeShapeWithInProperties {
     return NodeShapeWithInProperties.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithInProperties(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/inBooleansProperty`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/inDateTimesProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/inIrisProperty`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/inNumbersProperty`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/inStringsProperty`,
+          type: "Control",
+        },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -5350,7 +5575,9 @@ export class NodeShapeWithHasValueProperties {
 }
 
 export namespace NodeShapeWithHasValueProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -5463,6 +5690,21 @@ export namespace NodeShapeWithHasValueProperties {
     return NodeShapeWithHasValueProperties.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithHasValueProperties(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/hasIriProperty`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/hasLiteralProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -5677,6 +5919,17 @@ export namespace InlineNodeShape {
     );
   }
 
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+      ],
+    };
+  }
+
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
@@ -5875,6 +6128,17 @@ export namespace ExternNodeShape {
     return ExternNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new ExternNodeShape(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -6124,7 +6388,9 @@ export class NodeShapeWithExternProperties {
 }
 
 export namespace NodeShapeWithExternProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       externObjectTypeProperty: purify.Maybe<ExternObjectType>;
@@ -6280,6 +6546,23 @@ export namespace NodeShapeWithExternProperties {
     return NodeShapeWithExternProperties.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithExternProperties(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        ExternObjectType.jsonUiSchema({
+          scopePrefix: `${scopePrefix}/properties/externObjectTypeProperty`,
+        }),
+        { scope: `${scopePrefix}/properties/externProperty`, type: "Control" },
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        InlineNodeShape.jsonUiSchema({
+          scopePrefix: `${scopePrefix}/properties/inlineProperty`,
+        }),
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -6562,6 +6845,17 @@ export namespace NodeShapeWithExplicitRdfTypes {
     return NodeShapeWithExplicitRdfTypes.propertiesFromRdf(parameters).map(
       (properties) => new NodeShapeWithExplicitRdfTypes(properties),
     );
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -6849,7 +7143,9 @@ export class NodeShapeWithDefaultValueProperties {
 }
 
 export namespace NodeShapeWithDefaultValueProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       dateTimeProperty: Date;
@@ -7076,6 +7372,30 @@ export namespace NodeShapeWithDefaultValueProperties {
     return NodeShapeWithDefaultValueProperties.propertiesFromRdf(
       parameters,
     ).map((properties) => new NodeShapeWithDefaultValueProperties(properties));
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        {
+          scope: `${scopePrefix}/properties/dateTimeProperty`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/falseBooleanProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/numberProperty`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/trueBooleanProperty`,
+          type: "Control",
+        },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -7311,6 +7631,17 @@ export namespace IriNodeShape {
     );
   }
 
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+      ],
+    };
+  }
+
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
@@ -7392,7 +7723,9 @@ export namespace InterfaceUnionNodeShapeMember2 {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7467,6 +7800,17 @@ export namespace InterfaceUnionNodeShapeMember2 {
     InterfaceUnionNodeShapeMember2
   > {
     return InterfaceUnionNodeShapeMember2.propertiesFromRdf(parameters);
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty2`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -7603,7 +7947,9 @@ export namespace InterfaceUnionNodeShapeMember1 {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7678,6 +8024,17 @@ export namespace InterfaceUnionNodeShapeMember1 {
     InterfaceUnionNodeShapeMember1
   > {
     return InterfaceUnionNodeShapeMember1.propertiesFromRdf(parameters);
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty1`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -7817,7 +8174,9 @@ export namespace InterfaceNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7887,6 +8246,17 @@ export namespace InterfaceNodeShape {
     parameters: Parameters<typeof InterfaceNodeShape.propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, InterfaceNodeShape> {
     return InterfaceNodeShape.propertiesFromRdf(parameters);
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+      ],
+    };
   }
 
   export function jsonZodSchema() {
@@ -8126,6 +8496,22 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     return purify.Either.of({ abcStringProperty, identifier });
   }
 
+  export function abstractBaseClassWithPropertiesNodeShapeJsonUiSchema(parameters?: {
+    scopePrefix?: string;
+  }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        {
+          scope: `${scopePrefix}/properties/abcStringProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+      ],
+    };
+  }
+
   export function abstractBaseClassWithPropertiesNodeShapeJsonZodSchema() {
     return zod.object({
       abcStringProperty: zod.string(),
@@ -8193,7 +8579,9 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
 }
 
 namespace AbstractBaseClassWithoutPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -8262,6 +8650,20 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     return purify.Either.of({ ..._super0, identifier });
   }
 
+  export function abstractBaseClassWithoutPropertiesNodeShapeJsonUiSchema(parameters?: {
+    scopePrefix?: string;
+  }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapeJsonUiSchema(
+          { scopePrefix },
+        ),
+      ],
+    };
+  }
+
   export function abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema() {
     return AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapeJsonZodSchema().merge(
       zod.object({
@@ -8318,18 +8720,20 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
   override equals(
     other: ConcreteParentClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.strictEquals(
-        this.parentStringProperty,
-        other.parentStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "parentStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.parentStringProperty,
+          other.parentStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "parentStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -8391,7 +8795,9 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -8518,6 +8924,24 @@ export namespace ConcreteParentClassNodeShape {
     );
   }
 
+  export function concreteParentClassNodeShapeJsonUiSchema(parameters?: {
+    scopePrefix?: string;
+  }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapeJsonUiSchema(
+          { scopePrefix },
+        ),
+        {
+          scope: `${scopePrefix}/properties/parentStringProperty`,
+          type: "Control",
+        },
+      ],
+    };
+  }
+
   export function concreteParentClassNodeShapeJsonZodSchema() {
     return AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema().merge(
       zod.object({
@@ -8587,18 +9011,20 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   override equals(
     other: ConcreteChildClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.strictEquals(
-        this.childStringProperty,
-        other.childStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "childStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.childStringProperty,
+          other.childStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "childStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -8660,7 +9086,9 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       childStringProperty: string;
@@ -8775,6 +9203,24 @@ export namespace ConcreteChildClassNodeShape {
     return ConcreteChildClassNodeShape.propertiesFromRdf(parameters).map(
       (properties) => new ConcreteChildClassNodeShape(properties),
     );
+  }
+
+  export function concreteChildClassNodeShapeJsonUiSchema(parameters?: {
+    scopePrefix?: string;
+  }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        ConcreteParentClassNodeShape.concreteParentClassNodeShapeJsonUiSchema({
+          scopePrefix,
+        }),
+        {
+          scope: `${scopePrefix}/properties/childStringProperty`,
+          type: "Control",
+        },
+      ],
+    };
   }
 
   export function concreteChildClassNodeShapeJsonZodSchema() {
@@ -8967,6 +9413,22 @@ export namespace AbstractBaseClassForExternObjectType {
     const abcStringProperty = _abcStringPropertyEither.unsafeCoerce();
     const identifier = _resource.identifier;
     return purify.Either.of({ abcStringProperty, identifier });
+  }
+
+  export function abstractBaseClassForExternObjectTypeJsonUiSchema(parameters?: {
+    scopePrefix?: string;
+  }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      type: "HorizontalLayout",
+      elements: [
+        {
+          scope: `${scopePrefix}/properties/abcStringProperty`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/identifier`, type: "Control" },
+      ],
+    };
   }
 
   export function abstractBaseClassForExternObjectTypeJsonZodSchema() {

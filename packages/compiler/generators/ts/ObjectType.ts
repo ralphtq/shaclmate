@@ -129,6 +129,7 @@ export class ObjectType extends DeclaredType {
     }
     if (this.features.has("fromRdf") || this.features.has("toRdf")) {
       imports.push(Import.PURIFY);
+      imports.push(Import.PURIFY_HELPERS);
       imports.push(Import.RDFJS_RESOURCE);
     }
     if (this.features.has("sparql-graph-patterns")) {
@@ -152,6 +153,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.fromJsonFunctionDeclarations.bind(this)(),
       ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
+      ..._ObjectType.jsonUiSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),
@@ -239,6 +241,16 @@ export class ObjectType extends DeclaredType {
   }
 
   @Memoize()
+  get jsonUiSchemaFunctionName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `${camelCase(this.name)}JsonUiSchema`;
+    return "jsonUiSchema";
+  }
+
+  @Memoize()
   get jsonZodSchemaFunctionName(): string {
     if (
       this.ancestorObjectTypes.length > 0 ||
@@ -299,6 +311,14 @@ export class ObjectType extends DeclaredType {
       default:
         throw new RangeError(this.declarationType);
     }
+  }
+
+  override jsonUiSchemaElement({
+    variables,
+  }: { variables: { scopePrefix: string } }): Maybe<string> {
+    return Maybe.of(
+      `${this.name}.${this.jsonUiSchemaFunctionName}({ scopePrefix: ${variables.scopePrefix} })`,
+    );
   }
 
   override jsonZodSchema(

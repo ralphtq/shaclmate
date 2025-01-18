@@ -70,6 +70,12 @@ export class OptionType extends Type {
     return [...this.itemType.useImports, Import.PURIFY];
   }
 
+  override jsonUiSchemaElement(
+    parameters: Parameters<Type["jsonUiSchemaElement"]>[0],
+  ): ReturnType<Type["jsonUiSchemaElement"]> {
+    return this.itemType.jsonUiSchemaElement(parameters);
+  }
+
   override jsonZodSchema(
     parameters: Parameters<Type["jsonZodSchema"]>[0],
   ): ReturnType<Type["jsonZodSchema"]> {

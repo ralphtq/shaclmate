@@ -232,8 +232,14 @@ export class IdentifierProperty extends Property<IdentifierType> {
     return [`const ${this.name} = ${variables.parameter}`];
   }
 
-  jsonUiSchemaElement({variables}: Parameters<Property<IdentifierType>["jsonUiSchemaElement"]>[0]): Maybe<string> {
-    return Maybe.of(`{ scope: \`\${${variables.scopePrefix}}/properties/${this.name}, type: "Control" }`);
+  override jsonUiSchemaElement({
+    variables,
+  }: Parameters<
+    Property<IdentifierType>["jsonUiSchemaElement"]
+  >[0]): Maybe<string> {
+    return Maybe.of(
+      `{ scope: \`\${${variables.scopePrefix}}/properties/${this.name}\`, type: "Control" }`,
+    );
   }
 
   override jsonZodSchema({

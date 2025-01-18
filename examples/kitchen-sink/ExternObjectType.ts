@@ -105,6 +105,9 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
 }
 
 export namespace ExternObjectType {
+  export const jsonUiSchema =
+    AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypeJsonUiSchema;
+
   export const jsonZodSchema =
     AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypeJsonZodSchema;
 
