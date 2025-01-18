@@ -144,6 +144,7 @@ export namespace NestedNodeShape {
       elements: [
         { scope: `${scopePrefix}/properties/@id`, type: "Control" },
         {
+          label: "Required string",
           scope: `${scopePrefix}/properties/requiredStringProperty`,
           type: "Control",
         },
@@ -654,6 +655,7 @@ export namespace FormNodeShape {
     return {
       elements: [
         {
+          label: "Empty string set",
           scope: `${scopePrefix}/properties/emptyStringSetProperty`,
           type: "Control",
         },
@@ -662,18 +664,22 @@ export namespace FormNodeShape {
           scopePrefix: `${scopePrefix}/properties/nestedObjectProperty`,
         }),
         {
+          label: "Non-empty string set",
           scope: `${scopePrefix}/properties/nonEmptyStringSetProperty`,
           type: "Control",
         },
         {
+          label: "Optional string",
           scope: `${scopePrefix}/properties/optionalStringProperty`,
           type: "Control",
         },
         {
+          label: "Required integer",
           scope: `${scopePrefix}/properties/requiredIntegerProperty`,
           type: "Control",
         },
         {
+          label: "Required string",
           scope: `${scopePrefix}/properties/requiredStringProperty`,
           type: "Control",
         },

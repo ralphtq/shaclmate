@@ -200,7 +200,11 @@ export class ShaclProperty extends Property<Type> {
     const scope = `\`\${${variables.scopePrefix}}/properties/${this.name}\``;
     return this.type
       .jsonUiSchemaElement({ variables: { scopePrefix: scope } })
-      .altLazy(() => Maybe.of(`{ scope: ${scope}, type: "Control" }`));
+      .altLazy(() =>
+        Maybe.of(
+          `{ ${this.label.isJust() ? `label: "${this.label.unsafeCoerce()}", ` : ""}scope: ${scope}, type: "Control" }`,
+        ),
+      );
   }
 
   override jsonZodSchema(
