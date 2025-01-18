@@ -238,7 +238,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     Property<IdentifierType>["jsonUiSchemaElement"]
   >[0]): Maybe<string> {
     return Maybe.of(
-      `{ scope: \`\${${variables.scopePrefix}}/properties/${this.name}\`, type: "Control" }`,
+      `{ scope: \`\${${variables.scopePrefix}}/properties/${this.jsonPropertySignature.name}\`, type: "Control" }`,
     );
   }
 
@@ -248,8 +248,8 @@ export class IdentifierProperty extends Property<IdentifierType> {
     Property<IdentifierType>["jsonZodSchema"]
   > {
     return {
-      key: "@id",
-      schema: `${variables.zod}.string().min(1)`,
+      key: this.jsonPropertySignature.name,
+      schema: `${variables.zod}.string().min(1).describe("Identifier")`,
     };
   }
 

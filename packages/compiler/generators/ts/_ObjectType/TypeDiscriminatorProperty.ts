@@ -112,8 +112,15 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
       : [];
   }
 
-  jsonUiSchemaElement(): Maybe<string> {
-    return Maybe.empty();
+  override jsonUiSchemaElement({
+    variables,
+  }: Parameters<
+    Property<TypeDiscriminatorProperty.Type>["jsonUiSchemaElement"]
+  >[0]): Maybe<string> {
+    const scope = `\`\${${variables.scopePrefix}}/properties/${this.name}\``;
+    return Maybe.of(
+      `{ rule: { condition: { schema: { const: "${this.value}" }, scope: ${scope} }, effect: "HIDE" }, scope: ${scope}, type: "Control" }`,
+    );
   }
 
   override jsonZodSchema({

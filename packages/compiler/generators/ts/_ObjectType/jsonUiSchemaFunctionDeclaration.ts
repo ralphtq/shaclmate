@@ -38,7 +38,7 @@ export function jsonUiSchemaFunctionDeclaration(
     ],
     statements: [
       'const scopePrefix = parameters?.scopePrefix ?? "#";',
-      `return { "type": "HorizontalLayout", "elements": [ ${elements.join(", ")} ] }`,
+      `return { "elements": [ ${elements.join(", ")} ], label: "${this.label.orDefault(this.name)}", type: "Group" }`,
     ],
   });
 }

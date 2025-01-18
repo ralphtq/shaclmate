@@ -3,12 +3,11 @@ import {
   materialRenderers,
 } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { DataFactory as dataFactory } from "n3";
 import { NonEmptyList } from "purify-ts";
-import { type FC, useMemo, useState } from "react";
+import { type FC, useState } from "react";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import * as generated from "./generated.js";
 
@@ -38,55 +37,55 @@ const classes = {
   },
 };
 
-const initialData = generated.NodeShapeWithPropertyCardinalities.toJson(
-  generated.NodeShapeWithPropertyCardinalities.create({
-    identifier: dataFactory.namedNode("http://example.com/test"),
+const initialData = generated.FormNodeShape.toJson(
+  generated.FormNodeShape.create({
+    identifier: dataFactory.namedNode("http://example.com/form"),
+    nestedObjectProperty: generated.NestedNodeShape.create({
+      identifier: dataFactory.namedNode("http://example.com/nested"),
+      requiredStringProperty: "required/nested",
+    }),
     nonEmptyStringSetProperty: NonEmptyList.fromArray(["test"]).unsafeCoerce(),
-    requiredStringProperty: "test",
+    requiredStringProperty: "required/form",
   }),
 );
+
+const jsonSchema = zodToJsonSchema(
+  generated.FormNodeShape.jsonZodSchema(),
+) as any;
+const jsonUiSchema = generated.FormNodeShape.jsonUiSchema();
 
 const renderers = materialRenderers;
 
 const App: FC = () => {
   const [data, setData] = useState<object>(initialData);
-  const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
 
-  const clearData = () => {
-    setData({});
-  };
   return (
     <Grid
       container
       justifyContent={"center"}
-      spacing={1}
+      spacing={4}
       style={classes.container}
     >
       <Grid item sm={6}>
-        <Typography variant={"h4"}>Bound data</Typography>
+        <Typography variant={"h4"}>Data (JSON)</Typography>
         <div style={classes.dataContent}>
-          <pre id="boundData">{stringifiedData}</pre>
+          <pre id="data">{JSON.stringify(data, null, 2)}</pre>
         </div>
-        <Button
-          style={classes.resetButton}
-          onClick={clearData}
-          color="primary"
-          variant="contained"
-          data-testid="clear-data"
-        >
-          Clear data
-        </Button>
+        <Typography variant={"h4"}>JSON schema</Typography>
+        <div style={classes.dataContent}>
+          <pre id="jsonSchema">{JSON.stringify(jsonSchema, null, 2)}</pre>
+        </div>
+        <Typography variant={"h4"}>JSON Forms schema</Typography>
+        <div style={classes.dataContent}>
+          <pre id="jsonUiSchema">{JSON.stringify(jsonUiSchema, null, 2)}</pre>
+        </div>
       </Grid>
       <Grid item sm={6}>
         <Typography variant={"h4"}>Rendered form</Typography>
         <div style={classes.demoform}>
           <JsonForms
-            schema={
-              zodToJsonSchema(
-                generated.NodeShapeWithPropertyCardinalities.jsonZodSchema(),
-              ) as any
-            }
-            // uischema={uischema}
+            schema={jsonSchema}
+            uischema={jsonUiSchema}
             data={data}
             renderers={renderers}
             cells={materialCells}
