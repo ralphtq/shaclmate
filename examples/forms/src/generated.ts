@@ -147,7 +147,11 @@ export namespace NestedNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           label: "Required string",
           scope: `${scopePrefix}/properties/requiredStringProperty`,
@@ -172,7 +176,7 @@ export namespace NestedNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       requiredStringProperty: zod.string(),
       type: zod.literal("NestedNodeShape"),
     });
@@ -668,7 +672,11 @@ export namespace FormNodeShape {
           scope: `${scopePrefix}/properties/emptyStringSetProperty`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         NestedNodeShape.jsonUiSchema({
           scopePrefix: `${scopePrefix}/properties/nestedObjectProperty`,
         }),
@@ -712,7 +720,7 @@ export namespace FormNodeShape {
   export function jsonZodSchema() {
     return zod.object({
       emptyStringSetProperty: zod.string().array(),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       nestedObjectProperty: NestedNodeShape.jsonZodSchema(),
       nonEmptyStringSetProperty: zod.string().array().nonempty().min(1),
       optionalStringProperty: zod.string().optional(),

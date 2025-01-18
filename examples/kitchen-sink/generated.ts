@@ -194,7 +194,11 @@ export namespace UuidV4IriNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
           rule: {
@@ -215,7 +219,7 @@ export namespace UuidV4IriNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty: zod.string(),
       type: zod.literal("UuidV4IriNodeShape"),
     });
@@ -421,7 +425,11 @@ export namespace UnionNodeShapeMember2 {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty2`, type: "Control" },
         {
           rule: {
@@ -442,7 +450,7 @@ export namespace UnionNodeShapeMember2 {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty2: zod.string(),
       type: zod.literal("UnionNodeShapeMember2"),
     });
@@ -648,7 +656,11 @@ export namespace UnionNodeShapeMember1 {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty1`, type: "Control" },
         {
           rule: {
@@ -669,7 +681,7 @@ export namespace UnionNodeShapeMember1 {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty1: zod.string(),
       type: zod.literal("UnionNodeShapeMember1"),
     });
@@ -875,7 +887,11 @@ export namespace Sha256IriNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
           rule: {
@@ -896,7 +912,7 @@ export namespace Sha256IriNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty: zod.string(),
       type: zod.literal("Sha256IriNodeShape"),
     });
@@ -1105,7 +1121,11 @@ export namespace NonClassNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
           rule: {
@@ -1126,7 +1146,7 @@ export namespace NonClassNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty: zod.string(),
       type: zod.literal("NonClassNodeShape"),
     });
@@ -1776,7 +1796,11 @@ export namespace NodeShapeWithUnionProperties {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           scope: `${scopePrefix}/properties/orLiteralsProperty`,
           type: "Control",
@@ -1805,7 +1829,7 @@ export namespace NodeShapeWithUnionProperties {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       orLiteralsProperty: zod
         .object({
           "@language": zod.string().optional(),
@@ -2622,7 +2646,11 @@ export namespace NodeShapeWithTermProperties {
           scope: `${scopePrefix}/properties/dateTimeProperty`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/iriProperty`, type: "Control" },
         { scope: `${scopePrefix}/properties/literalProperty`, type: "Control" },
         { scope: `${scopePrefix}/properties/numberProperty`, type: "Control" },
@@ -2649,7 +2677,7 @@ export namespace NodeShapeWithTermProperties {
     return zod.object({
       booleanProperty: zod.boolean().optional(),
       dateTimeProperty: zod.string().datetime().optional(),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       iriProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
       literalProperty: zod
         .object({
@@ -3040,7 +3068,11 @@ export namespace NodeShapeWithPropertyVisibilities {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/privateProperty`, type: "Control" },
         {
           scope: `${scopePrefix}/properties/protectedProperty`,
@@ -3066,7 +3098,7 @@ export namespace NodeShapeWithPropertyVisibilities {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       privateProperty: zod.string(),
       protectedProperty: zod.string(),
       publicProperty: zod.string(),
@@ -3522,7 +3554,11 @@ export namespace NodeShapeWithPropertyCardinalities {
           scope: `${scopePrefix}/properties/emptyStringSetProperty`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           scope: `${scopePrefix}/properties/nonEmptyStringSetProperty`,
           type: "Control",
@@ -3558,7 +3594,7 @@ export namespace NodeShapeWithPropertyCardinalities {
         .string()
         .array()
         .describe("Set: minCount implicitly=0, no maxCount or maxCount > 1"),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       nonEmptyStringSetProperty: zod
         .string()
         .array()
@@ -3991,7 +4027,11 @@ export namespace NodeShapeWithMutableProperties {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           scope: `${scopePrefix}/properties/mutableListProperty`,
           type: "Control",
@@ -4019,7 +4059,7 @@ export namespace NodeShapeWithMutableProperties {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       mutableListProperty: zod
         .string()
         .array()
@@ -4337,7 +4377,11 @@ export namespace NodeShapeWithListProperty {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/listProperty`, type: "Control" },
         {
           rule: {
@@ -4358,7 +4402,7 @@ export namespace NodeShapeWithListProperty {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       listProperty: zod.string().array(),
       type: zod.literal("NodeShapeWithListProperty"),
     });
@@ -4803,7 +4847,11 @@ export namespace NodeShapeWithLanguageInProperties {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           scope: `${scopePrefix}/properties/languageInProperty`,
           type: "Control",
@@ -4828,7 +4876,7 @@ export namespace NodeShapeWithLanguageInProperties {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       languageInProperty: zod
         .object({
           "@language": zod.string().optional(),
@@ -5494,7 +5542,11 @@ export namespace NodeShapeWithInProperties {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           scope: `${scopePrefix}/properties/inBooleansProperty`,
           type: "Control",
@@ -5531,7 +5583,7 @@ export namespace NodeShapeWithInProperties {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       inBooleansProperty: zod.literal(true).optional(),
       inDateTimesProperty: zod.string().datetime().optional(),
       inIrisProperty: zod
@@ -5894,7 +5946,11 @@ export namespace NodeShapeWithHasValueProperties {
           scope: `${scopePrefix}/properties/hasLiteralProperty`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           rule: {
             condition: {
@@ -5916,7 +5972,7 @@ export namespace NodeShapeWithHasValueProperties {
     return zod.object({
       hasIriProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
       hasLiteralProperty: zod.string().optional(),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       type: zod.literal("NodeShapeWithHasValueProperties"),
     });
   }
@@ -6132,7 +6188,11 @@ export namespace InlineNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
           rule: {
@@ -6153,7 +6213,7 @@ export namespace InlineNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty: zod.string(),
       type: zod.literal("InlineNodeShape"),
     });
@@ -6359,7 +6419,11 @@ export namespace ExternNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
           rule: {
@@ -6380,7 +6444,7 @@ export namespace ExternNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty: zod.string(),
       type: zod.literal("ExternNodeShape"),
     });
@@ -6795,7 +6859,11 @@ export namespace NodeShapeWithExternProperties {
           scopePrefix: `${scopePrefix}/properties/externObjectTypeProperty`,
         }),
         { scope: `${scopePrefix}/properties/externProperty`, type: "Control" },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         InlineNodeShape.jsonUiSchema({
           scopePrefix: `${scopePrefix}/properties/inlineProperty`,
         }),
@@ -6820,7 +6888,7 @@ export namespace NodeShapeWithExternProperties {
     return zod.object({
       externObjectTypeProperty: ExternObjectType.jsonZodSchema().optional(),
       externProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       inlineProperty: InlineNodeShape.jsonZodSchema().optional(),
       type: zod.literal("NodeShapeWithExternProperties"),
     });
@@ -7106,7 +7174,11 @@ export namespace NodeShapeWithExplicitRdfTypes {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
           rule: {
@@ -7127,7 +7199,7 @@ export namespace NodeShapeWithExplicitRdfTypes {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty: zod.string(),
       type: zod.literal("NodeShapeWithExplicitRdfTypes"),
     });
@@ -7655,7 +7727,11 @@ export namespace NodeShapeWithDefaultValueProperties {
           scope: `${scopePrefix}/properties/falseBooleanProperty`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/numberProperty`, type: "Control" },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
@@ -7683,7 +7759,7 @@ export namespace NodeShapeWithDefaultValueProperties {
     return zod.object({
       dateTimeProperty: zod.string().datetime(),
       falseBooleanProperty: zod.boolean(),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       numberProperty: zod.number(),
       stringProperty: zod.string(),
       trueBooleanProperty: zod.boolean(),
@@ -7920,7 +7996,11 @@ export namespace IriNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
           rule: {
@@ -7941,7 +8021,7 @@ export namespace IriNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty: zod.string(),
       type: zod.literal("IriNodeShape"),
     });
@@ -8105,7 +8185,11 @@ export namespace InterfaceUnionNodeShapeMember2 {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty2`, type: "Control" },
         {
           rule: {
@@ -8126,7 +8210,7 @@ export namespace InterfaceUnionNodeShapeMember2 {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty2: zod.string(),
       type: zod.literal("InterfaceUnionNodeShapeMember2"),
     });
@@ -8343,7 +8427,11 @@ export namespace InterfaceUnionNodeShapeMember1 {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty1`, type: "Control" },
         {
           rule: {
@@ -8364,7 +8452,7 @@ export namespace InterfaceUnionNodeShapeMember1 {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty1: zod.string(),
       type: zod.literal("InterfaceUnionNodeShapeMember1"),
     });
@@ -8579,7 +8667,11 @@ export namespace InterfaceNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
         {
           rule: {
@@ -8600,7 +8692,7 @@ export namespace InterfaceNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       stringProperty: zod.string(),
       type: zod.literal("InterfaceNodeShape"),
     });
@@ -8851,7 +8943,11 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
           scope: `${scopePrefix}/properties/abcStringProperty`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           rule: {
             condition: {
@@ -8872,7 +8968,7 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
   export function abstractBaseClassWithPropertiesNodeShapeJsonZodSchema() {
     return zod.object({
       abcStringProperty: zod.string(),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       type: zod.enum([
         "ConcreteChildClassNodeShape",
         "ConcreteParentClassNodeShape",
@@ -9029,7 +9125,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
   export function abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema() {
     return AbstractBaseClassWithPropertiesNodeShape.abstractBaseClassWithPropertiesNodeShapeJsonZodSchema().merge(
       zod.object({
-        "@id": zod.string().min(1).describe("Identifier"),
+        "@id": zod.string().min(1),
         type: zod.enum([
           "ConcreteChildClassNodeShape",
           "ConcreteParentClassNodeShape",
@@ -9308,7 +9404,7 @@ export namespace ConcreteParentClassNodeShape {
   export function concreteParentClassNodeShapeJsonZodSchema() {
     return AbstractBaseClassWithoutPropertiesNodeShape.abstractBaseClassWithoutPropertiesNodeShapeJsonZodSchema().merge(
       zod.object({
-        "@id": zod.string().min(1).describe("Identifier"),
+        "@id": zod.string().min(1),
         parentStringProperty: zod.string(),
         type: zod.enum([
           "ConcreteChildClassNodeShape",
@@ -9591,7 +9687,7 @@ export namespace ConcreteChildClassNodeShape {
     return ConcreteParentClassNodeShape.concreteParentClassNodeShapeJsonZodSchema().merge(
       zod.object({
         childStringProperty: zod.string(),
-        "@id": zod.string().min(1).describe("Identifier"),
+        "@id": zod.string().min(1),
         type: zod.literal("ConcreteChildClassNodeShape"),
       }),
     );
@@ -9793,7 +9889,11 @@ export namespace AbstractBaseClassForExternObjectType {
           scope: `${scopePrefix}/properties/abcStringProperty`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           rule: {
             condition: {
@@ -9814,7 +9914,7 @@ export namespace AbstractBaseClassForExternObjectType {
   export function abstractBaseClassForExternObjectTypeJsonZodSchema() {
     return zod.object({
       abcStringProperty: zod.string(),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       type: zod.literal("ExternObjectType"),
     });
   }
