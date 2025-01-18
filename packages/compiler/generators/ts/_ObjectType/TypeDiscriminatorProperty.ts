@@ -112,6 +112,10 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
       : [];
   }
 
+  jsonUiSchemaElement(): Maybe<string> {
+    return Maybe.empty();
+  }
+
   override jsonZodSchema({
     variables,
   }: Parameters<

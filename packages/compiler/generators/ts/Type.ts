@@ -24,17 +24,14 @@ export abstract class Type {
    * JSON-compatible returned by propertyToJsonExpression.
    */
   abstract readonly jsonName: string;
-
   /**
    * Is a value of this type mutable?
    */
   abstract readonly mutable: boolean;
-
   /**
    * Name of the type.
    */
   abstract readonly name: string;
-
   /**
    * Imports necessary to use this type.
    */
@@ -53,6 +50,15 @@ export abstract class Type {
    * A property that discriminates sub-types of this type e.g., termType on RDF/JS terms.
    */
   get discriminatorProperty(): Maybe<Type.DiscriminatorProperty> {
+    return Maybe.empty();
+  }
+
+  /**
+   * Element object for a JSON Forms UI schema.
+   */
+  jsonUiSchemaElement(_parameters: {
+    variables: { scopePrefix: string };
+  }): Maybe<string> {
     return Maybe.empty();
   }
 

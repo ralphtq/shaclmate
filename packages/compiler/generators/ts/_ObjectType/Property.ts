@@ -48,32 +48,22 @@ export abstract class Property<
    * Signature of the property when serialized to JSON (the type of toJsonObjectMember).
    */
   abstract readonly jsonPropertySignature: OptionalKind<PropertySignatureStructure>;
-
-  /**
-   * Control object for a JSON Forms UI schema (https://jsonforms.io/docs/uischema/controls).
-   */
-  abstract readonly jsonUiSchemaControl: string;
-
   /**
    * Is the property reassignable?
    */
   abstract readonly mutable: boolean;
-
   /**
    * TypeScript identifier-safe name of the property.
    */
   readonly name: string;
-
   /**
    * Property type
 .   */
   readonly type: TypeT;
-
   /**
    * Property visibility: private, protected, public.
    */
   readonly visibility: PropertyVisibility;
-
   protected readonly dataFactoryVariable: string;
 
   constructor({
@@ -157,6 +147,11 @@ export abstract class Property<
       parameter: string;
     };
   }): readonly string[];
+
+  /**
+   * Element object (usually a control https://jsonforms.io/docs/uischema/controls) for a JSON Forms UI schema.
+   */
+  abstract jsonUiSchemaElement(parameters: {variables: {scopePrefix: string}}): Maybe<string>;
 
   /**
    * zod Object key: schema pair on the property serialized by toJsonObjectMember.

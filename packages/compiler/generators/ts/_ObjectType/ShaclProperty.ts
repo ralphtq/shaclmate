@@ -194,6 +194,10 @@ export class ShaclProperty extends Property<Type> {
     return statements;
   }
 
+  jsonUiSchemaElement({variables}: Parameters<Property<IdentifierType>["jsonUiSchemaElement"]>[0]): Maybe<string> {
+    return Maybe.of(`{ scope: \`\${${variables.scopePrefix}}/properties/${this.name}, type: "Control" }`);
+  }
+
   override jsonZodSchema(
     parameters: Parameters<Property<Type>["jsonZodSchema"]>[0],
   ): ReturnType<Property<Type>["jsonZodSchema"]> {
