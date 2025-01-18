@@ -208,7 +208,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     Property<IdentifierType>["fromJsonStatements"]
   >[0]): readonly string[] {
     return [
-      `const ${this.name} = ${this.type.propertyFromJsonExpression({ variables: { value: variables.jsonObject } })};`,
+      `const ${this.name} = ${this.type.fromJsonExpression({ variables: { value: variables.jsonObject } })};`,
     ];
   }
 

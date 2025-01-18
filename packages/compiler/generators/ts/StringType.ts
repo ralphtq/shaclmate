@@ -31,6 +31,12 @@ export class StringType extends PrimitiveType<string> {
     return "string";
   }
 
+  override hashStatements({
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    return [`${variables.hasher}.update(${variables.value});`];
+  }
+
   override jsonZodSchema({
     variables,
   }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
@@ -56,15 +62,9 @@ export class StringType extends PrimitiveType<string> {
     return expression;
   }
 
-  override propertyHashStatements({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    return [`${variables.hasher}.update(${variables.value});`];
-  }
-
-  override propertyToRdfExpression({
-    variables,
-  }: Parameters<PrimitiveType<string>["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<PrimitiveType<string>["toRdfExpression"]>[0]): string {
     return this.primitiveDefaultValue
       .map(
         (defaultValue) =>

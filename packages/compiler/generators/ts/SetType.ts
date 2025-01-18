@@ -79,6 +79,50 @@ export class SetType extends Type {
     return this.itemType.useImports;
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
+    let expression = variables.value;
+    if (this.minCount > 0) {
+      expression = `purify.NonEmptyList.fromArray(${expression}).unsafeCoerce()`;
+    }
+    const itemFromJsonExpression = this.itemType.fromJsonExpression({
+      variables: { value: "_item" },
+    });
+    return itemFromJsonExpression === "_item"
+      ? expression
+      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
+  }
+
+  override fromRdfExpression({
+    variables,
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
+    const itemFromRdfExpression = this.itemType.fromRdfExpression({
+      variables: { ...variables, resourceValues: "_item.toValues()" },
+    });
+    if (this.minCount === 0) {
+      return `purify.Either.of([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())])`;
+    }
+    return `purify.NonEmptyList.fromArray([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())]).toEither(new rdfjsResource.Resource.ValueError({ focusResource: ${variables.resource}, message: \`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} is empty\`, predicate: ${variables.predicate} }))`;
+  }
+
+  override hashStatements({
+    depth,
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    return [
+      `for (const _item${depth} of ${variables.value}) { ${this.itemType
+        .hashStatements({
+          depth: depth + 1,
+          variables: {
+            hasher: variables.hasher,
+            value: `_item${depth}`,
+          },
+        })
+        .join("\n")} }`,
+    ];
+  }
+
   override jsonUiSchemaElement(
     parameters: Parameters<Type["jsonUiSchemaElement"]>[0],
   ): ReturnType<Type["jsonUiSchemaElement"]> {
@@ -103,50 +147,6 @@ export class SetType extends Type {
     return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
   }
 
-  override propertyFromJsonExpression({
-    variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    let expression = variables.value;
-    if (this.minCount > 0) {
-      expression = `purify.NonEmptyList.fromArray(${expression}).unsafeCoerce()`;
-    }
-    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
-      variables: { value: "_item" },
-    });
-    return itemFromJsonExpression === "_item"
-      ? expression
-      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
-  }
-
-  override propertyFromRdfExpression({
-    variables,
-  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    const itemFromRdfExpression = this.itemType.propertyFromRdfExpression({
-      variables: { ...variables, resourceValues: "_item.toValues()" },
-    });
-    if (this.minCount === 0) {
-      return `purify.Either.of([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())])`;
-    }
-    return `purify.NonEmptyList.fromArray([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())]).toEither(new rdfjsResource.Resource.ValueError({ focusResource: ${variables.resource}, message: \`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} is empty\`, predicate: ${variables.predicate} }))`;
-  }
-
-  override propertyHashStatements({
-    depth,
-    variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    return [
-      `for (const _item${depth} of ${variables.value}) { ${this.itemType
-        .propertyHashStatements({
-          depth: depth + 1,
-          variables: {
-            hasher: variables.hasher,
-            value: `_item${depth}`,
-          },
-        })
-        .join("\n")} }`,
-    ];
-  }
-
   override propertySparqlGraphPatternExpression(
     parameters: Parameters<Type["propertySparqlGraphPatternExpression"]>[0],
   ): Type.SparqlGraphPatternExpression | Type.SparqlGraphPatternsExpression {
@@ -158,19 +158,17 @@ export class SetType extends Type {
     return this.itemType.propertySparqlGraphPatternExpression(parameters);
   }
 
-  override propertyToJsonExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    return `${variables.value}.map(_item => (${this.itemType.propertyToJsonExpression({ variables: { value: "_item" } })}))`;
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
+    return `${variables.value}.map(_item => (${this.itemType.toJsonExpression({ variables: { value: "_item" } })}))`;
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
-    return `${variables.value}.map((_item) => ${this.itemType.propertyToRdfExpression(
-      {
-        variables: { ...variables, value: "_item" },
-      },
-    )})`;
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
+    return `${variables.value}.map((_item) => ${this.itemType.toRdfExpression({
+      variables: { ...variables, value: "_item" },
+    })})`;
   }
 }

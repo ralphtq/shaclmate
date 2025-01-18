@@ -52,9 +52,9 @@ export class BooleanType extends PrimitiveType<boolean> {
     return expression;
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<PrimitiveType<string>["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<PrimitiveType<string>["toRdfExpression"]>[0]): string {
     return this.primitiveDefaultValue
       .map((defaultValue) => {
         if (defaultValue) {

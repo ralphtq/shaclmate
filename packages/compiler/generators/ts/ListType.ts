@@ -69,6 +69,33 @@ export class ListType extends Type {
     return imports;
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
+    return `${variables.value}.map(_item => (${this.itemType.fromJsonExpression({ variables: { value: "_item" } })}))`;
+  }
+
+  override fromRdfExpression({
+    variables,
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
+    const chain: string[] = [variables.resourceValues];
+    chain.push("head()");
+    chain.push("chain(value => value.toList())");
+    chain.push(
+      `map(values => values.flatMap(_value => ${this.itemType.fromRdfExpression({ variables: { ...variables, resourceValues: "_value.toValues()" } })}.toMaybe().toList()))`,
+    );
+    return chain.join(".");
+  }
+
+  override hashStatements({
+    depth,
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    return [
+      `for (const _element${depth} of ${variables.value}) { ${this.itemType.hashStatements({ depth: depth + 1, variables: { ...variables, value: `_element${depth}` } }).join("\n")} }`,
+    ];
+  }
+
   override jsonUiSchemaElement(
     parameters: Parameters<Type["jsonUiSchemaElement"]>[0],
   ): ReturnType<Type["jsonUiSchemaElement"]> {
@@ -103,50 +130,23 @@ export class ListType extends Type {
     );
   }
 
-  override propertyFromJsonExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    return `${variables.value}.map(_item => (${this.itemType.propertyFromJsonExpression({ variables: { value: "_item" } })}))`;
-  }
-
-  override propertyFromRdfExpression({
-    variables,
-  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    const chain: string[] = [variables.resourceValues];
-    chain.push("head()");
-    chain.push("chain(value => value.toList())");
-    chain.push(
-      `map(values => values.flatMap(_value => ${this.itemType.propertyFromRdfExpression({ variables: { ...variables, resourceValues: "_value.toValues()" } })}.toMaybe().toList()))`,
-    );
-    return chain.join(".");
-  }
-
-  override propertyHashStatements({
-    depth,
-    variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    return [
-      `for (const _element${depth} of ${variables.value}) { ${this.itemType.propertyHashStatements({ depth: depth + 1, variables: { ...variables, value: `_element${depth}` } }).join("\n")} }`,
-    ];
-  }
-
-  override propertyToJsonExpression({
-    variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
     let expression = variables.value;
-    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
+    const itemFromJsonExpression = this.itemType.fromJsonExpression({
       variables: { value: "_item" },
     });
     if (itemFromJsonExpression !== "_item") {
       expression = `${expression}.map(_item => (${itemFromJsonExpression}))`;
     }
 
-    return `${variables.value}.map(_item => (${this.itemType.propertyToJsonExpression({ variables: { value: "_item" } })}))`;
+    return `${variables.value}.map(_item => (${this.itemType.toJsonExpression({ variables: { value: "_item" } })}))`;
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
     let listIdentifier: string;
     let mutableResourceTypeName: string;
     let resourceSetMethodName: string;
@@ -163,7 +163,7 @@ export class ListType extends Type {
           case "sha256":
             listIdentifier = `dataFactory.namedNode(\`urn:shaclmate:list:\${${variables.value}.reduce(
         (_hasher, _item) => {
-          ${this.itemType.propertyHashStatements({ depth: 0, variables: { hasher: "_hasher", value: "_item" } }).join("\n")}
+          ${this.itemType.hashStatements({ depth: 0, variables: { hasher: "_hasher", value: "_item" } }).join("\n")}
           return _hasher;
         },
         sha256.create(),
@@ -197,7 +197,7 @@ export class ListType extends Type {
     
     ${this.toRdfTypes.map((rdfType) => `currentSubListResource.add(dataFactory.namedNode("${rdf.type.value}"), dataFactory.namedNode("${rdfType.value}"))`).join("\n")}
         
-    currentSubListResource.add(dataFactory.namedNode("${rdf.first.value}"), ${this.itemType.propertyToRdfExpression({ variables: { mutateGraph: variables.mutateGraph, predicate: `dataFactory.namedNode("${rdf.first.value}")`, resource: "currentSubListResource", resourceSet: variables.resourceSet, value: "item" } })});
+    currentSubListResource.add(dataFactory.namedNode("${rdf.first.value}"), ${this.itemType.toRdfExpression({ variables: { mutateGraph: variables.mutateGraph, predicate: `dataFactory.namedNode("${rdf.first.value}")`, resource: "currentSubListResource", resourceSet: variables.resourceSet, value: "item" } })});
 
     if (itemIndex + 1 === list.length) {
       currentSubListResource.add(dataFactory.namedNode("${rdf.rest.value}"), dataFactory.namedNode("${rdf.nil.value}"));

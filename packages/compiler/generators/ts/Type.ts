@@ -54,6 +54,40 @@ export abstract class Type {
   }
 
   /**
+   * An expression that converts a JSON object in the same format as the propertyToJsonExpression to a value of this type.
+   */
+  abstract fromJsonExpression(parameters: {
+    variables: {
+      value: string;
+    };
+  }): string;
+
+  /**
+   * An expression that converts a rdfjsResource.Resource.Values to an Either of value/values
+   * of this type for a property.
+   */
+  abstract fromRdfExpression(parameters: {
+    variables: {
+      context: string;
+      languageIn: string;
+      predicate: string;
+      resource: string;
+      resourceValues: string;
+    };
+  }): string;
+
+  /**
+   * Statements that use hasher.update to hash a property value of this type.
+   */
+  abstract hashStatements(parameters: {
+    depth: number;
+    variables: {
+      hasher: string;
+      value: string;
+    };
+  }): readonly string[];
+
+  /**
    * Element object for a JSON Forms UI schema.
    */
   jsonUiSchemaElement(_parameters: {
@@ -84,40 +118,6 @@ export abstract class Type {
   }
 
   /**
-   * An expression that converts a JSON object in the same format as the propertyToJsonExpression to a value of this type.
-   */
-  abstract propertyFromJsonExpression(parameters: {
-    variables: {
-      value: string;
-    };
-  }): string;
-
-  /**
-   * An expression that converts a rdfjsResource.Resource.Values to an Either of value/values
-   * of this type for a property.
-   */
-  abstract propertyFromRdfExpression(parameters: {
-    variables: {
-      context: string;
-      languageIn: string;
-      predicate: string;
-      resource: string;
-      resourceValues: string;
-    };
-  }): string;
-
-  /**
-   * Statements that use hasher.update to hash a property value of this type.
-   */
-  abstract propertyHashStatements(parameters: {
-    depth: number;
-    variables: {
-      hasher: string;
-      value: string;
-    };
-  }): readonly string[];
-
-  /**
    * An sparqlBuilder.GraphPattern expression for a property, typically building a basic graph pattern.
    */
   propertySparqlGraphPatternExpression({
@@ -142,7 +142,7 @@ export abstract class Type {
    * An expression that converts a property value of this type to a JSON-LD compatible value. It can assume the presence
    * of the correct JSON-LD context.
    */
-  abstract propertyToJsonExpression(parameters: {
+  abstract toJsonExpression(parameters: {
     variables: {
       value: string;
     };
@@ -152,7 +152,7 @@ export abstract class Type {
    * An expression that converts a property value of this type to one that that can be .add'd to
    * an rdfjsResource.Resource.
    */
-  abstract propertyToRdfExpression(parameters: {
+  abstract toRdfExpression(parameters: {
     variables: {
       predicate: string;
       mutateGraph: string;

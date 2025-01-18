@@ -70,6 +70,41 @@ export class OptionType extends Type {
     return [...this.itemType.useImports, Import.PURIFY];
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
+    const expression = `purify.Maybe.fromNullable(${variables.value})`;
+    const itemFromJsonExpression = this.itemType.fromJsonExpression({
+      variables: { value: "_item" },
+    });
+    return itemFromJsonExpression === "_item"
+      ? expression
+      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
+  }
+
+  override fromRdfExpression(
+    parameters: Parameters<Type["fromRdfExpression"]>[0],
+  ): string {
+    return `purify.Either.of(${this.itemType.fromRdfExpression(parameters)}.toMaybe())`;
+  }
+
+  override hashStatements({
+    depth,
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    return [
+      `${variables.value}.ifJust((_value${depth}) => { ${this.itemType
+        .hashStatements({
+          depth: depth + 1,
+          variables: {
+            hasher: variables.hasher,
+            value: `_value${depth}`,
+          },
+        })
+        .join("\n")} })`,
+    ];
+  }
+
   override jsonUiSchemaElement(
     parameters: Parameters<Type["jsonUiSchemaElement"]>[0],
   ): ReturnType<Type["jsonUiSchemaElement"]> {
@@ -90,41 +125,6 @@ export class OptionType extends Type {
     return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
   }
 
-  override propertyFromJsonExpression({
-    variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    const expression = `purify.Maybe.fromNullable(${variables.value})`;
-    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
-      variables: { value: "_item" },
-    });
-    return itemFromJsonExpression === "_item"
-      ? expression
-      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
-  }
-
-  override propertyFromRdfExpression(
-    parameters: Parameters<Type["propertyFromRdfExpression"]>[0],
-  ): string {
-    return `purify.Either.of(${this.itemType.propertyFromRdfExpression(parameters)}.toMaybe())`;
-  }
-
-  override propertyHashStatements({
-    depth,
-    variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    return [
-      `${variables.value}.ifJust((_value${depth}) => { ${this.itemType
-        .propertyHashStatements({
-          depth: depth + 1,
-          variables: {
-            hasher: variables.hasher,
-            value: `_value${depth}`,
-          },
-        })
-        .join("\n")} })`,
-    ];
-  }
-
   override propertySparqlGraphPatternExpression(
     parameters: Parameters<Type["propertySparqlGraphPatternExpression"]>[0],
   ): Type.SparqlGraphPatternExpression {
@@ -133,16 +133,16 @@ export class OptionType extends Type {
     );
   }
 
-  override propertyToJsonExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    return `${variables.value}.map(_item => (${this.itemType.propertyToJsonExpression({ variables: { value: "_item" } })})).extract()`;
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
+    return `${variables.value}.map(_item => (${this.itemType.toJsonExpression({ variables: { value: "_item" } })})).extract()`;
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
-    const itemTypeToRdfExpression = this.itemType.propertyToRdfExpression({
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
+    const itemTypeToRdfExpression = this.itemType.toRdfExpression({
       variables: { ...variables, value: "_value" },
     });
     if (itemTypeToRdfExpression === "_value") {

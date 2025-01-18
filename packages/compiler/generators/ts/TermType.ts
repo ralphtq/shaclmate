@@ -123,34 +123,9 @@ export class TermType<
     return imports;
   }
 
-  override jsonZodSchema({
+  override fromJsonExpression({
     variables,
-  }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
-    invariant(
-      this.nodeKinds.has("Literal") &&
-        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
-      "IdentifierType and LiteralType should override",
-    );
-    return `${variables.zod}.discriminatedUnion("termType", [${[
-      ...this.nodeKinds,
-    ]
-      .map((nodeKind) => {
-        switch (nodeKind) {
-          case "BlankNode":
-          case "NamedNode":
-            return `${variables.zod}.object({ "@id": ${variables.zod}.string().min(1), termType: ${variables.zod}.literal("${nodeKind}") })`;
-          case "Literal":
-            return `${variables.zod}.object({ "@language": ${variables.zod}.string().optional(), "@type": ${variables.zod}.string().optional(), "@value": ${variables.zod}.string(), termType: ${variables.zod}.literal("Literal") })`;
-          default:
-            throw new RangeError(nodeKind);
-        }
-      })
-      .join(", ")}])`;
-  }
-
-  override propertyFromJsonExpression({
-    variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
     invariant(
       this.nodeKinds.has("Literal") &&
         (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
@@ -177,9 +152,9 @@ export class TermType<
     }, "");
   }
 
-  override propertyFromRdfExpression({
+  override fromRdfExpression({
     variables,
-  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
     const chain: string[] = [
       this.propertyFilterRdfResourceValuesExpression({ variables }),
     ];
@@ -211,13 +186,38 @@ export class TermType<
     return chain.join(".");
   }
 
-  override propertyHashStatements({
+  override hashStatements({
     variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
     return [
       `${variables.hasher}.update(${variables.value}.termType);`,
       `${variables.hasher}.update(${variables.value}.value);`,
     ];
+  }
+
+  override jsonZodSchema({
+    variables,
+  }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
+    invariant(
+      this.nodeKinds.has("Literal") &&
+        (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
+      "IdentifierType and LiteralType should override",
+    );
+    return `${variables.zod}.discriminatedUnion("termType", [${[
+      ...this.nodeKinds,
+    ]
+      .map((nodeKind) => {
+        switch (nodeKind) {
+          case "BlankNode":
+          case "NamedNode":
+            return `${variables.zod}.object({ "@id": ${variables.zod}.string().min(1), termType: ${variables.zod}.literal("${nodeKind}") })`;
+          case "Literal":
+            return `${variables.zod}.object({ "@language": ${variables.zod}.string().optional(), "@type": ${variables.zod}.string().optional(), "@value": ${variables.zod}.string(), termType: ${variables.zod}.literal("Literal") })`;
+          default:
+            throw new RangeError(nodeKind);
+        }
+      })
+      .join(", ")}])`;
   }
 
   override propertySparqlGraphPatternExpression({
@@ -237,9 +237,9 @@ export class TermType<
     return new Type.SparqlGraphPatternExpression(expression);
   }
 
-  override propertyToJsonExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
     invariant(
       this.nodeKinds.has("Literal") &&
         (this.nodeKinds.has("BlankNode") || this.nodeKinds.has("NamedNode")),
@@ -266,9 +266,9 @@ export class TermType<
     }, "");
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
     return this.defaultValue
       .map(
         (defaultValue) =>
@@ -284,7 +284,7 @@ export class TermType<
    */
   protected propertyFilterRdfResourceValuesExpression({
     variables,
-  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
     return variables.resourceValues;
   }
 

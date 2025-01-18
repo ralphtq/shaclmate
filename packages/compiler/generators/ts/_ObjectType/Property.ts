@@ -136,7 +136,7 @@ export abstract class Property<
    * Statements to hash this property using a hasher instance.
    */
   abstract hashStatements(
-    parameters: Parameters<Type["propertyHashStatements"]>[0],
+    parameters: Parameters<Type["hashStatements"]>[0],
   ): readonly string[];
 
   /**
@@ -164,9 +164,30 @@ export abstract class Property<
   };
 
   /**
+   * An array of SPARQL.js CONSTRUCT template triples for this property as strings (so they can incorporate runtime calls).
+   */
+  abstract sparqlConstructTemplateTriples(parameters: {
+    variables: { variablePrefix: string };
+  }): readonly string[];
+
+  /**
    * Optional graph pattern expression to retrieve this property.
    */
   abstract sparqlGraphPatternExpression(): Maybe<string>;
+
+  /**
+   * An array of SPARQL.js where patterns for this property as strings (so they can incorporate runtime calls).
+   */
+  abstract sparqlWherePatterns(parameters: {
+    variables: { variablePrefix: string };
+  }): readonly string[];
+
+  /**
+   * Return an array of SPARQL.js where patterns for this property as strings (so they can incorporate runtime calls).
+   */
+  abstract sparqlWherePatterns(parameters: {
+    variables: { variablePrefix: string };
+  }): readonly string[];
 
   /**
    * property: expression to serialize a property to a JSON object member.
@@ -180,7 +201,7 @@ export abstract class Property<
    */
   abstract toRdfStatements(parameters: {
     variables: Omit<
-      Parameters<Type["propertyToRdfExpression"]>[0]["variables"],
+      Parameters<Type["toRdfExpression"]>[0]["variables"],
       "predicate"
     >;
   }): readonly string[];

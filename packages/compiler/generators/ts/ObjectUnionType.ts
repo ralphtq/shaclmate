@@ -405,6 +405,30 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     };
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
+    // Assumes the JSON object has been recursively validated already.
+    return `${this.name}.fromJson(${variables.value}).unsafeCoerce()`;
+  }
+
+  override fromRdfExpression({
+    variables,
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, resource: _resource }))`;
+  }
+
+  override hashStatements({
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    switch (this.memberTypes[0].declarationType) {
+      case "class":
+        return [`${variables.value}.hash(${variables.hasher});`];
+      case "interface":
+        return [`${this.name}.hash(${variables.value}, ${variables.hasher});`];
+    }
+  }
+
   override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
     return `${this.name}.jsonZodSchema()`;
   }
@@ -421,33 +445,9 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     );
   }
 
-  override propertyFromJsonExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    // Assumes the JSON object has been recursively validated already.
-    return `${this.name}.fromJson(${variables.value}).unsafeCoerce()`;
-  }
-
-  override propertyFromRdfExpression({
-    variables,
-  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, resource: _resource }))`;
-  }
-
-  override propertyHashStatements({
-    variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    switch (this.memberTypes[0].declarationType) {
-      case "class":
-        return [`${variables.value}.hash(${variables.hasher});`];
-      case "interface":
-        return [`${this.name}.hash(${variables.value}, ${variables.hasher});`];
-    }
-  }
-
-  override propertyToJsonExpression({
-    variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
     switch (this.memberTypes[0].declarationType) {
       case "class":
         return `${variables.value}.toJson()`;
@@ -459,9 +459,9 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     }
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
     const options = `{ mutateGraph: ${variables.mutateGraph}, resourceSet: ${variables.resourceSet} }`;
     switch (this.memberTypes[0].declarationType) {
       case "class":

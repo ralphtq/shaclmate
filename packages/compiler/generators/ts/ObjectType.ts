@@ -317,6 +317,36 @@ export class ObjectType extends DeclaredType {
     }
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
+    // Assumes the JSON object has been recursively validated already.
+    return `${this.name}.fromJson(${variables.value}).unsafeCoerce()`;
+  }
+
+  override fromRdfExpression({
+    variables,
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
+    // Ignore the rdf:type if the instance of this type is the object of another property.
+    // Instead, assume the property has the correct range.
+    // This also accommodates the case where the object of a property is a dangling identifier that's not the
+    // subject of any statements.
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
+  }
+
+  override hashStatements({
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    switch (this.declarationType) {
+      case "class":
+        return [`${variables.value}.hash(${variables.hasher});`];
+      case "interface":
+        return [
+          `${this.name}.${this.hashFunctionName}(${variables.value}, ${variables.hasher});`,
+        ];
+    }
+  }
+
   override jsonUiSchemaElement({
     variables,
   }: { variables: { scopePrefix: string } }): Maybe<string> {
@@ -347,58 +377,6 @@ export class ObjectType extends DeclaredType {
     );
   }
 
-  override propertyFromJsonExpression({
-    variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    // Assumes the JSON object has been recursively validated already.
-    return `${this.name}.fromJson(${variables.value}).unsafeCoerce()`;
-  }
-
-  override propertyFromRdfExpression({
-    variables,
-  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    // Ignore the rdf:type if the instance of this type is the object of another property.
-    // Instead, assume the property has the correct range.
-    // This also accommodates the case where the object of a property is a dangling identifier that's not the
-    // subject of any statements.
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
-  }
-
-  override propertyHashStatements({
-    variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    switch (this.declarationType) {
-      case "class":
-        return [`${variables.value}.hash(${variables.hasher});`];
-      case "interface":
-        return [
-          `${this.name}.${this.hashFunctionName}(${variables.value}, ${variables.hasher});`,
-        ];
-    }
-  }
-
-  override propertyToJsonExpression({
-    variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    switch (this.declarationType) {
-      case "class":
-        return `${variables.value}.toJson()`;
-      case "interface":
-        return `${this.name}.toJson(${variables.value})`;
-    }
-  }
-
-  override propertyToRdfExpression({
-    variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
-    switch (this.declarationType) {
-      case "class":
-        return `${variables.value}.toRdf({ mutateGraph: ${variables.mutateGraph}, resourceSet: ${variables.resourceSet} })`;
-      case "interface":
-        return `${this.name}.toRdf(${variables.value}, { mutateGraph: ${variables.mutateGraph}, resourceSet: ${variables.resourceSet} })`;
-    }
-  }
-
   rdfjsResourceType(options?: { mutable?: boolean }): {
     readonly mutable: boolean;
     readonly name: string;
@@ -413,6 +391,28 @@ export class ObjectType extends DeclaredType {
       name: `rdfjsResource.${options?.mutable ? "Mutable" : ""}Resource${this.identifierType.isNamedNodeKind ? "<rdfjs.NamedNode>" : ""}`,
       named: this.identifierType.isNamedNodeKind,
     };
+  }
+
+  override toJsonExpression({
+    variables,
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
+    switch (this.declarationType) {
+      case "class":
+        return `${variables.value}.toJson()`;
+      case "interface":
+        return `${this.name}.toJson(${variables.value})`;
+    }
+  }
+
+  override toRdfExpression({
+    variables,
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
+    switch (this.declarationType) {
+      case "class":
+        return `${variables.value}.toRdf({ mutateGraph: ${variables.mutateGraph}, resourceSet: ${variables.resourceSet} })`;
+      case "interface":
+        return `${this.name}.toRdf(${variables.value}, { mutateGraph: ${variables.mutateGraph}, resourceSet: ${variables.resourceSet} })`;
+    }
   }
 
   protected ensureAtMostOneSuperObjectType() {

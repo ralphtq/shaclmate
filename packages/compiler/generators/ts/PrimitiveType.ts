@@ -36,21 +36,21 @@ export abstract class PrimitiveType<
     return [];
   }
 
-  override propertyFromJsonExpression({
+  override fromJsonExpression({
     variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
     return variables.value;
   }
 
-  override propertyHashStatements({
+  override hashStatements({
     variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
     return [`${variables.hasher}.update(${variables.value}.toString());`];
   }
 
-  override propertyToJsonExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
     return variables.value;
   }
 

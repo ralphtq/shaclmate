@@ -176,6 +176,66 @@ ${this.memberTypeTraits
     }
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
+    return this.ternaryExpression({
+      memberTypeExpression: (memberTypeTraits) => {
+        let typeExpression = memberTypeTraits.memberType.fromJsonExpression({
+          variables: {
+            value: memberTypeTraits.payload(variables.value),
+          },
+        });
+        if (this._discriminatorProperty.kind === "synthetic") {
+          typeExpression = `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${typeExpression} }`;
+        }
+        return typeExpression;
+      },
+      variables,
+    });
+  }
+
+  override fromRdfExpression(
+    parameters: Parameters<Type["fromRdfExpression"]>[0],
+  ): string {
+    return this.memberTypeTraits.reduce((expression, memberTypeTraits) => {
+      let typeExpression =
+        memberTypeTraits.memberType.fromRdfExpression(parameters);
+      if (this._discriminatorProperty.kind === "synthetic") {
+        typeExpression = `${typeExpression}.map(value => ({ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value }) as (${this.name}))`;
+      }
+      typeExpression = `(${typeExpression} as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
+      return expression.length > 0
+        ? `${expression}.altLazy(() => ${typeExpression})`
+        : typeExpression;
+    }, "");
+  }
+
+  override hashStatements({
+    depth,
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    const caseBlocks: string[] = [];
+    for (const memberTypeTraits of this.memberTypeTraits) {
+      for (const discriminatorPropertyValue of memberTypeTraits.discriminatorPropertyValues) {
+        caseBlocks.push(
+          `case "${discriminatorPropertyValue}": { ${memberTypeTraits.memberType
+            .hashStatements({
+              depth: depth + 1,
+              variables: {
+                hasher: variables.hasher,
+                value: `${memberTypeTraits.payload(variables.value)}`,
+              },
+            })
+            .join("\n")}; break; }`,
+        );
+      }
+    }
+    return [
+      `switch (${variables.value}.${this._discriminatorProperty.name}) { ${caseBlocks.join("\n")} }`,
+    ];
+  }
+
   override jsonZodSchema({
     variables,
   }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
@@ -196,67 +256,6 @@ ${this.memberTypeTraits
     }
   }
 
-  override propertyFromJsonExpression({
-    variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    return this.ternaryExpression({
-      memberTypeExpression: (memberTypeTraits) => {
-        let typeExpression =
-          memberTypeTraits.memberType.propertyFromJsonExpression({
-            variables: {
-              value: memberTypeTraits.payload(variables.value),
-            },
-          });
-        if (this._discriminatorProperty.kind === "synthetic") {
-          typeExpression = `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${typeExpression} }`;
-        }
-        return typeExpression;
-      },
-      variables,
-    });
-  }
-
-  override propertyFromRdfExpression(
-    parameters: Parameters<Type["propertyFromRdfExpression"]>[0],
-  ): string {
-    return this.memberTypeTraits.reduce((expression, memberTypeTraits) => {
-      let typeExpression =
-        memberTypeTraits.memberType.propertyFromRdfExpression(parameters);
-      if (this._discriminatorProperty.kind === "synthetic") {
-        typeExpression = `${typeExpression}.map(value => ({ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value }) as (${this.name}))`;
-      }
-      typeExpression = `(${typeExpression} as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
-      return expression.length > 0
-        ? `${expression}.altLazy(() => ${typeExpression})`
-        : typeExpression;
-    }, "");
-  }
-
-  override propertyHashStatements({
-    depth,
-    variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    const caseBlocks: string[] = [];
-    for (const memberTypeTraits of this.memberTypeTraits) {
-      for (const discriminatorPropertyValue of memberTypeTraits.discriminatorPropertyValues) {
-        caseBlocks.push(
-          `case "${discriminatorPropertyValue}": { ${memberTypeTraits.memberType
-            .propertyHashStatements({
-              depth: depth + 1,
-              variables: {
-                hasher: variables.hasher,
-                value: `${memberTypeTraits.payload(variables.value)}`,
-              },
-            })
-            .join("\n")}; break; }`,
-        );
-      }
-    }
-    return [
-      `switch (${variables.value}.${this._discriminatorProperty.name}) { ${caseBlocks.join("\n")} }`,
-    ];
-  }
-
   override propertySparqlGraphPatternExpression(
     parameters: Parameters<Type["propertySparqlGraphPatternExpression"]>[0],
   ): Type.SparqlGraphPatternExpression | Type.SparqlGraphPatternsExpression {
@@ -272,14 +271,14 @@ ${this.memberTypeTraits
     );
   }
 
-  override propertyToJsonExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
     switch (this._discriminatorProperty.kind) {
       case "shared":
         return this.ternaryExpression({
           memberTypeExpression: (memberTypeTraits) =>
-            memberTypeTraits.memberType.propertyToJsonExpression({
+            memberTypeTraits.memberType.toJsonExpression({
               variables: {
                 ...variables,
                 value: memberTypeTraits.payload(variables.value),
@@ -290,7 +289,7 @@ ${this.memberTypeTraits
       case "synthetic":
         return this.ternaryExpression({
           memberTypeExpression: (memberTypeTraits) =>
-            `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${memberTypeTraits.memberType.propertyToJsonExpression(
+            `{ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value: ${memberTypeTraits.memberType.toJsonExpression(
               {
                 variables: {
                   ...variables,
@@ -303,12 +302,12 @@ ${this.memberTypeTraits
     }
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
     return this.ternaryExpression({
       memberTypeExpression: (memberTypeTraits) =>
-        memberTypeTraits.memberType.propertyToRdfExpression({
+        memberTypeTraits.memberType.toRdfExpression({
           variables: {
             ...variables,
             value: memberTypeTraits.payload(variables.value),
