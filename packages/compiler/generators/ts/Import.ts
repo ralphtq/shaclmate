@@ -60,4 +60,10 @@ export namespace Import {
     moduleSpecifier: "zod",
     namedImports: [{ alias: "zod", name: "z" }],
   };
+
+  export const ZOD_TO_JSON_SCHEMA: Import = {
+    kind: StructureKind.ImportDeclaration,
+    moduleSpecifier: "zod-to-json-schema",
+    namedImports: [{ name: "zodToJsonSchema" }],
+  };
 }

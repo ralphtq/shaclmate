@@ -108,6 +108,7 @@ const packages: readonly Package[] = [
         "rdfjs-resource": externalDependencyVersions["rdfjs-resource"],
         uuid: "^9.0.1",
         zod: "3.24.1",
+        "zod-to-json-schema": "3.24.1",
       },
     },
     linkableDependencies: [

@@ -10,7 +10,6 @@ const dataFactory = N3.DataFactory;
 import { NonEmptyList } from "purify-ts";
 import { MutableResourceSet } from "rdfjs-resource";
 import { type FC, useMemo, useState } from "react";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import * as generated from "./generated.js";
 
 const classes = {
@@ -52,9 +51,7 @@ const initialData = generated.FormNodeShape.toJson(
   }),
 );
 
-const jsonSchema = zodToJsonSchema(
-  generated.FormNodeShape.jsonZodSchema(),
-) as any;
+const jsonSchema = generated.FormNodeShape.jsonSchema();
 const jsonSchemaString = JSON.stringify(jsonSchema, null, 2);
 const jsonUiSchema = generated.FormNodeShape.jsonUiSchema();
 const jsonUiSchemaString = JSON.stringify(jsonUiSchema, null, 2);
@@ -119,7 +116,7 @@ const App: FC = () => {
         <Typography variant={"h4"}>Rendered form</Typography>
         <div style={classes.demoform}>
           <JsonForms
-            schema={jsonSchema}
+            schema={jsonSchema as any}
             uischema={jsonUiSchema}
             data={data}
             renderers={renderers}

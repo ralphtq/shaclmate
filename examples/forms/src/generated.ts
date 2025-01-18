@@ -5,6 +5,7 @@ import * as purify from "purify-ts";
 import * as purifyHelpers from "purify-ts-helpers";
 import * as rdfjsResource from "rdfjs-resource";
 import { z as zod } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
 export interface NestedNodeShape {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   /**
@@ -138,11 +139,19 @@ export namespace NestedNodeShape {
     return NestedNodeShape.propertiesFromRdf(parameters);
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         {
           label: "Required string",
           scope: `${scopePrefix}/properties/requiredStringProperty`,
@@ -167,7 +176,7 @@ export namespace NestedNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       requiredStringProperty: zod.string(),
       type: zod.literal("NestedNodeShape"),
     });
@@ -650,6 +659,10 @@ export namespace FormNodeShape {
     return FormNodeShape.propertiesFromRdf(parameters);
   }
 
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
   export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
@@ -659,7 +672,11 @@ export namespace FormNodeShape {
           scope: `${scopePrefix}/properties/emptyStringSetProperty`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/@id`, type: "Control" },
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
         NestedNodeShape.jsonUiSchema({
           scopePrefix: `${scopePrefix}/properties/nestedObjectProperty`,
         }),
@@ -703,7 +720,7 @@ export namespace FormNodeShape {
   export function jsonZodSchema() {
     return zod.object({
       emptyStringSetProperty: zod.string().array(),
-      "@id": zod.string().min(1).describe("Identifier"),
+      "@id": zod.string().min(1),
       nestedObjectProperty: NestedNodeShape.jsonZodSchema(),
       nonEmptyStringSetProperty: zod.string().array().nonempty().min(1),
       optionalStringProperty: zod.string().optional(),

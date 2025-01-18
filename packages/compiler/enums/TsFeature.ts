@@ -4,6 +4,7 @@ export type TsFeature =
   | "fromJson"
   | "fromRdf"
   | "hash"
+  | "jsonSchema"
   | "jsonUiSchema"
   | "toJson"
   | "toRdf"
@@ -16,6 +17,7 @@ export namespace TsFeature {
     "fromJson",
     "fromRdf",
     "hash",
+    "jsonSchema",
     "jsonUiSchema",
     "toJson",
     "toRdf",
