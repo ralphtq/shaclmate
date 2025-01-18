@@ -1,6 +1,6 @@
 {
-  "name": "jsonforms-react-seed",
-  "version": "0.1.1",
+  "name": "shaclmate-forms-example",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@jsonforms/core": "3.5.1",
@@ -11,8 +11,7 @@
     "@mui/material": "^6.1.0",
     "@mui/x-date-pickers": "^7.17.0",
     "react": "^18",
-    "react-dom": "^18",
-    "zod-to-json-schema": "^3.24.1"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/react": "^18",
