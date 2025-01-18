@@ -6,6 +6,7 @@ export type TsFeature =
   | "hash"
   | "jsonSchema"
   | "jsonUiSchema"
+  | "sparql"
   | "toJson"
   | "toRdf"
   | "sparql-graph-patterns";
@@ -19,6 +20,7 @@ export namespace TsFeature {
     "hash",
     "jsonSchema",
     "jsonUiSchema",
+    "sparql",
     "toJson",
     "toRdf",
     "sparql-graph-patterns",
