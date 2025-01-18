@@ -5,9 +5,11 @@ import {
 import { JsonForms } from "@jsonforms/react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { DataFactory as dataFactory } from "n3";
+import * as N3 from "n3";
+const dataFactory = N3.DataFactory;
 import { NonEmptyList } from "purify-ts";
-import { type FC, useState } from "react";
+import { MutableResourceSet } from "rdfjs-resource";
+import { type FC, useMemo, useState } from "react";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import * as generated from "./generated.js";
 
@@ -45,6 +47,7 @@ const initialData = generated.FormNodeShape.toJson(
       requiredStringProperty: "required/nested",
     }),
     nonEmptyStringSetProperty: NonEmptyList.fromArray(["test"]).unsafeCoerce(),
+    requiredIntegerProperty: 1,
     requiredStringProperty: "required/form",
   }),
 );
@@ -52,12 +55,35 @@ const initialData = generated.FormNodeShape.toJson(
 const jsonSchema = zodToJsonSchema(
   generated.FormNodeShape.jsonZodSchema(),
 ) as any;
+const jsonSchemaString = JSON.stringify(jsonSchema, null, 2);
 const jsonUiSchema = generated.FormNodeShape.jsonUiSchema();
+const jsonUiSchemaString = JSON.stringify(jsonUiSchema, null, 2);
 
 const renderers = materialRenderers;
 
 const App: FC = () => {
   const [data, setData] = useState<object>(initialData);
+  const dataJsonString = useMemo(() => JSON.stringify(data, null, 2), [data]);
+  const dataRdfString = useMemo(
+    () =>
+      generated.FormNodeShape.fromJson(data)
+        .mapLeft((error) => error.toString())
+        .map((instance) => {
+          const store = new N3.Store();
+          generated.FormNodeShape.toRdf(instance, {
+            mutateGraph: dataFactory.defaultGraph(),
+            resourceSet: new MutableResourceSet({
+              dataFactory,
+              dataset: store,
+            }),
+          });
+          return new N3.Writer({ format: "N-Triples" }).quadsToString([
+            ...store,
+          ]);
+        })
+        .extract(),
+    [data],
+  );
 
   return (
     <Grid
@@ -69,15 +95,24 @@ const App: FC = () => {
       <Grid item sm={6}>
         <Typography variant={"h4"}>Data (JSON)</Typography>
         <div style={classes.dataContent}>
-          <pre id="data">{JSON.stringify(data, null, 2)}</pre>
+          <pre id="dataJson">{dataJsonString}</pre>
+        </div>
+        <Typography variant={"h4"}>Data (RDF)</Typography>
+        <div style={classes.dataContent}>
+          <pre
+            id="dataRdf"
+            style={{ padding: "0.5rem", whiteSpace: "pre-wrap" }}
+          >
+            {dataRdfString}
+          </pre>
         </div>
         <Typography variant={"h4"}>JSON schema</Typography>
         <div style={classes.dataContent}>
-          <pre id="jsonSchema">{JSON.stringify(jsonSchema, null, 2)}</pre>
+          <pre id="jsonSchema">{jsonSchemaString}</pre>
         </div>
         <Typography variant={"h4"}>JSON Forms schema</Typography>
         <div style={classes.dataContent}>
-          <pre id="jsonUiSchema">{JSON.stringify(jsonUiSchema, null, 2)}</pre>
+          <pre id="jsonUiSchema">{jsonUiSchemaString}</pre>
         </div>
       </Grid>
       <Grid item sm={6}>

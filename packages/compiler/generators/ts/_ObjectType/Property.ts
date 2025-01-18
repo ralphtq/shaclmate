@@ -151,7 +151,9 @@ export abstract class Property<
   /**
    * Element object (usually a control https://jsonforms.io/docs/uischema/controls) for a JSON Forms UI schema.
    */
-  abstract jsonUiSchemaElement(parameters: {variables: {scopePrefix: string}}): Maybe<string>;
+  abstract jsonUiSchemaElement(parameters: {
+    variables: { scopePrefix: string };
+  }): Maybe<string>;
 
   /**
    * zod Object key: schema pair on the property serialized by toJsonObjectMember.

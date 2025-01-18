@@ -80,7 +80,7 @@ export class SetType extends Type {
   }
 
   override jsonUiSchemaElement(
-      parameters: Parameters<Type["jsonUiSchemaElement"]>[0],
+    parameters: Parameters<Type["jsonUiSchemaElement"]>[0],
   ): ReturnType<Type["jsonUiSchemaElement"]> {
     return this.itemType.jsonUiSchemaElement(parameters);
   }

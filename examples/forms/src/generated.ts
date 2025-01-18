@@ -65,9 +65,7 @@ export namespace NestedNodeShape {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -260,6 +258,10 @@ export interface FormNodeShape {
    */
   readonly optionalStringProperty: purify.Maybe<string>;
   /**
+   * Required integer
+   */
+  readonly requiredIntegerProperty: number;
+  /**
    * Required string
    */
   readonly requiredStringProperty: string;
@@ -273,6 +275,7 @@ export namespace FormNodeShape {
     readonly nestedObjectProperty: NestedNodeShape;
     readonly nonEmptyStringSetProperty: purify.NonEmptyList<string>;
     readonly optionalStringProperty?: purify.Maybe<string> | string;
+    readonly requiredIntegerProperty: number;
     readonly requiredStringProperty: string;
   }): FormNodeShape {
     let emptyStringSetProperty: readonly string[];
@@ -300,6 +303,7 @@ export namespace FormNodeShape {
       optionalStringProperty = parameters.optionalStringProperty as never;
     }
 
+    const requiredIntegerProperty = parameters.requiredIntegerProperty;
     const requiredStringProperty = parameters.requiredStringProperty;
     const type = "FormNodeShape" as const;
     return {
@@ -308,6 +312,7 @@ export namespace FormNodeShape {
       nestedObjectProperty,
       nonEmptyStringSetProperty,
       optionalStringProperty,
+      requiredIntegerProperty,
       requiredStringProperty,
       type,
     };
@@ -385,6 +390,18 @@ export namespace FormNodeShape {
       )
       .chain(() =>
         purifyHelpers.Equatable.strictEquals(
+          left.requiredIntegerProperty,
+          right.requiredIntegerProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: left,
+          right: right,
+          propertyName: "requiredIntegerProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
           left.requiredStringProperty,
           right.requiredStringProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -408,9 +425,7 @@ export namespace FormNodeShape {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       emptyStringSetProperty: readonly string[];
@@ -418,6 +433,7 @@ export namespace FormNodeShape {
       nestedObjectProperty: NestedNodeShape;
       nonEmptyStringSetProperty: purify.NonEmptyList<string>;
       optionalStringProperty: purify.Maybe<string>;
+      requiredIntegerProperty: number;
       requiredStringProperty: string;
       type: "FormNodeShape";
     }
@@ -441,6 +457,7 @@ export namespace FormNodeShape {
     const optionalStringProperty = purify.Maybe.fromNullable(
       _jsonObject["optionalStringProperty"],
     );
+    const requiredIntegerProperty = _jsonObject["requiredIntegerProperty"];
     const requiredStringProperty = _jsonObject["requiredStringProperty"];
     const type = "FormNodeShape" as const;
     return purify.Either.of({
@@ -449,6 +466,7 @@ export namespace FormNodeShape {
       nestedObjectProperty,
       nonEmptyStringSetProperty,
       optionalStringProperty,
+      requiredIntegerProperty,
       requiredStringProperty,
       type,
     });
@@ -479,6 +497,7 @@ export namespace FormNodeShape {
       nestedObjectProperty: NestedNodeShape;
       nonEmptyStringSetProperty: purify.NonEmptyList<string>;
       optionalStringProperty: purify.Maybe<string>;
+      requiredIntegerProperty: number;
       requiredStringProperty: string;
       type: "FormNodeShape";
     }
@@ -580,6 +599,22 @@ export namespace FormNodeShape {
     }
 
     const optionalStringProperty = _optionalStringPropertyEither.unsafeCoerce();
+    const _requiredIntegerPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      number
+    > = _resource
+      .values(
+        dataFactory.namedNode("http://example.com/requiredIntegerProperty"),
+        { unique: true },
+      )
+      .head()
+      .chain((_value) => _value.toNumber());
+    if (_requiredIntegerPropertyEither.isLeft()) {
+      return _requiredIntegerPropertyEither;
+    }
+
+    const requiredIntegerProperty =
+      _requiredIntegerPropertyEither.unsafeCoerce();
     const _requiredStringPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       string
@@ -602,6 +637,7 @@ export namespace FormNodeShape {
       nestedObjectProperty,
       nonEmptyStringSetProperty,
       optionalStringProperty,
+      requiredIntegerProperty,
       requiredStringProperty,
       type,
     });
@@ -634,6 +670,10 @@ export namespace FormNodeShape {
           type: "Control",
         },
         {
+          scope: `${scopePrefix}/properties/requiredIntegerProperty`,
+          type: "Control",
+        },
+        {
           scope: `${scopePrefix}/properties/requiredStringProperty`,
           type: "Control",
         },
@@ -661,6 +701,7 @@ export namespace FormNodeShape {
       nestedObjectProperty: NestedNodeShape.jsonZodSchema(),
       nonEmptyStringSetProperty: zod.string().array().nonempty().min(1),
       optionalStringProperty: zod.string().optional(),
+      requiredIntegerProperty: zod.number(),
       requiredStringProperty: zod.string(),
       type: zod.literal("FormNodeShape"),
     });
@@ -683,6 +724,7 @@ export namespace FormNodeShape {
     _formNodeShape.optionalStringProperty.ifJust((_value0) => {
       _hasher.update(_value0);
     });
+    _hasher.update(_formNodeShape.requiredIntegerProperty.toString());
     _hasher.update(_formNodeShape.requiredStringProperty);
     return _hasher;
   }
@@ -735,6 +777,13 @@ export namespace FormNodeShape {
       this.add(
         sparqlBuilder.GraphPattern.basic(
           this.subject,
+          dataFactory.namedNode("http://example.com/requiredIntegerProperty"),
+          this.variable("RequiredIntegerProperty"),
+        ),
+      );
+      this.add(
+        sparqlBuilder.GraphPattern.basic(
+          this.subject,
           dataFactory.namedNode("http://example.com/requiredStringProperty"),
           this.variable("RequiredStringProperty"),
         ),
@@ -748,6 +797,7 @@ export namespace FormNodeShape {
     readonly nestedObjectProperty: ReturnType<typeof NestedNodeShape.toJson>;
     readonly nonEmptyStringSetProperty: purify.NonEmptyList<string>;
     readonly optionalStringProperty: string | undefined;
+    readonly requiredIntegerProperty: number;
     readonly requiredStringProperty: string;
     readonly type: "FormNodeShape";
   } {
@@ -769,6 +819,7 @@ export namespace FormNodeShape {
         optionalStringProperty: _formNodeShape.optionalStringProperty
           .map((_item) => _item)
           .extract(),
+        requiredIntegerProperty: _formNodeShape.requiredIntegerProperty,
         requiredStringProperty: _formNodeShape.requiredStringProperty,
         type: _formNodeShape.type,
       } satisfies ReturnType<typeof FormNodeShape.toJson>),
@@ -808,6 +859,10 @@ export namespace FormNodeShape {
     _resource.add(
       dataFactory.namedNode("http://example.com/optionalStringProperty"),
       _formNodeShape.optionalStringProperty,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/requiredIntegerProperty"),
+      _formNodeShape.requiredIntegerProperty,
     );
     _resource.add(
       dataFactory.namedNode("http://example.com/requiredStringProperty"),
