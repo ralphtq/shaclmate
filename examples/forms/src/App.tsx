@@ -3,11 +3,12 @@ import {
   materialRenderers,
 } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { DataFactory as dataFactory } from "n3";
+import * as N3 from "n3";
+const dataFactory = N3.DataFactory;
 import { NonEmptyList } from "purify-ts";
+import { MutableResourceSet } from "rdfjs-resource";
 import { type FC, useMemo, useState } from "react";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import * as generated from "./generated.js";
@@ -38,55 +39,88 @@ const classes = {
   },
 };
 
-const initialData = generated.NodeShapeWithPropertyCardinalities.toJson(
-  generated.NodeShapeWithPropertyCardinalities.create({
-    identifier: dataFactory.namedNode("http://example.com/test"),
+const initialData = generated.FormNodeShape.toJson(
+  generated.FormNodeShape.create({
+    identifier: dataFactory.namedNode("http://example.com/form"),
+    nestedObjectProperty: generated.NestedNodeShape.create({
+      identifier: dataFactory.namedNode("http://example.com/nested"),
+      requiredStringProperty: "required/nested",
+    }),
     nonEmptyStringSetProperty: NonEmptyList.fromArray(["test"]).unsafeCoerce(),
-    requiredStringProperty: "test",
+    requiredIntegerProperty: 1,
+    requiredStringProperty: "required/form",
   }),
 );
+
+const jsonSchema = zodToJsonSchema(
+  generated.FormNodeShape.jsonZodSchema(),
+) as any;
+const jsonSchemaString = JSON.stringify(jsonSchema, null, 2);
+const jsonUiSchema = generated.FormNodeShape.jsonUiSchema();
+const jsonUiSchemaString = JSON.stringify(jsonUiSchema, null, 2);
 
 const renderers = materialRenderers;
 
 const App: FC = () => {
   const [data, setData] = useState<object>(initialData);
-  const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
+  const dataJsonString = useMemo(() => JSON.stringify(data, null, 2), [data]);
+  const dataRdfString = useMemo(
+    () =>
+      generated.FormNodeShape.fromJson(data)
+        .mapLeft((error) => error.toString())
+        .map((instance) => {
+          const store = new N3.Store();
+          generated.FormNodeShape.toRdf(instance, {
+            mutateGraph: dataFactory.defaultGraph(),
+            resourceSet: new MutableResourceSet({
+              dataFactory,
+              dataset: store,
+            }),
+          });
+          return new N3.Writer({ format: "N-Triples" }).quadsToString([
+            ...store,
+          ]);
+        })
+        .extract(),
+    [data],
+  );
 
-  const clearData = () => {
-    setData({});
-  };
   return (
     <Grid
       container
       justifyContent={"center"}
-      spacing={1}
+      spacing={4}
       style={classes.container}
     >
       <Grid item sm={6}>
-        <Typography variant={"h4"}>Bound data</Typography>
+        <Typography variant={"h4"}>Data (JSON)</Typography>
         <div style={classes.dataContent}>
-          <pre id="boundData">{stringifiedData}</pre>
+          <pre id="dataJson">{dataJsonString}</pre>
         </div>
-        <Button
-          style={classes.resetButton}
-          onClick={clearData}
-          color="primary"
-          variant="contained"
-          data-testid="clear-data"
-        >
-          Clear data
-        </Button>
+        <Typography variant={"h4"}>Data (RDF)</Typography>
+        <div style={classes.dataContent}>
+          <pre
+            id="dataRdf"
+            style={{ padding: "0.5rem", whiteSpace: "pre-wrap" }}
+          >
+            {dataRdfString}
+          </pre>
+        </div>
+        <Typography variant={"h4"}>JSON schema</Typography>
+        <div style={classes.dataContent}>
+          <pre id="jsonSchema">{jsonSchemaString}</pre>
+        </div>
+        <Typography variant={"h4"}>JSON Forms schema</Typography>
+        <div style={classes.dataContent}>
+          <pre id="jsonUiSchema">{jsonUiSchemaString}</pre>
+        </div>
       </Grid>
       <Grid item sm={6}>
         <Typography variant={"h4"}>Rendered form</Typography>
         <div style={classes.demoform}>
           <JsonForms
-            schema={
-              zodToJsonSchema(
-                generated.NodeShapeWithPropertyCardinalities.jsonZodSchema(),
-              ) as any
-            }
-            // uischema={uischema}
+            schema={jsonSchema}
+            uischema={jsonUiSchema}
             data={data}
             renderers={renderers}
             cells={materialCells}

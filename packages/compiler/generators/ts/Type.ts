@@ -24,12 +24,10 @@ export abstract class Type {
    * JSON-compatible returned by propertyToJsonExpression.
    */
   abstract readonly jsonName: string;
-
   /**
    * Is a value of this type mutable?
    */
   abstract readonly mutable: boolean;
-
   /**
    * Name of the type.
    */
@@ -56,7 +54,16 @@ export abstract class Type {
   }
 
   /**
-   * Zod schema for propertyToJsonExpression.
+   * Element object for a JSON Forms UI schema.
+   */
+  jsonUiSchemaElement(_parameters: {
+    variables: { scopePrefix: string };
+  }): Maybe<string> {
+    return Maybe.empty();
+  }
+
+  /**
+   * Zod schema for the JSON version of the type (the result of propertyToJson).
    */
   abstract jsonZodSchema(parameters: { variables: { zod: string } }): string;
 

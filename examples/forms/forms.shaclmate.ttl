@@ -11,34 +11,60 @@
     shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
     a owl:Ontology .
 
-:NodeShapeWithPropertyCardinalities
-    shaclmate:name "NodeShapeWithPropertyCardinalities" ;
+:FormNodeShape
+    shaclmate:name "FormNodeShape" ;
     a sh:NodeShape ;
-    rdfs:comment "Shape that has properties with different cardinalities" ;
+    rdfs:label "Form" ;
     sh:property [
-        rdfs:comment "Required: maxCount=minCount=1" ;
+        rdfs:label "Required string" ;
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
         sh:name "requiredStringProperty" ;
         sh:path :requiredStringProperty
     ], [
-        rdfs:comment "Option: maxCount=1 minCount=0" ;
+        rdfs:label "Optional string" ;
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
         sh:minCount 0 ;
         sh:name "optionalStringProperty" ;
         sh:path :optionalStringProperty
     ], [
-        rdfs:comment "Set: minCount implicitly=0, no maxCount or maxCount > 1" ;
+        rdfs:label "Empty string set" ;
         sh:datatype xsd:string ;
         sh:name "emptyStringSetProperty" ;
         sh:path :emptyStringSetProperty
     ], [
-        rdfs:comment "Set: minCount implicitly=1, no maxCount or maxCount > 1" ;
+        rdfs:label "Non-empty string set" ;
         sh:datatype xsd:string ;
         sh:minCount 1 ;
         sh:name "nonEmptyStringSetProperty" ;
         sh:path :nonEmptyStringSetProperty
+    ], [
+        rdfs:label "Required integer" ;
+        sh:datatype xsd:integer ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "requiredIntegerProperty" ;
+        sh:path :requiredIntegerProperty
+    ], [
+        rdfs:label "Nested object" ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "nestedObjectProperty" ;
+        sh:node :NestedNodeShape ;
+        sh:path :nestedObjectProperty
+    ] .
+
+:NestedNodeShape
+    shaclmate:name "NestedNodeShape" ;
+    a sh:NodeShape ;
+    sh:property [
+        rdfs:label "Required string" ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "requiredStringProperty" ;
+        sh:path :requiredStringProperty
     ] .
 
