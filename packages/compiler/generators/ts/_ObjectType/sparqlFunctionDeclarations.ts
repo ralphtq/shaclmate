@@ -1,3 +1,4 @@
+import { camelCase } from "change-case";
 import { type FunctionDeclarationStructure, StructureKind } from "ts-morph";
 import type { ObjectType } from "../ObjectType.js";
 
@@ -14,6 +15,63 @@ export function sparqlFunctionDeclarations(
 
   const variables = { subject: "subject", variablePrefix: "variablePrefix" };
   return [
+    {
+      isExported: true,
+      kind: StructureKind.Function,
+      name: "sparqlConstructQuery",
+      parameters: [
+        {
+          hasQuestionToken: true,
+          name: "parameters",
+          type: '{ prefixes?: { [prefix: string]: string }; subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where">',
+        },
+      ],
+      returnType: "sparqljs.ConstructQuery",
+      statements: [
+        `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable("${camelCase(this.name)}");`,
+        `return { ...parameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: ${this.name}.sparqlConstructTemplateTriples({ subject }).concat(), type: "query", where: ${this.name}.sparqlWherePatterns({ subject }).concat() };`,
+      ],
+    },
+    {
+      isExported: true,
+      kind: StructureKind.Function,
+      name: "sparqlConstructQueryString",
+      parameters: [
+        {
+          hasQuestionToken: true,
+          name: "parameters",
+          type: '{ subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where"> & sparqljs.GeneratorOptions',
+        },
+      ],
+      returnType: "string",
+      statements: [
+        `return new sparqljs.Generator(parameters).stringify(${this.name}.sparqlConstructQuery(parameters));`,
+      ],
+    },
+    {
+      isExported: true,
+      kind: StructureKind.Function,
+      name: "sparqlConstructTemplateTriples",
+      parameters: [
+        {
+          name: "{ subject, variablePrefix: variablePrefixParameter }",
+          type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+        },
+      ],
+      returnType: "readonly sparqljs.Triple[]",
+      statements: [
+        "const variablePrefix = variablePrefixParameter ?? subject.value;",
+        `return [${[
+          ...this.parentObjectTypes.map(
+            (parentObjectType) =>
+              `...${parentObjectType.name}.sparqlConstructTemplateTriples({ subject, variablePrefix })`,
+          ),
+          this.ownProperties.flatMap((property) =>
+            property.sparqlConstructTemplateTriples({ variables }),
+          ),
+        ].join(", ")}];`,
+      ],
+    },
     {
       isExported: true,
       kind: StructureKind.Function,

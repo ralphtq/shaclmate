@@ -31,8 +31,8 @@ export namespace Import {
   };
 
   export const RDFJS_TYPES: Import = {
-    kind: StructureKind.ImportDeclaration,
     isTypeOnly: true,
+    kind: StructureKind.ImportDeclaration,
     moduleSpecifier: "@rdfjs/types",
     namespaceImport: "rdfjs",
   };

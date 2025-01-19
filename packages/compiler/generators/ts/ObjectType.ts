@@ -402,7 +402,10 @@ export class ObjectType extends DeclaredType {
     variables,
   }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
     return [
-      `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer(variables)})`,
+      `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer({
+        subject: `${this.dataFactoryVariable}.variable(${variables.subject})`,
+        variablePrefix: variables.variablePrefix,
+      })})`,
     ];
   }
 

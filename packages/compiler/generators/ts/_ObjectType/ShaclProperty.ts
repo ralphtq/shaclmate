@@ -231,7 +231,7 @@ export class ShaclProperty extends Property<Type> {
       objectInitializer({
         subject: variables.subject,
         predicate: this.rdfjsTermExpression(this.path),
-        object: `this.dataFactoryVariable}.variable(${object})`,
+        object: `${this.dataFactoryVariable}.variable(${object})`,
       }),
       ...this.type.sparqlConstructTemplateTriples({
         variables: { subject: object, variablePrefix: object },
