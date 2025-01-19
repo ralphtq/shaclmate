@@ -11,7 +11,6 @@ import { Memoize } from "typescript-memoize";
 import type { IdentifierType } from "../IdentifierType.js";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
-import { objectInitializer } from "../objectInitializer.js";
 import { tsComment } from "../tsComment.js";
 import { Property } from "./Property.js";
 
@@ -227,17 +226,15 @@ export class ShaclProperty extends Property<Type> {
     Property<Type>["sparqlConstructTemplateTriples"]
   >[0]): readonly string[] {
     const objectString = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
-    const objectVariable = `${this.dataFactoryVariable}.variable(${objectString})`;
-    return [
-      objectInitializer({
-        subject: variables.subject,
+    return this.type.sparqlConstructTemplateTriples({
+      context: "property",
+      variables: {
+        object: `${this.dataFactoryVariable}.variable(${objectString})`,
         predicate: this.rdfjsTermExpression(this.path),
-        object: objectVariable,
-      }),
-      ...this.type.sparqlConstructTemplateTriples({
-        variables: { subject: objectVariable, variablePrefix: objectString },
-      }),
-    ];
+        subject: variables.subject,
+        variablePrefix: objectString,
+      },
+    });
   }
 
   override sparqlGraphPatternExpression(): Maybe<string> {
@@ -259,20 +256,15 @@ export class ShaclProperty extends Property<Type> {
     variables,
   }: Parameters<Property<Type>["sparqlWherePatterns"]>[0]): readonly string[] {
     const objectString = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
-    const objectVariable = `${this.dataFactoryVariable}.variable(${objectString})`;
-    return [
-      objectInitializer({
-        triples: `[${objectInitializer({
-          subject: variables.subject,
-          predicate: this.rdfjsTermExpression(this.path),
-          object: objectVariable,
-        })}]`,
-        type: '"bgp"',
-      }),
-      ...this.type.sparqlWherePatterns({
-        variables: { subject: objectVariable, variablePrefix: objectString },
-      }),
-    ];
+    return this.type.sparqlWherePatterns({
+      context: "property",
+      variables: {
+        object: `${this.dataFactoryVariable}.variable(${objectString})`,
+        predicate: this.rdfjsTermExpression(this.path),
+        subject: variables.subject,
+        variablePrefix: objectString,
+      },
+    });
   }
 
   override toJsonObjectMember(

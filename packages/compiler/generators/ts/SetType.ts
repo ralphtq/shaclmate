@@ -162,7 +162,9 @@ export class SetType extends Type {
   override sparqlConstructTemplateTriples(
     parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
   ): readonly string[] {
-    return this.itemType.sparqlConstructTemplateTriples(parameters);
+    return super
+      .sparqlConstructTemplateTriples(parameters)
+      .concat(this.itemType.sparqlConstructTemplateTriples(parameters));
   }
 
   override sparqlWherePatterns(
@@ -171,12 +173,13 @@ export class SetType extends Type {
     const itemTypeSparqlWherePatterns =
       this.itemType.sparqlWherePatterns(parameters);
     if (itemTypeSparqlWherePatterns.length === 0) {
-      return [];
+      return super.sparqlWherePatterns(parameters);
     }
     if (this.minCount > 0) {
       return itemTypeSparqlWherePatterns;
     }
     return [
+      ...super.sparqlWherePatterns(parameters),
       `{ patterns: [${itemTypeSparqlWherePatterns.join(", ")}], type: "optional" }`,
     ];
   }

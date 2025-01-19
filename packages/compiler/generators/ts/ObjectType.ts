@@ -399,19 +399,55 @@ export class ObjectType extends DeclaredType {
   }
 
   override sparqlConstructTemplateTriples({
+    context,
     variables,
   }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
-    return [
-      `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer(variables)})`,
-    ];
+    switch (context) {
+      case "property":
+        return [
+          ...super.sparqlConstructTemplateTriples({ context, variables }),
+          ...this.sparqlConstructTemplateTriples({
+            context: "type",
+            variables: {
+              subject: variables.object,
+              variablePrefix: variables.variablePrefix,
+            },
+          }),
+        ];
+      case "type":
+        return [
+          `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer({
+            subject: variables.subject,
+            variablePrefix: variables.variablePrefix,
+          })})`,
+        ];
+    }
   }
 
   override sparqlWherePatterns({
+    context,
     variables,
   }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
-    return [
-      `...${this.name}.sparqlWherePatterns(${objectInitializer(variables)})`,
-    ];
+    switch (context) {
+      case "property":
+        return [
+          ...super.sparqlWherePatterns({ context, variables }),
+          ...this.sparqlWherePatterns({
+            context: "type",
+            variables: {
+              subject: variables.object,
+              variablePrefix: variables.variablePrefix,
+            },
+          }),
+        ];
+      case "type":
+        return [
+          `...${this.name}.sparqlWherePatterns(${objectInitializer({
+            subject: variables.subject,
+            variablePrefix: variables.variablePrefix,
+          })})`,
+        ];
+    }
   }
 
   override toJsonExpression({

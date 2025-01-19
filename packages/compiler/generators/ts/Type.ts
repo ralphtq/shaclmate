@@ -2,6 +2,7 @@ import type { BlankNode, Literal, NamedNode, Variable } from "@rdfjs/types";
 import { Maybe } from "purify-ts";
 import type { Import } from "./Import.js";
 import { rdfjsTermExpression } from "./_ObjectType/rdfjsTermExpression.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 /**
  * Abstract base class for generating TypeScript expressions and statemenst in the TypeScript generator.
@@ -141,24 +142,87 @@ export abstract class Type {
   /**
    * An array of SPARQL.js CONSTRUCT template triples for a value of this type, as strings (so they can incorporate runtime calls).
    *
-   * This method is called by an ObjectType.Property. The property includes a basic graph pattern (subject, property path, property object).
-   * The property calls this method to get additional triples in which the propertyObject is the subject.
-   * For example, if the type is a nested object, it would include (propertyObject, nestedPredicate, nestedObject) triples.
+   * This method is called in two contexts:
+   * (1) By an ObjectType.Property. The property expects a basic graph pattern (subject, property path, property object). The property calls this method to get additional triples in which the propertyObject is the subject. For example, if the type is a nested object, it would include (propertyObject, nestedPredicate, nestedObject) triples.
+   * (2) By another Type. For example, ListType calls this method to with the item variable as a subject in order to chain additional patterns on items.
    *
    * Term types with no additional properties should return an empty array.
    */
-  abstract sparqlConstructTemplateTriples(parameters: {
-    variables: { subject: string; variablePrefix: string };
-  }): readonly string[];
+  sparqlConstructTemplateTriples({
+    context,
+    variables,
+  }:
+    | {
+        context: "property";
+        variables: {
+          object: string;
+          predicate: string;
+          subject: string;
+          variablePrefix: string;
+        };
+      }
+    | {
+        context: "type";
+        variables: {
+          subject: string;
+          variablePrefix: string;
+        };
+      }): readonly string[] {
+    switch (context) {
+      case "property":
+        return [
+          objectInitializer({
+            object: variables.object,
+            predicate: variables.predicate,
+            subject: variables.subject,
+          }),
+        ];
+      case "type":
+        return [];
+    }
+  }
 
   /**
    * An array of SPARQL.js where patterns for a value of this type, as strings (so they can incorporate runtime calls).
    *
    * See note in sparqlConstructTemplateTriples re: how this method is used.
    */
-  abstract sparqlWherePatterns(parameters: {
-    variables: { subject: string; variablePrefix: string };
-  }): readonly string[];
+  sparqlWherePatterns({
+    context,
+    variables,
+  }:
+    | {
+        context: "property";
+        variables: {
+          object: string;
+          predicate: string;
+          subject: string;
+          variablePrefix: string;
+        };
+      }
+    | {
+        context: "type";
+        variables: {
+          subject: string;
+          variablePrefix: string;
+        };
+      }): readonly string[] {
+    switch (context) {
+      case "property":
+        return [
+          objectInitializer({
+            triples: `[${objectInitializer({
+              object: variables.object,
+              predicate: variables.predicate,
+              subject: variables.subject,
+            })}]`,
+            type: '"bgp"',
+          }),
+        ];
+      case "type":
+        return [];
+    }
+  }
 
   /**
    * An expression that converts a value of this type to a JSON-LD compatible value. It can assume the presence

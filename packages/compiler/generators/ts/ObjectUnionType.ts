@@ -301,7 +301,6 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       return [];
     }
 
-    const variables = { subject: "subject", variablePrefix: "variablePrefix" };
     return [
       {
         isExported: true,
@@ -350,12 +349,9 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         statements: [
           "const variablePrefix = variablePrefixParameter ?? subject.value;",
           `return [${this.memberTypes
-            .reduce(
-              (array, memberType) =>
-                array.concat(
-                  memberType.sparqlConstructTemplateTriples({ variables }),
-                ),
-              [] as string[],
+            .map(
+              (memberType) =>
+                `...${memberType.name}.sparqlConstructTemplateTriples({ subject, variablePrefix }).concat()`,
             )
             .join(", ")}];`,
         ],
@@ -376,7 +372,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
           `return [{ patterns: [${this.memberTypes
             .map((memberType) =>
               objectInitializer({
-                patterns: `[${memberType.sparqlWherePatterns({ variables }).join(", ")}]`,
+                patterns: `${memberType.name}.sparqlWherePatterns({ subject, variablePrefix }).concat()`,
                 type: '"group"',
               }),
             )

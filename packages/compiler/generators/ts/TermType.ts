@@ -238,12 +238,22 @@ export class TermType<
     return new Type.SparqlGraphPatternExpression(expression);
   }
 
-  override sparqlConstructTemplateTriples(): readonly string[] {
-    return [];
-  }
-
-  override sparqlWherePatterns(): readonly string[] {
-    return [];
+  override sparqlWherePatterns(
+    parameters: Parameters<Type["sparqlWherePatterns"]>[0],
+  ): readonly string[] {
+    switch (parameters.context) {
+      case "property":
+        return this.defaultValue
+          .map(
+            () =>
+              [
+                `{ patterns: [${super.sparqlWherePatterns(parameters).join(", ")}], type: "optional" }`,
+              ] as readonly string[],
+          )
+          .orDefault(super.sparqlWherePatterns(parameters));
+      case "type":
+        return super.sparqlWherePatterns(parameters);
+    }
   }
 
   override toJsonExpression({
