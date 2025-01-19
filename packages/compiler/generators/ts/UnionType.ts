@@ -3,6 +3,7 @@ import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
 import type { Import } from "./Import.js";
 import { Type } from "./Type.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 interface MemberTypeTraits {
   readonly discriminatorPropertyValues: readonly string[];
@@ -284,8 +285,26 @@ ${this.memberTypeTraits
   override sparqlWherePatterns(
     parameters: Parameters<Type["sparqlWherePatterns"]>[0],
   ): readonly string[] {
+    let haveEmptyGroup = false; // Only need one empty group
     return [
-      `{ patterns: [${this.memberTypes.flatMap((memberType) => memberType.sparqlWherePatterns(parameters)).join(", ")}], type: "union" }`,
+      `{ patterns: [${this.memberTypes
+        .flatMap((memberType) => {
+          const groupPatterns = memberType.sparqlWherePatterns(parameters);
+          if (groupPatterns.length === 0) {
+            if (haveEmptyGroup) {
+              return [];
+            }
+            haveEmptyGroup = true;
+            return [objectInitializer({ patterns: "[]", type: '"group"' })];
+          }
+          return [
+            objectInitializer({
+              patterns: `[${groupPatterns.join(", ")}]`,
+              type: '"group"',
+            }),
+          ];
+        })
+        .join(", ")}], type: "union" }`,
     ];
   }
 

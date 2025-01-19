@@ -1,7 +1,7 @@
 import type { BlankNode, Literal, NamedNode, Variable } from "@rdfjs/types";
 import { Maybe } from "purify-ts";
 import type { Import } from "./Import.js";
-import { rdfjsTermExpression } from "./_ObjectType/rdfjsTermExpression";
+import { rdfjsTermExpression } from "./_ObjectType/rdfjsTermExpression.js";
 
 /**
  * Abstract base class for generating TypeScript expressions and statemenst in the TypeScript generator.

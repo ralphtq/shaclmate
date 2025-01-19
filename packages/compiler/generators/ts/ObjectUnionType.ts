@@ -15,6 +15,7 @@ import type { Import } from "./Import.js";
 import type { ObjectType } from "./ObjectType.js";
 import { Type } from "./Type.js";
 import { hasherTypeConstraint } from "./_ObjectType/hashFunctionOrMethodDeclaration.js";
+import { objectInitializer } from "./objectInitializer.js";
 import { tsComment } from "./tsComment.js";
 
 /**
@@ -446,20 +447,27 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
   }
 
   override sparqlConstructTemplateTriples(
-      parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
+    parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
   ): readonly string[] {
     return this.memberTypes.reduce(
-        (array, memberType) =>
-            array.concat(memberType.sparqlConstructTemplateTriples(parameters)),
-        [] as string[],
+      (array, memberType) =>
+        array.concat(memberType.sparqlConstructTemplateTriples(parameters)),
+      [] as string[],
     );
   }
 
   override sparqlWherePatterns(
-      parameters: Parameters<Type["sparqlWherePatterns"]>[0],
+    parameters: Parameters<Type["sparqlWherePatterns"]>[0],
   ): readonly string[] {
     return [
-      `{ patterns: [${this.memberTypes.flatMap((memberType) => memberType.sparqlWherePatterns(parameters)).join(", ")}], type: "union" }`,
+      `{ patterns: [${this.memberTypes
+        .map((memberType) =>
+          objectInitializer({
+            patterns: `[${memberType.sparqlWherePatterns(parameters).join(", ")}]`,
+            type: '"group"',
+          }),
+        )
+        .join(", ")}], type: "union" }`,
     ];
   }
 
