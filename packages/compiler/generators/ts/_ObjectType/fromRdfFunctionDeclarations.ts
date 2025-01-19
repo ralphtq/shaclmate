@@ -39,7 +39,7 @@ export function fromRdfFunctionDeclarations(
 
   this.fromRdfType.ifJust((rdfType) => {
     propertiesFromRdfFunctionStatements.push(
-      `if (!${variables.ignoreRdfType} && !${variables.resource}.isInstanceOf(${this.rdfjsTermExpression(rdfType)})) { return purify.Left(new rdfjsResource.Resource.ValueError(${objectInitializer({ focusResource: variables.resource, message: "`${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} has unexpected RDF type`", predicate: this.rdfjsTermExpression(rdfType) })})); }`,
+      `if (!${variables.ignoreRdfType} && !${variables.resource}.isInstanceOf(${this.rdfjsTermExpression(rdfType)})) { return purify.Left(new rdfjsResource.Resource.ValueError(${objectInitializer({ focusResource: variables.resource, message: `\`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} has unexpected RDF type\``, predicate: this.rdfjsTermExpression(rdfType) })})); }`,
     );
   });
 

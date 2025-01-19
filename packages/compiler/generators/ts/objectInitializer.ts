@@ -7,9 +7,9 @@ export function objectInitializer(
         return [];
       }
       if (propertyName === propertyValue) {
-        return propertyName;
+        return [propertyName];
       }
-      return `${propertyName}: ${propertyValue}`;
+      return [`${propertyName}: ${propertyValue}`];
     })
     .join(", ")} }`;
 }
