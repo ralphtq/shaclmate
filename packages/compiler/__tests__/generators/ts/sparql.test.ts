@@ -1,4 +1,3 @@
-import * as sparqlBuilder from "@kos-kit/sparql-builder";
 import type { NamedNode, Quad } from "@rdfjs/types";
 import N3, { DataFactory as dataFactory } from "n3";
 import * as oxigraph from "oxigraph";
@@ -29,17 +28,11 @@ describe("sparql", () => {
         toRdfQuads.push(quad);
       }
 
-      const constructQuery = new sparqlBuilder.ConstructQueryBuilder()
-        .addGraphPatterns(
-          new harness.sparqlGraphPatternsClass(
-            sparqlBuilder.GraphPattern.variable("subject"),
-          ),
-        )
-        .build();
+      const constructQueryString = harness.sparqlConstructQueryString();
 
       // Add to a Dataset to deduplicate the quads
       const constructResultDataset = new N3.Store(
-        oxigraphStore.query(constructQuery) as Quad[],
+        oxigraphStore.query(constructQueryString) as Quad[],
       );
       const constructInstance = harness
         .fromRdf({
