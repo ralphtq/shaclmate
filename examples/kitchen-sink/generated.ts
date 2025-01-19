@@ -262,7 +262,6 @@ export namespace UuidV4IriNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -272,17 +271,6 @@ export namespace UuidV4IriNodeShape {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
@@ -292,7 +280,6 @@ export namespace UuidV4IriNodeShape {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -302,22 +289,6 @@ export namespace UuidV4IriNodeShape {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -600,7 +571,6 @@ export namespace UnionNodeShapeMember2 {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -610,17 +580,6 @@ export namespace UnionNodeShapeMember2 {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty2`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty2"),
@@ -630,7 +589,6 @@ export namespace UnionNodeShapeMember2 {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -640,22 +598,6 @@ export namespace UnionNodeShapeMember2 {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -938,7 +880,6 @@ export namespace UnionNodeShapeMember1 {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -948,17 +889,6 @@ export namespace UnionNodeShapeMember1 {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty1`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty1"),
@@ -968,7 +898,6 @@ export namespace UnionNodeShapeMember1 {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -978,22 +907,6 @@ export namespace UnionNodeShapeMember1 {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -1276,7 +1189,6 @@ export namespace Sha256IriNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -1286,17 +1198,6 @@ export namespace Sha256IriNodeShape {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
@@ -1306,7 +1207,6 @@ export namespace Sha256IriNodeShape {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -1316,22 +1216,6 @@ export namespace Sha256IriNodeShape {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -1617,7 +1501,6 @@ export namespace NonClassNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -1627,17 +1510,6 @@ export namespace NonClassNodeShape {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
@@ -1647,7 +1519,6 @@ export namespace NonClassNodeShape {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -1657,22 +1528,6 @@ export namespace NonClassNodeShape {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -2441,7 +2296,6 @@ export namespace NodeShapeWithUnionProperties {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -2451,17 +2305,6 @@ export namespace NodeShapeWithUnionProperties {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}OrLiteralsProperty`),
         predicate: dataFactory.namedNode(
@@ -2515,7 +2358,6 @@ export namespace NodeShapeWithUnionProperties {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -2525,22 +2367,6 @@ export namespace NodeShapeWithUnionProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -3561,7 +3387,6 @@ export namespace NodeShapeWithTermProperties {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -3571,17 +3396,6 @@ export namespace NodeShapeWithTermProperties {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}BooleanProperty`),
         predicate: dataFactory.namedNode("http://example.com/booleanProperty"),
@@ -3656,7 +3470,6 @@ export namespace NodeShapeWithTermProperties {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -3666,22 +3479,6 @@ export namespace NodeShapeWithTermProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -4328,7 +4125,6 @@ export namespace NodeShapeWithPropertyVisibilities {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -4338,17 +4134,6 @@ export namespace NodeShapeWithPropertyVisibilities {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}PrivateProperty`),
         predicate: dataFactory.namedNode("http://example.com/privateProperty"),
@@ -4370,7 +4155,6 @@ export namespace NodeShapeWithPropertyVisibilities {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -4380,22 +4164,6 @@ export namespace NodeShapeWithPropertyVisibilities {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -4983,7 +4751,6 @@ export namespace NodeShapeWithPropertyCardinalities {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -4993,17 +4760,6 @@ export namespace NodeShapeWithPropertyCardinalities {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}EmptyStringSetProperty`),
         predicate: dataFactory.namedNode(
@@ -5061,7 +4817,6 @@ export namespace NodeShapeWithPropertyCardinalities {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -5071,22 +4826,6 @@ export namespace NodeShapeWithPropertyCardinalities {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -5688,7 +5427,6 @@ export namespace NodeShapeWithMutableProperties {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -5698,17 +5436,6 @@ export namespace NodeShapeWithMutableProperties {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}MutableListProperty`),
         predicate: dataFactory.namedNode(
@@ -5741,7 +5468,6 @@ export namespace NodeShapeWithMutableProperties {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -5751,22 +5477,6 @@ export namespace NodeShapeWithMutableProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -6209,7 +5919,6 @@ export namespace NodeShapeWithListProperty {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -6219,17 +5928,6 @@ export namespace NodeShapeWithListProperty {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}ListProperty`),
         predicate: dataFactory.namedNode("http://example.com/listProperty"),
@@ -6239,7 +5937,6 @@ export namespace NodeShapeWithListProperty {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -6249,22 +5946,6 @@ export namespace NodeShapeWithListProperty {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -6808,7 +6489,6 @@ export namespace NodeShapeWithLanguageInProperties {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -6818,17 +6498,6 @@ export namespace NodeShapeWithLanguageInProperties {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}LanguageInProperty`),
         predicate: dataFactory.namedNode(
@@ -6857,7 +6526,6 @@ export namespace NodeShapeWithLanguageInProperties {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -6867,22 +6535,6 @@ export namespace NodeShapeWithLanguageInProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -7694,7 +7346,6 @@ export namespace NodeShapeWithInProperties {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -7704,17 +7355,6 @@ export namespace NodeShapeWithInProperties {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}InBooleansProperty`),
         predicate: dataFactory.namedNode(
@@ -7785,7 +7425,6 @@ export namespace NodeShapeWithInProperties {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -7795,22 +7434,6 @@ export namespace NodeShapeWithInProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -8387,7 +8010,6 @@ export namespace NodeShapeWithHasValueProperties {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -8397,17 +8019,6 @@ export namespace NodeShapeWithHasValueProperties {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}HasIriProperty`),
         predicate: dataFactory.namedNode("http://example.com/hasIriProperty"),
@@ -8436,7 +8047,6 @@ export namespace NodeShapeWithHasValueProperties {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -8446,22 +8056,6 @@ export namespace NodeShapeWithHasValueProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -8803,7 +8397,6 @@ export namespace InlineNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -8813,17 +8406,6 @@ export namespace InlineNodeShape {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
@@ -8833,7 +8415,6 @@ export namespace InlineNodeShape {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -8843,22 +8424,6 @@ export namespace InlineNodeShape {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -9141,7 +8706,6 @@ export namespace ExternNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -9151,17 +8715,6 @@ export namespace ExternNodeShape {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
@@ -9171,7 +8724,6 @@ export namespace ExternNodeShape {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -9181,22 +8733,6 @@ export namespace ExternNodeShape {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -9697,7 +9233,6 @@ export namespace NodeShapeWithExternProperties {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -9707,17 +9242,6 @@ export namespace NodeShapeWithExternProperties {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(
           `${variablePrefix}ExternObjectTypeProperty`,
@@ -9770,7 +9294,6 @@ export namespace NodeShapeWithExternProperties {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -9780,22 +9303,6 @@ export namespace NodeShapeWithExternProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -10934,7 +10441,6 @@ export namespace NodeShapeWithDefaultValueProperties {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -10944,17 +10450,6 @@ export namespace NodeShapeWithDefaultValueProperties {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
         predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
@@ -10988,7 +10483,6 @@ export namespace NodeShapeWithDefaultValueProperties {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -10998,22 +10492,6 @@ export namespace NodeShapeWithDefaultValueProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         patterns: [
           {
@@ -11403,7 +10881,6 @@ export namespace IriNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -11413,17 +10890,6 @@ export namespace IriNodeShape {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
@@ -11433,7 +10899,6 @@ export namespace IriNodeShape {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -11443,22 +10908,6 @@ export namespace IriNodeShape {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -11716,7 +11165,6 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -11726,17 +11174,6 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty2`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty2"),
@@ -11746,7 +11183,6 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -11756,22 +11192,6 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -12070,7 +11490,6 @@ export namespace InterfaceUnionNodeShapeMember1 {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -12080,17 +11499,6 @@ export namespace InterfaceUnionNodeShapeMember1 {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty1`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty1"),
@@ -12100,7 +11508,6 @@ export namespace InterfaceUnionNodeShapeMember1 {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -12110,22 +11517,6 @@ export namespace InterfaceUnionNodeShapeMember1 {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -12416,7 +11807,6 @@ export namespace InterfaceNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -12426,17 +11816,6 @@ export namespace InterfaceNodeShape {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
@@ -12446,7 +11825,6 @@ export namespace InterfaceNodeShape {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -12456,22 +11834,6 @@ export namespace InterfaceNodeShape {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -12796,7 +12158,6 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -12806,17 +12167,6 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}AbcStringProperty`),
         predicate: dataFactory.namedNode(
@@ -12828,7 +12178,6 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -12838,22 +12187,6 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {
@@ -13071,7 +12404,6 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -13084,22 +12416,10 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
       ...AbstractBaseClassWithPropertiesNodeShape.sparqlConstructTemplateTriples(
         { ignoreRdfType: true, subject, variablePrefix },
       ),
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
     ];
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -13114,22 +12434,6 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
         subject,
         variablePrefix,
       }),
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
     ];
   }
 
@@ -14230,7 +13534,6 @@ export namespace AbstractBaseClassForExternObjectType {
   }
 
   export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -14240,17 +13543,6 @@ export namespace AbstractBaseClassForExternObjectType {
   }): readonly sparqljs.Triple[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
-            },
-          ]),
       {
         object: dataFactory.variable(`${variablePrefix}AbcStringProperty`),
         predicate: dataFactory.namedNode(
@@ -14262,7 +13554,6 @@ export namespace AbstractBaseClassForExternObjectType {
   }
 
   export function sparqlWherePatterns({
-    ignoreRdfType,
     subject,
     variablePrefix: variablePrefixParameter,
   }: {
@@ -14272,22 +13563,6 @@ export namespace AbstractBaseClassForExternObjectType {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      ...(ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
       {
         triples: [
           {

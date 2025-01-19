@@ -56,7 +56,7 @@ export function sparqlFunctionDeclarations(
       name: "sparqlConstructTemplateTriples",
       parameters: [
         {
-          name: "{ ignoreRdfType, subject, variablePrefix: variablePrefixParameter }",
+          name: `{ ${this.fromRdfType.isJust() ? "ignoreRdfType, " : ""}subject, variablePrefix: variablePrefixParameter }`,
           type: "{ ignoreRdfType?: boolean; subject: rdfjs.Variable, variablePrefix?: string }",
         },
       ],
@@ -68,7 +68,11 @@ export function sparqlFunctionDeclarations(
             (parentObjectType) =>
               `...${parentObjectType.name}.sparqlConstructTemplateTriples({ ignoreRdfType: true, subject, variablePrefix })`,
           ),
-          `...(ignoreRdfType ? [] : [{ subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${rdfTypeVariable} }])`,
+          ...(this.fromRdfType.isJust()
+            ? [
+                `...(ignoreRdfType ? [] : [{ subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${rdfTypeVariable} }])`,
+              ]
+            : []),
           this.ownProperties.flatMap((property) =>
             property.sparqlConstructTemplateTriples({ variables }),
           ),
@@ -81,7 +85,7 @@ export function sparqlFunctionDeclarations(
       name: "sparqlWherePatterns",
       parameters: [
         {
-          name: "{ ignoreRdfType, subject, variablePrefix: variablePrefixParameter }",
+          name: `{ ${this.fromRdfType.isJust() ? "ignoreRdfType, " : ""}subject, variablePrefix: variablePrefixParameter }`,
           type: "{ ignoreRdfType?: boolean; subject: rdfjs.Variable, variablePrefix?: string }",
         },
       ],
@@ -93,7 +97,11 @@ export function sparqlFunctionDeclarations(
             (parentObjectType) =>
               `...${parentObjectType.name}.sparqlWherePatterns({ ignoreRdfType: true, subject, variablePrefix })`,
           ),
-          `...(ignoreRdfType ? [] : [{ triples: [${this.fromRdfType.map((fromRdfType) => `{ subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${this.rdfjsTermExpression(fromRdfType)} }, `).orDefault("")}{ subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${rdfTypeVariable} }], type: "bgp" as const }])`,
+          ...(this.fromRdfType.isJust()
+            ? [
+                `...(ignoreRdfType ? [] : [{ triples: [{ subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${this.rdfjsTermExpression(this.fromRdfType.unsafeCoerce())} }, { subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${rdfTypeVariable} }], type: "bgp" as const }])`,
+              ]
+            : []),
           this.ownProperties.flatMap((property) =>
             property.sparqlWherePatterns({ variables }),
           ),
