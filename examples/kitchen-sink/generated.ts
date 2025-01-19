@@ -11015,68 +11015,95 @@ export namespace NodeShapeWithDefaultValueProperties {
             },
           ]),
       {
-        triples: [
+        patterns: [
           {
-            object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/dateTimeProperty",
-            ),
-            subject,
+            triples: [
+              {
+                object: dataFactory.variable(
+                  `${variablePrefix}DateTimeProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/dateTimeProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
           },
         ],
-        type: "bgp",
+        type: "optional",
       },
       {
-        triples: [
+        patterns: [
           {
-            object: dataFactory.variable(
-              `${variablePrefix}FalseBooleanProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/falseBooleanProperty",
-            ),
-            subject,
+            triples: [
+              {
+                object: dataFactory.variable(
+                  `${variablePrefix}FalseBooleanProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/falseBooleanProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
           },
         ],
-        type: "bgp",
+        type: "optional",
       },
       {
-        triples: [
+        patterns: [
           {
-            object: dataFactory.variable(`${variablePrefix}NumberProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/numberProperty",
-            ),
-            subject,
+            triples: [
+              {
+                object: dataFactory.variable(`${variablePrefix}NumberProperty`),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/numberProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
           },
         ],
-        type: "bgp",
+        type: "optional",
       },
       {
-        triples: [
+        patterns: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/stringProperty",
-            ),
-            subject,
+            triples: [
+              {
+                object: dataFactory.variable(`${variablePrefix}StringProperty`),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/stringProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
           },
         ],
-        type: "bgp",
+        type: "optional",
       },
       {
-        triples: [
+        patterns: [
           {
-            object: dataFactory.variable(
-              `${variablePrefix}TrueBooleanProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/trueBooleanProperty",
-            ),
-            subject,
+            triples: [
+              {
+                object: dataFactory.variable(
+                  `${variablePrefix}TrueBooleanProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/trueBooleanProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
           },
         ],
-        type: "bgp",
+        type: "optional",
       },
     ];
   }
