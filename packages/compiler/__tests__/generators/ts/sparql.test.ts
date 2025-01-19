@@ -43,9 +43,11 @@ describe("sparql", () => {
           }).namedResource(harness.instance.identifier as NamedNode),
         })
         .unsafeCoerce();
-      expect(harness.equals(constructInstance as any).extract()).toStrictEqual(
-        true,
-      );
+      const equalsResult = harness.equals(constructInstance as any).extract();
+      if (equalsResult !== true) {
+        console.log("not equal");
+      }
+      expect(equalsResult).toStrictEqual(true);
     });
   }
 });
