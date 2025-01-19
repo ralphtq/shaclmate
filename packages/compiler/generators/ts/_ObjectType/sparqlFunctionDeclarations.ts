@@ -15,6 +15,7 @@ export function sparqlFunctionDeclarations(
   const variables = { subject: "subject", variablePrefix: "variablePrefix" };
   return [
     {
+      isExported: true,
       kind: StructureKind.Function,
       name: "sparqlWherePatterns",
       parameters: [
@@ -23,12 +24,13 @@ export function sparqlFunctionDeclarations(
           type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
         },
       ],
+      returnType: "readonly sparqljs.Pattern[]",
       statements: [
         "const variablePrefix = variablePrefixParameter ?? subject.value;",
         `return [${[
           ...this.parentObjectTypes.map(
             (parentObjectType) =>
-              `${parentObjectType.name}.sparqlWherePatterns({ subject, variablePrefix })`,
+              `...${parentObjectType.name}.sparqlWherePatterns({ subject, variablePrefix })`,
           ),
           this.ownProperties.flatMap((property) =>
             property.sparqlWherePatterns({ variables }),

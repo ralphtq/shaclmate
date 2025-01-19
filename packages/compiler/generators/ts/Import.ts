@@ -43,6 +43,12 @@ export namespace Import {
     namedImports: ["sha256"],
   };
 
+  export const SPARQLJS: Import = {
+    kind: StructureKind.ImportDeclaration,
+    moduleSpecifier: "sparqljs",
+    namespaceImport: "sparqljs",
+  };
+
   export const SPARQL_BUILDER: Import = {
     kind: StructureKind.ImportDeclaration,
     moduleSpecifier: "@kos-kit/sparql-builder",

@@ -260,9 +260,12 @@ export class ShaclProperty extends Property<Type> {
     const object = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
     return [
       objectInitializer({
-        subject: variables.subject,
-        predicate: this.rdfjsTermExpression(this.path),
-        object: `this.dataFactoryVariable}.variable(${object})`,
+        triples: `[${objectInitializer({
+          subject: variables.subject,
+          predicate: this.rdfjsTermExpression(this.path),
+          object: `${this.dataFactoryVariable}.variable(${object})`,
+        })}]`,
+        type: '"bgp"',
       }),
       ...this.type.sparqlWherePatterns({
         variables: { subject: object, variablePrefix: object },

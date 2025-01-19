@@ -6,6 +6,7 @@ import * as purify from "purify-ts";
 import * as purifyHelpers from "purify-ts-helpers";
 import * as rdfLiteral from "rdf-literal";
 import * as rdfjsResource from "rdfjs-resource";
+import type * as sparqljs from "sparqljs";
 import * as uuid from "uuid";
 import { z as zod } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
@@ -223,6 +224,30 @@ export namespace UuidV4IriNodeShape {
       stringProperty: zod.string(),
       type: zod.literal("UuidV4IriNodeShape"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -456,6 +481,30 @@ export namespace UnionNodeShapeMember2 {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty2",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty2`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -687,6 +736,30 @@ export namespace UnionNodeShapeMember1 {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty1",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty1`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -916,6 +989,30 @@ export namespace Sha256IriNodeShape {
       stringProperty: zod.string(),
       type: zod.literal("Sha256IriNodeShape"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -1150,6 +1247,30 @@ export namespace NonClassNodeShape {
       stringProperty: zod.string(),
       type: zod.literal("NonClassNodeShape"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -1864,6 +1985,72 @@ export namespace NodeShapeWithUnionProperties {
         .optional(),
       type: zod.literal("NodeShapeWithUnionProperties"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/orLiteralsProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}OrLiteralsProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/orTermsProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}OrTermsProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/orUnrelatedProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}OrUnrelatedProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        patterns: [
+          {
+            patterns: [
+              ...NonClassNodeShape.sparqlWherePatterns({
+                subject: dataFactory.variable(
+                  `${variablePrefix}OrUnrelatedProperty`,
+                ),
+                variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
+              }),
+            ],
+            type: "union",
+          },
+        ],
+        type: "optional",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -2714,6 +2901,98 @@ export namespace NodeShapeWithTermProperties {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/booleanProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}BooleanProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/dateTimeProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode("http://example.com/iriProperty"),
+            object: dataFactory.variable(`${variablePrefix}IriProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/literalProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/numberProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}NumberProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode("http://example.com/termProperty"),
+            object: dataFactory.variable(`${variablePrefix}TermProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -3110,6 +3389,54 @@ export namespace NodeShapeWithPropertyVisibilities {
       publicProperty: zod.string(),
       type: zod.literal("NodeShapeWithPropertyVisibilities"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/privateProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}PrivateProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/protectedProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}ProtectedProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/publicProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}PublicProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -3620,6 +3947,74 @@ export namespace NodeShapeWithPropertyCardinalities {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/emptyStringSetProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}EmptyStringSetProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/nonEmptyStringSetProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}NonEmptyStringSetProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/optionalStringProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}OptionalStringProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/requiredStringProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}RequiredStringProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -4085,6 +4480,46 @@ export namespace NodeShapeWithMutableProperties {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/mutableListProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}MutableListProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/mutableStringProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}MutableStringProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -4418,6 +4853,28 @@ export namespace NodeShapeWithListProperty {
       listProperty: zod.string().array(),
       type: zod.literal("NodeShapeWithListProperty"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode("http://example.com/listProperty"),
+            object: dataFactory.variable(`${variablePrefix}ListProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -4908,6 +5365,42 @@ export namespace NodeShapeWithLanguageInProperties {
         .describe("literal property for testing runtime languageIn"),
       type: zod.literal("NodeShapeWithLanguageInProperties"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/languageInProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}LanguageInProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/literalProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -5618,6 +6111,80 @@ export namespace NodeShapeWithInProperties {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/inBooleansProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}InBooleansProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/inDateTimesProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}InDateTimesProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/inIrisProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}InIrisProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/inNumbersProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}InNumbersProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/inStringsProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}InStringsProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -5997,6 +6564,42 @@ export namespace NodeShapeWithHasValueProperties {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/hasIriProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}HasIriProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/hasLiteralProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}HasLiteralProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -6239,6 +6842,30 @@ export namespace InlineNodeShape {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -6468,6 +7095,30 @@ export namespace ExternNodeShape {
       stringProperty: zod.string(),
       type: zod.literal("ExternNodeShape"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -6916,6 +7567,76 @@ export namespace NodeShapeWithExternProperties {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/externObjectTypeProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}ExternObjectTypeProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        patterns: [
+          ...ExternObjectType.sparqlWherePatterns({
+            subject: dataFactory.variable(
+              `${variablePrefix}ExternObjectTypeProperty`,
+            ),
+            variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
+          }),
+        ],
+        type: "optional",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/externProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}ExternProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/inlineProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}InlineProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        patterns: [
+          ...InlineNodeShape.sparqlWherePatterns({
+            subject: dataFactory.variable(`${variablePrefix}InlineProperty`),
+            variablePrefix: `${variablePrefix}InlineProperty`,
+          }),
+        ],
+        type: "optional",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -7225,6 +7946,30 @@ export namespace NodeShapeWithExplicitRdfTypes {
       stringProperty: zod.string(),
       type: zod.literal("NodeShapeWithExplicitRdfTypes"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -7791,6 +8536,82 @@ export namespace NodeShapeWithDefaultValueProperties {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/dateTimeProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/falseBooleanProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}FalseBooleanProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/numberProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}NumberProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/trueBooleanProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}TrueBooleanProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -8051,6 +8872,30 @@ export namespace IriNodeShape {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -8252,6 +9097,30 @@ export namespace InterfaceUnionNodeShapeMember2 {
   ): HasherT {
     _hasher.update(_interfaceUnionNodeShapeMember2.stringProperty2);
     return _hasher;
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty2",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty2`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -8498,6 +9367,30 @@ export namespace InterfaceUnionNodeShapeMember1 {
     return _hasher;
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty1",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty1`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -8735,6 +9628,30 @@ export namespace InterfaceNodeShape {
   >(_interfaceNodeShape: InterfaceNodeShape, _hasher: HasherT): HasherT {
     _hasher.update(_interfaceNodeShape.stringProperty);
     return _hasher;
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
@@ -9006,6 +9923,30 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     });
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/abcStringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}AbcStringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -9164,6 +10105,22 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
         ]),
       }),
     );
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      ...AbstractBaseClassWithPropertiesNodeShape.sparqlWherePatterns({
+        subject,
+        variablePrefix,
+      }),
+    ];
   }
 
   export class SparqlGraphPatterns extends AbstractBaseClassWithPropertiesNodeShape.SparqlGraphPatterns {
@@ -9450,6 +10407,36 @@ export namespace ConcreteParentClassNodeShape {
     );
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      ...AbstractBaseClassWithoutPropertiesNodeShape.sparqlWherePatterns({
+        subject,
+        variablePrefix,
+      }),
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/parentStringProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}ParentStringProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends AbstractBaseClassWithoutPropertiesNodeShape.SparqlGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -9733,6 +10720,36 @@ export namespace ConcreteChildClassNodeShape {
     );
   }
 
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      ...ConcreteParentClassNodeShape.sparqlWherePatterns({
+        subject,
+        variablePrefix,
+      }),
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/childStringProperty",
+            ),
+            object: dataFactory.variable(
+              `${variablePrefix}ChildStringProperty`,
+            ),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends ConcreteParentClassNodeShape.SparqlGraphPatterns {
     constructor(
       subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
@@ -9957,6 +10974,30 @@ export namespace AbstractBaseClassForExternObjectType {
       "@id": zod.string().min(1),
       type: zod.literal("ExternObjectType"),
     });
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        triples: [
+          {
+            subject,
+            predicate: dataFactory.namedNode(
+              "http://example.com/abcStringProperty",
+            ),
+            object: dataFactory.variable(`${variablePrefix}AbcStringProperty`),
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {

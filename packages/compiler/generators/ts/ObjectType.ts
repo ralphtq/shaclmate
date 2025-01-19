@@ -136,6 +136,9 @@ export class ObjectType extends DeclaredType {
       imports.push(Import.PURIFY_HELPERS);
       imports.push(Import.RDFJS_RESOURCE);
     }
+    if (this.features.has("sparql")) {
+      imports.push(Import.SPARQLJS);
+    }
     if (this.features.has("sparql-graph-patterns")) {
       imports.push(Import.SPARQL_BUILDER);
     }
@@ -407,7 +410,10 @@ export class ObjectType extends DeclaredType {
     variables,
   }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
     return [
-      `...${this.name}.sparqlWherePatterns(${objectInitializer(variables)})`,
+      `...${this.name}.sparqlWherePatterns(${objectInitializer({
+        subject: `${this.dataFactoryVariable}.variable(${variables.subject})`,
+        variablePrefix: variables.variablePrefix,
+      })})`,
     ];
   }
 

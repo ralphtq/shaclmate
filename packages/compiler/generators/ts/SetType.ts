@@ -168,12 +168,17 @@ export class SetType extends Type {
   override sparqlWherePatterns(
     parameters: Parameters<Type["sparqlWherePatterns"]>[0],
   ): readonly string[] {
-    if (this.minCount === 0) {
-      return [
-        `{ patterns: [${this.itemType.sparqlWherePatterns(parameters).join(", ")}], type: "optional" }`,
-      ];
+    const itemTypeSparqlWherePatterns =
+      this.itemType.sparqlWherePatterns(parameters);
+    if (itemTypeSparqlWherePatterns.length === 0) {
+      return [];
     }
-    return this.itemType.sparqlWherePatterns(parameters);
+    if (this.minCount > 0) {
+      return itemTypeSparqlWherePatterns;
+    }
+    return [
+      `{ patterns: [${itemTypeSparqlWherePatterns.join(", ")}], type: "optional" }`,
+    ];
   }
 
   override toJsonExpression({
