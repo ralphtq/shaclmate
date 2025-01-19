@@ -11,6 +11,7 @@ import { Memoize } from "typescript-memoize";
 import type { IdentifierType } from "../IdentifierType.js";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
+import { objectInitializer } from "../objectInitializer.js";
 import { tsComment } from "../tsComment.js";
 import { Property } from "./Property.js";
 
@@ -225,14 +226,15 @@ export class ShaclProperty extends Property<Type> {
   }: Parameters<
     Property<Type>["sparqlConstructTemplateTriples"]
   >[0]): readonly string[] {
-    const object: Omit<rdfjs.Variable, "equals"> = {
-      termType: "Variable",
-      value: `${variables.variablePrefix}${pascalCase(this.name)}`,
-    };
+    const object = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
     return [
-      `{ subject: ${this.rdfjsTermExpression(variables.subject)}, predicate: ${this.rdfjsTermExpression(this.path)}, object: ${this.rdfjsTermExpression(object)}`,
+      objectInitializer({
+        subject: variables.subject,
+        predicate: this.rdfjsTermExpression(this.path),
+        object: `this.dataFactoryVariable}.variable(${object})`,
+      }),
       ...this.type.sparqlConstructTemplateTriples({
-        variables: { subject: object, variablePrefix: object.value },
+        variables: { subject: object, variablePrefix: object },
       }),
     ];
   }
@@ -255,14 +257,15 @@ export class ShaclProperty extends Property<Type> {
   sparqlWherePatterns({
     variables,
   }: Parameters<Property<Type>["sparqlWherePatterns"]>[0]): readonly string[] {
-    const object: Omit<rdfjs.Variable, "equals"> = {
-      termType: "Variable",
-      value: `${variables.variablePrefix}${pascalCase(this.name)}`,
-    };
+    const object = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
     return [
-      `{ subject: ${this.rdfjsTermExpression(variables.subject)}, predicate: ${this.rdfjsTermExpression(this.path)}, object: ${this.rdfjsTermExpression(object)}`,
+      objectInitializer({
+        subject: variables.subject,
+        predicate: this.rdfjsTermExpression(this.path),
+        object: `this.dataFactoryVariable}.variable(${object})`,
+      }),
       ...this.type.sparqlWherePatterns({
-        variables: { subject: object, variablePrefix: object.value },
+        variables: { subject: object, variablePrefix: object },
       }),
     ];
   }

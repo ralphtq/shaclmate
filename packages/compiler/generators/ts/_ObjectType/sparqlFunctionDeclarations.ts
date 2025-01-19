@@ -1,4 +1,4 @@
-import type { FunctionDeclarationStructure } from "ts-morph";
+import { type FunctionDeclarationStructure, StructureKind } from "ts-morph";
 import type { ObjectType } from "../ObjectType.js";
 
 export function sparqlFunctionDeclarations(
@@ -12,7 +12,29 @@ export function sparqlFunctionDeclarations(
     return [];
   }
 
-  const functionDeclarations: FunctionDeclarationStructure[] = [];
-
-  return functionDeclarations;
+  const variables = { subject: "subject", variablePrefix: "variablePrefix" };
+  return [
+    {
+      kind: StructureKind.Function,
+      name: "sparqlWherePatterns",
+      parameters: [
+        {
+          name: "{ subject, variablePrefix: variablePrefixParameter }",
+          type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+        },
+      ],
+      statements: [
+        "const variablePrefix = variablePrefixParameter ?? subject.value;",
+        `return [${[
+          ...this.parentObjectTypes.map(
+            (parentObjectType) =>
+              `${parentObjectType.name}.sparqlWherePatterns({ subject, variablePrefix })`,
+          ),
+          this.ownProperties.flatMap((property) =>
+            property.sparqlWherePatterns({ variables }),
+          ),
+        ].join(", ")}];`,
+      ],
+    },
+  ];
 }

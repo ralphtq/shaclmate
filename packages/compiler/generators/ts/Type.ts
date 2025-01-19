@@ -148,7 +148,7 @@ export abstract class Type {
    * Term types with no additional properties should return an empty array.
    */
   abstract sparqlConstructTemplateTriples(parameters: {
-    variables: { subject: Omit<Variable, "equals">; variablePrefix: string };
+    variables: { subject: string; variablePrefix: string };
   }): readonly string[];
 
   /**
@@ -157,7 +157,7 @@ export abstract class Type {
    * See note in sparqlConstructTemplateTriples re: how this method is used.
    */
   abstract sparqlWherePatterns(parameters: {
-    variables: { subject: Omit<Variable, "equals">; variablePrefix: string };
+    variables: { subject: string; variablePrefix: string };
   }): readonly string[];
 
   /**

@@ -169,7 +169,7 @@ export abstract class Property<
    * An array of SPARQL.js CONSTRUCT template triples for this property as strings (so they can incorporate runtime calls).
    */
   abstract sparqlConstructTemplateTriples(parameters: {
-    variables: { subject: Omit<Variable, "equals">; variablePrefix: string };
+    variables: { subject: string; variablePrefix: string };
   }): readonly string[];
 
   /**
@@ -181,7 +181,7 @@ export abstract class Property<
    * An array of SPARQL.js where patterns for this property as strings (so they can incorporate runtime calls).
    */
   abstract sparqlWherePatterns(parameters: {
-    variables: { subject: Omit<Variable, "equals">; variablePrefix: string };
+    variables: { subject: string; variablePrefix: string };
   }): readonly string[];
 
   /**

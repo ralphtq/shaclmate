@@ -23,6 +23,7 @@ import {
   IdentifierProperty,
   TypeDiscriminatorProperty,
 } from "./_ObjectType/index.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 export class ObjectType extends DeclaredType {
   readonly abstract: boolean;
@@ -398,7 +399,7 @@ export class ObjectType extends DeclaredType {
     variables,
   }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
     return [
-      `...${this.name}.sparqlConstructTemplateTriples({ subject: ${this.rdfjsTermExpression(variables.subject)}, variablePrefix: ${variables.variablePrefix} })`,
+      `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer(variables)})`,
     ];
   }
 
@@ -406,7 +407,7 @@ export class ObjectType extends DeclaredType {
     variables,
   }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
     return [
-      `...${this.name}.sparqlWherePatterns({ subject: ${this.rdfjsTermExpression(variables.subject)}, variablePrefix: ${variables.variablePrefix} })`,
+      `...${this.name}.sparqlWherePatterns(${objectInitializer(variables)})`,
     ];
   }
 
