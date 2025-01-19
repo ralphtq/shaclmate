@@ -19,6 +19,8 @@ export const harnesses = {
       identifier,
       parentStringProperty: "parent",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.ConcreteChildClassNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.ConcreteChildClassNodeShape.SparqlGraphPatterns,
   }),
@@ -30,6 +32,8 @@ export const harnesses = {
       identifier,
       parentStringProperty: "parent",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.ConcreteParentClassNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.ConcreteParentClassNodeShape.SparqlGraphPatterns,
   }),
@@ -45,6 +49,8 @@ export const harnesses = {
       stringProperty: "Test",
       type: "InterfaceNodeShape",
     },
+    sparqlConstructQueryString:
+      kitchenSink.InterfaceNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.InterfaceNodeShape.SparqlGraphPatterns,
     toJson: kitchenSink.InterfaceNodeShape.toJson,
@@ -62,6 +68,8 @@ export const harnesses = {
       stringProperty1: "Test1",
       type: "InterfaceUnionNodeShapeMember1",
     },
+    sparqlConstructQueryString:
+      kitchenSink.InterfaceUnionNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.InterfaceUnionNodeShape.SparqlGraphPatterns,
     toJson: kitchenSink.InterfaceUnionNodeShape.toJson,
@@ -79,6 +87,8 @@ export const harnesses = {
       stringProperty2: "Test2",
       type: "InterfaceUnionNodeShapeMember2",
     },
+    sparqlConstructQueryString:
+      kitchenSink.InterfaceNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.InterfaceUnionNodeShape.SparqlGraphPatterns,
     toJson: kitchenSink.InterfaceUnionNodeShape.toJson,
@@ -91,6 +101,8 @@ export const harnesses = {
       identifier,
       stringProperty: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.IriNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass: kitchenSink.IriNodeShape.SparqlGraphPatterns,
   }),
   nodeShapeWithDefaultValueProperties: new ClassHarness({
@@ -99,6 +111,9 @@ export const harnesses = {
     instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
       identifier,
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithDefaultValueProperties
+        .sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
   }),
@@ -112,6 +127,9 @@ export const harnesses = {
       stringProperty: "test",
       trueBooleanProperty: false,
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithDefaultValueProperties
+        .sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
   }),
@@ -126,6 +144,9 @@ export const harnesses = {
       stringProperty: "",
       trueBooleanProperty: true,
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithDefaultValueProperties
+        .sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithDefaultValueProperties.SparqlGraphPatterns,
   }),
@@ -136,6 +157,8 @@ export const harnesses = {
       identifier,
       stringProperty: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithExplicitRdfTypes.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithExplicitRdfTypes.SparqlGraphPatterns,
   }),
@@ -154,6 +177,8 @@ export const harnesses = {
         stringProperty: "Test",
       }),
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithExternProperties.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithExternProperties.SparqlGraphPatterns,
   }),
@@ -166,6 +191,8 @@ export const harnesses = {
       ),
       identifier,
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithHasValueProperties.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithHasValueProperties.SparqlGraphPatterns,
   }),
@@ -178,6 +205,8 @@ export const harnesses = {
         "http://example.com/NodeShapeWithInPropertiesIri1",
       ),
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithInProperties.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithInProperties.SparqlGraphPatterns,
   }),
@@ -188,6 +217,8 @@ export const harnesses = {
       identifier,
       inStringsProperty: "text",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithInProperties.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithInProperties.SparqlGraphPatterns,
   }),
@@ -199,6 +230,8 @@ export const harnesses = {
       literalProperty: dataFactory.literal("envalue", "en"),
       languageInProperty: dataFactory.literal("frvalue", "fr"),
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithLanguageInProperties.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithLanguageInProperties.SparqlGraphPatterns,
   }),
@@ -209,6 +242,8 @@ export const harnesses = {
       identifier,
       listProperty: ["Test1", "Test2"],
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithListProperty.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithListProperty.SparqlGraphPatterns,
   }),
@@ -220,6 +255,8 @@ export const harnesses = {
       mutableListProperty: ["test1", "test2"],
       mutableStringProperty: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithMutableProperties.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithMutableProperties.SparqlGraphPatterns,
   }),
@@ -233,6 +270,8 @@ export const harnesses = {
       optionalStringProperty: undefined,
       requiredStringProperty: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithPropertyCardinalities.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithPropertyCardinalities.SparqlGraphPatterns,
   }),
@@ -245,6 +284,8 @@ export const harnesses = {
       protectedProperty: "protected",
       publicProperty: "public",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithPropertyVisibilities.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithPropertyVisibilities.SparqlGraphPatterns,
   }),
@@ -261,6 +302,8 @@ export const harnesses = {
       stringProperty: "test",
       termProperty: 1,
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithTermProperties.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithTermProperties.SparqlGraphPatterns,
   }),
@@ -273,6 +316,8 @@ export const harnesses = {
       orUnrelatedProperty: { type: "0-number", value: 1 },
       orTermsProperty: dataFactory.literal("test"),
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithUnionProperties.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.NodeShapeWithUnionProperties.SparqlGraphPatterns,
   }),
@@ -283,6 +328,8 @@ export const harnesses = {
       identifier,
       stringProperty: "Test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.NonClassNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass: kitchenSink.NonClassNodeShape.SparqlGraphPatterns,
   }),
   sha256IriNodeShapeWithExplicitIdentifier: new ClassHarness({
@@ -292,6 +339,8 @@ export const harnesses = {
       identifier,
       stringProperty: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.Sha256IriNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.Sha256IriNodeShape.SparqlGraphPatterns,
   }),
@@ -301,6 +350,8 @@ export const harnesses = {
     instance: new kitchenSink.Sha256IriNodeShape({
       stringProperty: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.Sha256IriNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.Sha256IriNodeShape.SparqlGraphPatterns,
   }),
@@ -312,6 +363,8 @@ export const harnesses = {
       identifier,
       stringProperty1: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.UnionNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass: kitchenSink.UnionNodeShape.SparqlGraphPatterns,
   }),
   unionNodeShapeMember2: new ClassUnionHarness({
@@ -322,6 +375,8 @@ export const harnesses = {
       identifier,
       stringProperty2: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.UnionNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass: kitchenSink.UnionNodeShape.SparqlGraphPatterns,
   }),
   uuidv4IriNodeShapeWithExplicitIdentifier: new ClassHarness({
@@ -331,6 +386,8 @@ export const harnesses = {
       identifier,
       stringProperty: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.UuidV4IriNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.UuidV4IriNodeShape.SparqlGraphPatterns,
   }),
@@ -340,6 +397,8 @@ export const harnesses = {
     instance: new kitchenSink.UuidV4IriNodeShape({
       stringProperty: "test",
     }),
+    sparqlConstructQueryString:
+      kitchenSink.UuidV4IriNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.UuidV4IriNodeShape.SparqlGraphPatterns,
   }),

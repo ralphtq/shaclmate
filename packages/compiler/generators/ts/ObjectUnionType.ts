@@ -96,6 +96,7 @@ export class ObjectUnionType extends DeclaredType {
       ...this.fromRdfFunctionDeclaration.toList(),
       ...this.hashFunctionDeclaration.toList(),
       ...this.jsonZodSchemaFunctionDeclaration.toList(),
+      ...this.sparqlFunctionDeclarations,
       ...this.sparqlGraphPatternsClassDeclaration.toList(),
       ...this.toJsonFunctionDeclaration.toList(),
       ...this.toRdfFunctionDeclaration.toList(),
@@ -295,6 +296,96 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
+  private get sparqlFunctionDeclarations(): readonly FunctionDeclarationStructure[] {
+    if (!this.features.has("sparql")) {
+      return [];
+    }
+
+    const variables = { subject: "subject", variablePrefix: "variablePrefix" };
+    return [
+      {
+        isExported: true,
+        kind: StructureKind.Function,
+        name: "sparqlConstructQuery",
+        parameters: [
+          {
+            hasQuestionToken: true,
+            name: "parameters",
+            type: '{ prefixes?: { [prefix: string]: string }; subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where">',
+          },
+        ],
+        returnType: "sparqljs.ConstructQuery",
+        statements: [
+          `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable("${camelCase(this.name)}");`,
+          `return { ...parameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: ${this.name}.sparqlConstructTemplateTriples({ subject }).concat(), type: "query", where: ${this.name}.sparqlWherePatterns({ subject }).concat() };`,
+        ],
+      },
+      {
+        isExported: true,
+        kind: StructureKind.Function,
+        name: "sparqlConstructQueryString",
+        parameters: [
+          {
+            hasQuestionToken: true,
+            name: "parameters",
+            type: '{ subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where"> & sparqljs.GeneratorOptions',
+          },
+        ],
+        returnType: "string",
+        statements: [
+          `return new sparqljs.Generator(parameters).stringify(${this.name}.sparqlConstructQuery(parameters));`,
+        ],
+      },
+      {
+        isExported: true,
+        kind: StructureKind.Function,
+        name: "sparqlConstructTemplateTriples",
+        parameters: [
+          {
+            name: "{ subject, variablePrefix: variablePrefixParameter }",
+            type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+          },
+        ],
+        returnType: "readonly sparqljs.Triple[]",
+        statements: [
+          "const variablePrefix = variablePrefixParameter ?? subject.value;",
+          `return [${this.memberTypes
+            .reduce(
+              (array, memberType) =>
+                array.concat(
+                  memberType.sparqlConstructTemplateTriples({ variables }),
+                ),
+              [] as string[],
+            )
+            .join(", ")}];`,
+        ],
+      },
+      {
+        isExported: true,
+        kind: StructureKind.Function,
+        name: "sparqlWherePatterns",
+        parameters: [
+          {
+            name: "{ subject, variablePrefix: variablePrefixParameter }",
+            type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+          },
+        ],
+        returnType: "readonly sparqljs.Pattern[]",
+        statements: [
+          "const variablePrefix = variablePrefixParameter ?? subject.value;",
+          `return [{ patterns: [${this.memberTypes
+            .map((memberType) =>
+              objectInitializer({
+                patterns: `[${memberType.sparqlWherePatterns({ variables }).join(", ")}]`,
+                type: '"group"',
+              }),
+            )
+            .join(", ")}], type: "union" }];`,
+        ],
+      },
+    ];
+  }
+
   private get sparqlGraphPatternsClassDeclaration(): Maybe<ClassDeclarationStructure> {
     if (!this.features.has("sparql-graph-patterns")) {
       return Maybe.empty();
@@ -446,28 +537,19 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     );
   }
 
-  override sparqlConstructTemplateTriples(
-    parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
-  ): readonly string[] {
-    return this.memberTypes.reduce(
-      (array, memberType) =>
-        array.concat(memberType.sparqlConstructTemplateTriples(parameters)),
-      [] as string[],
-    );
+  override sparqlConstructTemplateTriples({
+    variables,
+  }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
+    return [
+      `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer(variables)})`,
+    ];
   }
 
-  override sparqlWherePatterns(
-    parameters: Parameters<Type["sparqlWherePatterns"]>[0],
-  ): readonly string[] {
+  override sparqlWherePatterns({
+    variables,
+  }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
     return [
-      `{ patterns: [${this.memberTypes
-        .map((memberType) =>
-          objectInitializer({
-            patterns: `[${memberType.sparqlWherePatterns(parameters).join(", ")}]`,
-            type: '"group"',
-          }),
-        )
-        .join(", ")}], type: "union" }`,
+      `...${this.name}.sparqlWherePatterns(${objectInitializer(variables)})`,
     ];
   }
 

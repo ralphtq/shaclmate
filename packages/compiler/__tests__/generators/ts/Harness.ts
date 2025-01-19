@@ -19,6 +19,7 @@ export abstract class Harness<
     resource: Resource<IdentifierT>;
   }) => Either<Resource.ValueError, T>;
   readonly instance: T;
+  readonly sparqlConstructQueryString: () => string;
   readonly sparqlGraphPatternsClass: new (
     subject: sparqlBuilder.ResourceGraphPatterns.Subject,
   ) => sparqlBuilder.ResourceGraphPatterns;
@@ -27,11 +28,16 @@ export abstract class Harness<
     fromJson,
     fromRdf,
     instance,
+    sparqlConstructQueryString,
     sparqlGraphPatternsClass,
   }: {
     fromJson: Harness<T, IdentifierT>["fromJson"];
     fromRdf: Harness<T, IdentifierT>["fromRdf"];
     instance: T;
+    sparqlConstructQueryString: Harness<
+      T,
+      IdentifierT
+    >["sparqlConstructQueryString"];
     sparqlGraphPatternsClass: Harness<
       T,
       IdentifierT
@@ -40,6 +46,7 @@ export abstract class Harness<
     this.fromJson = fromJson;
     this.fromRdf = fromRdf;
     this.instance = instance;
+    this.sparqlConstructQueryString = sparqlConstructQueryString;
     this.sparqlGraphPatternsClass = sparqlGraphPatternsClass;
   }
 

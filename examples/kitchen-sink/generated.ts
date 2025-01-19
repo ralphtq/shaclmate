@@ -12836,6 +12836,96 @@ export namespace InterfaceUnionNodeShape {
     ]);
   }
 
+  export function sparqlConstructQuery(
+    parameters?: {
+      prefixes?: { [prefix: string]: string };
+      subject: rdfjs.Variable;
+    } & Omit<
+      sparqljs.ConstructQuery,
+      "prefixes" | "queryType" | "template" | "where"
+    >,
+  ): sparqljs.ConstructQuery {
+    const subject =
+      parameters?.subject ?? dataFactory.variable("interfaceUnionNodeShape");
+    return {
+      ...parameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: InterfaceUnionNodeShape.sparqlConstructTemplateTriples({
+        subject,
+      }).concat(),
+      type: "query",
+      where: InterfaceUnionNodeShape.sparqlWherePatterns({ subject }).concat(),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: { subject: rdfjs.Variable } & Omit<
+      sparqljs.ConstructQuery,
+      "prefixes" | "queryType" | "template" | "where"
+    > &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceUnionNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      ...InterfaceUnionNodeShapeMember1.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix,
+      }),
+      ...InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix,
+      }),
+    ];
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        patterns: [
+          {
+            patterns: [
+              ...InterfaceUnionNodeShapeMember1.sparqlWherePatterns({
+                subject,
+                variablePrefix,
+              }),
+            ],
+            type: "group",
+          },
+          {
+            patterns: [
+              ...InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+                subject,
+                variablePrefix,
+              }),
+            ],
+            type: "group",
+          },
+        ],
+        type: "union",
+      },
+    ];
+  }
+
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
     constructor(subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter) {
       super(subject);
@@ -12986,6 +13076,109 @@ export namespace UnionNodeShape {
       UnionNodeShapeMember2.jsonZodSchema(),
       ExternObjectType.jsonZodSchema(),
     ]);
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      prefixes?: { [prefix: string]: string };
+      subject: rdfjs.Variable;
+    } & Omit<
+      sparqljs.ConstructQuery,
+      "prefixes" | "queryType" | "template" | "where"
+    >,
+  ): sparqljs.ConstructQuery {
+    const subject =
+      parameters?.subject ?? dataFactory.variable("unionNodeShape");
+    return {
+      ...parameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: UnionNodeShape.sparqlConstructTemplateTriples({
+        subject,
+      }).concat(),
+      type: "query",
+      where: UnionNodeShape.sparqlWherePatterns({ subject }).concat(),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: { subject: rdfjs.Variable } & Omit<
+      sparqljs.ConstructQuery,
+      "prefixes" | "queryType" | "template" | "where"
+    > &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      UnionNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      ...UnionNodeShapeMember1.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix,
+      }),
+      ...UnionNodeShapeMember2.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix,
+      }),
+      ...ExternObjectType.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix,
+      }),
+    ];
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        patterns: [
+          {
+            patterns: [
+              ...UnionNodeShapeMember1.sparqlWherePatterns({
+                subject,
+                variablePrefix,
+              }),
+            ],
+            type: "group",
+          },
+          {
+            patterns: [
+              ...UnionNodeShapeMember2.sparqlWherePatterns({
+                subject,
+                variablePrefix,
+              }),
+            ],
+            type: "group",
+          },
+          {
+            patterns: [
+              ...ExternObjectType.sparqlWherePatterns({
+                subject,
+                variablePrefix,
+              }),
+            ],
+            type: "group",
+          },
+        ],
+        type: "union",
+      },
+    ];
   }
 
   export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {

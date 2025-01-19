@@ -226,15 +226,16 @@ export class ShaclProperty extends Property<Type> {
   }: Parameters<
     Property<Type>["sparqlConstructTemplateTriples"]
   >[0]): readonly string[] {
-    const object = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
+    const objectString = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
+    const objectVariable = `${this.dataFactoryVariable}.variable(${objectString})`;
     return [
       objectInitializer({
         subject: variables.subject,
         predicate: this.rdfjsTermExpression(this.path),
-        object: `${this.dataFactoryVariable}.variable(${object})`,
+        object: objectVariable,
       }),
       ...this.type.sparqlConstructTemplateTriples({
-        variables: { subject: object, variablePrefix: object },
+        variables: { subject: objectVariable, variablePrefix: objectString },
       }),
     ];
   }
@@ -257,18 +258,19 @@ export class ShaclProperty extends Property<Type> {
   sparqlWherePatterns({
     variables,
   }: Parameters<Property<Type>["sparqlWherePatterns"]>[0]): readonly string[] {
-    const object = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
+    const objectString = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
+    const objectVariable = `${this.dataFactoryVariable}.variable(${objectString})`;
     return [
       objectInitializer({
         triples: `[${objectInitializer({
           subject: variables.subject,
           predicate: this.rdfjsTermExpression(this.path),
-          object: `${this.dataFactoryVariable}.variable(${object})`,
+          object: objectVariable,
         })}]`,
         type: '"bgp"',
       }),
       ...this.type.sparqlWherePatterns({
-        variables: { subject: object, variablePrefix: object },
+        variables: { subject: objectVariable, variablePrefix: objectString },
       }),
     ];
   }
