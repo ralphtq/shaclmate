@@ -5,6 +5,7 @@ import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
 import { Import } from "./Import.js";
 import { Type } from "./Type.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 /**
  * Abstract base class for IdentifierType and LiteralType.
@@ -170,7 +171,7 @@ export class TermType<
     this.defaultValue.ifJust((defaultValue) => {
       // alt the default value before trying to convert the rdfjsResource.Resource.Value to the type
       chain.push(
-        `alt(purify.Either.of(new rdfjsResource.Resource.Value({ subject: ${variables.resource}, predicate: ${variables.predicate}, object: ${this.rdfjsTermExpression(defaultValue)} })))`,
+        `alt(purify.Either.of(new rdfjsResource.Resource.Value(${objectInitializer({ subject: variables.resource, predicate: variables.predicate, object: this.rdfjsTermExpression(defaultValue) })})))`,
       );
     });
     // Last step: convert the rdfjsResource.Resource.Value to the type
@@ -316,7 +317,7 @@ export class TermType<
       expression = `${expression}.chain(term => {
   switch (term.termType) {
   ${[...this.nodeKinds].map((nodeKind) => `case "${nodeKind}":`).join("\n")} return purify.Either.of(term);
-  default: return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: term, expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} }));         
+  default: return purify.Left(new rdfjsResource.Resource.MistypedValueError(${objectInitializer({ actualValue: "term", expectedValueType: JSON.stringify(this.name), focusResource: variables.resource, predicate: variables.predicate })}));         
 }})`;
     }
     return expression;

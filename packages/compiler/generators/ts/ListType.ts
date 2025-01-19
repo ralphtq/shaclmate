@@ -4,6 +4,7 @@ import { Maybe } from "purify-ts";
 import type { MintingStrategy } from "../../enums/index.js";
 import { Import } from "./Import.js";
 import { Type } from "./Type.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 export class ListType extends Type {
   readonly itemType: Type;
@@ -199,10 +200,12 @@ export class ListType extends Type {
     if (itemIndex === 0) {
       currentSubListResource = listResource;
     } else {
-      const newSubListResource = ${variables.resourceSet}.${resourceSetMethodName}({
-        identifier: ${subListIdentifier},
-        mutateGraph: ${variables.mutateGraph},
-      });
+      const newSubListResource = ${variables.resourceSet}.${resourceSetMethodName}(${objectInitializer(
+        {
+          identifier: subListIdentifier,
+          mutateGraph: variables.mutateGraph,
+        },
+      )});
       currentSubListResource!.add(dataFactory.namedNode("${rdf.rest.value}"), newSubListResource.identifier);
       currentSubListResource = newSubListResource;
     }
@@ -219,10 +222,10 @@ export class ListType extends Type {
   },
   {
     currentSubListResource: null,
-    listResource: resourceSet.${resourceSetMethodName}({
-      identifier: ${listIdentifier},
-      mutateGraph: ${variables.mutateGraph}
-    }),
+    listResource: resourceSet.${resourceSetMethodName}(${objectInitializer({
+      identifier: listIdentifier,
+      mutateGraph: variables.mutateGraph,
+    })}),
   } as {
     currentSubListResource: ${mutableResourceTypeName} | null;
     listResource: ${mutableResourceTypeName};

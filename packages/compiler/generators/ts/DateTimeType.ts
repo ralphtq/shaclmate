@@ -1,5 +1,6 @@
 import { PrimitiveType } from "./PrimitiveType.js";
 import type { Type } from "./Type.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 export class DateTimeType extends PrimitiveType<Date> {
   override readonly equalsFunction =
@@ -61,7 +62,7 @@ export class DateTimeType extends PrimitiveType<Date> {
   >[0]): string {
     let expression = `${variables.resourceValue}.toDate()`;
     if (this.primitiveIn.length > 0) {
-      expression = `${expression}.chain(value => { ${this.primitiveIn.map((value) => `if (value.getTime() === ${value.getTime()}) { return purify.Either.of(value); }`).join(" ")} return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); })`;
+      expression = `${expression}.chain(value => { ${this.primitiveIn.map((value) => `if (value.getTime() === ${value.getTime()}) { return purify.Either.of(value); }`).join(" ")} return purify.Left(new rdfjsResource.Resource.MistypedValueError(${objectInitializer({ actualValue: "rdfLiteral.toRdf(value)", expectedValueType: JSON.stringify(this.name), focusResource: variables.resource, predicate: variables.predicate })})); })`;
     }
     return expression;
   }

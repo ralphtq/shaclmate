@@ -1,6 +1,7 @@
 import { Memoize } from "typescript-memoize";
 import { PrimitiveType } from "./PrimitiveType.js";
 import type { Type } from "./Type.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 export class BooleanType extends PrimitiveType<boolean> {
   readonly kind = "BooleanType";
@@ -47,7 +48,7 @@ export class BooleanType extends PrimitiveType<boolean> {
   >[0]): string {
     let expression = `${variables.resourceValue}.toBoolean()`;
     if (this.primitiveIn.length === 1) {
-      expression = `${expression}.chain(value => value === ${this.primitiveIn[0]} ? purify.Either.of(value) : purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })))`;
+      expression = `${expression}.chain(value => value === ${this.primitiveIn[0]} ? purify.Either.of(value) : purify.Left(new rdfjsResource.Resource.MistypedValueError(${objectInitializer({ actualValue: "rdfLiteral.toRdf(value)", expectedValueType: JSON.stringify(this.name), focusResource: variables.resource, predicate: variables.predicate })})))`;
     }
     return expression;
   }
