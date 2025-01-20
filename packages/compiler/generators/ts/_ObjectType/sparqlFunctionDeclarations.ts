@@ -26,13 +26,13 @@ export function sparqlFunctionDeclarations(
         {
           hasQuestionToken: true,
           name: "parameters",
-          type: '{ ignoreRdfType?: boolean; prefixes?: { [prefix: string]: string }; subject?: sparqljs.Triple["subject"]; variablePrefix?: string; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "type" | "where">',
+          type: '{ ignoreRdfType?: boolean; prefixes?: { [prefix: string]: string }; subject?: sparqljs.Triple["subject"]; variablePrefix?: string; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">',
         },
       ],
       returnType: "sparqljs.ConstructQuery",
       statements: [
         "const { ignoreRdfType, subject, variablePrefix, ...queryParameters } = parameters ?? {}",
-        `return { ...queryParameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: ${this.name}.sparqlConstructTemplateTriples({ ignoreRdfType, subject }).concat(), type: "query", where: ${this.name}.sparqlWherePatterns({ ignoreRdfType, subject, variablePrefix }).concat() };`,
+        `return { ...queryParameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: (queryParameters.template ?? []).concat(${this.name}.sparqlConstructTemplateTriples({ ignoreRdfType, subject })), type: "query", where: (queryParameters.where ?? []).concat(${this.name}.sparqlWherePatterns({ ignoreRdfType, subject, variablePrefix })) };`,
       ],
     },
     {
@@ -43,7 +43,7 @@ export function sparqlFunctionDeclarations(
         {
           hasQuestionToken: true,
           name: "parameters",
-          type: '{ ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"]; variablePrefix?: string; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "type" | "where"> & sparqljs.GeneratorOptions',
+          type: '{ ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"]; variablePrefix?: string; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> & sparqljs.GeneratorOptions',
         },
       ],
       returnType: "string",
