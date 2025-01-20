@@ -25,7 +25,7 @@ export function sparqlFunctionDeclarations(
         {
           hasQuestionToken: true,
           name: "parameters",
-          type: '{ prefixes?: { [prefix: string]: string }; subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where">',
+          type: '{ prefixes?: { [prefix: string]: string }; subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "type" | "where">',
         },
       ],
       returnType: "sparqljs.ConstructQuery",
@@ -42,7 +42,7 @@ export function sparqlFunctionDeclarations(
         {
           hasQuestionToken: true,
           name: "parameters",
-          type: '{ subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where"> & sparqljs.GeneratorOptions',
+          type: '{ subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "type" | "where"> & sparqljs.GeneratorOptions',
         },
       ],
       returnType: "string",
