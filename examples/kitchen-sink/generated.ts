@@ -1,4 +1,3 @@
-import * as sparqlBuilder from "@kos-kit/sparql-builder";
 import type * as rdfjs from "@rdfjs/types";
 import { sha256 } from "js-sha256";
 import { DataFactory as dataFactory } from "n3";
@@ -15,6 +14,7 @@ import { ExternObjectType } from "./ExternObjectType.js";
  * A node shape that mints its identifier by generating a v4 UUID, if no identifier is supplied.
  */
 export class UuidV4IriNodeShape {
+  private _identifier: rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
   readonly type = "UuidV4IriNodeShape";
 
@@ -25,8 +25,6 @@ export class UuidV4IriNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
-
-  private _identifier: rdfjs.NamedNode | undefined;
 
   get identifier(): rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -316,24 +314,9 @@ export namespace UuidV4IriNodeShape {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
-  }
 }
 export class UnionNodeShapeMember2 {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty2: string;
   readonly type = "UnionNodeShapeMember2";
 
@@ -344,8 +327,6 @@ export class UnionNodeShapeMember2 {
     this._identifier = parameters.identifier;
     this.stringProperty2 = parameters.stringProperty2;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -642,24 +623,9 @@ export namespace UnionNodeShapeMember2 {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty2"),
-          this.variable("StringProperty2"),
-        ),
-      );
-    }
-  }
 }
 export class UnionNodeShapeMember1 {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty1: string;
   readonly type = "UnionNodeShapeMember1";
 
@@ -670,8 +636,6 @@ export class UnionNodeShapeMember1 {
     this._identifier = parameters.identifier;
     this.stringProperty1 = parameters.stringProperty1;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -968,27 +932,12 @@ export namespace UnionNodeShapeMember1 {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty1"),
-          this.variable("StringProperty1"),
-        ),
-      );
-    }
-  }
 }
 /**
  * A node shape that mints its identifier by hashing (other) contents, if no identifier is supplied.
  */
 export class Sha256IriNodeShape {
+  private _identifier: rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
   readonly type = "Sha256IriNodeShape";
 
@@ -999,8 +948,6 @@ export class Sha256IriNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
-
-  private _identifier: rdfjs.NamedNode | undefined;
 
   get identifier(): rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -1290,27 +1237,12 @@ export namespace Sha256IriNodeShape {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
-  }
 }
 /**
  * Node shape that isn't an rdfs:Class.
  */
 export class NonClassNodeShape {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty: string;
   readonly type = "NonClassNodeShape";
 
@@ -1321,8 +1253,6 @@ export class NonClassNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -1615,27 +1545,12 @@ export namespace NonClassNodeShape {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape with sh:xone properties.
  */
 export class NodeShapeWithUnionProperties {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly orLiteralsProperty: purify.Maybe<rdfjs.Literal>;
   readonly orTermsProperty: purify.Maybe<rdfjs.Literal | rdfjs.NamedNode>;
   readonly orUnrelatedProperty: purify.Maybe<
@@ -1741,8 +1656,6 @@ export class NodeShapeWithUnionProperties {
       this.orUnrelatedProperty = parameters.orUnrelatedProperty as never;
     }
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -2410,6 +2323,7 @@ export namespace NodeShapeWithUnionProperties {
         subject,
       },
       ...NonClassNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
         subject: dataFactory.variable!(`${variablePrefix}OrUnrelatedProperty`),
         variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
       }),
@@ -2490,6 +2404,7 @@ export namespace NodeShapeWithUnionProperties {
               {
                 patterns: [
                   ...NonClassNodeShape.sparqlWherePatterns({
+                    ignoreRdfType: true,
                     subject: dataFactory.variable!(
                       `${variablePrefix}OrUnrelatedProperty`,
                     ),
@@ -2506,56 +2421,6 @@ export namespace NodeShapeWithUnionProperties {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/orLiteralsProperty"),
-            this.variable("OrLiteralsProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/orTermsProperty"),
-            this.variable("OrTermsProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.union(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/orUnrelatedProperty"),
-              this.variable("OrUnrelatedProperty"),
-            ),
-            sparqlBuilder.GraphPattern.group(
-              sparqlBuilder.GraphPattern.basic(
-                this.subject,
-                dataFactory.namedNode("http://example.com/orUnrelatedProperty"),
-                this.variable("OrUnrelatedProperty"),
-              ).chainObject(
-                (_object) =>
-                  new NonClassNodeShape.SparqlGraphPatterns(_object, {
-                    ignoreRdfType: true,
-                  }),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape with properties that are not nested objects
@@ -2563,6 +2428,7 @@ export namespace NodeShapeWithUnionProperties {
 export class NodeShapeWithTermProperties {
   readonly booleanProperty: purify.Maybe<boolean>;
   readonly dateTimeProperty: purify.Maybe<Date>;
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly iriProperty: purify.Maybe<rdfjs.NamedNode>;
   readonly literalProperty: purify.Maybe<rdfjs.Literal>;
   readonly numberProperty: purify.Maybe<number>;
@@ -2706,8 +2572,6 @@ export class NodeShapeWithTermProperties {
       this.termProperty = parameters.termProperty as never;
     }
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
@@ -3598,87 +3462,16 @@ export namespace NodeShapeWithTermProperties {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/booleanProperty"),
-            this.variable("BooleanProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/dateTimeProperty"),
-            this.variable("DateTimeProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/iriProperty"),
-            this.variable("IriProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/literalProperty"),
-            this.variable("LiteralProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/numberProperty"),
-            this.variable("NumberProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/stringProperty"),
-            this.variable("StringProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/termProperty"),
-            this.variable("TermProperty"),
-          ),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape with properties that have visibility modifiers (private, protected, public)
  */
 export class NodeShapeWithPropertyVisibilities {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
+  private readonly privateProperty: string;
+  protected readonly protectedProperty: string;
   readonly publicProperty: string;
   readonly type = "NodeShapeWithPropertyVisibilities";
-  protected readonly protectedProperty: string;
-  private readonly privateProperty: string;
 
   constructor(parameters: {
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -3691,8 +3484,6 @@ export class NodeShapeWithPropertyVisibilities {
     this.protectedProperty = parameters.protectedProperty;
     this.publicProperty = parameters.publicProperty;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -4129,36 +3920,6 @@ export namespace NodeShapeWithPropertyVisibilities {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/privateProperty"),
-          this.variable("PrivateProperty"),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/protectedProperty"),
-          this.variable("ProtectedProperty"),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/publicProperty"),
-          this.variable("PublicProperty"),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape that has properties with different cardinalities
@@ -4168,6 +3929,7 @@ export class NodeShapeWithPropertyCardinalities {
    * Set: minCount implicitly=0, no maxCount or maxCount > 1
    */
   readonly emptyStringSetProperty: readonly string[];
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   /**
    * Set: minCount implicitly=1, no maxCount or maxCount > 1
    */
@@ -4213,8 +3975,6 @@ export class NodeShapeWithPropertyCardinalities {
 
     this.requiredStringProperty = parameters.requiredStringProperty;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -4819,52 +4579,12 @@ export namespace NodeShapeWithPropertyCardinalities {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/emptyStringSetProperty"),
-            this.variable("EmptyStringSetProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/nonEmptyStringSetProperty"),
-          this.variable("NonEmptyStringSetProperty"),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/optionalStringProperty"),
-            this.variable("OptionalStringProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/requiredStringProperty"),
-          this.variable("RequiredStringProperty"),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape with shaclmate:mutable properties.
  */
 export class NodeShapeWithMutableProperties {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   /**
    * List-valued property that can't be reassigned but whose value can be mutated
    */
@@ -4905,8 +4625,6 @@ export class NodeShapeWithMutableProperties {
       this.mutableStringProperty = parameters.mutableStringProperty as never;
     }
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
@@ -5547,43 +5265,12 @@ export namespace NodeShapeWithMutableProperties {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.group(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/mutableListProperty"),
-              this.variable("MutableListProperty"),
-            ).chainObject(
-              (_object) =>
-                new sparqlBuilder.RdfListGraphPatterns({ rdfList: _object }),
-            ),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/mutableStringProperty"),
-            this.variable("MutableStringProperty"),
-          ),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape that uses the ListShape in a property.
  */
 export class NodeShapeWithListProperty {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly listProperty: readonly string[];
   readonly type = "NodeShapeWithListProperty";
 
@@ -5594,8 +5281,6 @@ export class NodeShapeWithListProperty {
     this._identifier = parameters.identifier;
     this.listProperty = parameters.listProperty;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -6100,32 +5785,12 @@ export namespace NodeShapeWithListProperty {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.group(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/listProperty"),
-            this.variable("ListProperty"),
-          ).chainObject(
-            (_object) =>
-              new sparqlBuilder.RdfListGraphPatterns({ rdfList: _object }),
-          ),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape that uses the ListShape in a property.
  */
 export class NodeShapeWithLanguageInProperties {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly languageInProperty: purify.Maybe<rdfjs.Literal>;
   /**
    * literal property for testing runtime languageIn
@@ -6209,8 +5874,6 @@ export class NodeShapeWithLanguageInProperties {
       this.literalProperty = parameters.literalProperty as never;
     }
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -6720,38 +6383,12 @@ export namespace NodeShapeWithLanguageInProperties {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/languageInProperty"),
-            this.variable("LanguageInProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/literalProperty"),
-            this.variable("LiteralProperty"),
-          ),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape with sh:in properties.
  */
 export class NodeShapeWithInProperties {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly inBooleansProperty: purify.Maybe<true>;
   readonly inDateTimesProperty: purify.Maybe<Date>;
   readonly inIrisProperty: purify.Maybe<
@@ -6841,8 +6478,6 @@ export class NodeShapeWithInProperties {
       this.inStringsProperty = parameters.inStringsProperty as never;
     }
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
@@ -7634,60 +7269,6 @@ export namespace NodeShapeWithInProperties {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inBooleansProperty"),
-            this.variable("InBooleansProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inDateTimesProperty"),
-            this.variable("InDateTimesProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inIrisProperty"),
-            this.variable("InIrisProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inNumbersProperty"),
-            this.variable("InNumbersProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inStringsProperty"),
-            this.variable("InStringsProperty"),
-          ),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape with sh:hasValue properties.
@@ -7695,6 +7276,7 @@ export namespace NodeShapeWithInProperties {
 export class NodeShapeWithHasValueProperties {
   readonly hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
   readonly hasLiteralProperty: purify.Maybe<string>;
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly type = "NodeShapeWithHasValueProperties";
 
   constructor(parameters: {
@@ -7724,8 +7306,6 @@ export class NodeShapeWithHasValueProperties {
 
     this._identifier = parameters.identifier;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -8143,35 +7723,9 @@ export namespace NodeShapeWithHasValueProperties {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/hasIriProperty"),
-            this.variable("HasIriProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/hasLiteralProperty"),
-            this.variable("HasLiteralProperty"),
-          ),
-        ),
-      );
-    }
-  }
 }
 export class InlineNodeShape {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty: string;
   readonly type = "InlineNodeShape";
 
@@ -8182,8 +7736,6 @@ export class InlineNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -8476,24 +8028,9 @@ export namespace InlineNodeShape {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
-  }
 }
 export class ExternNodeShape {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty: string;
   readonly type = "ExternNodeShape";
 
@@ -8504,8 +8041,6 @@ export class ExternNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -8798,22 +8333,6 @@ export namespace ExternNodeShape {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
-  }
 }
 /**
  * Node shape that inlines/nests another node shape and externs/references another.
@@ -8821,6 +8340,7 @@ export namespace ExternNodeShape {
 export class NodeShapeWithExternProperties {
   readonly externObjectTypeProperty: purify.Maybe<ExternObjectType>;
   readonly externProperty: purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode>;
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly inlineProperty: purify.Maybe<InlineNodeShape>;
   readonly type = "NodeShapeWithExternProperties";
 
@@ -8874,8 +8394,6 @@ export class NodeShapeWithExternProperties {
       this.inlineProperty = parameters.inlineProperty as never;
     }
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -9315,6 +8833,7 @@ export namespace NodeShapeWithExternProperties {
         subject,
       },
       ...ExternObjectType.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
         subject: dataFactory.variable!(
           `${variablePrefix}ExternObjectTypeProperty`,
         ),
@@ -9331,6 +8850,7 @@ export namespace NodeShapeWithExternProperties {
         subject,
       },
       ...InlineNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
         subject: dataFactory.variable!(`${variablePrefix}InlineProperty`),
         variablePrefix: `${variablePrefix}InlineProperty`,
       }),
@@ -9368,6 +8888,7 @@ export namespace NodeShapeWithExternProperties {
             type: "bgp",
           },
           ...ExternObjectType.sparqlWherePatterns({
+            ignoreRdfType: true,
             subject: dataFactory.variable!(
               `${variablePrefix}ExternObjectTypeProperty`,
             ),
@@ -9412,6 +8933,7 @@ export namespace NodeShapeWithExternProperties {
             type: "bgp",
           },
           ...InlineNodeShape.sparqlWherePatterns({
+            ignoreRdfType: true,
             subject: dataFactory.variable!(`${variablePrefix}InlineProperty`),
             variablePrefix: `${variablePrefix}InlineProperty`,
           }),
@@ -9419,58 +8941,6 @@ export namespace NodeShapeWithExternProperties {
         type: "optional",
       },
     ];
-  }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.group(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode(
-                "http://example.com/externObjectTypeProperty",
-              ),
-              this.variable("ExternObjectTypeProperty"),
-            ).chainObject(
-              (_object) =>
-                new ExternObjectType.SparqlGraphPatterns(_object, {
-                  ignoreRdfType: true,
-                }),
-            ),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/externProperty"),
-            this.variable("ExternProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.group(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/inlineProperty"),
-              this.variable("InlineProperty"),
-            ).chainObject(
-              (_object) =>
-                new InlineNodeShape.SparqlGraphPatterns(_object, {
-                  ignoreRdfType: true,
-                }),
-            ),
-          ),
-        ),
-      );
-    }
   }
 }
 /**
@@ -9480,6 +8950,7 @@ export namespace NodeShapeWithExternProperties {
  * shaclmate:toRdfType's are added an serialization.
  */
 export class NodeShapeWithExplicitRdfTypes {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty: string;
   readonly type = "NodeShapeWithExplicitRdfTypes";
 
@@ -9490,8 +8961,6 @@ export class NodeShapeWithExplicitRdfTypes {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -9839,6 +9308,11 @@ export namespace NodeShapeWithExplicitRdfTypes {
                     "http://example.com/FromRdfType",
                   ),
                 },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
                 {
                   subject,
                   predicate: dataFactory.namedNode(
@@ -9864,40 +9338,6 @@ export namespace NodeShapeWithExplicitRdfTypes {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      if (!_options?.ignoreRdfType) {
-        this.add(
-          ...new sparqlBuilder.RdfTypeGraphPatterns(
-            this.subject,
-            dataFactory.namedNode("http://example.com/FromRdfType"),
-          ),
-        );
-        this.add(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-            ),
-            dataFactory.namedNode("http://example.com/ToRdfType"),
-          ),
-        );
-      }
-
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
-  }
 }
 /**
  * Shape with sh:defaultValue properties.
@@ -9905,6 +9345,7 @@ export namespace NodeShapeWithExplicitRdfTypes {
 export class NodeShapeWithDefaultValueProperties {
   readonly dateTimeProperty: Date;
   readonly falseBooleanProperty: boolean;
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly numberProperty: number;
   readonly stringProperty: string;
   readonly trueBooleanProperty: boolean;
@@ -9962,8 +9403,6 @@ export class NodeShapeWithDefaultValueProperties {
       this.trueBooleanProperty = parameters.trueBooleanProperty as never;
     }
   }
-
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
@@ -10632,60 +10071,6 @@ export namespace NodeShapeWithDefaultValueProperties {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/dateTimeProperty"),
-            this.variable("DateTimeProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/falseBooleanProperty"),
-            this.variable("FalseBooleanProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/numberProperty"),
-            this.variable("NumberProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/stringProperty"),
-            this.variable("StringProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/trueBooleanProperty"),
-            this.variable("TrueBooleanProperty"),
-          ),
-        ),
-      );
-    }
-  }
 }
 /**
  * A node shape that only allows IRI identifiers.
@@ -10979,22 +10364,6 @@ export namespace IriNodeShape {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
-  }
 }
 export interface InterfaceUnionNodeShapeMember2 {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11277,22 +10646,6 @@ export namespace InterfaceUnionNodeShapeMember2 {
         type: "bgp",
       },
     ];
-  }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty2"),
-          this.variable("StringProperty2"),
-        ),
-      );
-    }
   }
 
   export function toJson(
@@ -11619,22 +10972,6 @@ export namespace InterfaceUnionNodeShapeMember1 {
     ];
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty1"),
-          this.variable("StringProperty1"),
-        ),
-      );
-    }
-  }
-
   export function toJson(
     _interfaceUnionNodeShapeMember1: InterfaceUnionNodeShapeMember1,
   ): {
@@ -11946,22 +11283,6 @@ export namespace InterfaceNodeShape {
         type: "bgp",
       },
     ];
-  }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
   }
 
   export function toJson(_interfaceNodeShape: InterfaceNodeShape): {
@@ -12313,22 +11634,6 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/abcStringProperty"),
-          this.variable("AbcStringProperty"),
-        ),
-      );
-    }
-  }
 }
 /**
  * Abstract base for other node shapes. Put the ABC with properties above the ABC without.
@@ -12561,20 +11866,12 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
       }),
     ];
   }
-
-  export class SparqlGraphPatterns extends AbstractBaseClassWithPropertiesNodeShape.SparqlGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject, { ignoreRdfType: true });
-    }
-  }
 }
 /**
  * Class node shape that inherits the abstract base class and is the parent of the ChildClassNodeShape.
  */
 export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutPropertiesNodeShape {
+  protected _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly parentStringProperty: string;
   override readonly type:
     | "ConcreteChildClassNodeShape"
@@ -12592,8 +11889,6 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
     this._identifier = parameters.identifier;
     this.parentStringProperty = parameters.parentStringProperty;
   }
-
-  protected _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   override get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -12963,6 +12258,11 @@ export namespace ConcreteParentClassNodeShape {
                     "http://example.com/ConcreteParentClassNodeShape",
                   ),
                 },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
                 {
                   subject,
                   predicate: dataFactory.namedNode(
@@ -12989,33 +12289,6 @@ export namespace ConcreteParentClassNodeShape {
         type: "bgp",
       },
     ];
-  }
-
-  export class SparqlGraphPatterns extends AbstractBaseClassWithoutPropertiesNodeShape.SparqlGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject, { ignoreRdfType: true });
-      if (!_options?.ignoreRdfType) {
-        this.add(
-          ...new sparqlBuilder.RdfTypeGraphPatterns(
-            this.subject,
-            dataFactory.namedNode(
-              "http://example.com/ConcreteParentClassNodeShape",
-            ),
-          ),
-        );
-      }
-
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/parentStringProperty"),
-          this.variable("ParentStringProperty"),
-        ),
-      );
-    }
   }
 }
 /**
@@ -13392,6 +12665,11 @@ export namespace ConcreteChildClassNodeShape {
                     "http://example.com/ConcreteChildClassNodeShape",
                   ),
                 },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
                 {
                   subject,
                   predicate: dataFactory.namedNode(
@@ -13418,33 +12696,6 @@ export namespace ConcreteChildClassNodeShape {
         type: "bgp",
       },
     ];
-  }
-
-  export class SparqlGraphPatterns extends ConcreteParentClassNodeShape.SparqlGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject, { ignoreRdfType: true });
-      if (!_options?.ignoreRdfType) {
-        this.add(
-          ...new sparqlBuilder.RdfTypeGraphPatterns(
-            this.subject,
-            dataFactory.namedNode(
-              "http://example.com/ConcreteChildClassNodeShape",
-            ),
-          ),
-        );
-      }
-
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/childStringProperty"),
-          this.variable("ChildStringProperty"),
-        ),
-      );
-    }
   }
 }
 /**
@@ -13743,22 +12994,6 @@ export namespace AbstractBaseClassForExternObjectType {
       },
     ];
   }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/abcStringProperty"),
-          this.variable("AbcStringProperty"),
-        ),
-      );
-    }
-  }
 }
 /**
  * Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union.
@@ -13942,22 +13177,6 @@ export namespace InterfaceUnionNodeShape {
         type: "union",
       },
     ];
-  }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.union(
-          new InterfaceUnionNodeShapeMember1.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-          new InterfaceUnionNodeShapeMember2.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-        ),
-      );
-    }
   }
 
   export function toJson(
@@ -14191,25 +13410,6 @@ export namespace UnionNodeShape {
         type: "union",
       },
     ];
-  }
-
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.union(
-          new UnionNodeShapeMember1.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-          new UnionNodeShapeMember2.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-          new ExternObjectType.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-        ),
-      );
-    }
   }
 
   export function toJson(
