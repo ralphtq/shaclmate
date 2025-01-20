@@ -1,4 +1,3 @@
-import type * as sparqlBuilder from "@kos-kit/sparql-builder";
 import type { BlankNode, NamedNode } from "@rdfjs/types";
 import type { Either } from "purify-ts";
 import type { Equatable } from "purify-ts-helpers";
@@ -20,16 +19,12 @@ export abstract class Harness<
   }) => Either<Resource.ValueError, T>;
   readonly instance: T;
   readonly sparqlConstructQueryString: () => string;
-  readonly sparqlGraphPatternsClass: new (
-    subject: sparqlBuilder.ResourceGraphPatterns.Subject,
-  ) => sparqlBuilder.ResourceGraphPatterns;
 
   constructor({
     fromJson,
     fromRdf,
     instance,
     sparqlConstructQueryString,
-    sparqlGraphPatternsClass,
   }: {
     fromJson: Harness<T, IdentifierT>["fromJson"];
     fromRdf: Harness<T, IdentifierT>["fromRdf"];
@@ -38,16 +33,11 @@ export abstract class Harness<
       T,
       IdentifierT
     >["sparqlConstructQueryString"];
-    sparqlGraphPatternsClass: Harness<
-      T,
-      IdentifierT
-    >["sparqlGraphPatternsClass"];
   }) {
     this.fromJson = fromJson;
     this.fromRdf = fromRdf;
     this.instance = instance;
     this.sparqlConstructQueryString = sparqlConstructQueryString;
-    this.sparqlGraphPatternsClass = sparqlGraphPatternsClass;
   }
 
   abstract equals(other: T): Equatable.EqualsResult;
