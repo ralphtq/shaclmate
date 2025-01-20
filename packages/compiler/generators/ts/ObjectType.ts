@@ -408,6 +408,7 @@ export class ObjectType extends DeclaredType {
       case "type":
         return [
           `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer({
+            ignoreRdfType: true, // Can ignore the rdf:type when the object is nested
             subject: variables.subject,
             variablePrefix: variables.variablePrefix,
           })})`,
@@ -425,6 +426,7 @@ export class ObjectType extends DeclaredType {
       case "type":
         return [
           `...${this.name}.sparqlWherePatterns(${objectInitializer({
+            ignoreRdfType: true, // Can ignore the rdf:type when the object is nested
             subject: variables.subject,
             variablePrefix: variables.variablePrefix,
           })})`,

@@ -103,7 +103,7 @@ export function sparqlFunctionDeclarations(
           ),
           ...(this.fromRdfType.isJust()
             ? [
-                `...(parameters?.ignoreRdfType ? [] : [{ triples: [{ subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${this.rdfjsTermExpression(this.fromRdfType.unsafeCoerce())} }, { subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${rdfTypeVariable} }], type: "bgp" as const }])`,
+                `...(parameters?.ignoreRdfType ? [] : [{ triples: [{ subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${this.rdfjsTermExpression(this.fromRdfType.unsafeCoerce())} }], type: "bgp" as const }, { triples: [{ subject, predicate: ${this.rdfjsTermExpression(rdf.type)}, object: ${rdfTypeVariable} }], type: "bgp" as const }])`,
               ]
             : []),
           this.ownProperties.flatMap((property) =>

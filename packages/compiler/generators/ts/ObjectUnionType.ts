@@ -543,6 +543,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       case "type":
         return [
           `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer({
+            ignoreRdfType: true,
             subject: variables.subject,
             variablePrefix: variables.variablePrefix,
           })})`,
@@ -560,6 +561,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       case "type":
         return [
           `...${this.name}.sparqlWherePatterns(${objectInitializer({
+            ignoreRdfType: true,
             subject: variables.subject,
             variablePrefix: variables.variablePrefix,
           })})`,

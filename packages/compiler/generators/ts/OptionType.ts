@@ -152,21 +152,18 @@ export class OptionType extends Type {
     context,
     variables,
   }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
-    let patterns: readonly string[];
     switch (context) {
       case "property": {
-        patterns = super.sparqlWherePatterns({ context, variables });
-        break;
+        const patterns = super.sparqlWherePatterns({ context, variables });
+        if (patterns.length === 0) {
+          return [];
+        }
+        return [`{ patterns: [${patterns.join(", ")}], type: "optional" }`];
       }
       case "type": {
-        patterns = this.itemType.sparqlWherePatterns({ context, variables });
-        break;
+        return this.itemType.sparqlWherePatterns({ context, variables });
       }
     }
-    if (patterns.length === 0) {
-      return [];
-    }
-    return [`{ patterns: [${patterns.join(", ")}], type: "optional" }`];
   }
 
   override toJsonExpression({
