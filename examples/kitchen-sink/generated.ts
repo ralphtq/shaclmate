@@ -13496,11 +13496,11 @@ export namespace InterfaceUnionNodeShape {
     return [
       ...InterfaceUnionNodeShapeMember1.sparqlConstructTemplateTriples({
         subject,
-        variablePrefix,
+        variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember1`,
       }).concat(),
       ...InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
         subject,
-        variablePrefix,
+        variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember2`,
       }).concat(),
     ];
   }
@@ -13519,14 +13519,14 @@ export namespace InterfaceUnionNodeShape {
           {
             patterns: InterfaceUnionNodeShapeMember1.sparqlWherePatterns({
               subject,
-              variablePrefix,
+              variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember1`,
             }).concat(),
             type: "group",
           },
           {
             patterns: InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
               subject,
-              variablePrefix,
+              variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember2`,
             }).concat(),
             type: "group",
           },
@@ -13734,15 +13734,15 @@ export namespace UnionNodeShape {
     return [
       ...UnionNodeShapeMember1.sparqlConstructTemplateTriples({
         subject,
-        variablePrefix,
+        variablePrefix: `${variablePrefix}UnionNodeShapeMember1`,
       }).concat(),
       ...UnionNodeShapeMember2.sparqlConstructTemplateTriples({
         subject,
-        variablePrefix,
+        variablePrefix: `${variablePrefix}UnionNodeShapeMember2`,
       }).concat(),
       ...ExternObjectType.sparqlConstructTemplateTriples({
         subject,
-        variablePrefix,
+        variablePrefix: `${variablePrefix}ExternObjectType`,
       }).concat(),
     ];
   }
@@ -13761,21 +13761,21 @@ export namespace UnionNodeShape {
           {
             patterns: UnionNodeShapeMember1.sparqlWherePatterns({
               subject,
-              variablePrefix,
+              variablePrefix: `${variablePrefix}UnionNodeShapeMember1`,
             }).concat(),
             type: "group",
           },
           {
             patterns: UnionNodeShapeMember2.sparqlWherePatterns({
               subject,
-              variablePrefix,
+              variablePrefix: `${variablePrefix}UnionNodeShapeMember2`,
             }).concat(),
             type: "group",
           },
           {
             patterns: ExternObjectType.sparqlWherePatterns({
               subject,
-              variablePrefix,
+              variablePrefix: `${variablePrefix}ExternObjectType`,
             }).concat(),
             type: "group",
           },

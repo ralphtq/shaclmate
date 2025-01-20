@@ -404,16 +404,7 @@ export class ObjectType extends DeclaredType {
   }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
     switch (context) {
       case "property":
-        return [
-          ...super.sparqlConstructTemplateTriples({ context, variables }),
-          ...this.sparqlConstructTemplateTriples({
-            context: "type",
-            variables: {
-              subject: variables.object,
-              variablePrefix: variables.variablePrefix,
-            },
-          }),
-        ];
+        return super.sparqlConstructTemplateTriples({ context, variables });
       case "type":
         return [
           `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer({
@@ -430,16 +421,7 @@ export class ObjectType extends DeclaredType {
   }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
     switch (context) {
       case "property":
-        return [
-          ...super.sparqlWherePatterns({ context, variables }),
-          ...this.sparqlWherePatterns({
-            context: "type",
-            variables: {
-              subject: variables.object,
-              variablePrefix: variables.variablePrefix,
-            },
-          }),
-        ];
+        return super.sparqlWherePatterns({ context, variables });
       case "type":
         return [
           `...${this.name}.sparqlWherePatterns(${objectInitializer({

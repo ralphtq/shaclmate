@@ -1,4 +1,4 @@
-import { camelCase } from "change-case";
+import { camelCase, pascalCase } from "change-case";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import {
@@ -351,7 +351,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
           `return [${this.memberTypes
             .map(
               (memberType) =>
-                `...${memberType.name}.sparqlConstructTemplateTriples({ subject, variablePrefix }).concat()`,
+                `...${memberType.name}.sparqlConstructTemplateTriples({ subject, variablePrefix: \`\${variablePrefix}${pascalCase(memberType.name)}\` }).concat()`,
             )
             .join(", ")}];`,
         ],
@@ -372,7 +372,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
           `return [{ patterns: [${this.memberTypes
             .map((memberType) =>
               objectInitializer({
-                patterns: `${memberType.name}.sparqlWherePatterns({ subject, variablePrefix }).concat()`,
+                patterns: `${memberType.name}.sparqlWherePatterns({ subject, variablePrefix: \`\${variablePrefix}${pascalCase(memberType.name)}\` }).concat()`,
                 type: '"group"',
               }),
             )
@@ -534,19 +534,37 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
   }
 
   override sparqlConstructTemplateTriples({
+    context,
     variables,
   }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
-    return [
-      `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer(variables)})`,
-    ];
+    switch (context) {
+      case "property":
+        return super.sparqlConstructTemplateTriples({ context, variables });
+      case "type":
+        return [
+          `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer({
+            subject: variables.subject,
+            variablePrefix: variables.variablePrefix,
+          })})`,
+        ];
+    }
   }
 
   override sparqlWherePatterns({
+    context,
     variables,
   }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
-    return [
-      `...${this.name}.sparqlWherePatterns(${objectInitializer(variables)})`,
-    ];
+    switch (context) {
+      case "property":
+        return super.sparqlWherePatterns({ context, variables });
+      case "type":
+        return [
+          `...${this.name}.sparqlWherePatterns(${objectInitializer({
+            subject: variables.subject,
+            variablePrefix: variables.variablePrefix,
+          })})`,
+        ];
+    }
   }
 
   override toJsonExpression({

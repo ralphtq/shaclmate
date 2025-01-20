@@ -88,7 +88,7 @@ export const harnesses = {
       type: "InterfaceUnionNodeShapeMember2",
     },
     sparqlConstructQueryString:
-      kitchenSink.InterfaceNodeShape.sparqlConstructQueryString,
+      kitchenSink.InterfaceUnionNodeShape.sparqlConstructQueryString,
     sparqlGraphPatternsClass:
       kitchenSink.InterfaceUnionNodeShape.SparqlGraphPatterns,
     toJson: kitchenSink.InterfaceUnionNodeShape.toJson,
