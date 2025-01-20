@@ -22,7 +22,6 @@ interface Package {
 }
 
 const externalDependencyVersions = {
-  "@kos-kit": "2.0.109",
   "@rdfjs/term-map": "^2.0.2",
   "@rdfjs/term-set": "^2.0.3",
   "@rdfjs/types": "^1.1.0",
