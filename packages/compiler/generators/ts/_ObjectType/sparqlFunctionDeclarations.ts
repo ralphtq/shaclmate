@@ -14,6 +14,7 @@ export function sparqlFunctionDeclarations(
     return [];
   }
 
+  const subjectDefault = camelCase(this.name);
   const variables = { subject: "subject", variablePrefix: "variablePrefix" };
   const rdfTypeVariable = `${this.dataFactoryVariable}.variable!(\`\${${variables.variablePrefix}}RdfType\`)`;
   return [
@@ -63,8 +64,8 @@ export function sparqlFunctionDeclarations(
       ],
       returnType: "readonly sparqljs.Triple[]",
       statements: [
-        `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}");`,
-        `const variablePrefix = parameters?.variablePrefix ?? (subject.termType === "Variable" ? subject.value : "${camelCase(this.name)}");`,
+        `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable!("${subjectDefault}");`,
+        `const variablePrefix = parameters?.variablePrefix ?? (subject.termType === "Variable" ? subject.value : "${subjectDefault}");`,
         `return [${[
           ...this.parentObjectTypes.map(
             (parentObjectType) =>
@@ -93,8 +94,8 @@ export function sparqlFunctionDeclarations(
       ],
       returnType: "readonly sparqljs.Pattern[]",
       statements: [
-        `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}");`,
-        `const variablePrefix = parameters?.variablePrefix ?? (subject.termType === "Variable" ? subject.value : "${camelCase(this.name)}");`,
+        `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable!("${subjectDefault}");`,
+        `const variablePrefix = parameters?.variablePrefix ?? (subject.termType === "Variable" ? subject.value : "${subjectDefault}");`,
         `return [${[
           ...this.parentObjectTypes.map(
             (parentObjectType) =>
