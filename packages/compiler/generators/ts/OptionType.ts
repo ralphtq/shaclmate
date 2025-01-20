@@ -133,26 +133,58 @@ export class OptionType extends Type {
     );
   }
 
-  override sparqlConstructTemplateTriples(
-    parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
-  ): readonly string[] {
-    return super
-      .sparqlConstructTemplateTriples(parameters)
-      .concat(this.itemType.sparqlConstructTemplateTriples(parameters));
+  override sparqlConstructTemplateTriples({
+    context,
+    variables,
+  }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
+    switch (context) {
+      case "property":
+        return super
+          .sparqlConstructTemplateTriples({ context, variables })
+          .concat(
+            this.itemType.sparqlConstructTemplateTriples({
+              context: "type",
+              variables: {
+                subject: variables.object,
+                variablePrefix: variables.variablePrefix,
+              },
+            }),
+          );
+      case "type":
+        return this.itemType.sparqlConstructTemplateTriples({
+          context,
+          variables,
+        });
+    }
   }
 
-  override sparqlWherePatterns(
-    parameters: Parameters<Type["sparqlWherePatterns"]>[0],
-  ): readonly string[] {
-    const itemTypeSparqlWherePatterns =
-      this.itemType.sparqlWherePatterns(parameters);
-    if (itemTypeSparqlWherePatterns.length === 0) {
-      return super.sparqlWherePatterns(parameters);
+  override sparqlWherePatterns({
+    context,
+    variables,
+  }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
+    let patterns: readonly string[];
+    switch (context) {
+      case "property": {
+        patterns = super.sparqlWherePatterns({ context, variables }).concat(
+          this.itemType.sparqlWherePatterns({
+            context: "type",
+            variables: {
+              subject: variables.object,
+              variablePrefix: variables.variablePrefix,
+            },
+          }),
+        );
+        break;
+      }
+      case "type": {
+        patterns = this.itemType.sparqlWherePatterns({ context, variables });
+        break;
+      }
     }
-    return [
-      ...super.sparqlWherePatterns(parameters),
-      `{ patterns: [${itemTypeSparqlWherePatterns.join(", ")}], type: "optional" }`,
-    ];
+    if (patterns.length === 0) {
+      return [];
+    }
+    return [`{ patterns: [${patterns.join(", ")}], type: "optional" }`];
   }
 
   override toJsonExpression({

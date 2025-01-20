@@ -2313,34 +2313,8 @@ export namespace NodeShapeWithUnionProperties {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}OrLiteralsProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/orLiteralsProperty",
-        ),
-        subject,
-      },
-      {
         object: dataFactory.variable(`${variablePrefix}OrTermsProperty`),
         predicate: dataFactory.namedNode("http://example.com/orTermsProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}OrTermsProperty`),
-        predicate: dataFactory.namedNode("http://example.com/orTermsProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}OrUnrelatedProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/orUnrelatedProperty",
-        ),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}OrUnrelatedProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/orUnrelatedProperty",
-        ),
         subject,
       },
       {
@@ -2368,18 +2342,6 @@ export namespace NodeShapeWithUnionProperties {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}OrLiteralsProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/orLiteralsProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -2397,18 +2359,6 @@ export namespace NodeShapeWithUnionProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}OrTermsProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/orTermsProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -2430,58 +2380,26 @@ export namespace NodeShapeWithUnionProperties {
         type: "optional",
       },
       {
-        triples: [
-          {
-            object: dataFactory.variable(
-              `${variablePrefix}OrUnrelatedProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/orUnrelatedProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
-            patterns: [
+            triples: [
               {
-                patterns: [
-                  {
-                    triples: [
-                      {
-                        object: dataFactory.variable(
-                          `${variablePrefix}OrUnrelatedProperty`,
-                        ),
-                        predicate: dataFactory.namedNode(
-                          "http://example.com/orUnrelatedProperty",
-                        ),
-                        subject,
-                      },
-                    ],
-                    type: "bgp",
-                  },
-                ],
-                type: "group",
+                object: dataFactory.variable(
+                  `${variablePrefix}OrUnrelatedProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/orUnrelatedProperty",
+                ),
+                subject,
               },
+            ],
+            type: "bgp",
+          },
+          {
+            patterns: [
+              { patterns: [], type: "group" },
               {
                 patterns: [
-                  {
-                    triples: [
-                      {
-                        object: dataFactory.variable(
-                          `${variablePrefix}OrUnrelatedProperty`,
-                        ),
-                        predicate: dataFactory.namedNode(
-                          "http://example.com/orUnrelatedProperty",
-                        ),
-                        subject,
-                      },
-                    ],
-                    type: "bgp",
-                  },
                   ...NonClassNodeShape.sparqlWherePatterns({
                     subject: dataFactory.variable(
                       `${variablePrefix}OrUnrelatedProperty`,
@@ -3402,23 +3320,8 @@ export namespace NodeShapeWithTermProperties {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}BooleanProperty`),
-        predicate: dataFactory.namedNode("http://example.com/booleanProperty"),
-        subject,
-      },
-      {
         object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
         predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
-        predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}IriProperty`),
-        predicate: dataFactory.namedNode("http://example.com/iriProperty"),
         subject,
       },
       {
@@ -3432,16 +3335,6 @@ export namespace NodeShapeWithTermProperties {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
-        predicate: dataFactory.namedNode("http://example.com/literalProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}NumberProperty`),
-        predicate: dataFactory.namedNode("http://example.com/numberProperty"),
-        subject,
-      },
-      {
         object: dataFactory.variable(`${variablePrefix}NumberProperty`),
         predicate: dataFactory.namedNode("http://example.com/numberProperty"),
         subject,
@@ -3449,16 +3342,6 @@ export namespace NodeShapeWithTermProperties {
       {
         object: dataFactory.variable(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
-        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}TermProperty`),
-        predicate: dataFactory.namedNode("http://example.com/termProperty"),
         subject,
       },
       {
@@ -3480,18 +3363,6 @@ export namespace NodeShapeWithTermProperties {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}BooleanProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/booleanProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -3509,18 +3380,6 @@ export namespace NodeShapeWithTermProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/dateTimeProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -3542,16 +3401,6 @@ export namespace NodeShapeWithTermProperties {
         type: "optional",
       },
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}IriProperty`),
-            predicate: dataFactory.namedNode("http://example.com/iriProperty"),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -3567,18 +3416,6 @@ export namespace NodeShapeWithTermProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/literalProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -3600,18 +3437,6 @@ export namespace NodeShapeWithTermProperties {
         type: "optional",
       },
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}NumberProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/numberProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -3629,18 +3454,6 @@ export namespace NodeShapeWithTermProperties {
         type: "optional",
       },
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/stringProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -3656,16 +3469,6 @@ export namespace NodeShapeWithTermProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}TermProperty`),
-            predicate: dataFactory.namedNode("http://example.com/termProperty"),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -4768,34 +4571,11 @@ export namespace NodeShapeWithPropertyCardinalities {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}EmptyStringSetProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/emptyStringSetProperty",
-        ),
-        subject,
-      },
-      {
         object: dataFactory.variable(
           `${variablePrefix}NonEmptyStringSetProperty`,
         ),
         predicate: dataFactory.namedNode(
           "http://example.com/nonEmptyStringSetProperty",
-        ),
-        subject,
-      },
-      {
-        object: dataFactory.variable(
-          `${variablePrefix}NonEmptyStringSetProperty`,
-        ),
-        predicate: dataFactory.namedNode(
-          "http://example.com/nonEmptyStringSetProperty",
-        ),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}OptionalStringProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/optionalStringProperty",
         ),
         subject,
       },
@@ -4827,20 +4607,6 @@ export namespace NodeShapeWithPropertyCardinalities {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable(
-              `${variablePrefix}EmptyStringSetProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/emptyStringSetProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -4867,20 +4633,6 @@ export namespace NodeShapeWithPropertyCardinalities {
             ),
             predicate: dataFactory.namedNode(
               "http://example.com/nonEmptyStringSetProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(
-              `${variablePrefix}OptionalStringProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/optionalStringProperty",
             ),
             subject,
           },
@@ -5444,20 +5196,6 @@ export namespace NodeShapeWithMutableProperties {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}MutableListProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/mutableListProperty",
-        ),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}MutableStringProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/mutableStringProperty",
-        ),
-        subject,
-      },
-      {
         object: dataFactory.variable(`${variablePrefix}MutableStringProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/mutableStringProperty",
@@ -5478,20 +5216,6 @@ export namespace NodeShapeWithMutableProperties {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable(
-              `${variablePrefix}MutableListProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/mutableListProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -5509,20 +5233,6 @@ export namespace NodeShapeWithMutableProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(
-              `${variablePrefix}MutableStringProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/mutableStringProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -6506,18 +6216,6 @@ export namespace NodeShapeWithLanguageInProperties {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}LanguageInProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/languageInProperty",
-        ),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
-        predicate: dataFactory.namedNode("http://example.com/literalProperty"),
-        subject,
-      },
-      {
         object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
         predicate: dataFactory.namedNode("http://example.com/literalProperty"),
         subject,
@@ -6536,18 +6234,6 @@ export namespace NodeShapeWithLanguageInProperties {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}LanguageInProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/languageInProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -6565,18 +6251,6 @@ export namespace NodeShapeWithLanguageInProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/literalProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -7363,20 +7037,6 @@ export namespace NodeShapeWithInProperties {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}InBooleansProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/inBooleansProperty",
-        ),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}InDateTimesProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/inDateTimesProperty",
-        ),
-        subject,
-      },
-      {
         object: dataFactory.variable(`${variablePrefix}InDateTimesProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/inDateTimesProperty",
@@ -7389,28 +7049,9 @@ export namespace NodeShapeWithInProperties {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}InIrisProperty`),
-        predicate: dataFactory.namedNode("http://example.com/inIrisProperty"),
-        subject,
-      },
-      {
         object: dataFactory.variable(`${variablePrefix}InNumbersProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/inNumbersProperty",
-        ),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}InNumbersProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/inNumbersProperty",
-        ),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}InStringsProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/inStringsProperty",
         ),
         subject,
       },
@@ -7435,18 +7076,6 @@ export namespace NodeShapeWithInProperties {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}InBooleansProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/inBooleansProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -7464,20 +7093,6 @@ export namespace NodeShapeWithInProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(
-              `${variablePrefix}InDateTimesProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/inDateTimesProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -7499,18 +7114,6 @@ export namespace NodeShapeWithInProperties {
         type: "optional",
       },
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}InIrisProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/inIrisProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -7526,18 +7129,6 @@ export namespace NodeShapeWithInProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}InNumbersProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/inNumbersProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -7557,18 +7148,6 @@ export namespace NodeShapeWithInProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}InStringsProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/inStringsProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -8025,18 +7604,6 @@ export namespace NodeShapeWithHasValueProperties {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}HasIriProperty`),
-        predicate: dataFactory.namedNode("http://example.com/hasIriProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}HasLiteralProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/hasLiteralProperty",
-        ),
-        subject,
-      },
-      {
         object: dataFactory.variable(`${variablePrefix}HasLiteralProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/hasLiteralProperty",
@@ -8057,18 +7624,6 @@ export namespace NodeShapeWithHasValueProperties {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}HasIriProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/hasIriProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -8084,18 +7639,6 @@ export namespace NodeShapeWithHasValueProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}HasLiteralProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/hasLiteralProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
@@ -9251,15 +8794,6 @@ export namespace NodeShapeWithExternProperties {
         ),
         subject,
       },
-      {
-        object: dataFactory.variable(
-          `${variablePrefix}ExternObjectTypeProperty`,
-        ),
-        predicate: dataFactory.namedNode(
-          "http://example.com/externObjectTypeProperty",
-        ),
-        subject,
-      },
       ...ExternObjectType.sparqlConstructTemplateTriples({
         subject: dataFactory.variable(
           `${variablePrefix}ExternObjectTypeProperty`,
@@ -9269,16 +8803,6 @@ export namespace NodeShapeWithExternProperties {
       {
         object: dataFactory.variable(`${variablePrefix}ExternProperty`),
         predicate: dataFactory.namedNode("http://example.com/externProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}ExternProperty`),
-        predicate: dataFactory.namedNode("http://example.com/externProperty"),
-        subject,
-      },
-      {
-        object: dataFactory.variable(`${variablePrefix}InlineProperty`),
-        predicate: dataFactory.namedNode("http://example.com/inlineProperty"),
         subject,
       },
       {
@@ -9303,20 +8827,6 @@ export namespace NodeShapeWithExternProperties {
   }): readonly sparqljs.Pattern[] {
     const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
-      {
-        triples: [
-          {
-            object: dataFactory.variable(
-              `${variablePrefix}ExternObjectTypeProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/externObjectTypeProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
       {
         patterns: [
           {
@@ -9343,18 +8853,6 @@ export namespace NodeShapeWithExternProperties {
         type: "optional",
       },
       {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}ExternProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/externProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
         patterns: [
           {
             triples: [
@@ -9370,18 +8868,6 @@ export namespace NodeShapeWithExternProperties {
           },
         ],
         type: "optional",
-      },
-      {
-        triples: [
-          {
-            object: dataFactory.variable(`${variablePrefix}InlineProperty`),
-            predicate: dataFactory.namedNode(
-              "http://example.com/inlineProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
       },
       {
         patterns: [
