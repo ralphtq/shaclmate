@@ -2397,20 +2397,25 @@ export namespace NodeShapeWithUnionProperties {
           },
           {
             patterns: [
-              { patterns: [], type: "group" },
               {
                 patterns: [
-                  ...NonClassNodeShape.sparqlWherePatterns({
-                    subject: dataFactory.variable(
-                      `${variablePrefix}OrUnrelatedProperty`,
-                    ),
-                    variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
-                  }),
+                  { patterns: [], type: "group" },
+                  {
+                    patterns: [
+                      ...NonClassNodeShape.sparqlWherePatterns({
+                        subject: dataFactory.variable(
+                          `${variablePrefix}OrUnrelatedProperty`,
+                        ),
+                        variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
+                      }),
+                    ],
+                    type: "group",
+                  },
                 ],
-                type: "group",
+                type: "union",
               },
             ],
-            type: "union",
+            type: "optional",
           },
         ],
         type: "optional",
@@ -8843,12 +8848,17 @@ export namespace NodeShapeWithExternProperties {
             ],
             type: "bgp",
           },
-          ...ExternObjectType.sparqlWherePatterns({
-            subject: dataFactory.variable(
-              `${variablePrefix}ExternObjectTypeProperty`,
-            ),
-            variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
-          }),
+          {
+            patterns: [
+              ...ExternObjectType.sparqlWherePatterns({
+                subject: dataFactory.variable(
+                  `${variablePrefix}ExternObjectTypeProperty`,
+                ),
+                variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
+              }),
+            ],
+            type: "optional",
+          },
         ],
         type: "optional",
       },
@@ -8883,10 +8893,17 @@ export namespace NodeShapeWithExternProperties {
             ],
             type: "bgp",
           },
-          ...InlineNodeShape.sparqlWherePatterns({
-            subject: dataFactory.variable(`${variablePrefix}InlineProperty`),
-            variablePrefix: `${variablePrefix}InlineProperty`,
-          }),
+          {
+            patterns: [
+              ...InlineNodeShape.sparqlWherePatterns({
+                subject: dataFactory.variable(
+                  `${variablePrefix}InlineProperty`,
+                ),
+                variablePrefix: `${variablePrefix}InlineProperty`,
+              }),
+            ],
+            type: "optional",
+          },
         ],
         type: "optional",
       },

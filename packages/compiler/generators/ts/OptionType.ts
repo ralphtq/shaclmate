@@ -139,17 +139,7 @@ export class OptionType extends Type {
   }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
     switch (context) {
       case "property":
-        return super
-          .sparqlConstructTemplateTriples({ context, variables })
-          .concat(
-            this.itemType.sparqlConstructTemplateTriples({
-              context: "type",
-              variables: {
-                subject: variables.object,
-                variablePrefix: variables.variablePrefix,
-              },
-            }),
-          );
+        return super.sparqlConstructTemplateTriples({ context, variables });
       case "type":
         return this.itemType.sparqlConstructTemplateTriples({
           context,
@@ -165,15 +155,7 @@ export class OptionType extends Type {
     let patterns: readonly string[];
     switch (context) {
       case "property": {
-        patterns = super.sparqlWherePatterns({ context, variables }).concat(
-          this.itemType.sparqlWherePatterns({
-            context: "type",
-            variables: {
-              subject: variables.object,
-              variablePrefix: variables.variablePrefix,
-            },
-          }),
-        );
+        patterns = super.sparqlWherePatterns({ context, variables });
         break;
       }
       case "type": {

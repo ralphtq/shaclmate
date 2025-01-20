@@ -1,5 +1,6 @@
 import type { BlankNode, Literal, NamedNode, Variable } from "@rdfjs/types";
 import { Maybe } from "purify-ts";
+import { invariant } from "ts-invariant";
 import type { Import } from "./Import.js";
 import { rdfjsTermExpression } from "./_ObjectType/rdfjsTermExpression.js";
 import { objectInitializer } from "./objectInitializer.js";
@@ -169,14 +170,30 @@ export abstract class Type {
         };
       }): readonly string[] {
     switch (context) {
-      case "property":
+      case "property": {
+        const objectPrefix = `${this.dataFactoryVariable}.variable(`;
+        const objectSuffix = ")";
+        invariant(variables.object.startsWith(objectPrefix));
+        invariant(variables.object.endsWith(objectSuffix));
         return [
           objectInitializer({
             object: variables.object,
             predicate: variables.predicate,
             subject: variables.subject,
           }),
-        ];
+        ].concat(
+          this.sparqlConstructTemplateTriples({
+            context: "type",
+            variables: {
+              subject: variables.object,
+              variablePrefix: variables.object.substring(
+                objectPrefix.length,
+                variables.object.length - objectSuffix.length,
+              ),
+            },
+          }),
+        );
+      }
       case "type":
         return [];
     }
@@ -208,7 +225,11 @@ export abstract class Type {
         };
       }): readonly string[] {
     switch (context) {
-      case "property":
+      case "property": {
+        const objectPrefix = `${this.dataFactoryVariable}.variable(`;
+        const objectSuffix = ")";
+        invariant(variables.object.startsWith(objectPrefix));
+        invariant(variables.object.endsWith(objectSuffix));
         return [
           objectInitializer({
             triples: `[${objectInitializer({
@@ -218,7 +239,19 @@ export abstract class Type {
             })}]`,
             type: '"bgp"',
           }),
-        ];
+        ].concat(
+          this.sparqlWherePatterns({
+            context: "type",
+            variables: {
+              subject: variables.object,
+              variablePrefix: variables.object.substring(
+                objectPrefix.length,
+                variables.object.length - objectSuffix.length,
+              ),
+            },
+          }),
+        );
+      }
       case "type":
         return [];
     }
