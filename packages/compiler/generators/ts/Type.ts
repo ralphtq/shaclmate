@@ -171,7 +171,7 @@ export abstract class Type {
       }): readonly string[] {
     switch (context) {
       case "property": {
-        const objectPrefix = `${this.dataFactoryVariable}.variable(`;
+        const objectPrefix = `${this.dataFactoryVariable}.variable!(`;
         const objectSuffix = ")";
         invariant(variables.object.startsWith(objectPrefix));
         invariant(variables.object.endsWith(objectSuffix));
@@ -226,7 +226,7 @@ export abstract class Type {
       }): readonly string[] {
     switch (context) {
       case "property": {
-        const objectPrefix = `${this.dataFactoryVariable}.variable(`;
+        const objectPrefix = `${this.dataFactoryVariable}.variable!(`;
         const objectSuffix = ")";
         invariant(variables.object.startsWith(objectPrefix));
         invariant(variables.object.endsWith(objectSuffix));

@@ -315,7 +315,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         ],
         returnType: "sparqljs.ConstructQuery",
         statements: [
-          `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable("${camelCase(this.name)}");`,
+          `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}");`,
           `return { ...parameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: ${this.name}.sparqlConstructTemplateTriples({ subject }).concat(), type: "query", where: ${this.name}.sparqlWherePatterns({ subject }).concat() };`,
         ],
       },

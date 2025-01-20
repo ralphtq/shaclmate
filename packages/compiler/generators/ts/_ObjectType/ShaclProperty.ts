@@ -229,7 +229,7 @@ export class ShaclProperty extends Property<Type> {
     return this.type.sparqlConstructTemplateTriples({
       context: "property",
       variables: {
-        object: `${this.dataFactoryVariable}.variable(${objectString})`,
+        object: `${this.dataFactoryVariable}.variable!(${objectString})`,
         predicate: this.rdfjsTermExpression(this.path),
         subject: variables.subject,
         variablePrefix: objectString,
@@ -259,7 +259,7 @@ export class ShaclProperty extends Property<Type> {
     return this.type.sparqlWherePatterns({
       context: "property",
       variables: {
-        object: `${this.dataFactoryVariable}.variable(${objectString})`,
+        object: `${this.dataFactoryVariable}.variable!(${objectString})`,
         predicate: this.rdfjsTermExpression(this.path),
         subject: variables.subject,
         variablePrefix: objectString,

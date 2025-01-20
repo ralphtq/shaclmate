@@ -23,6 +23,6 @@ export function rdfjsTermExpression({
     case "NamedNode":
       return `${dataFactoryVariable}.namedNode("${rdfjsTerm.value}")`;
     case "Variable":
-      return `${dataFactoryVariable}.variable("${rdfjsTerm.value}")`;
+      return `${dataFactoryVariable}.variable!("${rdfjsTerm.value}")`;
   }
 }

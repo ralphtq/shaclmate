@@ -142,7 +142,7 @@ export class ListType extends Type {
         const triples: string[] = [];
         const listVariable = variables.subject;
         const variable = (suffix: string) =>
-          `${this.dataFactoryVariable}.variable(\`\${${variables.variablePrefix}}${suffix}\`)`;
+          `${this.dataFactoryVariable}.variable!(\`\${${variables.variablePrefix}}${suffix}\`)`;
         const variablePrefix = (suffix: string) =>
           `\`\${${variables.variablePrefix}}${suffix}\``;
 
@@ -224,7 +224,7 @@ export class ListType extends Type {
         const patterns: string[] = [];
         const listVariable = variables.subject;
         const variable = (suffix: string) =>
-          `${this.dataFactoryVariable}.variable(\`\${${variables.variablePrefix}}${suffix}\`)`;
+          `${this.dataFactoryVariable}.variable!(\`\${${variables.variablePrefix}}${suffix}\`)`;
         const variablePrefix = (suffix: string) =>
           `\`\${${variables.variablePrefix}}${suffix}\``;
 
