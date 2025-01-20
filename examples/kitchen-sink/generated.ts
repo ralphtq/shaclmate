@@ -228,32 +228,42 @@ export namespace UuidV4IriNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("uuidV4IriNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: UuidV4IriNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        UuidV4IriNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: UuidV4IriNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        UuidV4IriNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -261,38 +271,40 @@ export namespace UuidV4IriNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("uuidV4IriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "uuidV4IriNodeShape");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("uuidV4IriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "uuidV4IriNodeShape");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty",
             ),
@@ -537,32 +549,42 @@ export namespace UnionNodeShapeMember2 {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("unionNodeShapeMember2");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: UnionNodeShapeMember2.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        UnionNodeShapeMember2.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: UnionNodeShapeMember2.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        UnionNodeShapeMember2.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -570,38 +592,44 @@ export namespace UnionNodeShapeMember2 {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShapeMember2");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "unionNodeShapeMember2");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty2`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty2"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShapeMember2");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "unionNodeShapeMember2");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty2`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty2",
             ),
@@ -846,32 +874,42 @@ export namespace UnionNodeShapeMember1 {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("unionNodeShapeMember1");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: UnionNodeShapeMember1.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        UnionNodeShapeMember1.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: UnionNodeShapeMember1.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        UnionNodeShapeMember1.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -879,38 +917,44 @@ export namespace UnionNodeShapeMember1 {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShapeMember1");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "unionNodeShapeMember1");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty1`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty1`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty1"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShapeMember1");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "unionNodeShapeMember1");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty1`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty1`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty1",
             ),
@@ -1155,32 +1199,42 @@ export namespace Sha256IriNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("sha256IriNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: Sha256IriNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        Sha256IriNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: Sha256IriNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        Sha256IriNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -1188,38 +1242,40 @@ export namespace Sha256IriNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("sha256IriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "sha256IriNodeShape");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("sha256IriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "sha256IriNodeShape");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty",
             ),
@@ -1467,32 +1523,42 @@ export namespace NonClassNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("nonClassNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NonClassNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NonClassNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NonClassNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NonClassNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -1500,38 +1566,40 @@ export namespace NonClassNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nonClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "nonClassNodeShape");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nonClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "nonClassNodeShape");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty",
             ),
@@ -1933,7 +2001,9 @@ export class NodeShapeWithUnionProperties {
 }
 
 export namespace NodeShapeWithUnionProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -2257,35 +2327,42 @@ export namespace NodeShapeWithUnionProperties {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithUnionProperties");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NodeShapeWithUnionProperties.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithUnionProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithUnionProperties.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithUnionProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -2293,58 +2370,66 @@ export namespace NodeShapeWithUnionProperties {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithUnionProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithUnionProperties");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}OrLiteralsProperty`),
+        object: dataFactory.variable!(`${variablePrefix}OrLiteralsProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/orLiteralsProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}OrTermsProperty`),
+        object: dataFactory.variable!(`${variablePrefix}OrTermsProperty`),
         predicate: dataFactory.namedNode("http://example.com/orTermsProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}OrUnrelatedProperty`),
+        object: dataFactory.variable!(`${variablePrefix}OrUnrelatedProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/orUnrelatedProperty",
         ),
         subject,
       },
       ...NonClassNodeShape.sparqlConstructTemplateTriples({
-        subject: dataFactory.variable(`${variablePrefix}OrUnrelatedProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}OrUnrelatedProperty`),
         variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
       }),
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithUnionProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithUnionProperties");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}OrLiteralsProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -2363,7 +2448,7 @@ export namespace NodeShapeWithUnionProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}OrTermsProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -2382,7 +2467,7 @@ export namespace NodeShapeWithUnionProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}OrUnrelatedProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -2401,7 +2486,7 @@ export namespace NodeShapeWithUnionProperties {
                   {
                     patterns: [
                       ...NonClassNodeShape.sparqlWherePatterns({
-                        subject: dataFactory.variable(
+                        subject: dataFactory.variable!(
                           `${variablePrefix}OrUnrelatedProperty`,
                         ),
                         variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
@@ -2919,7 +3004,9 @@ export class NodeShapeWithTermProperties {
 }
 
 export namespace NodeShapeWithTermProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       booleanProperty: purify.Maybe<boolean>;
@@ -3269,35 +3356,42 @@ export namespace NodeShapeWithTermProperties {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithTermProperties");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NodeShapeWithTermProperties.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithTermProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithTermProperties.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithTermProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -3305,70 +3399,78 @@ export namespace NodeShapeWithTermProperties {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithTermProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithTermProperties");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}BooleanProperty`),
+        object: dataFactory.variable!(`${variablePrefix}BooleanProperty`),
         predicate: dataFactory.namedNode("http://example.com/booleanProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
+        object: dataFactory.variable!(`${variablePrefix}DateTimeProperty`),
         predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}IriProperty`),
+        object: dataFactory.variable!(`${variablePrefix}IriProperty`),
         predicate: dataFactory.namedNode("http://example.com/iriProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
+        object: dataFactory.variable!(`${variablePrefix}LiteralProperty`),
         predicate: dataFactory.namedNode("http://example.com/literalProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}NumberProperty`),
+        object: dataFactory.variable!(`${variablePrefix}NumberProperty`),
         predicate: dataFactory.namedNode("http://example.com/numberProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}TermProperty`),
+        object: dataFactory.variable!(`${variablePrefix}TermProperty`),
         predicate: dataFactory.namedNode("http://example.com/termProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithTermProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithTermProperties");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}BooleanProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -3387,7 +3489,7 @@ export namespace NodeShapeWithTermProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}DateTimeProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -3406,7 +3508,7 @@ export namespace NodeShapeWithTermProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}IriProperty`),
+                object: dataFactory.variable!(`${variablePrefix}IriProperty`),
                 predicate: dataFactory.namedNode(
                   "http://example.com/iriProperty",
                 ),
@@ -3423,7 +3525,7 @@ export namespace NodeShapeWithTermProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}LiteralProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -3442,7 +3544,9 @@ export namespace NodeShapeWithTermProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}NumberProperty`),
+                object: dataFactory.variable!(
+                  `${variablePrefix}NumberProperty`,
+                ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/numberProperty",
                 ),
@@ -3459,7 +3563,9 @@ export namespace NodeShapeWithTermProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}StringProperty`),
+                object: dataFactory.variable!(
+                  `${variablePrefix}StringProperty`,
+                ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/stringProperty",
                 ),
@@ -3476,7 +3582,7 @@ export namespace NodeShapeWithTermProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}TermProperty`),
+                object: dataFactory.variable!(`${variablePrefix}TermProperty`),
                 predicate: dataFactory.namedNode(
                   "http://example.com/termProperty",
                 ),
@@ -3720,7 +3826,9 @@ export class NodeShapeWithPropertyVisibilities {
 }
 
 export namespace NodeShapeWithPropertyVisibilities {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -3889,36 +3997,42 @@ export namespace NodeShapeWithPropertyVisibilities {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithPropertyVisibilities");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template:
+      template: (queryParameters.template ?? []).concat(
         NodeShapeWithPropertyVisibilities.sparqlConstructTemplateTriples({
+          ignoreRdfType,
           subject,
-        }).concat(),
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithPropertyVisibilities.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithPropertyVisibilities.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -3926,50 +4040,58 @@ export namespace NodeShapeWithPropertyVisibilities {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithPropertyVisibilities");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithPropertyVisibilities");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}PrivateProperty`),
+        object: dataFactory.variable!(`${variablePrefix}PrivateProperty`),
         predicate: dataFactory.namedNode("http://example.com/privateProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}ProtectedProperty`),
+        object: dataFactory.variable!(`${variablePrefix}ProtectedProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/protectedProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}PublicProperty`),
+        object: dataFactory.variable!(`${variablePrefix}PublicProperty`),
         predicate: dataFactory.namedNode("http://example.com/publicProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithPropertyVisibilities");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithPropertyVisibilities");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}PrivateProperty`),
+            object: dataFactory.variable!(`${variablePrefix}PrivateProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/privateProperty",
             ),
@@ -3981,7 +4103,7 @@ export namespace NodeShapeWithPropertyVisibilities {
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}ProtectedProperty`),
+            object: dataFactory.variable!(`${variablePrefix}ProtectedProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/protectedProperty",
             ),
@@ -3993,7 +4115,7 @@ export namespace NodeShapeWithPropertyVisibilities {
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}PublicProperty`),
+            object: dataFactory.variable!(`${variablePrefix}PublicProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/publicProperty",
             ),
@@ -4265,7 +4387,9 @@ export class NodeShapeWithPropertyCardinalities {
 }
 
 export namespace NodeShapeWithPropertyCardinalities {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       emptyStringSetProperty: readonly string[];
@@ -4513,36 +4637,42 @@ export namespace NodeShapeWithPropertyCardinalities {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithPropertyCardinalities");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template:
+      template: (queryParameters.template ?? []).concat(
         NodeShapeWithPropertyCardinalities.sparqlConstructTemplateTriples({
+          ignoreRdfType,
           subject,
-        }).concat(),
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithPropertyCardinalities.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithPropertyCardinalities.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -4550,25 +4680,31 @@ export namespace NodeShapeWithPropertyCardinalities {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithPropertyCardinalities");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithPropertyCardinalities");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}EmptyStringSetProperty`),
+        object: dataFactory.variable!(
+          `${variablePrefix}EmptyStringSetProperty`,
+        ),
         predicate: dataFactory.namedNode(
           "http://example.com/emptyStringSetProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(
+        object: dataFactory.variable!(
           `${variablePrefix}NonEmptyStringSetProperty`,
         ),
         predicate: dataFactory.namedNode(
@@ -4577,14 +4713,18 @@ export namespace NodeShapeWithPropertyCardinalities {
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}OptionalStringProperty`),
+        object: dataFactory.variable!(
+          `${variablePrefix}OptionalStringProperty`,
+        ),
         predicate: dataFactory.namedNode(
           "http://example.com/optionalStringProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}RequiredStringProperty`),
+        object: dataFactory.variable!(
+          `${variablePrefix}RequiredStringProperty`,
+        ),
         predicate: dataFactory.namedNode(
           "http://example.com/requiredStringProperty",
         ),
@@ -4593,22 +4733,26 @@ export namespace NodeShapeWithPropertyCardinalities {
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithPropertyCardinalities");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithPropertyCardinalities");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}EmptyStringSetProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -4625,7 +4769,7 @@ export namespace NodeShapeWithPropertyCardinalities {
       {
         triples: [
           {
-            object: dataFactory.variable(
+            object: dataFactory.variable!(
               `${variablePrefix}NonEmptyStringSetProperty`,
             ),
             predicate: dataFactory.namedNode(
@@ -4641,7 +4785,7 @@ export namespace NodeShapeWithPropertyCardinalities {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}OptionalStringProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -4658,7 +4802,7 @@ export namespace NodeShapeWithPropertyCardinalities {
       {
         triples: [
           {
-            object: dataFactory.variable(
+            object: dataFactory.variable!(
               `${variablePrefix}RequiredStringProperty`,
             ),
             predicate: dataFactory.namedNode(
@@ -4955,7 +5099,9 @@ export class NodeShapeWithMutableProperties {
 }
 
 export namespace NodeShapeWithMutableProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -5137,35 +5283,42 @@ export namespace NodeShapeWithMutableProperties {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithMutableProperties");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NodeShapeWithMutableProperties.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithMutableProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithMutableProperties.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithMutableProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -5173,65 +5326,69 @@ export namespace NodeShapeWithMutableProperties {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithMutableProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithMutableProperties");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}MutableListProperty`),
+        object: dataFactory.variable!(`${variablePrefix}MutableListProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/mutableListProperty",
         ),
         subject,
       },
       {
-        subject: dataFactory.variable(`${variablePrefix}MutableListProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}MutableListProperty`),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
-        object: dataFactory.variable(
+        object: dataFactory.variable!(
           `${`${variablePrefix}MutableListProperty`}Item0`,
         ),
       },
       {
-        subject: dataFactory.variable(`${variablePrefix}MutableListProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}MutableListProperty`),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
         ),
-        object: dataFactory.variable(
+        object: dataFactory.variable!(
           `${`${variablePrefix}MutableListProperty`}Rest0`,
         ),
       },
       {
-        subject: dataFactory.variable(
+        subject: dataFactory.variable!(
           `${`${variablePrefix}MutableListProperty`}RestN`,
         ),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
-        object: dataFactory.variable(
+        object: dataFactory.variable!(
           `${`${variablePrefix}MutableListProperty`}ItemN`,
         ),
       },
       {
-        subject: dataFactory.variable(
+        subject: dataFactory.variable!(
           `${`${variablePrefix}MutableListProperty`}RestN`,
         ),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
         ),
-        object: dataFactory.variable(
+        object: dataFactory.variable!(
           `${`${variablePrefix}MutableListProperty`}RestNBasic`,
         ),
       },
       {
-        object: dataFactory.variable(`${variablePrefix}MutableStringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}MutableStringProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/mutableStringProperty",
         ),
@@ -5240,22 +5397,26 @@ export namespace NodeShapeWithMutableProperties {
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithMutableProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithMutableProperties");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}MutableListProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -5272,13 +5433,13 @@ export namespace NodeShapeWithMutableProperties {
                 type: "bgp",
                 triples: [
                   {
-                    subject: dataFactory.variable(
+                    subject: dataFactory.variable!(
                       `${variablePrefix}MutableListProperty`,
                     ),
                     predicate: dataFactory.namedNode(
                       "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
                     ),
-                    object: dataFactory.variable(
+                    object: dataFactory.variable!(
                       `${`${variablePrefix}MutableListProperty`}Item0`,
                     ),
                   },
@@ -5288,13 +5449,13 @@ export namespace NodeShapeWithMutableProperties {
                 type: "bgp",
                 triples: [
                   {
-                    subject: dataFactory.variable(
+                    subject: dataFactory.variable!(
                       `${variablePrefix}MutableListProperty`,
                     ),
                     predicate: dataFactory.namedNode(
                       "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
                     ),
-                    object: dataFactory.variable(
+                    object: dataFactory.variable!(
                       `${`${variablePrefix}MutableListProperty`}Rest0`,
                     ),
                   },
@@ -5307,7 +5468,7 @@ export namespace NodeShapeWithMutableProperties {
                     type: "bgp",
                     triples: [
                       {
-                        subject: dataFactory.variable(
+                        subject: dataFactory.variable!(
                           `${variablePrefix}MutableListProperty`,
                         ),
                         predicate: {
@@ -5319,7 +5480,7 @@ export namespace NodeShapeWithMutableProperties {
                             ),
                           ],
                         },
-                        object: dataFactory.variable(
+                        object: dataFactory.variable!(
                           `${`${variablePrefix}MutableListProperty`}RestN`,
                         ),
                       },
@@ -5329,13 +5490,13 @@ export namespace NodeShapeWithMutableProperties {
                     type: "bgp",
                     triples: [
                       {
-                        subject: dataFactory.variable(
+                        subject: dataFactory.variable!(
                           `${`${variablePrefix}MutableListProperty`}RestN`,
                         ),
                         predicate: dataFactory.namedNode(
                           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
                         ),
-                        object: dataFactory.variable(
+                        object: dataFactory.variable!(
                           `${`${variablePrefix}MutableListProperty`}ItemN`,
                         ),
                       },
@@ -5345,13 +5506,13 @@ export namespace NodeShapeWithMutableProperties {
                     type: "bgp",
                     triples: [
                       {
-                        subject: dataFactory.variable(
+                        subject: dataFactory.variable!(
                           `${`${variablePrefix}MutableListProperty`}RestN`,
                         ),
                         predicate: dataFactory.namedNode(
                           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
                         ),
-                        object: dataFactory.variable(
+                        object: dataFactory.variable!(
                           `${`${variablePrefix}MutableListProperty`}RestNBasic`,
                         ),
                       },
@@ -5370,7 +5531,7 @@ export namespace NodeShapeWithMutableProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}MutableStringProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -5594,7 +5755,9 @@ export class NodeShapeWithListProperty {
 }
 
 export namespace NodeShapeWithListProperty {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -5722,34 +5885,42 @@ export namespace NodeShapeWithListProperty {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("nodeShapeWithListProperty");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NodeShapeWithListProperty.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithListProperty.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithListProperty.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithListProperty.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -5757,72 +5928,84 @@ export namespace NodeShapeWithListProperty {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithListProperty");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithListProperty");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}ListProperty`),
+        object: dataFactory.variable!(`${variablePrefix}ListProperty`),
         predicate: dataFactory.namedNode("http://example.com/listProperty"),
         subject,
       },
       {
-        subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
-        object: dataFactory.variable(`${`${variablePrefix}ListProperty`}Item0`),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}Item0`,
+        ),
       },
       {
-        subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
         ),
-        object: dataFactory.variable(`${`${variablePrefix}ListProperty`}Rest0`),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}Rest0`,
+        ),
       },
       {
-        subject: dataFactory.variable(
+        subject: dataFactory.variable!(
           `${`${variablePrefix}ListProperty`}RestN`,
         ),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
-        object: dataFactory.variable(`${`${variablePrefix}ListProperty`}ItemN`),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}ItemN`,
+        ),
       },
       {
-        subject: dataFactory.variable(
+        subject: dataFactory.variable!(
           `${`${variablePrefix}ListProperty`}RestN`,
         ),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
         ),
-        object: dataFactory.variable(
+        object: dataFactory.variable!(
           `${`${variablePrefix}ListProperty`}RestNBasic`,
         ),
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithListProperty");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithListProperty");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}ListProperty`),
+            object: dataFactory.variable!(`${variablePrefix}ListProperty`),
             predicate: dataFactory.namedNode("http://example.com/listProperty"),
             subject,
           },
@@ -5833,11 +6016,11 @@ export namespace NodeShapeWithListProperty {
         type: "bgp",
         triples: [
           {
-            subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+            subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
             predicate: dataFactory.namedNode(
               "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
             ),
-            object: dataFactory.variable(
+            object: dataFactory.variable!(
               `${`${variablePrefix}ListProperty`}Item0`,
             ),
           },
@@ -5847,11 +6030,11 @@ export namespace NodeShapeWithListProperty {
         type: "bgp",
         triples: [
           {
-            subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+            subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
             predicate: dataFactory.namedNode(
               "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
             ),
-            object: dataFactory.variable(
+            object: dataFactory.variable!(
               `${`${variablePrefix}ListProperty`}Rest0`,
             ),
           },
@@ -5864,7 +6047,7 @@ export namespace NodeShapeWithListProperty {
             type: "bgp",
             triples: [
               {
-                subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+                subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
                 predicate: {
                   type: "path",
                   pathType: "*",
@@ -5874,7 +6057,7 @@ export namespace NodeShapeWithListProperty {
                     ),
                   ],
                 },
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${`${variablePrefix}ListProperty`}RestN`,
                 ),
               },
@@ -5884,13 +6067,13 @@ export namespace NodeShapeWithListProperty {
             type: "bgp",
             triples: [
               {
-                subject: dataFactory.variable(
+                subject: dataFactory.variable!(
                   `${`${variablePrefix}ListProperty`}RestN`,
                 ),
                 predicate: dataFactory.namedNode(
                   "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
                 ),
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${`${variablePrefix}ListProperty`}ItemN`,
                 ),
               },
@@ -5900,13 +6083,13 @@ export namespace NodeShapeWithListProperty {
             type: "bgp",
             triples: [
               {
-                subject: dataFactory.variable(
+                subject: dataFactory.variable!(
                   `${`${variablePrefix}ListProperty`}RestN`,
                 ),
                 predicate: dataFactory.namedNode(
                   "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
                 ),
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${`${variablePrefix}ListProperty`}RestNBasic`,
                 ),
               },
@@ -6191,7 +6374,9 @@ export class NodeShapeWithLanguageInProperties {
 }
 
 export namespace NodeShapeWithLanguageInProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6407,36 +6592,42 @@ export namespace NodeShapeWithLanguageInProperties {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithLanguageInProperties");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template:
+      template: (queryParameters.template ?? []).concat(
         NodeShapeWithLanguageInProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
           subject,
-        }).concat(),
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithLanguageInProperties.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithLanguageInProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -6444,47 +6635,55 @@ export namespace NodeShapeWithLanguageInProperties {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithLanguageInProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithLanguageInProperties");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}LanguageInProperty`),
+        object: dataFactory.variable!(`${variablePrefix}LanguageInProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/languageInProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}LiteralProperty`),
+        object: dataFactory.variable!(`${variablePrefix}LiteralProperty`),
         predicate: dataFactory.namedNode("http://example.com/literalProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithLanguageInProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithLanguageInProperties");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}LanguageInProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -6503,7 +6702,7 @@ export namespace NodeShapeWithLanguageInProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}LiteralProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -6851,7 +7050,9 @@ export class NodeShapeWithInProperties {
 }
 
 export namespace NodeShapeWithInProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6948,20 +7149,22 @@ export namespace NodeShapeWithInProperties {
         )
         .head()
         .chain((_value) =>
-          _value.toBoolean().chain((value) =>
-            value === true
-              ? purify.Either.of(value)
-              : purify.Left(
-                  new rdfjsResource.Resource.MistypedValueError({
-                    actualValue: rdfLiteral.toRdf(value),
-                    expectedValueType: "true",
-                    focusResource: _resource,
-                    predicate: dataFactory.namedNode(
-                      "http://example.com/inBooleansProperty",
-                    ),
-                  }),
-                ),
-          ),
+          _value
+            .toBoolean()
+            .chain((value) =>
+              value === true
+                ? purify.Either.of(value)
+                : purify.Left(
+                    new rdfjsResource.Resource.MistypedValueError({
+                      actualValue: rdfLiteral.toRdf(value),
+                      expectedValueType: "true",
+                      focusResource: _resource,
+                      predicate: dataFactory.namedNode(
+                        "http://example.com/inBooleansProperty",
+                      ),
+                    }),
+                  ),
+            ),
         )
         .toMaybe(),
     );
@@ -7226,34 +7429,42 @@ export namespace NodeShapeWithInProperties {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("nodeShapeWithInProperties");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NodeShapeWithInProperties.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithInProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithInProperties.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithInProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -7261,44 +7472,47 @@ export namespace NodeShapeWithInProperties {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithInProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithInProperties");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}InBooleansProperty`),
+        object: dataFactory.variable!(`${variablePrefix}InBooleansProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/inBooleansProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}InDateTimesProperty`),
+        object: dataFactory.variable!(`${variablePrefix}InDateTimesProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/inDateTimesProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}InIrisProperty`),
+        object: dataFactory.variable!(`${variablePrefix}InIrisProperty`),
         predicate: dataFactory.namedNode("http://example.com/inIrisProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}InNumbersProperty`),
+        object: dataFactory.variable!(`${variablePrefix}InNumbersProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/inNumbersProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}InStringsProperty`),
+        object: dataFactory.variable!(`${variablePrefix}InStringsProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/inStringsProperty",
         ),
@@ -7307,22 +7521,25 @@ export namespace NodeShapeWithInProperties {
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithInProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithInProperties");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}InBooleansProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -7341,7 +7558,7 @@ export namespace NodeShapeWithInProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}InDateTimesProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -7360,7 +7577,9 @@ export namespace NodeShapeWithInProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}InIrisProperty`),
+                object: dataFactory.variable!(
+                  `${variablePrefix}InIrisProperty`,
+                ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/inIrisProperty",
                 ),
@@ -7377,7 +7596,7 @@ export namespace NodeShapeWithInProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}InNumbersProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -7396,7 +7615,7 @@ export namespace NodeShapeWithInProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}InStringsProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -7631,7 +7850,9 @@ export class NodeShapeWithHasValueProperties {
 }
 
 export namespace NodeShapeWithHasValueProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -7792,35 +8013,42 @@ export namespace NodeShapeWithHasValueProperties {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithHasValueProperties");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NodeShapeWithHasValueProperties.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithHasValueProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithHasValueProperties.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithHasValueProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -7828,23 +8056,27 @@ export namespace NodeShapeWithHasValueProperties {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithHasValueProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithHasValueProperties");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}HasIriProperty`),
+        object: dataFactory.variable!(`${variablePrefix}HasIriProperty`),
         predicate: dataFactory.namedNode("http://example.com/hasIriProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}HasLiteralProperty`),
+        object: dataFactory.variable!(`${variablePrefix}HasLiteralProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/hasLiteralProperty",
         ),
@@ -7853,22 +8085,28 @@ export namespace NodeShapeWithHasValueProperties {
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithHasValueProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithHasValueProperties");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}HasIriProperty`),
+                object: dataFactory.variable!(
+                  `${variablePrefix}HasIriProperty`,
+                ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/hasIriProperty",
                 ),
@@ -7885,7 +8123,7 @@ export namespace NodeShapeWithHasValueProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}HasLiteralProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -8146,32 +8384,42 @@ export namespace InlineNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("inlineNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: InlineNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        InlineNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: InlineNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        InlineNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -8179,38 +8427,40 @@ export namespace InlineNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("inlineNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "inlineNodeShape");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("inlineNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "inlineNodeShape");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty",
             ),
@@ -8455,32 +8705,42 @@ export namespace ExternNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("externNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: ExternNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        ExternNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: ExternNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        ExternNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -8488,38 +8748,40 @@ export namespace ExternNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("externNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "externNodeShape");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("externNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "externNodeShape");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty",
             ),
@@ -8770,7 +9032,9 @@ export class NodeShapeWithExternProperties {
 }
 
 export namespace NodeShapeWithExternProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       externObjectTypeProperty: purify.Maybe<ExternObjectType>;
@@ -8977,35 +9241,42 @@ export namespace NodeShapeWithExternProperties {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithExternProperties");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NodeShapeWithExternProperties.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithExternProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithExternProperties.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithExternProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -9013,18 +9284,22 @@ export namespace NodeShapeWithExternProperties {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithExternProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithExternProperties");
     return [
       {
-        object: dataFactory.variable(
+        object: dataFactory.variable!(
           `${variablePrefix}ExternObjectTypeProperty`,
         ),
         predicate: dataFactory.namedNode(
@@ -9033,44 +9308,48 @@ export namespace NodeShapeWithExternProperties {
         subject,
       },
       ...ExternObjectType.sparqlConstructTemplateTriples({
-        subject: dataFactory.variable(
+        subject: dataFactory.variable!(
           `${variablePrefix}ExternObjectTypeProperty`,
         ),
         variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
       }),
       {
-        object: dataFactory.variable(`${variablePrefix}ExternProperty`),
+        object: dataFactory.variable!(`${variablePrefix}ExternProperty`),
         predicate: dataFactory.namedNode("http://example.com/externProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}InlineProperty`),
+        object: dataFactory.variable!(`${variablePrefix}InlineProperty`),
         predicate: dataFactory.namedNode("http://example.com/inlineProperty"),
         subject,
       },
       ...InlineNodeShape.sparqlConstructTemplateTriples({
-        subject: dataFactory.variable(`${variablePrefix}InlineProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}InlineProperty`),
         variablePrefix: `${variablePrefix}InlineProperty`,
       }),
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithExternProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithExternProperties");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}ExternObjectTypeProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -9084,7 +9363,7 @@ export namespace NodeShapeWithExternProperties {
           {
             patterns: [
               ...ExternObjectType.sparqlWherePatterns({
-                subject: dataFactory.variable(
+                subject: dataFactory.variable!(
                   `${variablePrefix}ExternObjectTypeProperty`,
                 ),
                 variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
@@ -9100,7 +9379,9 @@ export namespace NodeShapeWithExternProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}ExternProperty`),
+                object: dataFactory.variable!(
+                  `${variablePrefix}ExternProperty`,
+                ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/externProperty",
                 ),
@@ -9117,7 +9398,9 @@ export namespace NodeShapeWithExternProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}InlineProperty`),
+                object: dataFactory.variable!(
+                  `${variablePrefix}InlineProperty`,
+                ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/inlineProperty",
                 ),
@@ -9129,7 +9412,7 @@ export namespace NodeShapeWithExternProperties {
           {
             patterns: [
               ...InlineNodeShape.sparqlWherePatterns({
-                subject: dataFactory.variable(
+                subject: dataFactory.variable!(
                   `${variablePrefix}InlineProperty`,
                 ),
                 variablePrefix: `${variablePrefix}InlineProperty`,
@@ -9456,35 +9739,42 @@ export namespace NodeShapeWithExplicitRdfTypes {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithExplicitRdfTypes");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: NodeShapeWithExplicitRdfTypes.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithExplicitRdfTypes.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithExplicitRdfTypes.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithExplicitRdfTypes.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -9492,18 +9782,21 @@ export namespace NodeShapeWithExplicitRdfTypes {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithExplicitRdfTypes");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithExplicitRdfTypes");
     return [
-      ...(ignoreRdfType
+      ...(parameters?.ignoreRdfType
         ? []
         : [
             {
@@ -9511,29 +9804,32 @@ export namespace NodeShapeWithExplicitRdfTypes {
               predicate: dataFactory.namedNode(
                 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
               ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
             },
           ]),
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    ignoreRdfType,
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithExplicitRdfTypes");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithExplicitRdfTypes");
     return [
-      ...(ignoreRdfType
+      ...(parameters?.ignoreRdfType
         ? []
         : [
             {
@@ -9552,7 +9848,7 @@ export namespace NodeShapeWithExplicitRdfTypes {
                   predicate: dataFactory.namedNode(
                     "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                   ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
                 },
               ],
               type: "bgp" as const,
@@ -9561,7 +9857,7 @@ export namespace NodeShapeWithExplicitRdfTypes {
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty",
             ),
@@ -9850,7 +10146,9 @@ export class NodeShapeWithDefaultValueProperties {
 }
 
 export namespace NodeShapeWithDefaultValueProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       dateTimeProperty: Date;
@@ -10137,36 +10435,42 @@ export namespace NodeShapeWithDefaultValueProperties {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("nodeShapeWithDefaultValueProperties");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template:
+      template: (queryParameters.template ?? []).concat(
         NodeShapeWithDefaultValueProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
           subject,
-        }).concat(),
+        }),
+      ),
       type: "query",
-      where: NodeShapeWithDefaultValueProperties.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithDefaultValueProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -10174,40 +10478,44 @@ export namespace NodeShapeWithDefaultValueProperties {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithDefaultValueProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithDefaultValueProperties");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}DateTimeProperty`),
+        object: dataFactory.variable!(`${variablePrefix}DateTimeProperty`),
         predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}FalseBooleanProperty`),
+        object: dataFactory.variable!(`${variablePrefix}FalseBooleanProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/falseBooleanProperty",
         ),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}NumberProperty`),
+        object: dataFactory.variable!(`${variablePrefix}NumberProperty`),
         predicate: dataFactory.namedNode("http://example.com/numberProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
       {
-        object: dataFactory.variable(`${variablePrefix}TrueBooleanProperty`),
+        object: dataFactory.variable!(`${variablePrefix}TrueBooleanProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/trueBooleanProperty",
         ),
@@ -10216,22 +10524,26 @@ export namespace NodeShapeWithDefaultValueProperties {
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithDefaultValueProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithDefaultValueProperties");
     return [
       {
         patterns: [
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}DateTimeProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -10250,7 +10562,7 @@ export namespace NodeShapeWithDefaultValueProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}FalseBooleanProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -10269,7 +10581,9 @@ export namespace NodeShapeWithDefaultValueProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}NumberProperty`),
+                object: dataFactory.variable!(
+                  `${variablePrefix}NumberProperty`,
+                ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/numberProperty",
                 ),
@@ -10286,7 +10600,9 @@ export namespace NodeShapeWithDefaultValueProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(`${variablePrefix}StringProperty`),
+                object: dataFactory.variable!(
+                  `${variablePrefix}StringProperty`,
+                ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/stringProperty",
                 ),
@@ -10303,7 +10619,7 @@ export namespace NodeShapeWithDefaultValueProperties {
           {
             triples: [
               {
-                object: dataFactory.variable(
+                object: dataFactory.variable!(
                   `${variablePrefix}TrueBooleanProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -10582,31 +10898,39 @@ export namespace IriNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject = parameters?.subject ?? dataFactory.variable("iriNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: IriNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        IriNodeShape.sparqlConstructTemplateTriples({ ignoreRdfType, subject }),
+      ),
       type: "query",
-      where: IriNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        IriNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -10614,38 +10938,40 @@ export namespace IriNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("iriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "iriNodeShape");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("iriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "iriNodeShape");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty",
             ),
@@ -10730,7 +11056,9 @@ export namespace InterfaceUnionNodeShapeMember2 {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -10860,35 +11188,42 @@ export namespace InterfaceUnionNodeShapeMember2 {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("interfaceUnionNodeShapeMember2");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -10896,38 +11231,46 @@ export namespace InterfaceUnionNodeShapeMember2 {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember2");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember2");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty2`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty2"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember2");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember2");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty2`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty2",
             ),
@@ -11053,7 +11396,9 @@ export namespace InterfaceUnionNodeShapeMember1 {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11183,35 +11528,42 @@ export namespace InterfaceUnionNodeShapeMember1 {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("interfaceUnionNodeShapeMember1");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: InterfaceUnionNodeShapeMember1.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShapeMember1.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: InterfaceUnionNodeShapeMember1.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShapeMember1.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -11219,38 +11571,46 @@ export namespace InterfaceUnionNodeShapeMember1 {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember1");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember1");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty1`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty1`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty1"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember1");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember1");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty1`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty1`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty1",
             ),
@@ -11379,7 +11739,9 @@ export namespace InterfaceNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11501,32 +11863,42 @@ export namespace InterfaceNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable("interfaceNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: InterfaceNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        InterfaceNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: InterfaceNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        InterfaceNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -11534,38 +11906,40 @@ export namespace InterfaceNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("interfaceNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "interfaceNodeShape");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}StringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
         predicate: dataFactory.namedNode("http://example.com/stringProperty"),
         subject,
       },
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("interfaceNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "interfaceNodeShape");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}StringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/stringProperty",
             ),
@@ -11848,36 +12222,41 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("abstractBaseClassWithPropertiesNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template:
+      template: (queryParameters.template ?? []).concat(
         AbstractBaseClassWithPropertiesNodeShape.sparqlConstructTemplateTriples(
-          { subject },
-        ).concat(),
+          { ignoreRdfType, subject },
+        ),
+      ),
       type: "query",
-      where: AbstractBaseClassWithPropertiesNodeShape.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        AbstractBaseClassWithPropertiesNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -11885,18 +12264,22 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassWithPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassWithPropertiesNodeShape");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}AbcStringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}AbcStringProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/abcStringProperty",
         ),
@@ -11905,20 +12288,24 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassWithPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassWithPropertiesNodeShape");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}AbcStringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}AbcStringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/abcStringProperty",
             ),
@@ -11986,7 +12373,9 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
 }
 
 namespace AbstractBaseClassWithoutPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -12090,36 +12479,41 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("abstractBaseClassWithoutPropertiesNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template:
+      template: (queryParameters.template ?? []).concat(
         AbstractBaseClassWithoutPropertiesNodeShape.sparqlConstructTemplateTriples(
-          { subject },
-        ).concat(),
+          { ignoreRdfType, subject },
+        ),
+      ),
       type: "query",
-      where: AbstractBaseClassWithoutPropertiesNodeShape.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        AbstractBaseClassWithoutPropertiesNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -12129,15 +12523,19 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassWithoutPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassWithoutPropertiesNodeShape");
     return [
       ...AbstractBaseClassWithPropertiesNodeShape.sparqlConstructTemplateTriples(
         { ignoreRdfType: true, subject, variablePrefix },
@@ -12145,15 +12543,19 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassWithoutPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassWithoutPropertiesNodeShape");
     return [
       ...AbstractBaseClassWithPropertiesNodeShape.sparqlWherePatterns({
         ignoreRdfType: true,
@@ -12207,18 +12609,20 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
   override equals(
     other: ConcreteParentClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.strictEquals(
-        this.parentStringProperty,
-        other.parentStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "parentStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.parentStringProperty,
+          other.parentStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "parentStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -12280,7 +12684,9 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -12445,35 +12851,42 @@ export namespace ConcreteParentClassNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("concreteParentClassNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: ConcreteParentClassNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        ConcreteParentClassNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: ConcreteParentClassNodeShape.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        ConcreteParentClassNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -12481,21 +12894,24 @@ export namespace ConcreteParentClassNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("concreteParentClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "concreteParentClassNodeShape");
     return [
       ...AbstractBaseClassWithoutPropertiesNodeShape.sparqlConstructTemplateTriples(
         { ignoreRdfType: true, subject, variablePrefix },
       ),
-      ...(ignoreRdfType
+      ...(parameters?.ignoreRdfType
         ? []
         : [
             {
@@ -12503,11 +12919,11 @@ export namespace ConcreteParentClassNodeShape {
               predicate: dataFactory.namedNode(
                 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
               ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
             },
           ]),
       {
-        object: dataFactory.variable(`${variablePrefix}ParentStringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}ParentStringProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/parentStringProperty",
         ),
@@ -12516,23 +12932,26 @@ export namespace ConcreteParentClassNodeShape {
     ];
   }
 
-  export function sparqlWherePatterns({
-    ignoreRdfType,
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("concreteParentClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "concreteParentClassNodeShape");
     return [
       ...AbstractBaseClassWithoutPropertiesNodeShape.sparqlWherePatterns({
         ignoreRdfType: true,
         subject,
         variablePrefix,
       }),
-      ...(ignoreRdfType
+      ...(parameters?.ignoreRdfType
         ? []
         : [
             {
@@ -12551,7 +12970,7 @@ export namespace ConcreteParentClassNodeShape {
                   predicate: dataFactory.namedNode(
                     "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                   ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
                 },
               ],
               type: "bgp" as const,
@@ -12560,7 +12979,7 @@ export namespace ConcreteParentClassNodeShape {
       {
         triples: [
           {
-            object: dataFactory.variable(
+            object: dataFactory.variable!(
               `${variablePrefix}ParentStringProperty`,
             ),
             predicate: dataFactory.namedNode(
@@ -12630,18 +13049,20 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   override equals(
     other: ConcreteChildClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.strictEquals(
-        this.childStringProperty,
-        other.childStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "childStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.childStringProperty,
+          other.childStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "childStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -12703,7 +13124,9 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       childStringProperty: string;
@@ -12855,35 +13278,42 @@ export namespace ConcreteChildClassNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("concreteChildClassNodeShape");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: ConcreteChildClassNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        ConcreteChildClassNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: ConcreteChildClassNodeShape.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        ConcreteChildClassNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -12891,23 +13321,26 @@ export namespace ConcreteChildClassNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    ignoreRdfType,
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("concreteChildClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "concreteChildClassNodeShape");
     return [
       ...ConcreteParentClassNodeShape.sparqlConstructTemplateTriples({
         ignoreRdfType: true,
         subject,
         variablePrefix,
       }),
-      ...(ignoreRdfType
+      ...(parameters?.ignoreRdfType
         ? []
         : [
             {
@@ -12915,11 +13348,11 @@ export namespace ConcreteChildClassNodeShape {
               predicate: dataFactory.namedNode(
                 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
               ),
-              object: dataFactory.variable(`${variablePrefix}RdfType`),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
             },
           ]),
       {
-        object: dataFactory.variable(`${variablePrefix}ChildStringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}ChildStringProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/childStringProperty",
         ),
@@ -12928,23 +13361,26 @@ export namespace ConcreteChildClassNodeShape {
     ];
   }
 
-  export function sparqlWherePatterns({
-    ignoreRdfType,
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("concreteChildClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "concreteChildClassNodeShape");
     return [
       ...ConcreteParentClassNodeShape.sparqlWherePatterns({
         ignoreRdfType: true,
         subject,
         variablePrefix,
       }),
-      ...(ignoreRdfType
+      ...(parameters?.ignoreRdfType
         ? []
         : [
             {
@@ -12963,7 +13399,7 @@ export namespace ConcreteChildClassNodeShape {
                   predicate: dataFactory.namedNode(
                     "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                   ),
-                  object: dataFactory.variable(`${variablePrefix}RdfType`),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
                 },
               ],
               type: "bgp" as const,
@@ -12972,7 +13408,7 @@ export namespace ConcreteChildClassNodeShape {
       {
         triples: [
           {
-            object: dataFactory.variable(
+            object: dataFactory.variable!(
               `${variablePrefix}ChildStringProperty`,
             ),
             predicate: dataFactory.namedNode(
@@ -13214,36 +13650,42 @@ export namespace AbstractBaseClassForExternObjectType {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable("abstractBaseClassForExternObjectType");
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template:
+      template: (queryParameters.template ?? []).concat(
         AbstractBaseClassForExternObjectType.sparqlConstructTemplateTriples({
+          ignoreRdfType,
           subject,
-        }).concat(),
+        }),
+      ),
       type: "query",
-      where: AbstractBaseClassForExternObjectType.sparqlWherePatterns({
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        AbstractBaseClassForExternObjectType.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -13251,18 +13693,22 @@ export namespace AbstractBaseClassForExternObjectType {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlConstructTemplateTriples(parameters?: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassForExternObjectType");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassForExternObjectType");
     return [
       {
-        object: dataFactory.variable(`${variablePrefix}AbcStringProperty`),
+        object: dataFactory.variable!(`${variablePrefix}AbcStringProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/abcStringProperty",
         ),
@@ -13271,20 +13717,24 @@ export namespace AbstractBaseClassForExternObjectType {
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
+  export function sparqlWherePatterns(parameters: {
     ignoreRdfType?: boolean;
-    subject: rdfjs.Variable;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassForExternObjectType");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassForExternObjectType");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable(`${variablePrefix}AbcStringProperty`),
+            object: dataFactory.variable!(`${variablePrefix}AbcStringProperty`),
             predicate: dataFactory.namedNode(
               "http://example.com/abcStringProperty",
             ),
@@ -13420,7 +13870,7 @@ export namespace InterfaceUnionNodeShape {
     >,
   ): sparqljs.ConstructQuery {
     const subject =
-      parameters?.subject ?? dataFactory.variable("interfaceUnionNodeShape");
+      parameters?.subject ?? dataFactory.variable!("interfaceUnionNodeShape");
     return {
       ...parameters,
       prefixes: parameters?.prefixes ?? {},
@@ -13658,7 +14108,7 @@ export namespace UnionNodeShape {
     >,
   ): sparqljs.ConstructQuery {
     const subject =
-      parameters?.subject ?? dataFactory.variable("unionNodeShape");
+      parameters?.subject ?? dataFactory.variable!("unionNodeShape");
     return {
       ...parameters,
       prefixes: parameters?.prefixes ?? {},
