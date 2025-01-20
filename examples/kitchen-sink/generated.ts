@@ -15,7 +15,6 @@ import { ExternObjectType } from "./ExternObjectType.js";
  * A node shape that mints its identifier by generating a v4 UUID, if no identifier is supplied.
  */
 export class UuidV4IriNodeShape {
-  private _identifier: rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
   readonly type = "UuidV4IriNodeShape";
 
@@ -26,6 +25,8 @@ export class UuidV4IriNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
+
+  private _identifier: rdfjs.NamedNode | undefined;
 
   get identifier(): rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -333,7 +334,6 @@ export namespace UuidV4IriNodeShape {
   }
 }
 export class UnionNodeShapeMember2 {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty2: string;
   readonly type = "UnionNodeShapeMember2";
 
@@ -344,6 +344,8 @@ export class UnionNodeShapeMember2 {
     this._identifier = parameters.identifier;
     this.stringProperty2 = parameters.stringProperty2;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -658,7 +660,6 @@ export namespace UnionNodeShapeMember2 {
   }
 }
 export class UnionNodeShapeMember1 {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty1: string;
   readonly type = "UnionNodeShapeMember1";
 
@@ -669,6 +670,8 @@ export class UnionNodeShapeMember1 {
     this._identifier = parameters.identifier;
     this.stringProperty1 = parameters.stringProperty1;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -986,7 +989,6 @@ export namespace UnionNodeShapeMember1 {
  * A node shape that mints its identifier by hashing (other) contents, if no identifier is supplied.
  */
 export class Sha256IriNodeShape {
-  private _identifier: rdfjs.NamedNode | undefined;
   readonly stringProperty: string;
   readonly type = "Sha256IriNodeShape";
 
@@ -997,6 +999,8 @@ export class Sha256IriNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
+
+  private _identifier: rdfjs.NamedNode | undefined;
 
   get identifier(): rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -1307,7 +1311,6 @@ export namespace Sha256IriNodeShape {
  * Node shape that isn't an rdfs:Class.
  */
 export class NonClassNodeShape {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty: string;
   readonly type = "NonClassNodeShape";
 
@@ -1318,6 +1321,8 @@ export class NonClassNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -1631,7 +1636,6 @@ export namespace NonClassNodeShape {
  * Shape with sh:xone properties.
  */
 export class NodeShapeWithUnionProperties {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly orLiteralsProperty: purify.Maybe<rdfjs.Literal>;
   readonly orTermsProperty: purify.Maybe<rdfjs.Literal | rdfjs.NamedNode>;
   readonly orUnrelatedProperty: purify.Maybe<
@@ -1737,6 +1741,8 @@ export class NodeShapeWithUnionProperties {
       this.orUnrelatedProperty = parameters.orUnrelatedProperty as never;
     }
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -2480,25 +2486,20 @@ export namespace NodeShapeWithUnionProperties {
           },
           {
             patterns: [
+              { patterns: [], type: "group" },
               {
                 patterns: [
-                  { patterns: [], type: "group" },
-                  {
-                    patterns: [
-                      ...NonClassNodeShape.sparqlWherePatterns({
-                        subject: dataFactory.variable!(
-                          `${variablePrefix}OrUnrelatedProperty`,
-                        ),
-                        variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
-                      }),
-                    ],
-                    type: "group",
-                  },
+                  ...NonClassNodeShape.sparqlWherePatterns({
+                    subject: dataFactory.variable!(
+                      `${variablePrefix}OrUnrelatedProperty`,
+                    ),
+                    variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
+                  }),
                 ],
-                type: "union",
+                type: "group",
               },
             ],
-            type: "optional",
+            type: "union",
           },
         ],
         type: "optional",
@@ -2562,7 +2563,6 @@ export namespace NodeShapeWithUnionProperties {
 export class NodeShapeWithTermProperties {
   readonly booleanProperty: purify.Maybe<boolean>;
   readonly dateTimeProperty: purify.Maybe<Date>;
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly iriProperty: purify.Maybe<rdfjs.NamedNode>;
   readonly literalProperty: purify.Maybe<rdfjs.Literal>;
   readonly numberProperty: purify.Maybe<number>;
@@ -2706,6 +2706,8 @@ export class NodeShapeWithTermProperties {
       this.termProperty = parameters.termProperty as never;
     }
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
@@ -3673,11 +3675,10 @@ export namespace NodeShapeWithTermProperties {
  * Shape with properties that have visibility modifiers (private, protected, public)
  */
 export class NodeShapeWithPropertyVisibilities {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
-  private readonly privateProperty: string;
-  protected readonly protectedProperty: string;
   readonly publicProperty: string;
   readonly type = "NodeShapeWithPropertyVisibilities";
+  protected readonly protectedProperty: string;
+  private readonly privateProperty: string;
 
   constructor(parameters: {
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -3690,6 +3691,8 @@ export class NodeShapeWithPropertyVisibilities {
     this.protectedProperty = parameters.protectedProperty;
     this.publicProperty = parameters.publicProperty;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -4165,7 +4168,6 @@ export class NodeShapeWithPropertyCardinalities {
    * Set: minCount implicitly=0, no maxCount or maxCount > 1
    */
   readonly emptyStringSetProperty: readonly string[];
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   /**
    * Set: minCount implicitly=1, no maxCount or maxCount > 1
    */
@@ -4211,6 +4213,8 @@ export class NodeShapeWithPropertyCardinalities {
 
     this.requiredStringProperty = parameters.requiredStringProperty;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -4861,7 +4865,6 @@ export namespace NodeShapeWithPropertyCardinalities {
  * Shape with shaclmate:mutable properties.
  */
 export class NodeShapeWithMutableProperties {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   /**
    * List-valued property that can't be reassigned but whose value can be mutated
    */
@@ -4902,6 +4905,8 @@ export class NodeShapeWithMutableProperties {
       this.mutableStringProperty = parameters.mutableStringProperty as never;
     }
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
@@ -5428,6 +5433,39 @@ export namespace NodeShapeWithMutableProperties {
             type: "bgp",
           },
           {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${variablePrefix}MutableListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}MutableListProperty`}Item0`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${variablePrefix}MutableListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}MutableListProperty`}Rest0`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "optional",
             patterns: [
               {
                 type: "bgp",
@@ -5436,11 +5474,17 @@ export namespace NodeShapeWithMutableProperties {
                     subject: dataFactory.variable!(
                       `${variablePrefix}MutableListProperty`,
                     ),
-                    predicate: dataFactory.namedNode(
-                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-                    ),
+                    predicate: {
+                      type: "path",
+                      pathType: "*",
+                      items: [
+                        dataFactory.namedNode(
+                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                        ),
+                      ],
+                    },
                     object: dataFactory.variable!(
-                      `${`${variablePrefix}MutableListProperty`}Item0`,
+                      `${`${variablePrefix}MutableListProperty`}RestN`,
                     ),
                   },
                 ],
@@ -5450,78 +5494,34 @@ export namespace NodeShapeWithMutableProperties {
                 triples: [
                   {
                     subject: dataFactory.variable!(
-                      `${variablePrefix}MutableListProperty`,
+                      `${`${variablePrefix}MutableListProperty`}RestN`,
                     ),
                     predicate: dataFactory.namedNode(
-                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
                     ),
                     object: dataFactory.variable!(
-                      `${`${variablePrefix}MutableListProperty`}Rest0`,
+                      `${`${variablePrefix}MutableListProperty`}ItemN`,
                     ),
                   },
                 ],
               },
               {
-                type: "optional",
-                patterns: [
+                type: "bgp",
+                triples: [
                   {
-                    type: "bgp",
-                    triples: [
-                      {
-                        subject: dataFactory.variable!(
-                          `${variablePrefix}MutableListProperty`,
-                        ),
-                        predicate: {
-                          type: "path",
-                          pathType: "*",
-                          items: [
-                            dataFactory.namedNode(
-                              "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-                            ),
-                          ],
-                        },
-                        object: dataFactory.variable!(
-                          `${`${variablePrefix}MutableListProperty`}RestN`,
-                        ),
-                      },
-                    ],
-                  },
-                  {
-                    type: "bgp",
-                    triples: [
-                      {
-                        subject: dataFactory.variable!(
-                          `${`${variablePrefix}MutableListProperty`}RestN`,
-                        ),
-                        predicate: dataFactory.namedNode(
-                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-                        ),
-                        object: dataFactory.variable!(
-                          `${`${variablePrefix}MutableListProperty`}ItemN`,
-                        ),
-                      },
-                    ],
-                  },
-                  {
-                    type: "bgp",
-                    triples: [
-                      {
-                        subject: dataFactory.variable!(
-                          `${`${variablePrefix}MutableListProperty`}RestN`,
-                        ),
-                        predicate: dataFactory.namedNode(
-                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-                        ),
-                        object: dataFactory.variable!(
-                          `${`${variablePrefix}MutableListProperty`}RestNBasic`,
-                        ),
-                      },
-                    ],
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}MutableListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}MutableListProperty`}RestNBasic`,
+                    ),
                   },
                 ],
               },
             ],
-            type: "optional",
           },
         ],
         type: "optional",
@@ -5584,7 +5584,6 @@ export namespace NodeShapeWithMutableProperties {
  * Shape that uses the ListShape in a property.
  */
 export class NodeShapeWithListProperty {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly listProperty: readonly string[];
   readonly type = "NodeShapeWithListProperty";
 
@@ -5595,6 +5594,8 @@ export class NodeShapeWithListProperty {
     this._identifier = parameters.identifier;
     this.listProperty = parameters.listProperty;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -6125,7 +6126,6 @@ export namespace NodeShapeWithListProperty {
  * Shape that uses the ListShape in a property.
  */
 export class NodeShapeWithLanguageInProperties {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly languageInProperty: purify.Maybe<rdfjs.Literal>;
   /**
    * literal property for testing runtime languageIn
@@ -6209,6 +6209,8 @@ export class NodeShapeWithLanguageInProperties {
       this.literalProperty = parameters.literalProperty as never;
     }
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -6750,7 +6752,6 @@ export namespace NodeShapeWithLanguageInProperties {
  * Shape with sh:in properties.
  */
 export class NodeShapeWithInProperties {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly inBooleansProperty: purify.Maybe<true>;
   readonly inDateTimesProperty: purify.Maybe<Date>;
   readonly inIrisProperty: purify.Maybe<
@@ -6840,6 +6841,8 @@ export class NodeShapeWithInProperties {
       this.inStringsProperty = parameters.inStringsProperty as never;
     }
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
@@ -7692,7 +7695,6 @@ export namespace NodeShapeWithInProperties {
 export class NodeShapeWithHasValueProperties {
   readonly hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
   readonly hasLiteralProperty: purify.Maybe<string>;
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly type = "NodeShapeWithHasValueProperties";
 
   constructor(parameters: {
@@ -7722,6 +7724,8 @@ export class NodeShapeWithHasValueProperties {
 
     this._identifier = parameters.identifier;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -8168,7 +8172,6 @@ export namespace NodeShapeWithHasValueProperties {
   }
 }
 export class InlineNodeShape {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty: string;
   readonly type = "InlineNodeShape";
 
@@ -8179,6 +8182,8 @@ export class InlineNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -8489,7 +8494,6 @@ export namespace InlineNodeShape {
   }
 }
 export class ExternNodeShape {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty: string;
   readonly type = "ExternNodeShape";
 
@@ -8500,6 +8504,8 @@ export class ExternNodeShape {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -8815,7 +8821,6 @@ export namespace ExternNodeShape {
 export class NodeShapeWithExternProperties {
   readonly externObjectTypeProperty: purify.Maybe<ExternObjectType>;
   readonly externProperty: purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode>;
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly inlineProperty: purify.Maybe<InlineNodeShape>;
   readonly type = "NodeShapeWithExternProperties";
 
@@ -8869,6 +8874,8 @@ export class NodeShapeWithExternProperties {
       this.inlineProperty = parameters.inlineProperty as never;
     }
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -9360,17 +9367,12 @@ export namespace NodeShapeWithExternProperties {
             ],
             type: "bgp",
           },
-          {
-            patterns: [
-              ...ExternObjectType.sparqlWherePatterns({
-                subject: dataFactory.variable!(
-                  `${variablePrefix}ExternObjectTypeProperty`,
-                ),
-                variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
-              }),
-            ],
-            type: "optional",
-          },
+          ...ExternObjectType.sparqlWherePatterns({
+            subject: dataFactory.variable!(
+              `${variablePrefix}ExternObjectTypeProperty`,
+            ),
+            variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
+          }),
         ],
         type: "optional",
       },
@@ -9409,17 +9411,10 @@ export namespace NodeShapeWithExternProperties {
             ],
             type: "bgp",
           },
-          {
-            patterns: [
-              ...InlineNodeShape.sparqlWherePatterns({
-                subject: dataFactory.variable!(
-                  `${variablePrefix}InlineProperty`,
-                ),
-                variablePrefix: `${variablePrefix}InlineProperty`,
-              }),
-            ],
-            type: "optional",
-          },
+          ...InlineNodeShape.sparqlWherePatterns({
+            subject: dataFactory.variable!(`${variablePrefix}InlineProperty`),
+            variablePrefix: `${variablePrefix}InlineProperty`,
+          }),
         ],
         type: "optional",
       },
@@ -9485,7 +9480,6 @@ export namespace NodeShapeWithExternProperties {
  * shaclmate:toRdfType's are added an serialization.
  */
 export class NodeShapeWithExplicitRdfTypes {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly stringProperty: string;
   readonly type = "NodeShapeWithExplicitRdfTypes";
 
@@ -9496,6 +9490,8 @@ export class NodeShapeWithExplicitRdfTypes {
     this._identifier = parameters.identifier;
     this.stringProperty = parameters.stringProperty;
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
@@ -9909,7 +9905,6 @@ export namespace NodeShapeWithExplicitRdfTypes {
 export class NodeShapeWithDefaultValueProperties {
   readonly dateTimeProperty: Date;
   readonly falseBooleanProperty: boolean;
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly numberProperty: number;
   readonly stringProperty: string;
   readonly trueBooleanProperty: boolean;
@@ -9967,6 +9962,8 @@ export class NodeShapeWithDefaultValueProperties {
       this.trueBooleanProperty = parameters.trueBooleanProperty as never;
     }
   }
+
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     return typeof this._identifier !== "undefined"
@@ -12578,7 +12575,6 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
  * Class node shape that inherits the abstract base class and is the parent of the ChildClassNodeShape.
  */
 export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutPropertiesNodeShape {
-  protected _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly parentStringProperty: string;
   override readonly type:
     | "ConcreteChildClassNodeShape"
@@ -12596,6 +12592,8 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
     this._identifier = parameters.identifier;
     this.parentStringProperty = parameters.parentStringProperty;
   }
+
+  protected _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
 
   override get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
     if (typeof this._identifier === "undefined") {
