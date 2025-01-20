@@ -237,21 +237,6 @@ export class ShaclProperty extends Property<Type> {
     });
   }
 
-  override sparqlGraphPatternExpression(): Maybe<string> {
-    return Maybe.of(
-      this.type
-        .propertySparqlGraphPatternExpression({
-          variables: {
-            object: `this.variable("${pascalCase(this.name)}")`,
-            predicate: this.pathExpression,
-            subject: "this.subject",
-          },
-        })
-        .toSparqlGraphPatternExpression()
-        .toString(),
-    );
-  }
-
   sparqlWherePatterns({
     variables,
   }: Parameters<Property<Type>["sparqlWherePatterns"]>[0]): readonly string[] {

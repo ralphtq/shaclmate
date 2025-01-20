@@ -221,23 +221,6 @@ export class TermType<
       .join(", ")}])`;
   }
 
-  override propertySparqlGraphPatternExpression({
-    variables,
-  }: Parameters<
-    Type["propertySparqlGraphPatternExpression"]
-  >[0]): Type.SparqlGraphPatternExpression {
-    let expression = super
-      .propertySparqlGraphPatternExpression({
-        variables,
-      })
-      .toSparqlGraphPatternExpression()
-      .toString();
-    if (this.defaultValue.isJust()) {
-      expression = `sparqlBuilder.GraphPattern.optional(${expression})`;
-    }
-    return new Type.SparqlGraphPatternExpression(expression);
-  }
-
   override sparqlWherePatterns(
     parameters: Parameters<Type["sparqlWherePatterns"]>[0],
   ): readonly string[] {

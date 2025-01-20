@@ -104,43 +104,6 @@ export abstract class Type {
   abstract jsonZodSchema(parameters: { variables: { zod: string } }): string;
 
   /**
-   * An optional sparqlBuilder.GraphPattern expression that's chained to the object of another pattern, such as a list item.
-   *
-   * If the type is e.g., an RDF/JS term it won't have additional graph patterns beyond the basic (s, p, o), and this
-   * method will return nothing.
-   */
-  propertyChainSparqlGraphPatternExpression(_: {
-    variables: {
-      subject: string;
-    };
-  }): Maybe<
-    Type.SparqlGraphPatternExpression | Type.SparqlGraphPatternsExpression
-  > {
-    return Maybe.empty();
-  }
-
-  /**
-   * An sparqlBuilder.GraphPattern expression for a property, typically building a basic graph pattern.
-   */
-  propertySparqlGraphPatternExpression({
-    variables,
-  }: {
-    variables: {
-      object: string;
-      predicate: string;
-      subject: string;
-    };
-  }): Type.SparqlGraphPatternExpression | Type.SparqlGraphPatternsExpression {
-    let expression = `sparqlBuilder.GraphPattern.basic(${variables.subject}, ${variables.predicate}, ${variables.object})`;
-    this.propertyChainSparqlGraphPatternExpression({
-      variables: { subject: "_object" },
-    }).ifJust((chainSparqlGraphPatternExpression) => {
-      expression = `sparqlBuilder.GraphPattern.group(${expression}.chainObject(_object => ${chainSparqlGraphPatternExpression.toSparqlGraphPatternsExpression()}))`;
-    });
-    return new Type.SparqlGraphPatternExpression(expression);
-  }
-
-  /**
    * An array of SPARQL.js CONSTRUCT template triples for a value of this type, as strings (so they can incorporate runtime calls).
    *
    * This method is called in two contexts:
@@ -305,39 +268,5 @@ export namespace Type {
   export interface DiscriminatorProperty {
     readonly name: string;
     readonly values: readonly string[];
-  }
-
-  export class SparqlGraphPatternExpression {
-    constructor(private readonly value: string) {}
-
-    toSparqlGraphPatternExpression() {
-      return this;
-    }
-
-    toSparqlGraphPatternsExpression() {
-      return new SparqlGraphPatternExpression(`[${this.value}]`);
-    }
-
-    toString() {
-      return this.value;
-    }
-  }
-
-  export class SparqlGraphPatternsExpression {
-    constructor(private readonly value: string) {}
-
-    toSparqlGraphPatternExpression() {
-      return new SparqlGraphPatternExpression(
-        `sparqlBuilder.GraphPattern.group(${this.value})`,
-      );
-    }
-
-    toSparqlGraphPatternsExpression() {
-      return this;
-    }
-
-    toString() {
-      return this.value;
-    }
   }
 }

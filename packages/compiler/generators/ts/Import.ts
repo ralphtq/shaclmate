@@ -49,12 +49,6 @@ export namespace Import {
     namespaceImport: "sparqljs",
   };
 
-  export const SPARQL_BUILDER: Import = {
-    kind: StructureKind.ImportDeclaration,
-    moduleSpecifier: "@kos-kit/sparql-builder",
-    namespaceImport: "sparqlBuilder",
-  };
-
   export const UUID: Import = {
     kind: StructureKind.ImportDeclaration,
     moduleSpecifier: "uuid",

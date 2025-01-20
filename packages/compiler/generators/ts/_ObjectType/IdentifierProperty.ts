@@ -257,10 +257,6 @@ export class IdentifierProperty extends Property<IdentifierType> {
     return [];
   }
 
-  override sparqlGraphPatternExpression(): Maybe<string> {
-    return Maybe.empty();
-  }
-
   override sparqlWherePatterns(): readonly string[] {
     return [];
   }

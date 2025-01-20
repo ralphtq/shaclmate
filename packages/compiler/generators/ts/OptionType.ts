@@ -117,22 +117,6 @@ export class OptionType extends Type {
     return `${this.itemType.jsonZodSchema(parameters)}.optional()`;
   }
 
-  override propertyChainSparqlGraphPatternExpression(
-    parameters: Parameters<
-      Type["propertyChainSparqlGraphPatternExpression"]
-    >[0],
-  ): ReturnType<Type["propertyChainSparqlGraphPatternExpression"]> {
-    return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
-  }
-
-  override propertySparqlGraphPatternExpression(
-    parameters: Parameters<Type["propertySparqlGraphPatternExpression"]>[0],
-  ): Type.SparqlGraphPatternExpression {
-    return new Type.SparqlGraphPatternExpression(
-      `sparqlBuilder.GraphPattern.optional(${this.itemType.propertySparqlGraphPatternExpression(parameters).toSparqlGraphPatternExpression()})`,
-    );
-  }
-
   override sparqlConstructTemplateTriples({
     context,
     variables,

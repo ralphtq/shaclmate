@@ -257,21 +257,6 @@ ${this.memberTypeTraits
     }
   }
 
-  override propertySparqlGraphPatternExpression(
-    parameters: Parameters<Type["propertySparqlGraphPatternExpression"]>[0],
-  ): Type.SparqlGraphPatternExpression | Type.SparqlGraphPatternsExpression {
-    return new Type.SparqlGraphPatternExpression(
-      `sparqlBuilder.GraphPattern.union(${this.memberTypes
-        .map((type) =>
-          type
-            .propertySparqlGraphPatternExpression(parameters)
-            .toSparqlGraphPatternExpression()
-            .toString(),
-        )
-        .join(", ")})`,
-    );
-  }
-
   override sparqlConstructTemplateTriples(
     parameters: Parameters<Type["sparqlConstructTemplateTriples"]>[0],
   ): readonly string[] {

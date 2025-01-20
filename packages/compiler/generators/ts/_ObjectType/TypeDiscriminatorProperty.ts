@@ -141,10 +141,6 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     return [];
   }
 
-  override sparqlGraphPatternExpression(): Maybe<string> {
-    return Maybe.empty();
-  }
-
   override sparqlWherePatterns(): readonly string[] {
     return [];
   }

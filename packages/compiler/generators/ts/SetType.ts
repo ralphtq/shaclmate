@@ -140,25 +140,6 @@ export class SetType extends Type {
     return schema;
   }
 
-  override propertyChainSparqlGraphPatternExpression(
-    parameters: Parameters<
-      Type["propertyChainSparqlGraphPatternExpression"]
-    >[0],
-  ): ReturnType<Type["propertyChainSparqlGraphPatternExpression"]> {
-    return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
-  }
-
-  override propertySparqlGraphPatternExpression(
-    parameters: Parameters<Type["propertySparqlGraphPatternExpression"]>[0],
-  ): Type.SparqlGraphPatternExpression | Type.SparqlGraphPatternsExpression {
-    if (this.minCount === 0) {
-      return new Type.SparqlGraphPatternExpression(
-        `sparqlBuilder.GraphPattern.optional(${this.itemType.propertySparqlGraphPatternExpression(parameters).toSparqlGraphPatternExpression()})`,
-      );
-    }
-    return this.itemType.propertySparqlGraphPatternExpression(parameters);
-  }
-
   override sparqlConstructTemplateTriples({
     context,
     variables,

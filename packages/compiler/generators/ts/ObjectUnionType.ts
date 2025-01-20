@@ -2,7 +2,6 @@ import { camelCase, pascalCase } from "change-case";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import {
-  type ClassDeclarationStructure,
   type FunctionDeclarationStructure,
   type ModuleDeclarationStructure,
   type StatementStructures,
@@ -13,7 +12,7 @@ import { Memoize } from "typescript-memoize";
 import { DeclaredType } from "./DeclaredType.js";
 import type { Import } from "./Import.js";
 import type { ObjectType } from "./ObjectType.js";
-import { Type } from "./Type.js";
+import type { Type } from "./Type.js";
 import { hasherTypeConstraint } from "./_ObjectType/hashFunctionOrMethodDeclaration.js";
 import { objectInitializer } from "./objectInitializer.js";
 import { tsComment } from "./tsComment.js";
@@ -97,7 +96,6 @@ export class ObjectUnionType extends DeclaredType {
       ...this.hashFunctionDeclaration.toList(),
       ...this.jsonZodSchemaFunctionDeclaration.toList(),
       ...this.sparqlFunctionDeclarations,
-      ...this.sparqlGraphPatternsClassDeclaration.toList(),
       ...this.toJsonFunctionDeclaration.toList(),
       ...this.toRdfFunctionDeclaration.toList(),
     ];
@@ -382,35 +380,6 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     ];
   }
 
-  private get sparqlGraphPatternsClassDeclaration(): Maybe<ClassDeclarationStructure> {
-    if (!this.features.has("sparql-graph-patterns")) {
-      return Maybe.empty();
-    }
-
-    const subjectVariable = "subject";
-
-    return Maybe.of({
-      ctors: [
-        {
-          parameters: [
-            {
-              name: subjectVariable,
-              type: "sparqlBuilder.ResourceGraphPatterns.SubjectParameter",
-            },
-          ],
-          statements: [
-            `super(${subjectVariable});`,
-            `this.add(sparqlBuilder.GraphPattern.union(${this.memberTypes.map((memberType) => `new ${memberType.name}.SparqlGraphPatterns(this.subject).toGroupGraphPattern()`).join(", ")}));`,
-          ],
-        },
-      ],
-      extends: "sparqlBuilder.ResourceGraphPatterns",
-      isExported: true,
-      kind: StructureKind.Class,
-      name: "SparqlGraphPatterns",
-    });
-  }
-
   private get toJsonFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
     if (!this.features.has("toJson")) {
       return Maybe.empty();
@@ -519,18 +488,6 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
 
   override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
     return `${this.name}.jsonZodSchema()`;
-  }
-
-  override propertyChainSparqlGraphPatternExpression({
-    variables,
-  }: Parameters<
-    Type["propertyChainSparqlGraphPatternExpression"]
-  >[0]): Maybe<Type.SparqlGraphPatternsExpression> {
-    return Maybe.of(
-      new Type.SparqlGraphPatternsExpression(
-        `new ${this.name}.SparqlGraphPatterns(${variables.subject})`,
-      ),
-    );
   }
 
   override sparqlConstructTemplateTriples({

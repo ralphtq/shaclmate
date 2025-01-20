@@ -173,11 +173,6 @@ export abstract class Property<
   }): readonly string[];
 
   /**
-   * Optional graph pattern expression to retrieve this property.
-   */
-  abstract sparqlGraphPatternExpression(): Maybe<string>;
-
-  /**
    * An array of SPARQL.js where patterns for this property as strings (so they can incorporate runtime calls).
    */
   abstract sparqlWherePatterns(parameters: {

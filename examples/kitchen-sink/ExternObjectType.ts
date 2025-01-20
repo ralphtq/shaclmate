@@ -1,6 +1,4 @@
-import * as sparqlBuilder from "@kos-kit/sparql-builder";
 import type { BlankNode, NamedNode } from "@rdfjs/types";
-import N3 from "n3";
 import type * as purify from "purify-ts";
 import { Either } from "purify-ts";
 import { Equatable } from "purify-ts-helpers";
@@ -110,20 +108,4 @@ export namespace ExternObjectType {
 
   export const jsonZodSchema =
     AbstractBaseClassForExternObjectType.abstractBaseClassForExternObjectTypeJsonZodSchema;
-
-  export class SparqlGraphPatterns extends AbstractBaseClassForExternObjectType.SparqlGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject, _options);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          N3.DataFactory.namedNode("http://example.com/extraproperty"),
-          sparqlBuilder.GraphPattern.variable("extra"),
-        ),
-      );
-    }
-  }
 }

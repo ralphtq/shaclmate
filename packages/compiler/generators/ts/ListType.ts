@@ -109,28 +109,6 @@ export class ListType extends Type {
     return `${this.itemType.jsonZodSchema(parameters)}.array()`;
   }
 
-  override propertyChainSparqlGraphPatternExpression({
-    variables,
-  }: Parameters<
-    Type["propertyChainSparqlGraphPatternExpression"]
-  >[0]): Maybe<Type.SparqlGraphPatternsExpression> {
-    return Maybe.of(
-      new Type.SparqlGraphPatternsExpression(
-        `new sparqlBuilder.RdfListGraphPatterns({ ${this.itemType
-          .propertyChainSparqlGraphPatternExpression({
-            variables: {
-              subject: "_itemVariable",
-            },
-          })
-          .map(
-            (itemSparqlGraphPatternsExpression) =>
-              `itemGraphPatterns: (_itemVariable) => ${itemSparqlGraphPatternsExpression.toSparqlGraphPatternsExpression()}, `,
-          )
-          .orDefault("")} rdfList: ${variables.subject} })`,
-      ),
-    );
-  }
-
   override sparqlConstructTemplateTriples({
     variables,
     context,

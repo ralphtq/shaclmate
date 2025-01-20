@@ -17,7 +17,7 @@ import type {
 import { DeclaredType } from "./DeclaredType.js";
 import type { IdentifierType } from "./IdentifierType.js";
 import { Import } from "./Import.js";
-import { Type } from "./Type.js";
+import type { Type } from "./Type.js";
 import * as _ObjectType from "./_ObjectType/index.js";
 import {
   IdentifierProperty,
@@ -139,9 +139,6 @@ export class ObjectType extends DeclaredType {
     if (this.features.has("sparql")) {
       imports.push(Import.SPARQLJS);
     }
-    if (this.features.has("sparql-graph-patterns")) {
-      imports.push(Import.SPARQL_BUILDER);
-    }
     return imports;
   }
 
@@ -165,7 +162,6 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.sparqlFunctionDeclarations.bind(this)(),
-      ..._ObjectType.sparqlGraphPatternsClassDeclaration.bind(this)().toList(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.toRdfFunctionDeclaration.bind(this)().toList(),
     ];
@@ -364,22 +360,6 @@ export class ObjectType extends DeclaredType {
     _parameters: Parameters<Type["jsonZodSchema"]>[0],
   ): ReturnType<Type["jsonZodSchema"]> {
     return `${this.name}.${this.jsonZodSchemaFunctionName}()`;
-  }
-
-  override propertyChainSparqlGraphPatternExpression({
-    variables,
-  }: Parameters<
-    Type["propertyChainSparqlGraphPatternExpression"]
-  >[0]): Maybe<Type.SparqlGraphPatternsExpression> {
-    return Maybe.of(
-      new Type.SparqlGraphPatternsExpression(
-        // Ignore the rdf:type if the instance of this type is the object of another property.
-        // Instead, assume the property has the correct range.
-        // This also accommodates the case where the object of a property is a dangling identifier that's not the
-        // subject of any statements.
-        `new ${this.name}.SparqlGraphPatterns(${variables.subject}, { ignoreRdfType: true })`,
-      ),
-    );
   }
 
   rdfjsResourceType(options?: { mutable?: boolean }): {

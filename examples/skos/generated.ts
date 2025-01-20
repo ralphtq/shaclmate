@@ -735,9 +735,7 @@ abstract class Resource {
 }
 
 namespace Resource {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       altLabel: readonly rdfjs.Literal[];
@@ -2172,9 +2170,7 @@ export class Collection extends Resource {
 }
 
 export namespace Collection {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.NamedNode;
@@ -2732,9 +2728,7 @@ export class OrderedCollection extends Collection {
 }
 
 export namespace OrderedCollection {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.NamedNode;
@@ -3269,20 +3263,18 @@ export class ConceptScheme extends Resource {
   }
 
   override equals(other: ConceptScheme): purifyHelpers.Equatable.EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        purifyHelpers.Equatable.arrayEquals(
-          this.hasTopConcept,
-          other.hasTopConcept,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "hasTopConcept",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+    return super.equals(other).chain(() =>
+      purifyHelpers.Equatable.arrayEquals(
+        this.hasTopConcept,
+        other.hasTopConcept,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "hasTopConcept",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<
@@ -3351,9 +3343,7 @@ export class ConceptScheme extends Resource {
 }
 
 export namespace ConceptScheme {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       hasTopConcept: readonly Concept[];
@@ -3813,9 +3803,7 @@ export class Label {
 }
 
 export namespace Label {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4675,9 +4663,7 @@ export class Concept extends Resource {
 }
 
 export namespace Concept {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       broader: readonly Concept[];
