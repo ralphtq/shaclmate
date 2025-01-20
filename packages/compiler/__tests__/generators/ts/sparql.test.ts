@@ -1,10 +1,10 @@
-import * as sparqlBuilder from "@kos-kit/sparql-builder";
 import type { NamedNode, Quad } from "@rdfjs/types";
 import N3, { DataFactory as dataFactory } from "n3";
 import * as oxigraph from "oxigraph";
 import { MutableResourceSet } from "rdfjs-resource";
 import { describe, it } from "vitest";
 import { harnesses } from "./harnesses.js";
+import { quadsToTurtle } from "./quadsToTurtle.js";
 
 describe("sparql", () => {
   for (const [id, harness] of Object.entries(harnesses)) {
@@ -12,7 +12,7 @@ describe("sparql", () => {
       continue;
     }
 
-    it(`SPARQL graph patterns: ${id}`, async ({ expect }) => {
+    it(`SPARQL: ${id}`, async ({ expect }) => {
       const toRdfDataset = new N3.Store();
       harness.toRdf({
         resourceSet: new MutableResourceSet({
@@ -29,17 +29,11 @@ describe("sparql", () => {
         toRdfQuads.push(quad);
       }
 
-      const constructQuery = new sparqlBuilder.ConstructQueryBuilder()
-        .addGraphPatterns(
-          new harness.sparqlGraphPatternsClass(
-            sparqlBuilder.GraphPattern.variable("subject"),
-          ),
-        )
-        .build();
+      const constructQueryString = harness.sparqlConstructQueryString();
 
       // Add to a Dataset to deduplicate the quads
       const constructResultDataset = new N3.Store(
-        oxigraphStore.query(constructQuery) as Quad[],
+        oxigraphStore.query(constructQueryString) as Quad[],
       );
       const constructInstance = harness
         .fromRdf({
@@ -50,9 +44,15 @@ describe("sparql", () => {
           }).namedResource(harness.instance.identifier as NamedNode),
         })
         .unsafeCoerce();
-      expect(harness.equals(constructInstance as any).extract()).toStrictEqual(
-        true,
-      );
+      const equalsResult = harness.equals(constructInstance as any).extract();
+      if (equalsResult !== true) {
+        const toRdfString = quadsToTurtle(toRdfQuads);
+        const constructResultString = quadsToTurtle([
+          ...constructResultDataset,
+        ]);
+        console.log("not equal:\n", toRdfString, "\n", constructResultString);
+      }
+      expect(equalsResult).toStrictEqual(true);
     });
   }
 });

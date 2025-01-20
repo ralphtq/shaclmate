@@ -70,6 +70,41 @@ export class OptionType extends Type {
     return [...this.itemType.useImports, Import.PURIFY];
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
+    const expression = `purify.Maybe.fromNullable(${variables.value})`;
+    const itemFromJsonExpression = this.itemType.fromJsonExpression({
+      variables: { value: "_item" },
+    });
+    return itemFromJsonExpression === "_item"
+      ? expression
+      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
+  }
+
+  override fromRdfExpression(
+    parameters: Parameters<Type["fromRdfExpression"]>[0],
+  ): string {
+    return `purify.Either.of(${this.itemType.fromRdfExpression(parameters)}.toMaybe())`;
+  }
+
+  override hashStatements({
+    depth,
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    return [
+      `${variables.value}.ifJust((_value${depth}) => { ${this.itemType
+        .hashStatements({
+          depth: depth + 1,
+          variables: {
+            hasher: variables.hasher,
+            value: `_value${depth}`,
+          },
+        })
+        .join("\n")} })`,
+    ];
+  }
+
   override jsonUiSchemaElement(
     parameters: Parameters<Type["jsonUiSchemaElement"]>[0],
   ): ReturnType<Type["jsonUiSchemaElement"]> {
@@ -82,67 +117,49 @@ export class OptionType extends Type {
     return `${this.itemType.jsonZodSchema(parameters)}.optional()`;
   }
 
-  override propertyChainSparqlGraphPatternExpression(
-    parameters: Parameters<
-      Type["propertyChainSparqlGraphPatternExpression"]
-    >[0],
-  ): ReturnType<Type["propertyChainSparqlGraphPatternExpression"]> {
-    return this.itemType.propertyChainSparqlGraphPatternExpression(parameters);
-  }
-
-  override propertyFromJsonExpression({
+  override sparqlConstructTemplateTriples({
+    context,
     variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    const expression = `purify.Maybe.fromNullable(${variables.value})`;
-    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
-      variables: { value: "_item" },
-    });
-    return itemFromJsonExpression === "_item"
-      ? expression
-      : `${expression}.map(_item => (${itemFromJsonExpression}))`;
+  }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
+    switch (context) {
+      case "property":
+        return super.sparqlConstructTemplateTriples({ context, variables });
+      case "type":
+        return this.itemType.sparqlConstructTemplateTriples({
+          context,
+          variables,
+        });
+    }
   }
 
-  override propertyFromRdfExpression(
-    parameters: Parameters<Type["propertyFromRdfExpression"]>[0],
-  ): string {
-    return `purify.Either.of(${this.itemType.propertyFromRdfExpression(parameters)}.toMaybe())`;
-  }
-
-  override propertyHashStatements({
-    depth,
+  override sparqlWherePatterns({
+    context,
     variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    return [
-      `${variables.value}.ifJust((_value${depth}) => { ${this.itemType
-        .propertyHashStatements({
-          depth: depth + 1,
-          variables: {
-            hasher: variables.hasher,
-            value: `_value${depth}`,
-          },
-        })
-        .join("\n")} })`,
-    ];
+  }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
+    switch (context) {
+      case "property": {
+        const patterns = super.sparqlWherePatterns({ context, variables });
+        if (patterns.length === 0) {
+          return [];
+        }
+        return [`{ patterns: [${patterns.join(", ")}], type: "optional" }`];
+      }
+      case "type": {
+        return this.itemType.sparqlWherePatterns({ context, variables });
+      }
+    }
   }
 
-  override propertySparqlGraphPatternExpression(
-    parameters: Parameters<Type["propertySparqlGraphPatternExpression"]>[0],
-  ): Type.SparqlGraphPatternExpression {
-    return new Type.SparqlGraphPatternExpression(
-      `sparqlBuilder.GraphPattern.optional(${this.itemType.propertySparqlGraphPatternExpression(parameters).toSparqlGraphPatternExpression()})`,
-    );
-  }
-
-  override propertyToJsonExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
-    return `${variables.value}.map(_item => (${this.itemType.propertyToJsonExpression({ variables: { value: "_item" } })})).extract()`;
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
+    return `${variables.value}.map(_item => (${this.itemType.toJsonExpression({ variables: { value: "_item" } })})).extract()`;
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
-    const itemTypeToRdfExpression = this.itemType.propertyToRdfExpression({
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
+    const itemTypeToRdfExpression = this.itemType.toRdfExpression({
       variables: { ...variables, value: "_value" },
     });
     if (itemTypeToRdfExpression === "_value") {

@@ -1,4 +1,3 @@
-import * as sparqlBuilder from "@kos-kit/sparql-builder";
 import type * as rdfjs from "@rdfjs/types";
 import { sha256 } from "js-sha256";
 import { DataFactory as dataFactory } from "n3";
@@ -6,6 +5,7 @@ import * as purify from "purify-ts";
 import * as purifyHelpers from "purify-ts-helpers";
 import * as rdfLiteral from "rdf-literal";
 import * as rdfjsResource from "rdfjs-resource";
+import * as sparqljs from "sparqljs";
 import * as uuid from "uuid";
 import { z as zod } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
@@ -225,20 +225,94 @@ export namespace UuidV4IriNodeShape {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        UuidV4IriNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        UuidV4IriNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      UuidV4IriNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("uuidV4IriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "uuidV4IriNodeShape");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("uuidV4IriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "uuidV4IriNodeShape");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 export class UnionNodeShapeMember2 {
@@ -456,20 +530,98 @@ export namespace UnionNodeShapeMember2 {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty2"),
-          this.variable("StringProperty2"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        UnionNodeShapeMember2.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        UnionNodeShapeMember2.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      UnionNodeShapeMember2.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShapeMember2");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "unionNodeShapeMember2");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty2"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShapeMember2");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "unionNodeShapeMember2");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty2",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 export class UnionNodeShapeMember1 {
@@ -687,20 +839,98 @@ export namespace UnionNodeShapeMember1 {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty1"),
-          this.variable("StringProperty1"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        UnionNodeShapeMember1.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        UnionNodeShapeMember1.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      UnionNodeShapeMember1.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShapeMember1");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "unionNodeShapeMember1");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty1`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty1"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShapeMember1");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "unionNodeShapeMember1");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty1`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty1",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -918,20 +1148,94 @@ export namespace Sha256IriNodeShape {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        Sha256IriNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        Sha256IriNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      Sha256IriNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("sha256IriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "sha256IriNodeShape");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("sha256IriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "sha256IriNodeShape");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -1152,20 +1456,94 @@ export namespace NonClassNodeShape {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NonClassNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NonClassNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NonClassNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nonClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "nonClassNodeShape");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nonClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "nonClassNodeShape");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -1864,54 +2242,182 @@ export namespace NodeShapeWithUnionProperties {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/orLiteralsProperty"),
-            this.variable("OrLiteralsProperty"),
-          ),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithUnionProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithUnionProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithUnionProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithUnionProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithUnionProperties");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}OrLiteralsProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/orLiteralsProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/orTermsProperty"),
-            this.variable("OrTermsProperty"),
-          ),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}OrTermsProperty`),
+        predicate: dataFactory.namedNode("http://example.com/orTermsProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}OrUnrelatedProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/orUnrelatedProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.union(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/orUnrelatedProperty"),
-              this.variable("OrUnrelatedProperty"),
-            ),
-            sparqlBuilder.GraphPattern.group(
-              sparqlBuilder.GraphPattern.basic(
-                this.subject,
-                dataFactory.namedNode("http://example.com/orUnrelatedProperty"),
-                this.variable("OrUnrelatedProperty"),
-              ).chainObject(
-                (_object) =>
-                  new NonClassNodeShape.SparqlGraphPatterns(_object, {
+        subject,
+      },
+      ...NonClassNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject: dataFactory.variable!(`${variablePrefix}OrUnrelatedProperty`),
+        variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
+      }),
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithUnionProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithUnionProperties");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}OrLiteralsProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/orLiteralsProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}OrTermsProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/orTermsProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}OrUnrelatedProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/orUnrelatedProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+          {
+            patterns: [
+              { patterns: [], type: "group" },
+              {
+                patterns: [
+                  ...NonClassNodeShape.sparqlWherePatterns({
                     ignoreRdfType: true,
+                    subject: dataFactory.variable!(
+                      `${variablePrefix}OrUnrelatedProperty`,
+                    ),
+                    variablePrefix: `${variablePrefix}OrUnrelatedProperty`,
                   }),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
+                ],
+                type: "group",
+              },
+            ],
+            type: "union",
+          },
+        ],
+        type: "optional",
+      },
+    ];
   }
 }
 /**
@@ -2710,76 +3216,247 @@ export namespace NodeShapeWithTermProperties {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/booleanProperty"),
-            this.variable("BooleanProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/dateTimeProperty"),
-            this.variable("DateTimeProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/iriProperty"),
-            this.variable("IriProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/literalProperty"),
-            this.variable("LiteralProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/numberProperty"),
-            this.variable("NumberProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/stringProperty"),
-            this.variable("StringProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/termProperty"),
-            this.variable("TermProperty"),
-          ),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithTermProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithTermProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithTermProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithTermProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithTermProperties");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}BooleanProperty`),
+        predicate: dataFactory.namedNode("http://example.com/booleanProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}DateTimeProperty`),
+        predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}IriProperty`),
+        predicate: dataFactory.namedNode("http://example.com/iriProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}LiteralProperty`),
+        predicate: dataFactory.namedNode("http://example.com/literalProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}NumberProperty`),
+        predicate: dataFactory.namedNode("http://example.com/numberProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}TermProperty`),
+        predicate: dataFactory.namedNode("http://example.com/termProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithTermProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithTermProperties");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}BooleanProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/booleanProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}DateTimeProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/dateTimeProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(`${variablePrefix}IriProperty`),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/iriProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}LiteralProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/literalProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}NumberProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/numberProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}StringProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/stringProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(`${variablePrefix}TermProperty`),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/termProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+    ];
   }
 }
 /**
@@ -3106,34 +3783,136 @@ export namespace NodeShapeWithPropertyVisibilities {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/privateProperty"),
-          this.variable("PrivateProperty"),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithPropertyVisibilities.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithPropertyVisibilities.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithPropertyVisibilities.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithPropertyVisibilities");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithPropertyVisibilities");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}PrivateProperty`),
+        predicate: dataFactory.namedNode("http://example.com/privateProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}ProtectedProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/protectedProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/protectedProperty"),
-          this.variable("ProtectedProperty"),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/publicProperty"),
-          this.variable("PublicProperty"),
-        ),
-      );
-    }
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}PublicProperty`),
+        predicate: dataFactory.namedNode("http://example.com/publicProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithPropertyVisibilities");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithPropertyVisibilities");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}PrivateProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/privateProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}ProtectedProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/protectedProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}PublicProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/publicProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -3612,45 +4391,185 @@ export namespace NodeShapeWithPropertyCardinalities {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/emptyStringSetProperty"),
-            this.variable("EmptyStringSetProperty"),
-          ),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithPropertyCardinalities.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithPropertyCardinalities.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithPropertyCardinalities.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithPropertyCardinalities");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithPropertyCardinalities");
+    return [
+      {
+        object: dataFactory.variable!(
+          `${variablePrefix}EmptyStringSetProperty`,
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/nonEmptyStringSetProperty"),
-          this.variable("NonEmptyStringSetProperty"),
+        predicate: dataFactory.namedNode(
+          "http://example.com/emptyStringSetProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/optionalStringProperty"),
-            this.variable("OptionalStringProperty"),
-          ),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(
+          `${variablePrefix}NonEmptyStringSetProperty`,
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/requiredStringProperty"),
-          this.variable("RequiredStringProperty"),
+        predicate: dataFactory.namedNode(
+          "http://example.com/nonEmptyStringSetProperty",
         ),
-      );
-    }
+        subject,
+      },
+      {
+        object: dataFactory.variable!(
+          `${variablePrefix}OptionalStringProperty`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://example.com/optionalStringProperty",
+        ),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(
+          `${variablePrefix}RequiredStringProperty`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://example.com/requiredStringProperty",
+        ),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithPropertyCardinalities");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithPropertyCardinalities");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}EmptyStringSetProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/emptyStringSetProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(
+              `${variablePrefix}NonEmptyStringSetProperty`,
+            ),
+            predicate: dataFactory.namedNode(
+              "http://example.com/nonEmptyStringSetProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}OptionalStringProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/optionalStringProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(
+              `${variablePrefix}RequiredStringProperty`,
+            ),
+            predicate: dataFactory.namedNode(
+              "http://example.com/requiredStringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -3831,7 +4750,7 @@ export class NodeShapeWithMutableProperties {
               } else {
                 const newSubListResource = resourceSet.mutableResource({
                   identifier: dataFactory.blankNode(),
-                  mutateGraph: mutateGraph,
+                  mutateGraph,
                 });
                 currentSubListResource!.add(
                   dataFactory.namedNode(
@@ -3873,7 +4792,7 @@ export class NodeShapeWithMutableProperties {
               currentSubListResource: null,
               listResource: resourceSet.mutableResource({
                 identifier: dataFactory.blankNode(),
-                mutateGraph: mutateGraph,
+                mutateGraph,
               }),
             } as {
               currentSubListResource: rdfjsResource.MutableResource | null;
@@ -4075,36 +4994,266 @@ export namespace NodeShapeWithMutableProperties {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.group(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/mutableListProperty"),
-              this.variable("MutableListProperty"),
-            ).chainObject(
-              (_object) =>
-                new sparqlBuilder.RdfListGraphPatterns({ rdfList: _object }),
-            ),
-          ),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithMutableProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithMutableProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithMutableProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithMutableProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithMutableProperties");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}MutableListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/mutableListProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/mutableStringProperty"),
-            this.variable("MutableStringProperty"),
-          ),
+        subject,
+      },
+      {
+        subject: dataFactory.variable!(`${variablePrefix}MutableListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
-      );
-    }
+        object: dataFactory.variable!(
+          `${`${variablePrefix}MutableListProperty`}Item0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(`${variablePrefix}MutableListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}MutableListProperty`}Rest0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}MutableListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}MutableListProperty`}ItemN`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}MutableListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}MutableListProperty`}RestNBasic`,
+        ),
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}MutableStringProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/mutableStringProperty",
+        ),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithMutableProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithMutableProperties");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}MutableListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/mutableListProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${variablePrefix}MutableListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}MutableListProperty`}Item0`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${variablePrefix}MutableListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}MutableListProperty`}Rest0`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "optional",
+            patterns: [
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${variablePrefix}MutableListProperty`,
+                    ),
+                    predicate: {
+                      type: "path",
+                      pathType: "*",
+                      items: [
+                        dataFactory.namedNode(
+                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                        ),
+                      ],
+                    },
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}MutableListProperty`}RestN`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}MutableListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}MutableListProperty`}ItemN`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}MutableListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}MutableListProperty`}RestNBasic`,
+                    ),
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}MutableStringProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/mutableStringProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+    ];
   }
 }
 /**
@@ -4223,7 +5372,7 @@ export class NodeShapeWithListProperty {
           } else {
             const newSubListResource = resourceSet.mutableResource({
               identifier: dataFactory.blankNode(),
-              mutateGraph: mutateGraph,
+              mutateGraph,
             });
             currentSubListResource!.add(
               dataFactory.namedNode(
@@ -4265,7 +5414,7 @@ export class NodeShapeWithListProperty {
           currentSubListResource: null,
           listResource: resourceSet.mutableResource({
             identifier: dataFactory.blankNode(),
-            mutateGraph: mutateGraph,
+            mutateGraph,
           }),
         } as {
           currentSubListResource: rdfjsResource.MutableResource | null;
@@ -4408,25 +5557,221 @@ export namespace NodeShapeWithListProperty {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.group(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/listProperty"),
-            this.variable("ListProperty"),
-          ).chainObject(
-            (_object) =>
-              new sparqlBuilder.RdfListGraphPatterns({ rdfList: _object }),
-          ),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithListProperty.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithListProperty.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithListProperty.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithListProperty");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithListProperty");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}ListProperty`),
+        predicate: dataFactory.namedNode("http://example.com/listProperty"),
+        subject,
+      },
+      {
+        subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
-      );
-    }
+        object: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}Item0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}Rest0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}ItemN`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}ListProperty`}RestNBasic`,
+        ),
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithListProperty");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithListProperty");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}ListProperty`),
+            predicate: dataFactory.namedNode("http://example.com/listProperty"),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        type: "bgp",
+        triples: [
+          {
+            subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+            predicate: dataFactory.namedNode(
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+            ),
+            object: dataFactory.variable!(
+              `${`${variablePrefix}ListProperty`}Item0`,
+            ),
+          },
+        ],
+      },
+      {
+        type: "bgp",
+        triples: [
+          {
+            subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+            predicate: dataFactory.namedNode(
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+            ),
+            object: dataFactory.variable!(
+              `${`${variablePrefix}ListProperty`}Rest0`,
+            ),
+          },
+        ],
+      },
+      {
+        type: "optional",
+        patterns: [
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+                predicate: {
+                  type: "path",
+                  pathType: "*",
+                  items: [
+                    dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                  ],
+                },
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}ListProperty`}RestN`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${`${variablePrefix}ListProperty`}RestN`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}ListProperty`}ItemN`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${`${variablePrefix}ListProperty`}RestN`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}ListProperty`}RestNBasic`,
+                ),
+              },
+            ],
+          },
+        ],
+      },
+    ];
   }
 }
 /**
@@ -4896,31 +6241,133 @@ export namespace NodeShapeWithLanguageInProperties {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/languageInProperty"),
-            this.variable("LanguageInProperty"),
-          ),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithLanguageInProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithLanguageInProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithLanguageInProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithLanguageInProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithLanguageInProperties");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}LanguageInProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/languageInProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/literalProperty"),
-            this.variable("LiteralProperty"),
-          ),
-        ),
-      );
-    }
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}LiteralProperty`),
+        predicate: dataFactory.namedNode("http://example.com/literalProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithLanguageInProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithLanguageInProperties");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}LanguageInProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/languageInProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}LiteralProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/literalProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+    ];
   }
 }
 /**
@@ -5600,58 +7047,209 @@ export namespace NodeShapeWithInProperties {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inBooleansProperty"),
-            this.variable("InBooleansProperty"),
-          ),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithInProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithInProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithInProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithInProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithInProperties");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}InBooleansProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/inBooleansProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inDateTimesProperty"),
-            this.variable("InDateTimesProperty"),
-          ),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}InDateTimesProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/inDateTimesProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inIrisProperty"),
-            this.variable("InIrisProperty"),
-          ),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}InIrisProperty`),
+        predicate: dataFactory.namedNode("http://example.com/inIrisProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}InNumbersProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/inNumbersProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inNumbersProperty"),
-            this.variable("InNumbersProperty"),
-          ),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}InStringsProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/inStringsProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/inStringsProperty"),
-            this.variable("InStringsProperty"),
-          ),
-        ),
-      );
-    }
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithInProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithInProperties");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}InBooleansProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/inBooleansProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}InDateTimesProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/inDateTimesProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}InIrisProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/inIrisProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}InNumbersProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/inNumbersProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}InStringsProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/inStringsProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+    ];
   }
 }
 /**
@@ -5977,31 +7575,133 @@ export namespace NodeShapeWithHasValueProperties {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/hasIriProperty"),
-            this.variable("HasIriProperty"),
-          ),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithHasValueProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithHasValueProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithHasValueProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithHasValueProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithHasValueProperties");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}HasIriProperty`),
+        predicate: dataFactory.namedNode("http://example.com/hasIriProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}HasLiteralProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/hasLiteralProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/hasLiteralProperty"),
-            this.variable("HasLiteralProperty"),
-          ),
-        ),
-      );
-    }
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithHasValueProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithHasValueProperties");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}HasIriProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/hasIriProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}HasLiteralProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/hasLiteralProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+    ];
   }
 }
 export class InlineNodeShape {
@@ -6219,20 +7919,94 @@ export namespace InlineNodeShape {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        InlineNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        InlineNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InlineNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("inlineNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "inlineNodeShape");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("inlineNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "inlineNodeShape");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 export class ExternNodeShape {
@@ -6450,20 +8224,94 @@ export namespace ExternNodeShape {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        ExternNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        ExternNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      ExternNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("externNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "externNodeShape");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("externNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "externNodeShape");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -6894,56 +8742,183 @@ export namespace NodeShapeWithExternProperties {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.group(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode(
-                "http://example.com/externObjectTypeProperty",
-              ),
-              this.variable("ExternObjectTypeProperty"),
-            ).chainObject(
-              (_object) =>
-                new ExternObjectType.SparqlGraphPatterns(_object, {
-                  ignoreRdfType: true,
-                }),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithExternProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithExternProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithExternProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithExternProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithExternProperties");
+    return [
+      {
+        object: dataFactory.variable!(
+          `${variablePrefix}ExternObjectTypeProperty`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://example.com/externObjectTypeProperty",
+        ),
+        subject,
+      },
+      ...ExternObjectType.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject: dataFactory.variable!(
+          `${variablePrefix}ExternObjectTypeProperty`,
+        ),
+        variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
+      }),
+      {
+        object: dataFactory.variable!(`${variablePrefix}ExternProperty`),
+        predicate: dataFactory.namedNode("http://example.com/externProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}InlineProperty`),
+        predicate: dataFactory.namedNode("http://example.com/inlineProperty"),
+        subject,
+      },
+      ...InlineNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject: dataFactory.variable!(`${variablePrefix}InlineProperty`),
+        variablePrefix: `${variablePrefix}InlineProperty`,
+      }),
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithExternProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithExternProperties");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}ExternObjectTypeProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/externObjectTypeProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+          ...ExternObjectType.sparqlWherePatterns({
+            ignoreRdfType: true,
+            subject: dataFactory.variable!(
+              `${variablePrefix}ExternObjectTypeProperty`,
             ),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/externProperty"),
-            this.variable("ExternProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.group(
-            sparqlBuilder.GraphPattern.basic(
-              this.subject,
-              dataFactory.namedNode("http://example.com/inlineProperty"),
-              this.variable("InlineProperty"),
-            ).chainObject(
-              (_object) =>
-                new InlineNodeShape.SparqlGraphPatterns(_object, {
-                  ignoreRdfType: true,
-                }),
-            ),
-          ),
-        ),
-      );
-    }
+            variablePrefix: `${variablePrefix}ExternObjectTypeProperty`,
+          }),
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}ExternProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/externProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}InlineProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/inlineProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+          ...InlineNodeShape.sparqlWherePatterns({
+            ignoreRdfType: true,
+            subject: dataFactory.variable!(`${variablePrefix}InlineProperty`),
+            variablePrefix: `${variablePrefix}InlineProperty`,
+          }),
+        ],
+        type: "optional",
+      },
+    ];
   }
 }
 /**
@@ -7205,38 +9180,141 @@ export namespace NodeShapeWithExplicitRdfTypes {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      if (!_options?.ignoreRdfType) {
-        this.add(
-          ...new sparqlBuilder.RdfTypeGraphPatterns(
-            this.subject,
-            dataFactory.namedNode("http://example.com/FromRdfType"),
-          ),
-        );
-        this.add(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-            ),
-            dataFactory.namedNode("http://example.com/ToRdfType"),
-          ),
-        );
-      }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
 
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithExplicitRdfTypes.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithExplicitRdfTypes.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithExplicitRdfTypes.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithExplicitRdfTypes");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithExplicitRdfTypes");
+    return [
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              subject,
+              predicate: dataFactory.namedNode(
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+              ),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
+            },
+          ]),
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithExplicitRdfTypes");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithExplicitRdfTypes");
+    return [
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.namedNode(
+                    "http://example.com/FromRdfType",
+                  ),
+                },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
+                },
+              ],
+              type: "bgp" as const,
+            },
+          ]),
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -7767,58 +9845,207 @@ export namespace NodeShapeWithDefaultValueProperties {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/dateTimeProperty"),
-            this.variable("DateTimeProperty"),
-          ),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithDefaultValueProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithDefaultValueProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithDefaultValueProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithDefaultValueProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithDefaultValueProperties");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}DateTimeProperty`),
+        predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}FalseBooleanProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/falseBooleanProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/falseBooleanProperty"),
-            this.variable("FalseBooleanProperty"),
-          ),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}NumberProperty`),
+        predicate: dataFactory.namedNode("http://example.com/numberProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}TrueBooleanProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/trueBooleanProperty",
         ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/numberProperty"),
-            this.variable("NumberProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/stringProperty"),
-            this.variable("StringProperty"),
-          ),
-        ),
-      );
-      this.add(
-        sparqlBuilder.GraphPattern.optional(
-          sparqlBuilder.GraphPattern.basic(
-            this.subject,
-            dataFactory.namedNode("http://example.com/trueBooleanProperty"),
-            this.variable("TrueBooleanProperty"),
-          ),
-        ),
-      );
-    }
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithDefaultValueProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithDefaultValueProperties");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}DateTimeProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/dateTimeProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}FalseBooleanProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/falseBooleanProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}NumberProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/numberProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}StringProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/stringProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}TrueBooleanProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/trueBooleanProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+    ];
   }
 }
 /**
@@ -8027,20 +10254,91 @@ export namespace IriNodeShape {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        IriNodeShape.sparqlConstructTemplateTriples({ ignoreRdfType, subject }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        IriNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      IriNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("iriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "iriNodeShape");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("iriNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "iriNodeShape");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 export interface InterfaceUnionNodeShapeMember2 {
@@ -8228,20 +10526,100 @@ export namespace InterfaceUnionNodeShapeMember2 {
     return _hasher;
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty2"),
-          this.variable("StringProperty2"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceUnionNodeShapeMember2.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember2");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember2");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty2"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember2");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember2");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty2",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export function toJson(
@@ -8470,20 +10848,100 @@ export namespace InterfaceUnionNodeShapeMember1 {
     return _hasher;
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty1"),
-          this.variable("StringProperty1"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShapeMember1.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShapeMember1.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceUnionNodeShapeMember1.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember1");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember1");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty1`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty1"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember1");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember1");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty1`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty1",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export function toJson(
@@ -8707,20 +11165,94 @@ export namespace InterfaceNodeShape {
     return _hasher;
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/stringProperty"),
-          this.variable("StringProperty"),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        InterfaceNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        InterfaceNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("interfaceNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "interfaceNodeShape");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("interfaceNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable" ? subject.value : "interfaceNodeShape");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 
   export function toJson(_interfaceNodeShape: InterfaceNodeShape): {
@@ -8976,20 +11508,101 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/abcStringProperty"),
-          this.variable("AbcStringProperty"),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        AbstractBaseClassWithPropertiesNodeShape.sparqlConstructTemplateTriples(
+          { ignoreRdfType, subject },
         ),
-      );
-    }
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        AbstractBaseClassWithPropertiesNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      AbstractBaseClassWithPropertiesNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassWithPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassWithPropertiesNodeShape");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}AbcStringProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/abcStringProperty",
+        ),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassWithPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassWithPropertiesNodeShape");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}AbcStringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/abcStringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -9134,13 +11747,92 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     );
   }
 
-  export class SparqlGraphPatterns extends AbstractBaseClassWithPropertiesNodeShape.SparqlGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject, { ignoreRdfType: true });
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        AbstractBaseClassWithoutPropertiesNodeShape.sparqlConstructTemplateTriples(
+          { ignoreRdfType, subject },
+        ),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        AbstractBaseClassWithoutPropertiesNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      AbstractBaseClassWithoutPropertiesNodeShape.sparqlConstructQuery(
+        parameters,
+      ),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassWithoutPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassWithoutPropertiesNodeShape");
+    return [
+      ...AbstractBaseClassWithPropertiesNodeShape.sparqlConstructTemplateTriples(
+        { ignoreRdfType: true, subject, variablePrefix },
+      ),
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassWithoutPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassWithoutPropertiesNodeShape");
+    return [
+      ...AbstractBaseClassWithPropertiesNodeShape.sparqlWherePatterns({
+        ignoreRdfType: true,
+        subject,
+        variablePrefix,
+      }),
+    ];
   }
 }
 /**
@@ -9414,31 +12106,153 @@ export namespace ConcreteParentClassNodeShape {
     );
   }
 
-  export class SparqlGraphPatterns extends AbstractBaseClassWithoutPropertiesNodeShape.SparqlGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject, { ignoreRdfType: true });
-      if (!_options?.ignoreRdfType) {
-        this.add(
-          ...new sparqlBuilder.RdfTypeGraphPatterns(
-            this.subject,
-            dataFactory.namedNode(
-              "http://example.com/ConcreteParentClassNodeShape",
-            ),
-          ),
-        );
-      }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
 
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/parentStringProperty"),
-          this.variable("ParentStringProperty"),
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        ConcreteParentClassNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        ConcreteParentClassNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      ConcreteParentClassNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("concreteParentClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "concreteParentClassNodeShape");
+    return [
+      ...AbstractBaseClassWithoutPropertiesNodeShape.sparqlConstructTemplateTriples(
+        { ignoreRdfType: true, subject, variablePrefix },
+      ),
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              subject,
+              predicate: dataFactory.namedNode(
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+              ),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
+            },
+          ]),
+      {
+        object: dataFactory.variable!(`${variablePrefix}ParentStringProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/parentStringProperty",
         ),
-      );
-    }
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("concreteParentClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "concreteParentClassNodeShape");
+    return [
+      ...AbstractBaseClassWithoutPropertiesNodeShape.sparqlWherePatterns({
+        ignoreRdfType: true,
+        subject,
+        variablePrefix,
+      }),
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.namedNode(
+                    "http://example.com/ConcreteParentClassNodeShape",
+                  ),
+                },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
+                },
+              ],
+              type: "bgp" as const,
+            },
+          ]),
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(
+              `${variablePrefix}ParentStringProperty`,
+            ),
+            predicate: dataFactory.namedNode(
+              "http://example.com/parentStringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -9693,31 +12507,155 @@ export namespace ConcreteChildClassNodeShape {
     );
   }
 
-  export class SparqlGraphPatterns extends ConcreteParentClassNodeShape.SparqlGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject, { ignoreRdfType: true });
-      if (!_options?.ignoreRdfType) {
-        this.add(
-          ...new sparqlBuilder.RdfTypeGraphPatterns(
-            this.subject,
-            dataFactory.namedNode(
-              "http://example.com/ConcreteChildClassNodeShape",
-            ),
-          ),
-        );
-      }
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
 
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/childStringProperty"),
-          this.variable("ChildStringProperty"),
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        ConcreteChildClassNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        ConcreteChildClassNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      ConcreteChildClassNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("concreteChildClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "concreteChildClassNodeShape");
+    return [
+      ...ConcreteParentClassNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject,
+        variablePrefix,
+      }),
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              subject,
+              predicate: dataFactory.namedNode(
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+              ),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
+            },
+          ]),
+      {
+        object: dataFactory.variable!(`${variablePrefix}ChildStringProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/childStringProperty",
         ),
-      );
-    }
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("concreteChildClassNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "concreteChildClassNodeShape");
+    return [
+      ...ConcreteParentClassNodeShape.sparqlWherePatterns({
+        ignoreRdfType: true,
+        subject,
+        variablePrefix,
+      }),
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.namedNode(
+                    "http://example.com/ConcreteChildClassNodeShape",
+                  ),
+                },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
+                },
+              ],
+              type: "bgp" as const,
+            },
+          ]),
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(
+              `${variablePrefix}ChildStringProperty`,
+            ),
+            predicate: dataFactory.namedNode(
+              "http://example.com/childStringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -9919,20 +12857,102 @@ export namespace AbstractBaseClassForExternObjectType {
     });
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(
-      subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter,
-      _options?: { ignoreRdfType?: boolean },
-    ) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.basic(
-          this.subject,
-          dataFactory.namedNode("http://example.com/abcStringProperty"),
-          this.variable("AbcStringProperty"),
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
+      parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        AbstractBaseClassForExternObjectType.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        AbstractBaseClassForExternObjectType.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+          variablePrefix,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      AbstractBaseClassForExternObjectType.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassForExternObjectType");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassForExternObjectType");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}AbcStringProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/abcStringProperty",
         ),
-      );
-    }
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("abstractBaseClassForExternObjectType");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "abstractBaseClassForExternObjectType");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}AbcStringProperty`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/abcStringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
   }
 }
 /**
@@ -10033,20 +13053,90 @@ export namespace InterfaceUnionNodeShape {
     ]);
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.union(
-          new InterfaceUnionNodeShapeMember1.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-          new InterfaceUnionNodeShapeMember2.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      prefixes?: { [prefix: string]: string };
+      subject: rdfjs.Variable;
+    } & Omit<
+      sparqljs.ConstructQuery,
+      "prefixes" | "queryType" | "template" | "where"
+    >,
+  ): sparqljs.ConstructQuery {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("interfaceUnionNodeShape");
+    return {
+      ...parameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: InterfaceUnionNodeShape.sparqlConstructTemplateTriples({
+        subject,
+      }).concat(),
+      type: "query",
+      where: InterfaceUnionNodeShape.sparqlWherePatterns({ subject }).concat(),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: { subject: rdfjs.Variable } & Omit<
+      sparqljs.ConstructQuery,
+      "prefixes" | "queryType" | "template" | "where"
+    > &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceUnionNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      ...InterfaceUnionNodeShapeMember1.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember1`,
+      }).concat(),
+      ...InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember2`,
+      }).concat(),
+    ];
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        patterns: [
+          {
+            patterns: InterfaceUnionNodeShapeMember1.sparqlWherePatterns({
+              subject,
+              variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember1`,
+            }).concat(),
+            type: "group",
+          },
+          {
+            patterns: InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+              subject,
+              variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember2`,
+            }).concat(),
+            type: "group",
+          },
+        ],
+        type: "union",
+      },
+    ];
   }
 
   export function toJson(
@@ -10185,23 +13275,101 @@ export namespace UnionNodeShape {
     ]);
   }
 
-  export class SparqlGraphPatterns extends sparqlBuilder.ResourceGraphPatterns {
-    constructor(subject: sparqlBuilder.ResourceGraphPatterns.SubjectParameter) {
-      super(subject);
-      this.add(
-        sparqlBuilder.GraphPattern.union(
-          new UnionNodeShapeMember1.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-          new UnionNodeShapeMember2.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-          new ExternObjectType.SparqlGraphPatterns(
-            this.subject,
-          ).toGroupGraphPattern(),
-        ),
-      );
-    }
+  export function sparqlConstructQuery(
+    parameters?: {
+      prefixes?: { [prefix: string]: string };
+      subject: rdfjs.Variable;
+    } & Omit<
+      sparqljs.ConstructQuery,
+      "prefixes" | "queryType" | "template" | "where"
+    >,
+  ): sparqljs.ConstructQuery {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("unionNodeShape");
+    return {
+      ...parameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: UnionNodeShape.sparqlConstructTemplateTriples({
+        subject,
+      }).concat(),
+      type: "query",
+      where: UnionNodeShape.sparqlWherePatterns({ subject }).concat(),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: { subject: rdfjs.Variable } & Omit<
+      sparqljs.ConstructQuery,
+      "prefixes" | "queryType" | "template" | "where"
+    > &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      UnionNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      ...UnionNodeShapeMember1.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix: `${variablePrefix}UnionNodeShapeMember1`,
+      }).concat(),
+      ...UnionNodeShapeMember2.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix: `${variablePrefix}UnionNodeShapeMember2`,
+      }).concat(),
+      ...ExternObjectType.sparqlConstructTemplateTriples({
+        subject,
+        variablePrefix: `${variablePrefix}ExternObjectType`,
+      }).concat(),
+    ];
+  }
+
+  export function sparqlWherePatterns({
+    subject,
+    variablePrefix: variablePrefixParameter,
+  }: {
+    subject: rdfjs.Variable;
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const variablePrefix = variablePrefixParameter ?? subject.value;
+    return [
+      {
+        patterns: [
+          {
+            patterns: UnionNodeShapeMember1.sparqlWherePatterns({
+              subject,
+              variablePrefix: `${variablePrefix}UnionNodeShapeMember1`,
+            }).concat(),
+            type: "group",
+          },
+          {
+            patterns: UnionNodeShapeMember2.sparqlWherePatterns({
+              subject,
+              variablePrefix: `${variablePrefix}UnionNodeShapeMember2`,
+            }).concat(),
+            type: "group",
+          },
+          {
+            patterns: ExternObjectType.sparqlWherePatterns({
+              subject,
+              variablePrefix: `${variablePrefix}ExternObjectType`,
+            }).concat(),
+            type: "group",
+          },
+        ],
+        type: "union",
+      },
+    ];
   }
 
   export function toJson(

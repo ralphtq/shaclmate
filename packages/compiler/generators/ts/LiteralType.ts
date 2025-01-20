@@ -23,18 +23,28 @@ export class LiteralType extends TermType<Literal> {
     return '{ readonly "@language": string | undefined, readonly "@type": string | undefined, readonly "@value": string }';
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<TermType<Literal>["fromJsonExpression"]>[0]): string {
+    return `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : undefined))`;
+  }
+
+  override hashStatements({
+    depth,
+    variables,
+  }: Parameters<TermType<Literal>["hashStatements"]>[0]): readonly string[] {
+    return [
+      `${variables.hasher}.update(${variables.value}.datatype.value);`,
+      `${variables.hasher}.update(${variables.value}.language);`,
+    ].concat(super.hashStatements({ depth, variables }));
+  }
+
   override jsonZodSchema({
     variables,
   }: Parameters<TermType<Literal>["jsonZodSchema"]>[0]): ReturnType<
     TermType<Literal>["jsonZodSchema"]
   > {
     return `${variables.zod}.object({ "@language": ${variables.zod}.string().optional(), "@type": ${variables.zod}.string().optional(), "@value": ${variables.zod}.string() })`;
-  }
-
-  override propertyFromJsonExpression({
-    variables,
-  }: Parameters<TermType<Literal>["propertyFromJsonExpression"]>[0]): string {
-    return `${this.dataFactoryVariable}.literal(${variables.value}["@value"], typeof ${variables.value}["@language"] !== "undefined" ? ${variables.value}["@language"] : (typeof ${variables.value}["@type"] !== "undefined" ? dataFactory.namedNode(${variables.value}["@type"]) : undefined))`;
   }
 
   override propertyFromRdfResourceValueExpression({
@@ -45,21 +55,9 @@ export class LiteralType extends TermType<Literal> {
     return `${variables.resourceValue}.toLiteral()`;
   }
 
-  override propertyHashStatements({
-    depth,
+  override toJsonExpression({
     variables,
-  }: Parameters<
-    TermType<Literal>["propertyHashStatements"]
-  >[0]): readonly string[] {
-    return [
-      `${variables.hasher}.update(${variables.value}.datatype.value);`,
-      `${variables.hasher}.update(${variables.value}.language);`,
-    ].concat(super.propertyHashStatements({ depth, variables }));
-  }
-
-  override propertyToJsonExpression({
-    variables,
-  }: Parameters<TermType<Literal>["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<TermType<Literal>["toJsonExpression"]>[0]): string {
     return `{ "@language": ${variables.value}.language.length > 0 ? ${variables.value}.language : undefined, "@type": ${variables.value}.datatype.value !== "${xsd.string.value}" ? ${variables.value}.datatype.value : undefined, "@value": ${variables.value}.value }`;
   }
 

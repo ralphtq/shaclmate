@@ -31,8 +31,8 @@ export namespace Import {
   };
 
   export const RDFJS_TYPES: Import = {
-    kind: StructureKind.ImportDeclaration,
     isTypeOnly: true,
+    kind: StructureKind.ImportDeclaration,
     moduleSpecifier: "@rdfjs/types",
     namespaceImport: "rdfjs",
   };
@@ -43,10 +43,10 @@ export namespace Import {
     namedImports: ["sha256"],
   };
 
-  export const SPARQL_BUILDER: Import = {
+  export const SPARQLJS: Import = {
     kind: StructureKind.ImportDeclaration,
-    moduleSpecifier: "@kos-kit/sparql-builder",
-    namespaceImport: "sparqlBuilder",
+    moduleSpecifier: "sparqljs",
+    namespaceImport: "sparqljs",
   };
 
   export const UUID: Import = {

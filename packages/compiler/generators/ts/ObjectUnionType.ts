@@ -1,8 +1,7 @@
-import { camelCase } from "change-case";
+import { camelCase, pascalCase } from "change-case";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import {
-  type ClassDeclarationStructure,
   type FunctionDeclarationStructure,
   type ModuleDeclarationStructure,
   type StatementStructures,
@@ -13,8 +12,9 @@ import { Memoize } from "typescript-memoize";
 import { DeclaredType } from "./DeclaredType.js";
 import type { Import } from "./Import.js";
 import type { ObjectType } from "./ObjectType.js";
-import { Type } from "./Type.js";
+import type { Type } from "./Type.js";
 import { hasherTypeConstraint } from "./_ObjectType/hashFunctionOrMethodDeclaration.js";
+import { objectInitializer } from "./objectInitializer.js";
 import { tsComment } from "./tsComment.js";
 
 /**
@@ -95,7 +95,7 @@ export class ObjectUnionType extends DeclaredType {
       ...this.fromRdfFunctionDeclaration.toList(),
       ...this.hashFunctionDeclaration.toList(),
       ...this.jsonZodSchemaFunctionDeclaration.toList(),
-      ...this.sparqlGraphPatternsClassDeclaration.toList(),
+      ...this.sparqlFunctionDeclarations,
       ...this.toJsonFunctionDeclaration.toList(),
       ...this.toRdfFunctionDeclaration.toList(),
     ];
@@ -294,33 +294,90 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     });
   }
 
-  private get sparqlGraphPatternsClassDeclaration(): Maybe<ClassDeclarationStructure> {
-    if (!this.features.has("sparql-graph-patterns")) {
-      return Maybe.empty();
+  private get sparqlFunctionDeclarations(): readonly FunctionDeclarationStructure[] {
+    if (!this.features.has("sparql")) {
+      return [];
     }
 
-    const subjectVariable = "subject";
-
-    return Maybe.of({
-      ctors: [
-        {
-          parameters: [
-            {
-              name: subjectVariable,
-              type: "sparqlBuilder.ResourceGraphPatterns.SubjectParameter",
-            },
-          ],
-          statements: [
-            `super(${subjectVariable});`,
-            `this.add(sparqlBuilder.GraphPattern.union(${this.memberTypes.map((memberType) => `new ${memberType.name}.SparqlGraphPatterns(this.subject).toGroupGraphPattern()`).join(", ")}));`,
-          ],
-        },
-      ],
-      extends: "sparqlBuilder.ResourceGraphPatterns",
-      isExported: true,
-      kind: StructureKind.Class,
-      name: "SparqlGraphPatterns",
-    });
+    return [
+      {
+        isExported: true,
+        kind: StructureKind.Function,
+        name: "sparqlConstructQuery",
+        parameters: [
+          {
+            hasQuestionToken: true,
+            name: "parameters",
+            type: '{ prefixes?: { [prefix: string]: string }; subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where">',
+          },
+        ],
+        returnType: "sparqljs.ConstructQuery",
+        statements: [
+          `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}");`,
+          `return { ...parameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: ${this.name}.sparqlConstructTemplateTriples({ subject }).concat(), type: "query", where: ${this.name}.sparqlWherePatterns({ subject }).concat() };`,
+        ],
+      },
+      {
+        isExported: true,
+        kind: StructureKind.Function,
+        name: "sparqlConstructQueryString",
+        parameters: [
+          {
+            hasQuestionToken: true,
+            name: "parameters",
+            type: '{ subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where"> & sparqljs.GeneratorOptions',
+          },
+        ],
+        returnType: "string",
+        statements: [
+          `return new sparqljs.Generator(parameters).stringify(${this.name}.sparqlConstructQuery(parameters));`,
+        ],
+      },
+      {
+        isExported: true,
+        kind: StructureKind.Function,
+        name: "sparqlConstructTemplateTriples",
+        parameters: [
+          {
+            name: "{ subject, variablePrefix: variablePrefixParameter }",
+            type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+          },
+        ],
+        returnType: "readonly sparqljs.Triple[]",
+        statements: [
+          "const variablePrefix = variablePrefixParameter ?? subject.value;",
+          `return [${this.memberTypes
+            .map(
+              (memberType) =>
+                `...${memberType.name}.sparqlConstructTemplateTriples({ subject, variablePrefix: \`\${variablePrefix}${pascalCase(memberType.name)}\` }).concat()`,
+            )
+            .join(", ")}];`,
+        ],
+      },
+      {
+        isExported: true,
+        kind: StructureKind.Function,
+        name: "sparqlWherePatterns",
+        parameters: [
+          {
+            name: "{ subject, variablePrefix: variablePrefixParameter }",
+            type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+          },
+        ],
+        returnType: "readonly sparqljs.Pattern[]",
+        statements: [
+          "const variablePrefix = variablePrefixParameter ?? subject.value;",
+          `return [{ patterns: [${this.memberTypes
+            .map((memberType) =>
+              objectInitializer({
+                patterns: `${memberType.name}.sparqlWherePatterns({ subject, variablePrefix: \`\${variablePrefix}${pascalCase(memberType.name)}\` }).concat()`,
+                type: '"group"',
+              }),
+            )
+            .join(", ")}], type: "union" }];`,
+        ],
+      },
+    ];
   }
 
   private get toJsonFunctionDeclaration(): Maybe<FunctionDeclarationStructure> {
@@ -405,38 +462,22 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     };
   }
 
-  override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
-    return `${this.name}.jsonZodSchema()`;
-  }
-
-  override propertyChainSparqlGraphPatternExpression({
+  override fromJsonExpression({
     variables,
-  }: Parameters<
-    Type["propertyChainSparqlGraphPatternExpression"]
-  >[0]): Maybe<Type.SparqlGraphPatternsExpression> {
-    return Maybe.of(
-      new Type.SparqlGraphPatternsExpression(
-        `new ${this.name}.SparqlGraphPatterns(${variables.subject})`,
-      ),
-    );
-  }
-
-  override propertyFromJsonExpression({
-    variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
     // Assumes the JSON object has been recursively validated already.
     return `${this.name}.fromJson(${variables.value}).unsafeCoerce()`;
   }
 
-  override propertyFromRdfExpression({
+  override fromRdfExpression({
     variables,
-  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
     return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, resource: _resource }))`;
   }
 
-  override propertyHashStatements({
+  override hashStatements({
     variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
     switch (this.memberTypes[0].declarationType) {
       case "class":
         return [`${variables.value}.hash(${variables.hasher});`];
@@ -445,9 +486,49 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     }
   }
 
-  override propertyToJsonExpression({
+  override jsonZodSchema(): ReturnType<Type["jsonZodSchema"]> {
+    return `${this.name}.jsonZodSchema()`;
+  }
+
+  override sparqlConstructTemplateTriples({
+    context,
     variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
+    switch (context) {
+      case "property":
+        return super.sparqlConstructTemplateTriples({ context, variables });
+      case "type":
+        return [
+          `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer({
+            ignoreRdfType: true,
+            subject: variables.subject,
+            variablePrefix: variables.variablePrefix,
+          })})`,
+        ];
+    }
+  }
+
+  override sparqlWherePatterns({
+    context,
+    variables,
+  }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
+    switch (context) {
+      case "property":
+        return super.sparqlWherePatterns({ context, variables });
+      case "type":
+        return [
+          `...${this.name}.sparqlWherePatterns(${objectInitializer({
+            ignoreRdfType: true,
+            subject: variables.subject,
+            variablePrefix: variables.variablePrefix,
+          })})`,
+        ];
+    }
+  }
+
+  override toJsonExpression({
+    variables,
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
     switch (this.memberTypes[0].declarationType) {
       case "class":
         return `${variables.value}.toJson()`;
@@ -459,9 +540,9 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     }
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
     const options = `{ mutateGraph: ${variables.mutateGraph}, resourceSet: ${variables.resourceSet} }`;
     switch (this.memberTypes[0].declarationType) {
       case "class":

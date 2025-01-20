@@ -792,6 +792,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#altLabel",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -846,6 +847,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#changeNote",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -862,6 +864,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#definition",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -878,6 +881,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#editorialNote",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -894,6 +898,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#example",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -910,6 +915,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#hiddenLabel",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -964,6 +970,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#historyNote",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -984,6 +991,7 @@
                 "termType": "NamedNode",
                 "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
               },
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -1000,6 +1008,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#notation",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -1016,6 +1025,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#prefLabel",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -1070,6 +1080,7 @@
           "path": "http://www.w3.org/2004/02/skos/core#scopeNote",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"
@@ -1099,6 +1110,7 @@
           "path": "http://www.w3.org/2008/05/skos-xl#literalForm",
           "type": {
             "itemType": {
+              "hasValue": [],
               "kind": "LiteralType"
             },
             "kind": "SetType"

@@ -4,6 +4,7 @@ import { Maybe } from "purify-ts";
 import type { MintingStrategy } from "../../enums/index.js";
 import { Import } from "./Import.js";
 import { Type } from "./Type.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 export class ListType extends Type {
   readonly itemType: Type;
@@ -69,6 +70,33 @@ export class ListType extends Type {
     return imports;
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<Type["fromJsonExpression"]>[0]): string {
+    return `${variables.value}.map(_item => (${this.itemType.fromJsonExpression({ variables: { value: "_item" } })}))`;
+  }
+
+  override fromRdfExpression({
+    variables,
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
+    const chain: string[] = [variables.resourceValues];
+    chain.push("head()");
+    chain.push("chain(value => value.toList())");
+    chain.push(
+      `map(values => values.flatMap(_value => ${this.itemType.fromRdfExpression({ variables: { ...variables, resourceValues: "_value.toValues()" } })}.toMaybe().toList()))`,
+    );
+    return chain.join(".");
+  }
+
+  override hashStatements({
+    depth,
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    return [
+      `for (const _element${depth} of ${variables.value}) { ${this.itemType.hashStatements({ depth: depth + 1, variables: { ...variables, value: `_element${depth}` } }).join("\n")} }`,
+    ];
+  }
+
   override jsonUiSchemaElement(
     parameters: Parameters<Type["jsonUiSchemaElement"]>[0],
   ): ReturnType<Type["jsonUiSchemaElement"]> {
@@ -81,72 +109,200 @@ export class ListType extends Type {
     return `${this.itemType.jsonZodSchema(parameters)}.array()`;
   }
 
-  override propertyChainSparqlGraphPatternExpression({
+  override sparqlConstructTemplateTriples({
     variables,
-  }: Parameters<
-    Type["propertyChainSparqlGraphPatternExpression"]
-  >[0]): Maybe<Type.SparqlGraphPatternsExpression> {
-    return Maybe.of(
-      new Type.SparqlGraphPatternsExpression(
-        `new sparqlBuilder.RdfListGraphPatterns({ ${this.itemType
-          .propertyChainSparqlGraphPatternExpression({
-            variables: {
-              subject: "_itemVariable",
-            },
-          })
-          .map(
-            (itemSparqlGraphPatternsExpression) =>
-              `itemGraphPatterns: (_itemVariable) => ${itemSparqlGraphPatternsExpression.toSparqlGraphPatternsExpression()}, `,
-          )
-          .orDefault("")} rdfList: ${variables.subject} })`,
-      ),
-    );
+    context,
+  }: Parameters<Type["sparqlConstructTemplateTriples"]>[0]): readonly string[] {
+    switch (context) {
+      case "property":
+        return super.sparqlConstructTemplateTriples({ context, variables });
+      case "type": {
+        const triples: string[] = [];
+        const listVariable = variables.subject;
+        const variable = (suffix: string) =>
+          `${this.dataFactoryVariable}.variable!(\`\${${variables.variablePrefix}}${suffix}\`)`;
+        const variablePrefix = (suffix: string) =>
+          `\`\${${variables.variablePrefix}}${suffix}\``;
+
+        {
+          // ?list rdf:first ?item0
+          const item0Variable = variable("Item0");
+          triples.push(
+            objectInitializer({
+              subject: listVariable,
+              predicate: this.rdfjsTermExpression(rdf.first),
+              object: item0Variable,
+            }),
+            ...this.itemType.sparqlConstructTemplateTriples({
+              context: "type",
+              variables: {
+                subject: item0Variable,
+                variablePrefix: variablePrefix("Item0"),
+              },
+            }),
+          );
+        }
+
+        {
+          // ?list rdf:rest ?rest0
+          const rest0Variable = variable("Rest0");
+          triples.push(
+            objectInitializer({
+              subject: listVariable,
+              predicate: this.rdfjsTermExpression(rdf.rest),
+              object: rest0Variable,
+            }),
+          );
+        }
+
+        // Don't do ?list rdf:rest+ ?restN in CONSTRUCT
+        const restNVariable = variable("RestN");
+
+        {
+          // ?rest rdf:first ?itemN
+          const itemNVariable = variable("ItemN");
+          triples.push(
+            objectInitializer({
+              subject: restNVariable,
+              predicate: this.rdfjsTermExpression(rdf.first),
+              object: itemNVariable,
+            }),
+            ...this.itemType.sparqlConstructTemplateTriples({
+              context: "type",
+              variables: {
+                subject: itemNVariable,
+                variablePrefix: variablePrefix("ItemN"),
+              },
+            }),
+          );
+        }
+
+        // ?restN rdf:rest ?restNBasic to get the rdf:rest statement in the CONSTRUCT
+        triples.push(
+          objectInitializer({
+            subject: restNVariable,
+            predicate: this.rdfjsTermExpression(rdf.rest),
+            object: variable("RestNBasic"),
+          }),
+        );
+
+        return triples;
+      }
+    }
   }
 
-  override propertyFromJsonExpression({
+  override sparqlWherePatterns({
     variables,
-  }: Parameters<Type["propertyFromJsonExpression"]>[0]): string {
-    return `${variables.value}.map(_item => (${this.itemType.propertyFromJsonExpression({ variables: { value: "_item" } })}))`;
+    context,
+  }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
+    switch (context) {
+      case "property":
+        return super.sparqlWherePatterns({ context, variables });
+      case "type": {
+        const patterns: string[] = [];
+        const listVariable = variables.subject;
+        const variable = (suffix: string) =>
+          `${this.dataFactoryVariable}.variable!(\`\${${variables.variablePrefix}}${suffix}\`)`;
+        const variablePrefix = (suffix: string) =>
+          `\`\${${variables.variablePrefix}}${suffix}\``;
+
+        {
+          // ?list rdf:first ?item0
+          const item0Variable = variable("Item0");
+          patterns.push(
+            `{ type: "bgp", triples: [${objectInitializer({
+              subject: listVariable,
+              predicate: this.rdfjsTermExpression(rdf.first),
+              object: item0Variable,
+            })}] }`,
+            ...this.itemType.sparqlWherePatterns({
+              context: "type",
+              variables: {
+                subject: item0Variable,
+                variablePrefix: variablePrefix("Item0"),
+              },
+            }),
+          );
+        }
+
+        {
+          // ?list rdf:rest ?rest0
+          const rest0Variable = variable("Rest0");
+          patterns.push(
+            `{ type: "bgp", triples: [${objectInitializer({
+              subject: listVariable,
+              predicate: this.rdfjsTermExpression(rdf.rest),
+              object: rest0Variable,
+            })}] }`,
+          );
+        }
+
+        const optionalPatterns: string[] = [];
+
+        const restNVariable = variable("RestN");
+        // ?list rdf:rest+ ?restN
+        optionalPatterns.push(
+          `{ type: "bgp", triples: [${objectInitializer({
+            subject: listVariable,
+            predicate: `{ type: "path", pathType: "*", items: [${this.rdfjsTermExpression(rdf.rest)}] }`,
+            object: restNVariable,
+          })}] }`,
+        );
+
+        {
+          // ?rest rdf:first ?itemN
+          const itemNVariable = variable("ItemN");
+          optionalPatterns.push(
+            `{ type: "bgp", triples: [${objectInitializer({
+              subject: restNVariable,
+              predicate: this.rdfjsTermExpression(rdf.first),
+              object: itemNVariable,
+            })}] }`,
+            ...this.itemType.sparqlConstructTemplateTriples({
+              context: "type",
+              variables: {
+                subject: itemNVariable,
+                variablePrefix: variablePrefix("ItemN"),
+              },
+            }),
+          );
+        }
+
+        // ?restN rdf:rest ?restNBasic to get the rdf:rest statement in the CONSTRUCT
+        optionalPatterns.push(
+          `{ type: "bgp", triples: [${objectInitializer({
+            subject: restNVariable,
+            predicate: this.rdfjsTermExpression(rdf.rest),
+            object: variable("RestNBasic"),
+          })}] }`,
+        );
+
+        patterns.push(
+          `{ type: "optional", patterns: [${optionalPatterns.join(", ")}] }`,
+        );
+
+        return patterns;
+      }
+    }
   }
 
-  override propertyFromRdfExpression({
+  override toJsonExpression({
     variables,
-  }: Parameters<Type["propertyFromRdfExpression"]>[0]): string {
-    const chain: string[] = [variables.resourceValues];
-    chain.push("head()");
-    chain.push("chain(value => value.toList())");
-    chain.push(
-      `map(values => values.flatMap(_value => ${this.itemType.propertyFromRdfExpression({ variables: { ...variables, resourceValues: "_value.toValues()" } })}.toMaybe().toList()))`,
-    );
-    return chain.join(".");
-  }
-
-  override propertyHashStatements({
-    depth,
-    variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    return [
-      `for (const _element${depth} of ${variables.value}) { ${this.itemType.propertyHashStatements({ depth: depth + 1, variables: { ...variables, value: `_element${depth}` } }).join("\n")} }`,
-    ];
-  }
-
-  override propertyToJsonExpression({
-    variables,
-  }: Parameters<Type["propertyToJsonExpression"]>[0]): string {
+  }: Parameters<Type["toJsonExpression"]>[0]): string {
     let expression = variables.value;
-    const itemFromJsonExpression = this.itemType.propertyFromJsonExpression({
+    const itemFromJsonExpression = this.itemType.fromJsonExpression({
       variables: { value: "_item" },
     });
     if (itemFromJsonExpression !== "_item") {
       expression = `${expression}.map(_item => (${itemFromJsonExpression}))`;
     }
 
-    return `${variables.value}.map(_item => (${this.itemType.propertyToJsonExpression({ variables: { value: "_item" } })}))`;
+    return `${variables.value}.map(_item => (${this.itemType.toJsonExpression({ variables: { value: "_item" } })}))`;
   }
 
-  override propertyToRdfExpression({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<Type["toRdfExpression"]>[0]): string {
     let listIdentifier: string;
     let mutableResourceTypeName: string;
     let resourceSetMethodName: string;
@@ -163,7 +319,7 @@ export class ListType extends Type {
           case "sha256":
             listIdentifier = `dataFactory.namedNode(\`urn:shaclmate:list:\${${variables.value}.reduce(
         (_hasher, _item) => {
-          ${this.itemType.propertyHashStatements({ depth: 0, variables: { hasher: "_hasher", value: "_item" } }).join("\n")}
+          ${this.itemType.hashStatements({ depth: 0, variables: { hasher: "_hasher", value: "_item" } }).join("\n")}
           return _hasher;
         },
         sha256.create(),
@@ -187,17 +343,19 @@ export class ListType extends Type {
     if (itemIndex === 0) {
       currentSubListResource = listResource;
     } else {
-      const newSubListResource = ${variables.resourceSet}.${resourceSetMethodName}({
-        identifier: ${subListIdentifier},
-        mutateGraph: ${variables.mutateGraph},
-      });
+      const newSubListResource = ${variables.resourceSet}.${resourceSetMethodName}(${objectInitializer(
+        {
+          identifier: subListIdentifier,
+          mutateGraph: variables.mutateGraph,
+        },
+      )});
       currentSubListResource!.add(dataFactory.namedNode("${rdf.rest.value}"), newSubListResource.identifier);
       currentSubListResource = newSubListResource;
     }
     
     ${this.toRdfTypes.map((rdfType) => `currentSubListResource.add(dataFactory.namedNode("${rdf.type.value}"), dataFactory.namedNode("${rdfType.value}"))`).join("\n")}
         
-    currentSubListResource.add(dataFactory.namedNode("${rdf.first.value}"), ${this.itemType.propertyToRdfExpression({ variables: { mutateGraph: variables.mutateGraph, predicate: `dataFactory.namedNode("${rdf.first.value}")`, resource: "currentSubListResource", resourceSet: variables.resourceSet, value: "item" } })});
+    currentSubListResource.add(dataFactory.namedNode("${rdf.first.value}"), ${this.itemType.toRdfExpression({ variables: { mutateGraph: variables.mutateGraph, predicate: `dataFactory.namedNode("${rdf.first.value}")`, resource: "currentSubListResource", resourceSet: variables.resourceSet, value: "item" } })});
 
     if (itemIndex + 1 === list.length) {
       currentSubListResource.add(dataFactory.namedNode("${rdf.rest.value}"), dataFactory.namedNode("${rdf.nil.value}"));
@@ -207,10 +365,10 @@ export class ListType extends Type {
   },
   {
     currentSubListResource: null,
-    listResource: resourceSet.${resourceSetMethodName}({
-      identifier: ${listIdentifier},
-      mutateGraph: ${variables.mutateGraph}
-    }),
+    listResource: resourceSet.${resourceSetMethodName}(${objectInitializer({
+      identifier: listIdentifier,
+      mutateGraph: variables.mutateGraph,
+    })}),
   } as {
     currentSubListResource: ${mutableResourceTypeName} | null;
     listResource: ${mutableResourceTypeName};

@@ -150,7 +150,7 @@ export class ShaclProperty extends Property<Type> {
     Property<IdentifierType>["fromJsonStatements"]
   >[0]): readonly string[] {
     return [
-      `const ${this.name} = ${this.type.propertyFromJsonExpression({ variables: { value: `${variables.jsonObject}["${this.name}"]` } })};`,
+      `const ${this.name} = ${this.type.fromJsonExpression({ variables: { value: `${variables.jsonObject}["${this.name}"]` } })};`,
     ];
   }
 
@@ -158,7 +158,7 @@ export class ShaclProperty extends Property<Type> {
     variables,
   }: Parameters<Property<Type>["fromRdfStatements"]>[0]): readonly string[] {
     return [
-      `const _${this.name}Either: purify.Either<rdfjsResource.Resource.ValueError, ${this.type.name}> = ${this.type.propertyFromRdfExpression({ variables: { ...variables, predicate: this.pathExpression, resourceValues: `${variables.resource}.values(${this.pathExpression}, { unique: true })` } })};`,
+      `const _${this.name}Either: purify.Either<rdfjsResource.Resource.ValueError, ${this.type.name}> = ${this.type.fromRdfExpression({ variables: { ...variables, predicate: this.pathExpression, resourceValues: `${variables.resource}.values(${this.pathExpression}, { unique: true })` } })};`,
       `if (_${this.name}Either.isLeft()) { return _${this.name}Either; }`,
       `const ${this.name} = _${this.name}Either.unsafeCoerce();`,
     ];
@@ -167,7 +167,7 @@ export class ShaclProperty extends Property<Type> {
   override hashStatements(
     parameters: Parameters<Property<Type>["hashStatements"]>[0],
   ): readonly string[] {
-    return this.type.propertyHashStatements(parameters);
+    return this.type.hashStatements(parameters);
   }
 
   override interfaceConstructorStatements({
@@ -220,32 +220,49 @@ export class ShaclProperty extends Property<Type> {
     };
   }
 
-  override sparqlGraphPatternExpression(): Maybe<string> {
-    return Maybe.of(
-      this.type
-        .propertySparqlGraphPatternExpression({
-          variables: {
-            object: `this.variable("${pascalCase(this.name)}")`,
-            predicate: this.pathExpression,
-            subject: "this.subject",
-          },
-        })
-        .toSparqlGraphPatternExpression()
-        .toString(),
-    );
+  sparqlConstructTemplateTriples({
+    variables,
+  }: Parameters<
+    Property<Type>["sparqlConstructTemplateTriples"]
+  >[0]): readonly string[] {
+    const objectString = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
+    return this.type.sparqlConstructTemplateTriples({
+      context: "property",
+      variables: {
+        object: `${this.dataFactoryVariable}.variable!(${objectString})`,
+        predicate: this.rdfjsTermExpression(this.path),
+        subject: variables.subject,
+        variablePrefix: objectString,
+      },
+    });
+  }
+
+  sparqlWherePatterns({
+    variables,
+  }: Parameters<Property<Type>["sparqlWherePatterns"]>[0]): readonly string[] {
+    const objectString = `\`\${${variables.variablePrefix}}${pascalCase(this.name)}\``;
+    return this.type.sparqlWherePatterns({
+      context: "property",
+      variables: {
+        object: `${this.dataFactoryVariable}.variable!(${objectString})`,
+        predicate: this.rdfjsTermExpression(this.path),
+        subject: variables.subject,
+        variablePrefix: objectString,
+      },
+    });
   }
 
   override toJsonObjectMember(
     parameters: Parameters<Property<Type>["toJsonObjectMember"]>[0],
   ): string {
-    return `${this.name}: ${this.type.propertyToJsonExpression(parameters)}`;
+    return `${this.name}: ${this.type.toJsonExpression(parameters)}`;
   }
 
   override toRdfStatements({
     variables,
   }: Parameters<Property<Type>["toRdfStatements"]>[0]): readonly string[] {
     return [
-      `${variables.resource}.add(${this.pathExpression}, ${this.type.propertyToRdfExpression(
+      `${variables.resource}.add(${this.pathExpression}, ${this.type.toRdfExpression(
         {
           variables: { ...variables, predicate: this.pathExpression },
         },

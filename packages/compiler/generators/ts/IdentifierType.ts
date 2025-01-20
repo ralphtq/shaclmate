@@ -34,6 +34,25 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
       .join(" | ")})`;
   }
 
+  override fromJsonExpression({
+    variables,
+  }: Parameters<
+    TermType<BlankNode | NamedNode>["fromJsonExpression"]
+  >[0]): string {
+    const valueToBlankNode = `${this.dataFactoryVariable}.blankNode(${variables.value}["@id"].substring(2))`;
+    const valueToNamedNode = `${this.dataFactoryVariable}.namedNode(${variables.value}["@id"])`;
+
+    if (this.nodeKinds.size === 2) {
+      return `(${variables.value}["@id"].startsWith("_:") ? ${valueToBlankNode} : ${valueToNamedNode})`;
+    }
+    switch ([...this.nodeKinds][0]) {
+      case "BlankNode":
+        return valueToBlankNode;
+      case "NamedNode":
+        return valueToNamedNode;
+    }
+  }
+
   override jsonZodSchema({
     variables,
   }: Parameters<
@@ -51,29 +70,10 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
     return `${variables.zod}.object({ "@id": ${idSchema} })`;
   }
 
-  override propertyFromJsonExpression({
+  override toJsonExpression({
     variables,
   }: Parameters<
-    TermType<BlankNode | NamedNode>["propertyFromJsonExpression"]
-  >[0]): string {
-    const valueToBlankNode = `${this.dataFactoryVariable}.blankNode(${variables.value}["@id"].substring(2))`;
-    const valueToNamedNode = `${this.dataFactoryVariable}.namedNode(${variables.value}["@id"])`;
-
-    if (this.nodeKinds.size === 2) {
-      return `(${variables.value}["@id"].startsWith("_:") ? ${valueToBlankNode} : ${valueToNamedNode})`;
-    }
-    switch ([...this.nodeKinds][0]) {
-      case "BlankNode":
-        return valueToBlankNode;
-      case "NamedNode":
-        return valueToNamedNode;
-    }
-  }
-
-  override propertyToJsonExpression({
-    variables,
-  }: Parameters<
-    TermType<BlankNode | NamedNode>["propertyToJsonExpression"]
+    TermType<BlankNode | NamedNode>["toJsonExpression"]
   >[0]): string {
     const valueToBlankNode = `{ "@id": \`_:\${${variables.value}.value}\` }`;
     const valueToNamedNode = `{ "@id": ${variables.value}.value }`;

@@ -137,8 +137,12 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     };
   }
 
-  override sparqlGraphPatternExpression(): Maybe<string> {
-    return Maybe.empty();
+  override sparqlConstructTemplateTriples(): readonly string[] {
+    return [];
+  }
+
+  override sparqlWherePatterns(): readonly string[] {
+    return [];
   }
 
   override toJsonObjectMember({

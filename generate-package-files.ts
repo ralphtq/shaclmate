@@ -86,19 +86,15 @@ const packages: readonly Package[] = [
       },
       internal: ["runtime"],
     },
-    linkableDependencies: [
-      "@kos-kit/sparql-client",
-      "purify-ts-helpers",
-      "rdfjs-resource",
-    ],
+    linkableDependencies: ["purify-ts-helpers", "rdfjs-resource"],
     name: "compiler",
   },
   {
     dependencies: {
       external: {
-        "@kos-kit/sparql-builder": externalDependencyVersions["@kos-kit"],
         "@rdfjs/types": externalDependencyVersions["@rdfjs/types"],
         "@types/n3": externalDependencyVersions["@types/n3"],
+        "@types/sparqljs": "3.1.12",
         "@types/uuid": "^9.0.1",
         "js-sha256": "^0.11.0",
         n3: externalDependencyVersions["n3"],
@@ -106,17 +102,13 @@ const packages: readonly Package[] = [
         "purify-ts-helpers": "1.0.8",
         "rdf-literal": "^1.3.2",
         "rdfjs-resource": externalDependencyVersions["rdfjs-resource"],
+        sparqljs: "3.7.3",
         uuid: "^9.0.1",
         zod: "3.24.1",
         "zod-to-json-schema": "3.24.1",
       },
     },
-    linkableDependencies: [
-      "@kos-kit/sparql-builder",
-      "@kos-kit/sparql-client",
-      "purify-ts-helpers",
-      "rdfjs-resource",
-    ],
+    linkableDependencies: ["purify-ts-helpers", "rdfjs-resource"],
     name: "runtime",
   },
   {

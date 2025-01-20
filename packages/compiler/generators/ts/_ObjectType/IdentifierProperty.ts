@@ -208,7 +208,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     Property<IdentifierType>["fromJsonStatements"]
   >[0]): readonly string[] {
     return [
-      `const ${this.name} = ${this.type.propertyFromJsonExpression({ variables: { value: variables.jsonObject } })};`,
+      `const ${this.name} = ${this.type.fromJsonExpression({ variables: { value: variables.jsonObject } })};`,
     ];
   }
 
@@ -253,8 +253,12 @@ export class IdentifierProperty extends Property<IdentifierType> {
     };
   }
 
-  override sparqlGraphPatternExpression(): Maybe<string> {
-    return Maybe.empty();
+  override sparqlConstructTemplateTriples(): readonly string[] {
+    return [];
+  }
+
+  override sparqlWherePatterns(): readonly string[] {
+    return [];
   }
 
   override toJsonObjectMember({

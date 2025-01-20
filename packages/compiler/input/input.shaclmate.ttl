@@ -117,7 +117,7 @@ shaclmate:tsFeatureExcludes
         shaclmate:_TsFeature_Hash
         shaclmate:_TsFeature_JsonSchema
         shaclmate:_TsFeature_JsonUiSchema
-        shaclmate:_TsFeature_SparqlGraphPatterns
+        shaclmate:_TsFeature_Sparql
         shaclmate:_TsFeature_ToJson
         shaclmate:_TsFeature_ToRdf
     ) ;
@@ -133,7 +133,7 @@ shaclmate:tsFeatureIncludes
         shaclmate:_TsFeature_Hash
         shaclmate:_TsFeature_JsonSchema
         shaclmate:_TsFeature_JsonUiSchema
-        shaclmate:_TsFeature_SparqlGraphPatterns
+        shaclmate:_TsFeature_Sparql
         shaclmate:_TsFeature_ToJson
         shaclmate:_TsFeature_ToRdf
     ) ;

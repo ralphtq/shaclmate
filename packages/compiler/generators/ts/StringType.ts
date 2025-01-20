@@ -1,6 +1,7 @@
 import { Memoize } from "typescript-memoize";
 import { PrimitiveType } from "./PrimitiveType.js";
 import type { Type } from "./Type.js";
+import { objectInitializer } from "./objectInitializer.js";
 
 export class StringType extends PrimitiveType<string> {
   readonly kind = "StringType";
@@ -31,6 +32,12 @@ export class StringType extends PrimitiveType<string> {
     return "string";
   }
 
+  override hashStatements({
+    variables,
+  }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
+    return [`${variables.hasher}.update(${variables.value});`];
+  }
+
   override jsonZodSchema({
     variables,
   }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
@@ -51,20 +58,14 @@ export class StringType extends PrimitiveType<string> {
   >[0]): string {
     let expression = `${variables.resourceValue}.toString()`;
     if (this.primitiveIn.length > 0) {
-      expression = `${expression}.chain(value => { switch (value) { ${this.primitiveIn.map((value) => `case "${value}":`).join(" ")} return purify.Either.of(value); default: return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: rdfLiteral.toRdf(value), expectedValueType: ${JSON.stringify(this.name)}, focusResource: ${variables.resource}, predicate: ${variables.predicate} })); } })`;
+      expression = `${expression}.chain(value => { switch (value) { ${this.primitiveIn.map((value) => `case "${value}":`).join(" ")} return purify.Either.of(value); default: return purify.Left(new rdfjsResource.Resource.MistypedValueError(${objectInitializer({ actualValue: "rdfLiteral.toRdf(value)", expectedValueType: JSON.stringify(this.name), focusResource: variables.resource, predicate: variables.predicate })})); } })`;
     }
     return expression;
   }
 
-  override propertyHashStatements({
+  override toRdfExpression({
     variables,
-  }: Parameters<Type["propertyHashStatements"]>[0]): readonly string[] {
-    return [`${variables.hasher}.update(${variables.value});`];
-  }
-
-  override propertyToRdfExpression({
-    variables,
-  }: Parameters<PrimitiveType<string>["propertyToRdfExpression"]>[0]): string {
+  }: Parameters<PrimitiveType<string>["toRdfExpression"]>[0]): string {
     return this.primitiveDefaultValue
       .map(
         (defaultValue) =>

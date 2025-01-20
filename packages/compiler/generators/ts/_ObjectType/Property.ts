@@ -1,3 +1,4 @@
+import type { BlankNode, Literal, NamedNode, Variable } from "@rdfjs/types";
 import type { Maybe } from "purify-ts";
 import {
   type GetAccessorDeclarationStructure,
@@ -9,6 +10,7 @@ import {
 import type { PropertyVisibility } from "../../../enums/index.js";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
+import { rdfjsTermExpression } from "./rdfjsTermExpression.js";
 
 export abstract class Property<
   TypeT extends { readonly mutable: boolean; readonly name: string },
@@ -136,7 +138,7 @@ export abstract class Property<
    * Statements to hash this property using a hasher instance.
    */
   abstract hashStatements(
-    parameters: Parameters<Type["propertyHashStatements"]>[0],
+    parameters: Parameters<Type["hashStatements"]>[0],
   ): readonly string[];
 
   /**
@@ -164,9 +166,18 @@ export abstract class Property<
   };
 
   /**
-   * Optional graph pattern expression to retrieve this property.
+   * An array of SPARQL.js CONSTRUCT template triples for this property as strings (so they can incorporate runtime calls).
    */
-  abstract sparqlGraphPatternExpression(): Maybe<string>;
+  abstract sparqlConstructTemplateTriples(parameters: {
+    variables: { subject: string; variablePrefix: string };
+  }): readonly string[];
+
+  /**
+   * An array of SPARQL.js where patterns for this property as strings (so they can incorporate runtime calls).
+   */
+  abstract sparqlWherePatterns(parameters: {
+    variables: { subject: string; variablePrefix: string };
+  }): readonly string[];
 
   /**
    * property: expression to serialize a property to a JSON object member.
@@ -180,8 +191,21 @@ export abstract class Property<
    */
   abstract toRdfStatements(parameters: {
     variables: Omit<
-      Parameters<Type["propertyToRdfExpression"]>[0]["variables"],
+      Parameters<Type["toRdfExpression"]>[0]["variables"],
       "predicate"
     >;
   }): readonly string[];
+
+  protected rdfjsTermExpression(
+    rdfjsTerm:
+      | Omit<BlankNode, "equals">
+      | Omit<Literal, "equals">
+      | Omit<NamedNode, "equals">
+      | Omit<Variable, "equals">,
+  ): string {
+    return rdfjsTermExpression({
+      dataFactoryVariable: this.dataFactoryVariable,
+      rdfjsTerm,
+    });
+  }
 }
