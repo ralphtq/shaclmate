@@ -5201,6 +5201,46 @@ export namespace NodeShapeWithMutableProperties {
         subject,
       },
       {
+        subject: dataFactory.variable(`${variablePrefix}MutableListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable(
+          `${`${variablePrefix}MutableListProperty`}Item0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable(`${variablePrefix}MutableListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable(
+          `${`${variablePrefix}MutableListProperty`}Rest0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable(
+          `${`${variablePrefix}MutableListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable(
+          `${`${variablePrefix}MutableListProperty`}ItemN`,
+        ),
+      },
+      {
+        subject: dataFactory.variable(
+          `${`${variablePrefix}MutableListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable(
+          `${`${variablePrefix}MutableListProperty`}RestNBasic`,
+        ),
+      },
+      {
         object: dataFactory.variable(`${variablePrefix}MutableStringProperty`),
         predicate: dataFactory.namedNode(
           "http://example.com/mutableStringProperty",
@@ -5235,6 +5275,102 @@ export namespace NodeShapeWithMutableProperties {
               },
             ],
             type: "bgp",
+          },
+          {
+            patterns: [
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable(
+                      `${variablePrefix}MutableListProperty`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                    ),
+                    object: dataFactory.variable(
+                      `${`${variablePrefix}MutableListProperty`}Item0`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable(
+                      `${variablePrefix}MutableListProperty`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                    object: dataFactory.variable(
+                      `${`${variablePrefix}MutableListProperty`}Rest0`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "optional",
+                patterns: [
+                  {
+                    type: "bgp",
+                    triples: [
+                      {
+                        subject: dataFactory.variable(
+                          `${variablePrefix}MutableListProperty`,
+                        ),
+                        predicate: {
+                          type: "path",
+                          pathType: "*",
+                          items: [
+                            dataFactory.namedNode(
+                              "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                            ),
+                          ],
+                        },
+                        object: dataFactory.variable(
+                          `${`${variablePrefix}MutableListProperty`}RestN`,
+                        ),
+                      },
+                    ],
+                  },
+                  {
+                    type: "bgp",
+                    triples: [
+                      {
+                        subject: dataFactory.variable(
+                          `${`${variablePrefix}MutableListProperty`}RestN`,
+                        ),
+                        predicate: dataFactory.namedNode(
+                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                        ),
+                        object: dataFactory.variable(
+                          `${`${variablePrefix}MutableListProperty`}ItemN`,
+                        ),
+                      },
+                    ],
+                  },
+                  {
+                    type: "bgp",
+                    triples: [
+                      {
+                        subject: dataFactory.variable(
+                          `${`${variablePrefix}MutableListProperty`}RestN`,
+                        ),
+                        predicate: dataFactory.namedNode(
+                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                        ),
+                        object: dataFactory.variable(
+                          `${`${variablePrefix}MutableListProperty`}RestNBasic`,
+                        ),
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+            type: "optional",
           },
         ],
         type: "optional",
@@ -5648,6 +5784,40 @@ export namespace NodeShapeWithListProperty {
         predicate: dataFactory.namedNode("http://example.com/listProperty"),
         subject,
       },
+      {
+        subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable(`${`${variablePrefix}ListProperty`}Item0`),
+      },
+      {
+        subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable(`${`${variablePrefix}ListProperty`}Rest0`),
+      },
+      {
+        subject: dataFactory.variable(
+          `${`${variablePrefix}ListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable(`${`${variablePrefix}ListProperty`}ItemN`),
+      },
+      {
+        subject: dataFactory.variable(
+          `${`${variablePrefix}ListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable(
+          `${`${variablePrefix}ListProperty`}RestNBasic`,
+        ),
+      },
     ];
   }
 
@@ -5670,6 +5840,91 @@ export namespace NodeShapeWithListProperty {
           },
         ],
         type: "bgp",
+      },
+      {
+        type: "bgp",
+        triples: [
+          {
+            subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+            predicate: dataFactory.namedNode(
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+            ),
+            object: dataFactory.variable(
+              `${`${variablePrefix}ListProperty`}Item0`,
+            ),
+          },
+        ],
+      },
+      {
+        type: "bgp",
+        triples: [
+          {
+            subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+            predicate: dataFactory.namedNode(
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+            ),
+            object: dataFactory.variable(
+              `${`${variablePrefix}ListProperty`}Rest0`,
+            ),
+          },
+        ],
+      },
+      {
+        type: "optional",
+        patterns: [
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable(`${variablePrefix}ListProperty`),
+                predicate: {
+                  type: "path",
+                  pathType: "*",
+                  items: [
+                    dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                  ],
+                },
+                object: dataFactory.variable(
+                  `${`${variablePrefix}ListProperty`}RestN`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable(
+                  `${`${variablePrefix}ListProperty`}RestN`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                object: dataFactory.variable(
+                  `${`${variablePrefix}ListProperty`}ItemN`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable(
+                  `${`${variablePrefix}ListProperty`}RestN`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                ),
+                object: dataFactory.variable(
+                  `${`${variablePrefix}ListProperty`}RestNBasic`,
+                ),
+              },
+            ],
+          },
+        ],
       },
     ];
   }

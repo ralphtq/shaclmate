@@ -11,7 +11,7 @@ describe("sparql", () => {
       continue;
     }
 
-    it(`SPARQL graph patterns: ${id}`, async ({ expect }) => {
+    it(`SPARQL: ${id}`, async ({ expect }) => {
       const toRdfDataset = new N3.Store();
       harness.toRdf({
         resourceSet: new MutableResourceSet({
