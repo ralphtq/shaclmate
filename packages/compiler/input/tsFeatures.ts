@@ -11,7 +11,6 @@ type TsFeatureIri = rdfjs.NamedNode<
   | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
   | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
   | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns"
   | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
   | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
 >;
@@ -34,8 +33,6 @@ function iriToTsFeature(iri: TsFeatureIri): TsFeature {
       return "jsonUiSchema";
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql":
       return "sparql";
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_SparqlGraphPatterns":
-      return "sparql-graph-patterns";
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
       return "toJson";
     case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":

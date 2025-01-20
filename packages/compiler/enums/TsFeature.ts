@@ -8,8 +8,7 @@ export type TsFeature =
   | "jsonUiSchema"
   | "sparql"
   | "toJson"
-  | "toRdf"
-  | "sparql-graph-patterns";
+  | "toRdf";
 
 export namespace TsFeature {
   export const MEMBERS: readonly TsFeature[] = [
@@ -23,6 +22,5 @@ export namespace TsFeature {
     "sparql",
     "toJson",
     "toRdf",
-    "sparql-graph-patterns",
   ];
 }
