@@ -4,6 +4,7 @@ import * as oxigraph from "oxigraph";
 import { MutableResourceSet } from "rdfjs-resource";
 import { describe, it } from "vitest";
 import { harnesses } from "./harnesses.js";
+import { quadsToTurtle } from "./quadsToTurtle.js";
 
 describe("sparql", () => {
   for (const [id, harness] of Object.entries(harnesses)) {
@@ -45,7 +46,11 @@ describe("sparql", () => {
         .unsafeCoerce();
       const equalsResult = harness.equals(constructInstance as any).extract();
       if (equalsResult !== true) {
-        console.log("not equal");
+        const toRdfString = quadsToTurtle(toRdfQuads);
+        const constructResultString = quadsToTurtle([
+          ...constructResultDataset,
+        ]);
+        console.log("not equal:\n", toRdfString, "\n", constructResultString);
       }
       expect(equalsResult).toStrictEqual(true);
     });
