@@ -735,7 +735,9 @@ abstract class Resource {
 }
 
 namespace Resource {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       altLabel: readonly rdfjs.Literal[];
@@ -1603,11 +1605,9 @@ namespace Resource {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -1618,11 +1618,7 @@ namespace Resource {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        Resource.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        Resource.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -2170,7 +2166,9 @@ export class Collection extends Resource {
 }
 
 export namespace Collection {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.NamedNode;
@@ -2360,11 +2358,9 @@ export namespace Collection {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -2375,11 +2371,7 @@ export namespace Collection {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        Collection.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        Collection.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -2728,7 +2720,9 @@ export class OrderedCollection extends Collection {
 }
 
 export namespace OrderedCollection {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.NamedNode;
@@ -2923,11 +2917,9 @@ export namespace OrderedCollection {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -2941,11 +2933,7 @@ export namespace OrderedCollection {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        OrderedCollection.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        OrderedCollection.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -3263,18 +3251,20 @@ export class ConceptScheme extends Resource {
   }
 
   override equals(other: ConceptScheme): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.arrayEquals(
-        this.hasTopConcept,
-        other.hasTopConcept,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "hasTopConcept",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.arrayEquals(
+          this.hasTopConcept,
+          other.hasTopConcept,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "hasTopConcept",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -3343,7 +3333,9 @@ export class ConceptScheme extends Resource {
 }
 
 export namespace ConceptScheme {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       hasTopConcept: readonly Concept[];
@@ -3509,11 +3501,9 @@ export namespace ConceptScheme {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -3527,11 +3517,7 @@ export namespace ConceptScheme {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        ConceptScheme.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        ConceptScheme.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -3803,7 +3789,9 @@ export class Label {
 }
 
 export namespace Label {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -3987,11 +3975,9 @@ export namespace Label {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -4002,7 +3988,7 @@ export namespace Label {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        Label.sparqlWherePatterns({ ignoreRdfType, subject, variablePrefix }),
+        Label.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -4663,7 +4649,9 @@ export class Concept extends Resource {
 }
 
 export namespace Concept {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       broader: readonly Concept[];
@@ -5397,11 +5385,9 @@ export namespace Concept {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -5412,7 +5398,7 @@ export namespace Concept {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        Concept.sparqlWherePatterns({ ignoreRdfType, subject, variablePrefix }),
+        Concept.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }

@@ -308,13 +308,13 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
           {
             hasQuestionToken: true,
             name: "parameters",
-            type: '{ prefixes?: { [prefix: string]: string }; subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where">',
+            type: '{ ignoreRdfType?: boolean; prefixes?: { [prefix: string]: string }; subject?: sparqljs.Triple["subject"] } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where">',
           },
         ],
         returnType: "sparqljs.ConstructQuery",
         statements: [
-          `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}");`,
-          `return { ...parameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: ${this.name}.sparqlConstructTemplateTriples({ subject }).concat(), type: "query", where: ${this.name}.sparqlWherePatterns({ subject }).concat() };`,
+          "const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {}",
+          `return { ...queryParameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: ${this.name}.sparqlConstructTemplateTriples({ ignoreRdfType, subject }).concat(), type: "query", where: ${this.name}.sparqlWherePatterns({ ignoreRdfType, subject }).concat() };`,
         ],
       },
       {
@@ -325,7 +325,7 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
           {
             hasQuestionToken: true,
             name: "parameters",
-            type: '{ subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where"> & sparqljs.GeneratorOptions',
+            type: '{ ignoreRdfType?: boolean; prefixes?: { [prefix: string]: string }; subject?: sparqljs.Triple["subject"] } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where"> & sparqljs.GeneratorOptions',
           },
         ],
         returnType: "string",
@@ -339,17 +339,16 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         name: "sparqlConstructTemplateTriples",
         parameters: [
           {
-            name: "{ subject, variablePrefix: variablePrefixParameter }",
-            type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+            name: "parameters",
+            type: '{ ignoreRdfType?: boolean, subject?: sparqljs.Triple["subject"], variablePrefix?: string }',
           },
         ],
         returnType: "readonly sparqljs.Triple[]",
         statements: [
-          "const variablePrefix = variablePrefixParameter ?? subject.value;",
           `return [${this.memberTypes
             .map(
               (memberType) =>
-                `...${memberType.name}.sparqlConstructTemplateTriples({ subject, variablePrefix: \`\${variablePrefix}${pascalCase(memberType.name)}\` }).concat()`,
+                `...${memberType.name}.sparqlConstructTemplateTriples({ ignoreRdfType: parameters?.ignoreRdfType, subject: parameters.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}${pascalCase(memberType.name)}"), variablePrefix: parameters?.variablePrefix ? \`\${parameters.variablePrefix}${pascalCase(memberType.name)}\` : "${camelCase(this.name)}${pascalCase(memberType.name)}" }).concat()`,
             )
             .join(", ")}];`,
         ],
@@ -360,17 +359,16 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         name: "sparqlWherePatterns",
         parameters: [
           {
-            name: "{ subject, variablePrefix: variablePrefixParameter }",
-            type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+            name: "parameters",
+            type: '{ ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"], variablePrefix?: string }',
           },
         ],
         returnType: "readonly sparqljs.Pattern[]",
         statements: [
-          "const variablePrefix = variablePrefixParameter ?? subject.value;",
           `return [{ patterns: [${this.memberTypes
             .map((memberType) =>
               objectInitializer({
-                patterns: `${memberType.name}.sparqlWherePatterns({ subject, variablePrefix: \`\${variablePrefix}${pascalCase(memberType.name)}\` }).concat()`,
+                patterns: `${memberType.name}.sparqlWherePatterns({ ignoreRdfType: parameters?.ignoreRdfType, subject: parameters.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}${pascalCase(memberType.name)}"), variablePrefix: parameters?.variablePrefix ? \`\${parameters.variablePrefix}${pascalCase(memberType.name)}\` : "${camelCase(this.name)}${pascalCase(memberType.name)}" }).concat()`,
                 type: '"group"',
               }),
             )
