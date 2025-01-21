@@ -4731,7 +4731,9 @@ export class NodeShapeWithMutableProperties {
                 dataFactory.namedNode(
                   "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                 ),
-                dataFactory.namedNode("http://example.com/MutableListShape"),
+                dataFactory.namedNode(
+                  "http://example.com/MutableStringListShape",
+                ),
               );
 
               currentSubListResource.add(
@@ -5222,19 +5224,43 @@ export namespace NodeShapeWithMutableProperties {
   }
 }
 /**
- * Shape that uses the ListShape in a property.
+ * Shape that uses the list shapes in properties.
  */
-export class NodeShapeWithListProperty {
+export class NodeShapeWithListProperties {
   private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
-  readonly listProperty: readonly string[];
-  readonly type = "NodeShapeWithListProperty";
+  readonly objectListProperty: purify.Maybe<readonly NonClassNodeShape[]>;
+  readonly stringListProperty: purify.Maybe<readonly string[]>;
+  readonly type = "NodeShapeWithListProperties";
 
   constructor(parameters: {
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
-    readonly listProperty: readonly string[];
+    readonly objectListProperty?:
+      | purify.Maybe<readonly NonClassNodeShape[]>
+      | readonly NonClassNodeShape[];
+    readonly stringListProperty?:
+      | purify.Maybe<readonly string[]>
+      | readonly string[];
   }) {
     this._identifier = parameters.identifier;
-    this.listProperty = parameters.listProperty;
+    if (purify.Maybe.isMaybe(parameters.objectListProperty)) {
+      this.objectListProperty = parameters.objectListProperty;
+    } else if (Array.isArray(parameters.objectListProperty)) {
+      this.objectListProperty = purify.Maybe.of(parameters.objectListProperty);
+    } else if (typeof parameters.objectListProperty === "undefined") {
+      this.objectListProperty = purify.Maybe.empty();
+    } else {
+      this.objectListProperty = parameters.objectListProperty as never;
+    }
+
+    if (purify.Maybe.isMaybe(parameters.stringListProperty)) {
+      this.stringListProperty = parameters.stringListProperty;
+    } else if (Array.isArray(parameters.stringListProperty)) {
+      this.stringListProperty = purify.Maybe.of(parameters.stringListProperty);
+    } else if (typeof parameters.stringListProperty === "undefined") {
+      this.stringListProperty = purify.Maybe.empty();
+    } else {
+      this.stringListProperty = parameters.stringListProperty as never;
+    }
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
@@ -5245,7 +5271,7 @@ export class NodeShapeWithListProperty {
   }
 
   equals(
-    other: NodeShapeWithListProperty,
+    other: NodeShapeWithListProperties,
   ): purifyHelpers.Equatable.EqualsResult {
     return purifyHelpers.Equatable.booleanEquals(
       this.identifier,
@@ -5260,15 +5286,35 @@ export class NodeShapeWithListProperty {
       }))
       .chain(() =>
         ((left, right) =>
-          purifyHelpers.Arrays.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.strictEquals,
-          ))(this.listProperty, other.listProperty).mapLeft(
+          purifyHelpers.Maybes.equals(left, right, (left, right) =>
+            purifyHelpers.Arrays.equals(
+              left,
+              right,
+              purifyHelpers.Equatable.equals,
+            ),
+          ))(this.objectListProperty, other.objectListProperty).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
-            propertyName: "listProperty",
+            propertyName: "objectListProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        ((left, right) =>
+          purifyHelpers.Maybes.equals(left, right, (left, right) =>
+            purifyHelpers.Arrays.equals(
+              left,
+              right,
+              purifyHelpers.Equatable.strictEquals,
+            ),
+          ))(this.stringListProperty, other.stringListProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringListProperty",
             propertyValuesUnequal,
             type: "Property" as const,
           }),
@@ -5292,17 +5338,26 @@ export class NodeShapeWithListProperty {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
-    for (const _element0 of this.listProperty) {
-      _hasher.update(_element0);
-    }
-
+    this.objectListProperty.ifJust((_value0) => {
+      for (const _element1 of _value0) {
+        _element1.hash(_hasher);
+      }
+    });
+    this.stringListProperty.ifJust((_value0) => {
+      for (const _element1 of _value0) {
+        _hasher.update(_element1);
+      }
+    });
     return _hasher;
   }
 
   toJson(): {
     readonly "@id": string;
-    readonly listProperty: readonly string[];
-    readonly type: "NodeShapeWithListProperty";
+    readonly objectListProperty:
+      | readonly ReturnType<NonClassNodeShape["toJson"]>[]
+      | undefined;
+    readonly stringListProperty: readonly string[] | undefined;
+    readonly type: "NodeShapeWithListProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -5310,9 +5365,14 @@ export class NodeShapeWithListProperty {
           this.identifier.termType === "BlankNode"
             ? `_:${this.identifier.value}`
             : this.identifier.value,
-        listProperty: this.listProperty.map((_item) => _item),
+        objectListProperty: this.objectListProperty
+          .map((_item) => _item.map((_item) => _item.toJson()))
+          .extract(),
+        stringListProperty: this.stringListProperty
+          .map((_item) => _item.map((_item) => _item))
+          .extract(),
         type: this.type,
-      } satisfies ReturnType<NodeShapeWithListProperty["toJson"]>),
+      } satisfies ReturnType<NodeShapeWithListProperties["toJson"]>),
     );
   }
 
@@ -5329,63 +5389,141 @@ export class NodeShapeWithListProperty {
       mutateGraph,
     });
     _resource.add(
-      dataFactory.namedNode("http://example.com/listProperty"),
-      this.listProperty.reduce(
-        ({ currentSubListResource, listResource }, item, itemIndex, list) => {
-          if (itemIndex === 0) {
-            currentSubListResource = listResource;
-          } else {
-            const newSubListResource = resourceSet.mutableResource({
-              identifier: dataFactory.blankNode(),
-              mutateGraph,
-            });
-            currentSubListResource!.add(
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-              ),
-              newSubListResource.identifier,
-            );
-            currentSubListResource = newSubListResource;
-          }
+      dataFactory.namedNode("http://example.com/objectListProperty"),
+      this.objectListProperty.map(
+        (_value) =>
+          _value.reduce(
+            (
+              { currentSubListResource, listResource },
+              item,
+              itemIndex,
+              list,
+            ) => {
+              if (itemIndex === 0) {
+                currentSubListResource = listResource;
+              } else {
+                const newSubListResource = resourceSet.mutableResource({
+                  identifier: dataFactory.blankNode(),
+                  mutateGraph,
+                });
+                currentSubListResource!.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  newSubListResource.identifier,
+                );
+                currentSubListResource = newSubListResource;
+              }
 
-          currentSubListResource.add(
-            dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-            ),
-            dataFactory.namedNode("http://example.com/ListShape"),
-          );
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                ),
+                dataFactory.namedNode("http://example.com/ObjectListShape"),
+              );
 
-          currentSubListResource.add(
-            dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-            ),
-            item,
-          );
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                item.toRdf({
+                  mutateGraph: mutateGraph,
+                  resourceSet: resourceSet,
+                }),
+              );
 
-          if (itemIndex + 1 === list.length) {
-            currentSubListResource.add(
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-              ),
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
-              ),
-            );
-          }
+              if (itemIndex + 1 === list.length) {
+                currentSubListResource.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+                  ),
+                );
+              }
 
-          return { currentSubListResource, listResource };
-        },
-        {
-          currentSubListResource: null,
-          listResource: resourceSet.mutableResource({
-            identifier: dataFactory.blankNode(),
-            mutateGraph,
-          }),
-        } as {
-          currentSubListResource: rdfjsResource.MutableResource | null;
-          listResource: rdfjsResource.MutableResource;
-        },
-      ).listResource.identifier,
+              return { currentSubListResource, listResource };
+            },
+            {
+              currentSubListResource: null,
+              listResource: resourceSet.mutableResource({
+                identifier: dataFactory.blankNode(),
+                mutateGraph,
+              }),
+            } as {
+              currentSubListResource: rdfjsResource.MutableResource | null;
+              listResource: rdfjsResource.MutableResource;
+            },
+          ).listResource.identifier,
+      ),
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/stringListProperty"),
+      this.stringListProperty.map(
+        (_value) =>
+          _value.reduce(
+            (
+              { currentSubListResource, listResource },
+              item,
+              itemIndex,
+              list,
+            ) => {
+              if (itemIndex === 0) {
+                currentSubListResource = listResource;
+              } else {
+                const newSubListResource = resourceSet.mutableResource({
+                  identifier: dataFactory.blankNode(),
+                  mutateGraph,
+                });
+                currentSubListResource!.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  newSubListResource.identifier,
+                );
+                currentSubListResource = newSubListResource;
+              }
+
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                ),
+                dataFactory.namedNode("http://example.com/StringListShape"),
+              );
+
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                item,
+              );
+
+              if (itemIndex + 1 === list.length) {
+                currentSubListResource.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+                  ),
+                );
+              }
+
+              return { currentSubListResource, listResource };
+            },
+            {
+              currentSubListResource: null,
+              listResource: resourceSet.mutableResource({
+                identifier: dataFactory.blankNode(),
+                mutateGraph,
+              }),
+            } as {
+              currentSubListResource: rdfjsResource.MutableResource | null;
+              listResource: rdfjsResource.MutableResource;
+            },
+          ).listResource.identifier,
+      ),
     );
     return _resource;
   }
@@ -5395,14 +5533,15 @@ export class NodeShapeWithListProperty {
   }
 }
 
-export namespace NodeShapeWithListProperty {
+export namespace NodeShapeWithListProperties {
   export function propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      listProperty: readonly string[];
+      objectListProperty: purify.Maybe<readonly NonClassNodeShape[]>;
+      stringListProperty: purify.Maybe<readonly string[]>;
     }
   > {
     const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
@@ -5414,15 +5553,26 @@ export namespace NodeShapeWithListProperty {
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
-    const listProperty = _jsonObject["listProperty"].map((_item) => _item);
-    return purify.Either.of({ identifier, listProperty });
+    const objectListProperty = purify.Maybe.fromNullable(
+      _jsonObject["objectListProperty"],
+    ).map((_item) =>
+      _item.map((_item) => NonClassNodeShape.fromJson(_item).unsafeCoerce()),
+    );
+    const stringListProperty = purify.Maybe.fromNullable(
+      _jsonObject["stringListProperty"],
+    ).map((_item) => _item.map((_item) => _item));
+    return purify.Either.of({
+      identifier,
+      objectListProperty,
+      stringListProperty,
+    });
   }
 
   export function fromJson(
     json: unknown,
-  ): purify.Either<zod.ZodError, NodeShapeWithListProperty> {
-    return NodeShapeWithListProperty.propertiesFromJson(json).map(
-      (properties) => new NodeShapeWithListProperty(properties),
+  ): purify.Either<zod.ZodError, NodeShapeWithListProperties> {
+    return NodeShapeWithListProperties.propertiesFromJson(json).map(
+      (properties) => new NodeShapeWithListProperties(properties),
     );
   }
 
@@ -5441,47 +5591,92 @@ export namespace NodeShapeWithListProperty {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      listProperty: readonly string[];
+      objectListProperty: purify.Maybe<readonly NonClassNodeShape[]>;
+      stringListProperty: purify.Maybe<readonly string[]>;
     }
   > {
     const identifier = _resource.identifier;
-    const _listPropertyEither: purify.Either<
+    const _objectListPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly string[]
-    > = _resource
-      .values(dataFactory.namedNode("http://example.com/listProperty"), {
-        unique: true,
-      })
-      .head()
-      .chain((value) => value.toList())
-      .map((values) =>
-        values.flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toString())
-            .toMaybe()
-            .toList(),
-        ),
-      );
-    if (_listPropertyEither.isLeft()) {
-      return _listPropertyEither;
+      purify.Maybe<readonly NonClassNodeShape[]>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://example.com/objectListProperty"),
+          { unique: true },
+        )
+        .head()
+        .chain((value) => value.toList())
+        .map((values) =>
+          values.flatMap((_value) =>
+            _value
+              .toValues()
+              .head()
+              .chain((value) => value.toResource())
+              .chain((_resource) =>
+                NonClassNodeShape.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
+              )
+              .toMaybe()
+              .toList(),
+          ),
+        )
+        .toMaybe(),
+    );
+    if (_objectListPropertyEither.isLeft()) {
+      return _objectListPropertyEither;
     }
 
-    const listProperty = _listPropertyEither.unsafeCoerce();
-    return purify.Either.of({ identifier, listProperty });
+    const objectListProperty = _objectListPropertyEither.unsafeCoerce();
+    const _stringListPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<readonly string[]>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://example.com/stringListProperty"),
+          { unique: true },
+        )
+        .head()
+        .chain((value) => value.toList())
+        .map((values) =>
+          values.flatMap((_value) =>
+            _value
+              .toValues()
+              .head()
+              .chain((_value) => _value.toString())
+              .toMaybe()
+              .toList(),
+          ),
+        )
+        .toMaybe(),
+    );
+    if (_stringListPropertyEither.isLeft()) {
+      return _stringListPropertyEither;
+    }
+
+    const stringListProperty = _stringListPropertyEither.unsafeCoerce();
+    return purify.Either.of({
+      identifier,
+      objectListProperty,
+      stringListProperty,
+    });
   }
 
   export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithListProperty.propertiesFromRdf
+      typeof NodeShapeWithListProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
-    NodeShapeWithListProperty
+    NodeShapeWithListProperties
   > {
-    return NodeShapeWithListProperty.propertiesFromRdf(parameters).map(
-      (properties) => new NodeShapeWithListProperty(properties),
+    return NodeShapeWithListProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithListProperties(properties),
     );
   }
 
@@ -5498,11 +5693,17 @@ export namespace NodeShapeWithListProperty {
           scope: `${scopePrefix}/properties/@id`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/listProperty`, type: "Control" },
+        NonClassNodeShape.jsonUiSchema({
+          scopePrefix: `${scopePrefix}/properties/objectListProperty`,
+        }),
+        {
+          scope: `${scopePrefix}/properties/stringListProperty`,
+          type: "Control",
+        },
         {
           rule: {
             condition: {
-              schema: { const: "NodeShapeWithListProperty" },
+              schema: { const: "NodeShapeWithListProperties" },
               scope: `${scopePrefix}/properties/type`,
             },
             effect: "HIDE",
@@ -5511,7 +5712,7 @@ export namespace NodeShapeWithListProperty {
           type: "Control",
         },
       ],
-      label: "NodeShapeWithListProperty",
+      label: "NodeShapeWithListProperties",
       type: "Group",
     };
   }
@@ -5519,8 +5720,9 @@ export namespace NodeShapeWithListProperty {
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
-      listProperty: zod.string().array(),
-      type: zod.literal("NodeShapeWithListProperty"),
+      objectListProperty: NonClassNodeShape.jsonZodSchema().array().optional(),
+      stringListProperty: zod.string().array().optional(),
+      type: zod.literal("NodeShapeWithListProperties"),
     });
   }
 
@@ -5538,14 +5740,14 @@ export namespace NodeShapeWithListProperty {
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
       template: (queryParameters.template ?? []).concat(
-        NodeShapeWithListProperty.sparqlConstructTemplateTriples({
+        NodeShapeWithListProperties.sparqlConstructTemplateTriples({
           ignoreRdfType,
           subject,
         }),
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        NodeShapeWithListProperty.sparqlWherePatterns({
+        NodeShapeWithListProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
         }),
@@ -5562,7 +5764,7 @@ export namespace NodeShapeWithListProperty {
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
-      NodeShapeWithListProperty.sparqlConstructQuery(parameters),
+      NodeShapeWithListProperties.sparqlConstructQuery(parameters),
     );
   }
 
@@ -5572,56 +5774,120 @@ export namespace NodeShapeWithListProperty {
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
     const subject =
-      parameters?.subject ?? dataFactory.variable!("nodeShapeWithListProperty");
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithListProperties");
     const variablePrefix =
       parameters?.variablePrefix ??
       (subject.termType === "Variable"
         ? subject.value
-        : "nodeShapeWithListProperty");
+        : "nodeShapeWithListProperties");
     return [
       {
-        object: dataFactory.variable!(`${variablePrefix}ListProperty`),
-        predicate: dataFactory.namedNode("http://example.com/listProperty"),
+        object: dataFactory.variable!(`${variablePrefix}ObjectListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/objectListProperty",
+        ),
         subject,
       },
       {
-        subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}ObjectListProperty`),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
         object: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}Item0`,
+          `${`${variablePrefix}ObjectListProperty`}Item0`,
         ),
       },
+      ...NonClassNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}ObjectListProperty`}Item0`,
+        ),
+        variablePrefix: `${`${variablePrefix}ObjectListProperty`}Item0`,
+      }),
       {
-        subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}ObjectListProperty`),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
         ),
         object: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}Rest0`,
+          `${`${variablePrefix}ObjectListProperty`}Rest0`,
         ),
       },
       {
         subject: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}RestN`,
+          `${`${variablePrefix}ObjectListProperty`}RestN`,
         ),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
         object: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}ItemN`,
+          `${`${variablePrefix}ObjectListProperty`}ItemN`,
         ),
       },
+      ...NonClassNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}ObjectListProperty`}ItemN`,
+        ),
+        variablePrefix: `${`${variablePrefix}ObjectListProperty`}ItemN`,
+      }),
       {
         subject: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}RestN`,
+          `${`${variablePrefix}ObjectListProperty`}RestN`,
         ),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
         ),
         object: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}RestNBasic`,
+          `${`${variablePrefix}ObjectListProperty`}RestNBasic`,
+        ),
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/stringListProperty",
+        ),
+        subject,
+      },
+      {
+        subject: dataFactory.variable!(`${variablePrefix}StringListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}Item0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(`${variablePrefix}StringListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}Rest0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}ItemN`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}RestNBasic`,
         ),
       },
     ];
@@ -5633,86 +5899,166 @@ export namespace NodeShapeWithListProperty {
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
     const subject =
-      parameters?.subject ?? dataFactory.variable!("nodeShapeWithListProperty");
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithListProperties");
     const variablePrefix =
       parameters?.variablePrefix ??
       (subject.termType === "Variable"
         ? subject.value
-        : "nodeShapeWithListProperty");
+        : "nodeShapeWithListProperties");
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable!(`${variablePrefix}ListProperty`),
-            predicate: dataFactory.namedNode("http://example.com/listProperty"),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
-        type: "bgp",
-        triples: [
-          {
-            subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
-            predicate: dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-            ),
-            object: dataFactory.variable!(
-              `${`${variablePrefix}ListProperty`}Item0`,
-            ),
-          },
-        ],
-      },
-      {
-        type: "bgp",
-        triples: [
-          {
-            subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
-            predicate: dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-            ),
-            object: dataFactory.variable!(
-              `${`${variablePrefix}ListProperty`}Rest0`,
-            ),
-          },
-        ],
-      },
-      {
-        type: "optional",
         patterns: [
           {
-            type: "bgp",
             triples: [
               {
-                subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
-                predicate: {
-                  type: "path",
-                  pathType: "*",
-                  items: [
-                    dataFactory.namedNode(
-                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-                    ),
-                  ],
-                },
                 object: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}RestN`,
+                  `${variablePrefix}ObjectListProperty`,
                 ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/objectListProperty",
+                ),
+                subject,
               },
             ],
+            type: "bgp",
           },
           {
             type: "bgp",
             triples: [
               {
                 subject: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}RestN`,
+                  `${variablePrefix}ObjectListProperty`,
                 ),
                 predicate: dataFactory.namedNode(
                   "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
                 ),
                 object: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}ItemN`,
+                  `${`${variablePrefix}ObjectListProperty`}Item0`,
+                ),
+              },
+            ],
+          },
+          ...NonClassNodeShape.sparqlWherePatterns({
+            ignoreRdfType: true,
+            subject: dataFactory.variable!(
+              `${`${variablePrefix}ObjectListProperty`}Item0`,
+            ),
+            variablePrefix: `${`${variablePrefix}ObjectListProperty`}Item0`,
+          }),
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${variablePrefix}ObjectListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}ObjectListProperty`}Rest0`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "optional",
+            patterns: [
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${variablePrefix}ObjectListProperty`,
+                    ),
+                    predicate: {
+                      type: "path",
+                      pathType: "*",
+                      items: [
+                        dataFactory.namedNode(
+                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                        ),
+                      ],
+                    },
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}RestN`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}ItemN`,
+                    ),
+                  },
+                ],
+              },
+              ...NonClassNodeShape.sparqlWherePatterns({
+                ignoreRdfType: true,
+                subject: dataFactory.variable!(
+                  `${`${variablePrefix}ObjectListProperty`}ItemN`,
+                ),
+                variablePrefix: `${`${variablePrefix}ObjectListProperty`}ItemN`,
+              }),
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}RestNBasic`,
+                    ),
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}StringListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/stringListProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${variablePrefix}StringListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}StringListProperty`}Item0`,
                 ),
               },
             ],
@@ -5722,24 +6068,84 @@ export namespace NodeShapeWithListProperty {
             triples: [
               {
                 subject: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}RestN`,
+                  `${variablePrefix}StringListProperty`,
                 ),
                 predicate: dataFactory.namedNode(
                   "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
                 ),
                 object: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}RestNBasic`,
+                  `${`${variablePrefix}StringListProperty`}Rest0`,
                 ),
               },
             ],
           },
+          {
+            type: "optional",
+            patterns: [
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${variablePrefix}StringListProperty`,
+                    ),
+                    predicate: {
+                      type: "path",
+                      pathType: "*",
+                      items: [
+                        dataFactory.namedNode(
+                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                        ),
+                      ],
+                    },
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}RestN`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}ItemN`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}RestNBasic`,
+                    ),
+                  },
+                ],
+              },
+            ],
+          },
         ],
+        type: "optional",
       },
     ];
   }
 }
 /**
- * Shape that uses the ListShape in a property.
+ * Shape that uses the StringListShape in a property.
  */
 export class NodeShapeWithLanguageInProperties {
   private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
@@ -12987,10 +13393,7 @@ export namespace InterfaceUnionNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
     const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
@@ -12998,27 +13401,25 @@ export namespace InterfaceUnionNodeShape {
       ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: InterfaceUnionNodeShape.sparqlConstructTemplateTriples({
-        ignoreRdfType,
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: InterfaceUnionNodeShape.sparqlWherePatterns({
-        ignoreRdfType,
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
     parameters?: {
       ignoreRdfType?: boolean;
-      prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -13240,10 +13641,7 @@ export namespace UnionNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
     const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
@@ -13251,27 +13649,25 @@ export namespace UnionNodeShape {
       ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: UnionNodeShape.sparqlConstructTemplateTriples({
-        ignoreRdfType,
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        UnionNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: UnionNodeShape.sparqlWherePatterns({
-        ignoreRdfType,
-        subject,
-      }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        UnionNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
     parameters?: {
       ignoreRdfType?: boolean;
-      prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(

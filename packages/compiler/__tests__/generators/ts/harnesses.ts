@@ -206,15 +206,28 @@ export const harnesses = {
     sparqlConstructQueryString:
       kitchenSink.NodeShapeWithLanguageInProperties.sparqlConstructQueryString,
   }),
-  nodeShapeWithListProperty: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithListProperty.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithListProperty.fromRdf,
-    instance: new kitchenSink.NodeShapeWithListProperty({
+  nodeShapeWithObjectListProperty: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithListProperties.fromJson,
+    fromRdf: kitchenSink.NodeShapeWithListProperties.fromRdf,
+    instance: new kitchenSink.NodeShapeWithListProperties({
       identifier,
-      listProperty: ["Test1", "Test2"],
+      objectListProperty: [
+        new kitchenSink.NonClassNodeShape({ stringProperty: "Test1" }),
+        new kitchenSink.NonClassNodeShape({ stringProperty: "Test2" }),
+      ],
     }),
     sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithListProperty.sparqlConstructQueryString,
+      kitchenSink.NodeShapeWithListProperties.sparqlConstructQueryString,
+  }),
+  nodeShapeWithStringListProperty: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithListProperties.fromJson,
+    fromRdf: kitchenSink.NodeShapeWithListProperties.fromRdf,
+    instance: new kitchenSink.NodeShapeWithListProperties({
+      identifier,
+      stringListProperty: ["Test1", "Test2"],
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithListProperties.sparqlConstructQueryString,
   }),
   nodeShapeWithMutableProperties: new ClassHarness({
     fromJson: kitchenSink.NodeShapeWithMutableProperties.fromJson,
