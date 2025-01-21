@@ -2,6 +2,8 @@ import { rdf } from "@tpluscode/rdf-ns-builders";
 import { camelCase } from "change-case";
 import { type FunctionDeclarationStructure, StructureKind } from "ts-morph";
 import type { ObjectType } from "../ObjectType.js";
+import { sparqlConstructQueryFunctionDeclaration } from "./sparqlConstructQueryFunctionDeclaration.js";
+import { sparqlConstructQueryStringFunctionDeclaration } from "./sparqlConstructQueryStringFunctionDeclaration.js";
 
 export function sparqlFunctionDeclarations(
   this: ObjectType,
@@ -54,39 +56,8 @@ export function sparqlFunctionDeclarations(
   ];
 
   return [
-    {
-      isExported: true,
-      kind: StructureKind.Function,
-      name: "sparqlConstructQuery",
-      parameters: [
-        {
-          hasQuestionToken: true,
-          name: "parameters",
-          type: '{ ignoreRdfType?: boolean; prefixes?: { [prefix: string]: string }; subject?: sparqljs.Triple["subject"]; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">',
-        },
-      ],
-      returnType: "sparqljs.ConstructQuery",
-      statements: [
-        "const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {}",
-        `return { ...queryParameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: (queryParameters.template ?? []).concat(${this.name}.sparqlConstructTemplateTriples({ ignoreRdfType, subject })), type: "query", where: (queryParameters.where ?? []).concat(${this.name}.sparqlWherePatterns({ ignoreRdfType, subject })) };`,
-      ],
-    },
-    {
-      isExported: true,
-      kind: StructureKind.Function,
-      name: "sparqlConstructQueryString",
-      parameters: [
-        {
-          hasQuestionToken: true,
-          name: "parameters",
-          type: '{ ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"]; variablePrefix?: string; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> & sparqljs.GeneratorOptions',
-        },
-      ],
-      returnType: "string",
-      statements: [
-        `return new sparqljs.Generator(parameters).stringify(${this.name}.sparqlConstructQuery(parameters));`,
-      ],
-    },
+    sparqlConstructQueryFunctionDeclaration.bind(this)(),
+    sparqlConstructQueryStringFunctionDeclaration.bind(this)(),
     {
       isExported: true,
       kind: StructureKind.Function,
