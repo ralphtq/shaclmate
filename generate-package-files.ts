@@ -3,7 +3,7 @@ import path from "node:path";
 import url from "node:url";
 import { stringify as stringifyYaml } from "yaml";
 
-const VERSION = "2.0.13";
+const VERSION = "2.0.14";
 
 type PackageName = "cli" | "compiler" | "runtime" | "shacl-ast";
 

@@ -3,7 +3,7 @@
     "shaclmate": "cli.js"
   },
   "dependencies": {
-    "@shaclmate/compiler": "2.0.13",
+    "@shaclmate/compiler": "2.0.14",
     "@types/n3": "^1.21.1",
     "@types/rdf-validate-shacl": "^0.4.7",
     "cmd-ts": "^0.13.0",
@@ -46,5 +46,5 @@
   },
   "type": "module",
   "types": "index.d.ts",
-  "version": "2.0.13"
+  "version": "2.0.14"
 }
