@@ -10687,26 +10687,26 @@ export namespace IriNodeShape {
     ];
   }
 }
-export interface InterfaceUnionNodeShapeMember2 {
+export interface InterfaceUnionNodeShapeMember2b {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly stringProperty2: string;
-  readonly type: "InterfaceUnionNodeShapeMember2";
+  readonly stringProperty2b: string;
+  readonly type: "InterfaceUnionNodeShapeMember2b";
 }
 
-export namespace InterfaceUnionNodeShapeMember2 {
+export namespace InterfaceUnionNodeShapeMember2b {
   export function create(parameters: {
     readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-    readonly stringProperty2: string;
-  }): InterfaceUnionNodeShapeMember2 {
+    readonly stringProperty2b: string;
+  }): InterfaceUnionNodeShapeMember2b {
     const identifier = parameters.identifier;
-    const stringProperty2 = parameters.stringProperty2;
-    const type = "InterfaceUnionNodeShapeMember2" as const;
-    return { identifier, stringProperty2, type };
+    const stringProperty2b = parameters.stringProperty2b;
+    const type = "InterfaceUnionNodeShapeMember2b" as const;
+    return { identifier, stringProperty2b, type };
   }
 
   export function equals(
-    left: InterfaceUnionNodeShapeMember2,
-    right: InterfaceUnionNodeShapeMember2,
+    left: InterfaceUnionNodeShapeMember2b,
+    right: InterfaceUnionNodeShapeMember2b,
   ): purifyHelpers.Equatable.EqualsResult {
     return purifyHelpers.Equatable.booleanEquals(
       left.identifier,
@@ -10721,12 +10721,12 @@ export namespace InterfaceUnionNodeShapeMember2 {
       }))
       .chain(() =>
         purifyHelpers.Equatable.strictEquals(
-          left.stringProperty2,
-          right.stringProperty2,
+          left.stringProperty2b,
+          right.stringProperty2b,
         ).mapLeft((propertyValuesUnequal) => ({
           left: left,
           right: right,
-          propertyName: "stringProperty2",
+          propertyName: "stringProperty2b",
           propertyValuesUnequal,
           type: "Property" as const,
         })),
@@ -10750,8 +10750,8 @@ export namespace InterfaceUnionNodeShapeMember2 {
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      stringProperty2: string;
-      type: "InterfaceUnionNodeShapeMember2";
+      stringProperty2b: string;
+      type: "InterfaceUnionNodeShapeMember2b";
     }
   > {
     const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
@@ -10763,15 +10763,15 @@ export namespace InterfaceUnionNodeShapeMember2 {
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
-    const stringProperty2 = _jsonObject["stringProperty2"];
-    const type = "InterfaceUnionNodeShapeMember2" as const;
-    return purify.Either.of({ identifier, stringProperty2, type });
+    const stringProperty2b = _jsonObject["stringProperty2b"];
+    const type = "InterfaceUnionNodeShapeMember2b" as const;
+    return purify.Either.of({ identifier, stringProperty2b, type });
   }
 
   export function fromJson(
     json: unknown,
-  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2> {
-    return InterfaceUnionNodeShapeMember2.propertiesFromJson(json);
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2b> {
+    return InterfaceUnionNodeShapeMember2b.propertiesFromJson(json);
   }
 
   export function propertiesFromRdf({
@@ -10789,38 +10789,38 @@ export namespace InterfaceUnionNodeShapeMember2 {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      stringProperty2: string;
-      type: "InterfaceUnionNodeShapeMember2";
+      stringProperty2b: string;
+      type: "InterfaceUnionNodeShapeMember2b";
     }
   > {
     const identifier = _resource.identifier;
-    const _stringProperty2Either: purify.Either<
+    const _stringProperty2bEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       string
     > = _resource
-      .values(dataFactory.namedNode("http://example.com/stringProperty2"), {
+      .values(dataFactory.namedNode("http://example.com/stringProperty2b"), {
         unique: true,
       })
       .head()
       .chain((_value) => _value.toString());
-    if (_stringProperty2Either.isLeft()) {
-      return _stringProperty2Either;
+    if (_stringProperty2bEither.isLeft()) {
+      return _stringProperty2bEither;
     }
 
-    const stringProperty2 = _stringProperty2Either.unsafeCoerce();
-    const type = "InterfaceUnionNodeShapeMember2" as const;
-    return purify.Either.of({ identifier, stringProperty2, type });
+    const stringProperty2b = _stringProperty2bEither.unsafeCoerce();
+    const type = "InterfaceUnionNodeShapeMember2b" as const;
+    return purify.Either.of({ identifier, stringProperty2b, type });
   }
 
   export function fromRdf(
     parameters: Parameters<
-      typeof InterfaceUnionNodeShapeMember2.propertiesFromRdf
+      typeof InterfaceUnionNodeShapeMember2b.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
-    InterfaceUnionNodeShapeMember2
+    InterfaceUnionNodeShapeMember2b
   > {
-    return InterfaceUnionNodeShapeMember2.propertiesFromRdf(parameters);
+    return InterfaceUnionNodeShapeMember2b.propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -10836,11 +10836,14 @@ export namespace InterfaceUnionNodeShapeMember2 {
           scope: `${scopePrefix}/properties/@id`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/stringProperty2`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/stringProperty2b`,
+          type: "Control",
+        },
         {
           rule: {
             condition: {
-              schema: { const: "InterfaceUnionNodeShapeMember2" },
+              schema: { const: "InterfaceUnionNodeShapeMember2b" },
               scope: `${scopePrefix}/properties/type`,
             },
             effect: "HIDE",
@@ -10849,7 +10852,7 @@ export namespace InterfaceUnionNodeShapeMember2 {
           type: "Control",
         },
       ],
-      label: "InterfaceUnionNodeShapeMember2",
+      label: "InterfaceUnionNodeShapeMember2b",
       type: "Group",
     };
   }
@@ -10857,8 +10860,8 @@ export namespace InterfaceUnionNodeShapeMember2 {
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
-      stringProperty2: zod.string(),
-      type: zod.literal("InterfaceUnionNodeShapeMember2"),
+      stringProperty2b: zod.string(),
+      type: zod.literal("InterfaceUnionNodeShapeMember2b"),
     });
   }
 
@@ -10867,10 +10870,10 @@ export namespace InterfaceUnionNodeShapeMember2 {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(
-    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _interfaceUnionNodeShapeMember2b: InterfaceUnionNodeShapeMember2b,
     _hasher: HasherT,
   ): HasherT {
-    _hasher.update(_interfaceUnionNodeShapeMember2.stringProperty2);
+    _hasher.update(_interfaceUnionNodeShapeMember2b.stringProperty2b);
     return _hasher;
   }
 
@@ -10888,14 +10891,14 @@ export namespace InterfaceUnionNodeShapeMember2 {
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
       template: (queryParameters.template ?? []).concat(
-        InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+        InterfaceUnionNodeShapeMember2b.sparqlConstructTemplateTriples({
           ignoreRdfType,
           subject,
         }),
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+        InterfaceUnionNodeShapeMember2b.sparqlWherePatterns({
           ignoreRdfType,
           subject,
         }),
@@ -10912,7 +10915,7 @@ export namespace InterfaceUnionNodeShapeMember2 {
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
-      InterfaceUnionNodeShapeMember2.sparqlConstructQuery(parameters),
+      InterfaceUnionNodeShapeMember2b.sparqlConstructQuery(parameters),
     );
   }
 
@@ -10923,16 +10926,16 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }): readonly sparqljs.Triple[] {
     const subject =
       parameters?.subject ??
-      dataFactory.variable!("interfaceUnionNodeShapeMember2");
+      dataFactory.variable!("interfaceUnionNodeShapeMember2b");
     const variablePrefix =
       parameters?.variablePrefix ??
       (subject.termType === "Variable"
         ? subject.value
-        : "interfaceUnionNodeShapeMember2");
+        : "interfaceUnionNodeShapeMember2b");
     return [
       {
-        object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
-        predicate: dataFactory.namedNode("http://example.com/stringProperty2"),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty2b`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty2b"),
         subject,
       },
     ];
@@ -10945,19 +10948,19 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }): readonly sparqljs.Pattern[] {
     const subject =
       parameters?.subject ??
-      dataFactory.variable!("interfaceUnionNodeShapeMember2");
+      dataFactory.variable!("interfaceUnionNodeShapeMember2b");
     const variablePrefix =
       parameters?.variablePrefix ??
       (subject.termType === "Variable"
         ? subject.value
-        : "interfaceUnionNodeShapeMember2");
+        : "interfaceUnionNodeShapeMember2b");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty2b`),
             predicate: dataFactory.namedNode(
-              "http://example.com/stringProperty2",
+              "http://example.com/stringProperty2b",
             ),
             subject,
           },
@@ -10968,26 +10971,26 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }
 
   export function toJson(
-    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _interfaceUnionNodeShapeMember2b: InterfaceUnionNodeShapeMember2b,
   ): {
     readonly "@id": string;
-    readonly stringProperty2: string;
-    readonly type: "InterfaceUnionNodeShapeMember2";
+    readonly stringProperty2b: string;
+    readonly type: "InterfaceUnionNodeShapeMember2b";
   } {
     return JSON.parse(
       JSON.stringify({
         "@id":
-          _interfaceUnionNodeShapeMember2.identifier.termType === "BlankNode"
-            ? `_:${_interfaceUnionNodeShapeMember2.identifier.value}`
-            : _interfaceUnionNodeShapeMember2.identifier.value,
-        stringProperty2: _interfaceUnionNodeShapeMember2.stringProperty2,
-        type: _interfaceUnionNodeShapeMember2.type,
-      } satisfies ReturnType<typeof InterfaceUnionNodeShapeMember2.toJson>),
+          _interfaceUnionNodeShapeMember2b.identifier.termType === "BlankNode"
+            ? `_:${_interfaceUnionNodeShapeMember2b.identifier.value}`
+            : _interfaceUnionNodeShapeMember2b.identifier.value,
+        stringProperty2b: _interfaceUnionNodeShapeMember2b.stringProperty2b,
+        type: _interfaceUnionNodeShapeMember2b.type,
+      } satisfies ReturnType<typeof InterfaceUnionNodeShapeMember2b.toJson>),
     );
   }
 
   export function toRdf(
-    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _interfaceUnionNodeShapeMember2b: InterfaceUnionNodeShapeMember2b,
     {
       mutateGraph,
       resourceSet,
@@ -10998,12 +11001,336 @@ export namespace InterfaceUnionNodeShapeMember2 {
     },
   ): rdfjsResource.MutableResource {
     const _resource = resourceSet.mutableResource({
-      identifier: _interfaceUnionNodeShapeMember2.identifier,
+      identifier: _interfaceUnionNodeShapeMember2b.identifier,
       mutateGraph,
     });
     _resource.add(
-      dataFactory.namedNode("http://example.com/stringProperty2"),
-      _interfaceUnionNodeShapeMember2.stringProperty2,
+      dataFactory.namedNode("http://example.com/stringProperty2b"),
+      _interfaceUnionNodeShapeMember2b.stringProperty2b,
+    );
+    return _resource;
+  }
+}
+export interface InterfaceUnionNodeShapeMember2a {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly stringProperty2a: string;
+  readonly type: "InterfaceUnionNodeShapeMember2a";
+}
+
+export namespace InterfaceUnionNodeShapeMember2a {
+  export function create(parameters: {
+    readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly stringProperty2a: string;
+  }): InterfaceUnionNodeShapeMember2a {
+    const identifier = parameters.identifier;
+    const stringProperty2a = parameters.stringProperty2a;
+    const type = "InterfaceUnionNodeShapeMember2a" as const;
+    return { identifier, stringProperty2a, type };
+  }
+
+  export function equals(
+    left: InterfaceUnionNodeShapeMember2a,
+    right: InterfaceUnionNodeShapeMember2a,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.booleanEquals(
+      left.identifier,
+      right.identifier,
+    )
+      .mapLeft((propertyValuesUnequal) => ({
+        left: left,
+        right: right,
+        propertyName: "identifier",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      }))
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          left.stringProperty2a,
+          right.stringProperty2a,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: left,
+          right: right,
+          propertyName: "stringProperty2a",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(left.type, right.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
+    zod.ZodError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty2a: string;
+      type: "InterfaceUnionNodeShapeMember2a";
+    }
+  > {
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+    if (!_jsonSafeParseResult.success) {
+      return purify.Left(_jsonSafeParseResult.error);
+    }
+
+    const _jsonObject = _jsonSafeParseResult.data;
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty2a = _jsonObject["stringProperty2a"];
+    const type = "InterfaceUnionNodeShapeMember2a" as const;
+    return purify.Either.of({ identifier, stringProperty2a, type });
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2a> {
+    return InterfaceUnionNodeShapeMember2a.propertiesFromJson(json);
+  }
+
+  export function propertiesFromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty2a: string;
+      type: "InterfaceUnionNodeShapeMember2a";
+    }
+  > {
+    const identifier = _resource.identifier;
+    const _stringProperty2aEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/stringProperty2a"), {
+        unique: true,
+      })
+      .head()
+      .chain((_value) => _value.toString());
+    if (_stringProperty2aEither.isLeft()) {
+      return _stringProperty2aEither;
+    }
+
+    const stringProperty2a = _stringProperty2aEither.unsafeCoerce();
+    const type = "InterfaceUnionNodeShapeMember2a" as const;
+    return purify.Either.of({ identifier, stringProperty2a, type });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof InterfaceUnionNodeShapeMember2a.propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    InterfaceUnionNodeShapeMember2a
+  > {
+    return InterfaceUnionNodeShapeMember2a.propertiesFromRdf(parameters);
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      elements: [
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/stringProperty2a`,
+          type: "Control",
+        },
+        {
+          rule: {
+            condition: {
+              schema: { const: "InterfaceUnionNodeShapeMember2a" },
+              scope: `${scopePrefix}/properties/type`,
+            },
+            effect: "HIDE",
+          },
+          scope: `${scopePrefix}/properties/type`,
+          type: "Control",
+        },
+      ],
+      label: "InterfaceUnionNodeShapeMember2a",
+      type: "Group",
+    };
+  }
+
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty2a: zod.string(),
+      type: zod.literal("InterfaceUnionNodeShapeMember2a"),
+    });
+  }
+
+  export function hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _interfaceUnionNodeShapeMember2a: InterfaceUnionNodeShapeMember2a,
+    _hasher: HasherT,
+  ): HasherT {
+    _hasher.update(_interfaceUnionNodeShapeMember2a.stringProperty2a);
+    return _hasher;
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShapeMember2a.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShapeMember2a.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceUnionNodeShapeMember2a.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember2a");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember2a");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty2a`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty2a"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember2a");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember2a");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty2a`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty2a",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
+  export function toJson(
+    _interfaceUnionNodeShapeMember2a: InterfaceUnionNodeShapeMember2a,
+  ): {
+    readonly "@id": string;
+    readonly stringProperty2a: string;
+    readonly type: "InterfaceUnionNodeShapeMember2a";
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id":
+          _interfaceUnionNodeShapeMember2a.identifier.termType === "BlankNode"
+            ? `_:${_interfaceUnionNodeShapeMember2a.identifier.value}`
+            : _interfaceUnionNodeShapeMember2a.identifier.value,
+        stringProperty2a: _interfaceUnionNodeShapeMember2a.stringProperty2a,
+        type: _interfaceUnionNodeShapeMember2a.type,
+      } satisfies ReturnType<typeof InterfaceUnionNodeShapeMember2a.toJson>),
+    );
+  }
+
+  export function toRdf(
+    _interfaceUnionNodeShapeMember2a: InterfaceUnionNodeShapeMember2a,
+    {
+      mutateGraph,
+      resourceSet,
+    }: {
+      ignoreRdfType?: boolean;
+      mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource({
+      identifier: _interfaceUnionNodeShapeMember2a.identifier,
+      mutateGraph,
+    });
+    _resource.add(
+      dataFactory.namedNode("http://example.com/stringProperty2a"),
+      _interfaceUnionNodeShapeMember2a.stringProperty2a,
     );
     return _resource;
   }
@@ -13291,11 +13618,12 @@ export namespace AbstractBaseClassForExternObjectType {
   }
 }
 /**
- * Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union.
+ * Node shape that sh:xone's other node shapes. This will usually be generated as a discriminated union.
  */
 export type InterfaceUnionNodeShape =
   | InterfaceUnionNodeShapeMember1
-  | InterfaceUnionNodeShapeMember2;
+  | InterfaceUnionNodeShapeMember2a
+  | InterfaceUnionNodeShapeMember2b;
 
 export namespace InterfaceUnionNodeShape {
   export function equals(
@@ -13310,10 +13638,15 @@ export namespace InterfaceUnionNodeShape {
               left,
               right as unknown as InterfaceUnionNodeShapeMember1,
             );
-          case "InterfaceUnionNodeShapeMember2":
-            return InterfaceUnionNodeShapeMember2.equals(
+          case "InterfaceUnionNodeShapeMember2a":
+            return InterfaceUnionNodeShapeMember2a.equals(
               left,
-              right as unknown as InterfaceUnionNodeShapeMember2,
+              right as unknown as InterfaceUnionNodeShapeMember2a,
+            );
+          case "InterfaceUnionNodeShapeMember2b":
+            return InterfaceUnionNodeShapeMember2b.equals(
+              left,
+              right as unknown as InterfaceUnionNodeShapeMember2b,
             );
         }
       },
@@ -13328,13 +13661,21 @@ export namespace InterfaceUnionNodeShape {
         zod.ZodError,
         InterfaceUnionNodeShape
       >
-    ).altLazy(
-      () =>
-        InterfaceUnionNodeShapeMember2.fromJson(json) as purify.Either<
-          zod.ZodError,
-          InterfaceUnionNodeShape
-        >,
-    );
+    )
+      .altLazy(
+        () =>
+          InterfaceUnionNodeShapeMember2a.fromJson(json) as purify.Either<
+            zod.ZodError,
+            InterfaceUnionNodeShape
+          >,
+      )
+      .altLazy(
+        () =>
+          InterfaceUnionNodeShapeMember2b.fromJson(json) as purify.Either<
+            zod.ZodError,
+            InterfaceUnionNodeShape
+          >,
+      );
   }
 
   export function fromRdf(parameters: {
@@ -13350,13 +13691,21 @@ export namespace InterfaceUnionNodeShape {
         rdfjsResource.Resource.ValueError,
         InterfaceUnionNodeShape
       >
-    ).altLazy(
-      () =>
-        InterfaceUnionNodeShapeMember2.fromRdf(parameters) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          InterfaceUnionNodeShape
-        >,
-    );
+    )
+      .altLazy(
+        () =>
+          InterfaceUnionNodeShapeMember2a.fromRdf(parameters) as purify.Either<
+            rdfjsResource.Resource.ValueError,
+            InterfaceUnionNodeShape
+          >,
+      )
+      .altLazy(
+        () =>
+          InterfaceUnionNodeShapeMember2b.fromRdf(parameters) as purify.Either<
+            rdfjsResource.Resource.ValueError,
+            InterfaceUnionNodeShape
+          >,
+      );
   }
 
   export function hash<
@@ -13373,8 +13722,13 @@ export namespace InterfaceUnionNodeShape {
           _interfaceUnionNodeShape,
           _hasher,
         );
-      case "InterfaceUnionNodeShapeMember2":
-        return InterfaceUnionNodeShapeMember2.hash(
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.hash(
+          _interfaceUnionNodeShape,
+          _hasher,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.hash(
           _interfaceUnionNodeShape,
           _hasher,
         );
@@ -13384,7 +13738,8 @@ export namespace InterfaceUnionNodeShape {
   export function jsonZodSchema() {
     return zod.discriminatedUnion("type", [
       InterfaceUnionNodeShapeMember1.jsonZodSchema(),
-      InterfaceUnionNodeShapeMember2.jsonZodSchema(),
+      InterfaceUnionNodeShapeMember2a.jsonZodSchema(),
+      InterfaceUnionNodeShapeMember2b.jsonZodSchema(),
     ]);
   }
 
@@ -13444,16 +13799,27 @@ export namespace InterfaceUnionNodeShape {
           ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember1`
           : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember1",
       }).concat(),
-      ...InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+      ...InterfaceUnionNodeShapeMember2a.sparqlConstructTemplateTriples({
         ignoreRdfType: parameters?.ignoreRdfType,
         subject:
           parameters.subject ??
           dataFactory.variable!(
-            "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2",
+            "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2a",
           ),
         variablePrefix: parameters?.variablePrefix
-          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2`
-          : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2",
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2a`
+          : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2a",
+      }).concat(),
+      ...InterfaceUnionNodeShapeMember2b.sparqlConstructTemplateTriples({
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!(
+            "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2b",
+          ),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2b`
+          : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2b",
       }).concat(),
     ];
   }
@@ -13481,16 +13847,30 @@ export namespace InterfaceUnionNodeShape {
             type: "group",
           },
           {
-            patterns: InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+            patterns: InterfaceUnionNodeShapeMember2a.sparqlWherePatterns({
               ignoreRdfType: parameters?.ignoreRdfType,
               subject:
                 parameters.subject ??
                 dataFactory.variable!(
-                  "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2",
+                  "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2a",
                 ),
               variablePrefix: parameters?.variablePrefix
-                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2`
-                : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2",
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2a`
+                : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2a",
+            }).concat(),
+            type: "group",
+          },
+          {
+            patterns: InterfaceUnionNodeShapeMember2b.sparqlWherePatterns({
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!(
+                  "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2b",
+                ),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2b`
+                : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2b",
             }).concat(),
             type: "group",
           },
@@ -13504,12 +13884,15 @@ export namespace InterfaceUnionNodeShape {
     _interfaceUnionNodeShape: InterfaceUnionNodeShape,
   ):
     | ReturnType<typeof InterfaceUnionNodeShapeMember1.toJson>
-    | ReturnType<typeof InterfaceUnionNodeShapeMember2.toJson> {
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2a.toJson>
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2b.toJson> {
     switch (_interfaceUnionNodeShape.type) {
       case "InterfaceUnionNodeShapeMember1":
         return InterfaceUnionNodeShapeMember1.toJson(_interfaceUnionNodeShape);
-      case "InterfaceUnionNodeShapeMember2":
-        return InterfaceUnionNodeShapeMember2.toJson(_interfaceUnionNodeShape);
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.toJson(_interfaceUnionNodeShape);
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.toJson(_interfaceUnionNodeShape);
     }
   }
 
@@ -13526,8 +13909,13 @@ export namespace InterfaceUnionNodeShape {
           _interfaceUnionNodeShape,
           _parameters,
         );
-      case "InterfaceUnionNodeShapeMember2":
-        return InterfaceUnionNodeShapeMember2.toRdf(
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.toRdf(
+          _interfaceUnionNodeShape,
+          _parameters,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.toRdf(
           _interfaceUnionNodeShape,
           _parameters,
         );
@@ -13535,7 +13923,258 @@ export namespace InterfaceUnionNodeShape {
   }
 }
 /**
- * Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union.
+ * A union node shape that is part of another union shape, to test composition of unions.
+ */
+export type InterfaceUnionNodeShapeMember2 =
+  | InterfaceUnionNodeShapeMember2a
+  | InterfaceUnionNodeShapeMember2b;
+
+export namespace InterfaceUnionNodeShapeMember2 {
+  export function equals(
+    left: InterfaceUnionNodeShapeMember2,
+    right: InterfaceUnionNodeShapeMember2,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(
+      () => {
+        switch (left.type) {
+          case "InterfaceUnionNodeShapeMember2a":
+            return InterfaceUnionNodeShapeMember2a.equals(
+              left,
+              right as unknown as InterfaceUnionNodeShapeMember2a,
+            );
+          case "InterfaceUnionNodeShapeMember2b":
+            return InterfaceUnionNodeShapeMember2b.equals(
+              left,
+              right as unknown as InterfaceUnionNodeShapeMember2b,
+            );
+        }
+      },
+    );
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2> {
+    return (
+      InterfaceUnionNodeShapeMember2a.fromJson(json) as purify.Either<
+        zod.ZodError,
+        InterfaceUnionNodeShapeMember2
+      >
+    ).altLazy(
+      () =>
+        InterfaceUnionNodeShapeMember2b.fromJson(json) as purify.Either<
+          zod.ZodError,
+          InterfaceUnionNodeShapeMember2
+        >,
+    );
+  }
+
+  export function fromRdf(parameters: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    InterfaceUnionNodeShapeMember2
+  > {
+    return (
+      InterfaceUnionNodeShapeMember2a.fromRdf(parameters) as purify.Either<
+        rdfjsResource.Resource.ValueError,
+        InterfaceUnionNodeShapeMember2
+      >
+    ).altLazy(
+      () =>
+        InterfaceUnionNodeShapeMember2b.fromRdf(parameters) as purify.Either<
+          rdfjsResource.Resource.ValueError,
+          InterfaceUnionNodeShapeMember2
+        >,
+    );
+  }
+
+  export function hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _hasher: HasherT,
+  ): HasherT {
+    switch (_interfaceUnionNodeShapeMember2.type) {
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.hash(
+          _interfaceUnionNodeShapeMember2,
+          _hasher,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.hash(
+          _interfaceUnionNodeShapeMember2,
+          _hasher,
+        );
+    }
+  }
+
+  export function jsonZodSchema() {
+    return zod.discriminatedUnion("type", [
+      InterfaceUnionNodeShapeMember2a.jsonZodSchema(),
+      InterfaceUnionNodeShapeMember2b.jsonZodSchema(),
+    ]);
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceUnionNodeShapeMember2.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    return [
+      ...InterfaceUnionNodeShapeMember2a.sparqlConstructTemplateTriples({
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!(
+            "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2a",
+          ),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2a`
+          : "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2a",
+      }).concat(),
+      ...InterfaceUnionNodeShapeMember2b.sparqlConstructTemplateTriples({
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!(
+            "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2b",
+          ),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2b`
+          : "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2b",
+      }).concat(),
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    return [
+      {
+        patterns: [
+          {
+            patterns: InterfaceUnionNodeShapeMember2a.sparqlWherePatterns({
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!(
+                  "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2a",
+                ),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2a`
+                : "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2a",
+            }).concat(),
+            type: "group",
+          },
+          {
+            patterns: InterfaceUnionNodeShapeMember2b.sparqlWherePatterns({
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!(
+                  "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2b",
+                ),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2b`
+                : "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2b",
+            }).concat(),
+            type: "group",
+          },
+        ],
+        type: "union",
+      },
+    ];
+  }
+
+  export function toJson(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+  ):
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2a.toJson>
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2b.toJson> {
+    switch (_interfaceUnionNodeShapeMember2.type) {
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.toJson(
+          _interfaceUnionNodeShapeMember2,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.toJson(
+          _interfaceUnionNodeShapeMember2,
+        );
+    }
+  }
+
+  export function toRdf(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _parameters: {
+      mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    switch (_interfaceUnionNodeShapeMember2.type) {
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.toRdf(
+          _interfaceUnionNodeShapeMember2,
+          _parameters,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.toRdf(
+          _interfaceUnionNodeShapeMember2,
+          _parameters,
+        );
+    }
+  }
+}
+/**
+ * Node shape sh:xone's other node shapes. This will usually be generated as a discriminated union.
  */
 export type UnionNodeShape =
   | UnionNodeShapeMember1

@@ -76,8 +76,8 @@ export const harnesses = {
     fromRdf: kitchenSink.InterfaceUnionNodeShape.fromRdf,
     instance: {
       identifier,
-      stringProperty2: "Test2",
-      type: "InterfaceUnionNodeShapeMember2",
+      stringProperty2a: "Test2",
+      type: "InterfaceUnionNodeShapeMember2a",
     },
     sparqlConstructQueryString:
       kitchenSink.InterfaceUnionNodeShape.sparqlConstructQueryString,

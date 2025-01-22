@@ -104,7 +104,7 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     shaclmate:name "InterfaceUnionNodeShape" ;
     shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
     a sh:NodeShape ;
-    rdfs:comment "Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
+    rdfs:comment "Node shape that sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
     sh:xone (:InterfaceUnionNodeShapeMember1
         :InterfaceUnionNodeShapeMember2
     ) .
@@ -125,12 +125,33 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     shaclmate:name "InterfaceUnionNodeShapeMember2" ;
     shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
     a sh:NodeShape ;
+    rdfs:comment "A union node shape that is part of another union shape, to test composition of unions." ;
+    sh:xone (:InterfaceUnionNodeShapeMember2a
+        :InterfaceUnionNodeShapeMember2b
+    ) .
+
+:InterfaceUnionNodeShapeMember2a
+    shaclmate:name "InterfaceUnionNodeShapeMember2a" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a sh:NodeShape ;
     sh:property [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
-        sh:name "stringProperty2" ;
-        sh:path :stringProperty2
+        sh:name "stringProperty2a" ;
+        sh:path :stringProperty2a
+    ] .
+
+:InterfaceUnionNodeShapeMember2b
+    shaclmate:name "InterfaceUnionNodeShapeMember2b" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a sh:NodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "stringProperty2b" ;
+        sh:path :stringProperty2b
     ] .
 
 :IriNodeShape
@@ -614,7 +635,7 @@ shaclmate:toRdfType's are added an serialization.""" ;
 :UnionNodeShape
     shaclmate:name "UnionNodeShape" ;
     a sh:NodeShape ;
-    rdfs:comment "Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
+    rdfs:comment "Node shape sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
     sh:xone (:UnionNodeShapeMember1
         :UnionNodeShapeMember2
         :ExternObjectType
