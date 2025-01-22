@@ -170,19 +170,27 @@ export function transformNodeShapeToAstType(
 
     this.nodeShapeAstTypesByIdentifier.set(nodeShape.identifier, compositeType);
 
-    compositeType.memberTypes.push(
-      ...Either.rights(
-        compositeTypeNodeShapes.map((nodeShape) =>
-          this.transformNodeShapeToAstType(nodeShape),
-        ),
-      ).filter((nodeShapeAstType) => nodeShapeAstType.kind === "ObjectType"),
-    );
-    if (compositeType.memberTypes.length < compositeTypeNodeShapes.length) {
-      return Left(
-        new Error(
-          `${nodeShape} has one or more non-ObjectType node shapes in its logical constraint`,
-        ),
-      );
+    for (const memberNodeShape of compositeTypeNodeShapes) {
+      const memberAstTypeEither =
+        this.transformNodeShapeToAstType(memberNodeShape);
+      if (memberAstTypeEither.isLeft()) {
+        return memberAstTypeEither;
+      }
+      const memberAstType = memberAstTypeEither.unsafeCoerce();
+      switch (memberAstType.kind) {
+        case "ObjectType":
+          compositeType.memberTypes.push(memberAstType);
+          break;
+        case "ObjectUnionType":
+          compositeType.memberTypes.push(...memberAstType.memberTypes);
+          break;
+        default:
+          return Left(
+            new Error(
+              `${nodeShape} has one or more non-ObjectType node shapes in its logical constraint`,
+            ),
+          );
+      }
     }
     return Either.of(compositeType);
   }

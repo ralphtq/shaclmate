@@ -136,8 +136,11 @@ export function transformPropertyShapeToAstCompositeType(
   const memberTypes = Either.rights(memberTypeEithers);
   if (memberTypes.length !== memberTypeEithers.length) {
     logger.warn(
-      "shape %s composition did not map all member types successfully",
+      "shape %s composition did not map all member types successfully: %s",
       shape,
+      Either.lefts(memberTypeEithers)
+        .map((left) => left.message)
+        .join("; "),
     );
     return memberTypeEithers[0];
   }
