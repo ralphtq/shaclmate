@@ -7,27 +7,24 @@ import type {
   PropertySignatureStructure,
 } from "ts-morph";
 import { Memoize } from "typescript-memoize";
-import type { TsObjectDeclarationType } from "../../../enums/index.js";
+import { SnippetDeclarations } from "../SnippetDeclarations.js";
 import { Property } from "./Property.js";
 
 export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorProperty.Type> {
-  readonly equalsFunction = "purifyHelpers.Equatable.strictEquals";
-  readonly mutable = false;
+  override readonly equalsFunction = "strictEquals";
+  override readonly mutable = false;
   readonly value: string;
   private readonly abstract: boolean;
-  private readonly objectTypeDeclarationType: TsObjectDeclarationType;
   private readonly override: boolean;
 
   constructor({
     abstract,
-    objectTypeDeclarationType,
     override,
     type,
     value,
     ...superParameters
   }: {
     abstract: boolean;
-    objectTypeDeclarationType: TsObjectDeclarationType;
     override: boolean;
     type: TypeDiscriminatorProperty.Type;
     value: string;
@@ -35,7 +32,6 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     super({ ...superParameters, type });
     invariant(this.visibility === "public");
     this.abstract = abstract;
-    this.objectTypeDeclarationType = objectTypeDeclarationType;
     this.override = override;
     this.value = value;
   }
@@ -88,6 +84,14 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     };
   }
 
+  override get snippetDeclarations(): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (this.objectType.features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.strictEquals);
+    }
+    return snippetDeclarations;
+  }
+
   override classConstructorStatements(): readonly string[] {
     return [];
   }
@@ -97,7 +101,7 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
   }
 
   override fromRdfStatements(): readonly string[] {
-    return !this.abstract && this.objectTypeDeclarationType === "interface"
+    return !this.abstract && this.objectType.declarationType === "interface"
       ? [`const ${this.name} = "${this.value}" as const`]
       : [];
   }

@@ -3,7 +3,9 @@ import { xsd } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
+import type { TsFeature } from "../../enums/index.js";
 import { Import } from "./Import.js";
+import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import { Type } from "./Type.js";
 import { objectInitializer } from "./objectInitializer.js";
 
@@ -14,7 +16,7 @@ export class TermType<
   TermT extends BlankNode | Literal | NamedNode,
 > extends Type {
   readonly defaultValue: Maybe<TermT>;
-  readonly equalsFunction: string = "purifyHelpers.Equatable.booleanEquals";
+  readonly equalsFunction: string = "booleanEquals";
   readonly hasValues: readonly TermT[];
   readonly in_: readonly TermT[];
   readonly mutable: boolean = false;
@@ -116,14 +118,6 @@ export class TermType<
       .join(" | ")})`;
   }
 
-  override get useImports(): readonly Import[] {
-    const imports = [Import.RDFJS_TYPES];
-    if (this.nodeKinds.has("Literal")) {
-      imports.push(Import.RDF_LITERAL);
-    }
-    return imports;
-  }
-
   override fromJsonExpression({
     variables,
   }: Parameters<Type["fromJsonExpression"]>[0]): string {
@@ -221,6 +215,14 @@ export class TermType<
       .join(", ")}])`;
   }
 
+  override snippetDeclarations(features: Set<TsFeature>): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.booleanEquals);
+    }
+    return snippetDeclarations;
+  }
+
   override sparqlWherePatterns(
     parameters: Parameters<Type["sparqlWherePatterns"]>[0],
   ): readonly string[] {
@@ -277,6 +279,14 @@ export class TermType<
           `!${variables.value}.equals(${this.rdfjsTermExpression(defaultValue)}) ? ${variables.value} : undefined`,
       )
       .orDefault(variables.value);
+  }
+
+  override useImports(): readonly Import[] {
+    const imports = [Import.RDFJS_TYPES];
+    if (this.nodeKinds.has("Literal")) {
+      imports.push(Import.RDF_LITERAL);
+    }
+    return imports;
   }
 
   /**

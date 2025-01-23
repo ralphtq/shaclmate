@@ -3,7 +3,7 @@ import path from "node:path";
 import url from "node:url";
 import { stringify as stringifyYaml } from "yaml";
 
-const VERSION = "2.0.14";
+const VERSION = "2.0.15";
 
 type PackageName = "cli" | "compiler" | "runtime" | "shacl-ast";
 
@@ -85,7 +85,7 @@ const packages: readonly Package[] = [
       },
       internal: ["runtime"],
     },
-    linkableDependencies: ["purify-ts-helpers", "rdfjs-resource"],
+    linkableDependencies: ["rdfjs-resource"],
     name: "compiler",
   },
   {
@@ -98,7 +98,6 @@ const packages: readonly Package[] = [
         "js-sha256": "^0.11.0",
         n3: externalDependencyVersions["n3"],
         "purify-ts": externalDependencyVersions["purify-ts"],
-        "purify-ts-helpers": "1.0.9",
         "rdf-literal": "^1.3.2",
         "rdfjs-resource": externalDependencyVersions["rdfjs-resource"],
         sparqljs: "3.7.3",
@@ -107,7 +106,7 @@ const packages: readonly Package[] = [
         "zod-to-json-schema": "3.24.1",
       },
     },
-    linkableDependencies: ["purify-ts-helpers", "rdfjs-resource"],
+    linkableDependencies: ["rdfjs-resource"],
     name: "runtime",
   },
   {
@@ -206,7 +205,7 @@ for (const package_ of packages) {
           "format:write": "biome format --write",
           "format:write:unsafe": "biome format --write --unsafe",
           rebuild: "run-s clean build",
-          "link-dependencies": "npm link purify-ts-helpers rdfjs-resource",
+          "link-dependencies": "npm link rdfjs-resource",
           lint: "biome lint",
           "lint:write": "biome lint --write",
           "lint:write:unsafe": "biome lint --write --unsafe",

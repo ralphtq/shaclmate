@@ -1,10 +1,10 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
-import type { Equatable } from "purify-ts-helpers";
 import type {
   MutableResource,
   MutableResourceSet,
   Resource,
 } from "rdfjs-resource";
+import type { EqualsResult } from "../../../../../examples/kitchen-sink/generated.js";
 import { Harness } from "./Harness.js";
 
 export class ClassUnionHarness<
@@ -18,13 +18,13 @@ export class ClassUnionHarness<
   },
   IdentifierT extends BlankNode | NamedNode,
 > extends Harness<T, IdentifierT> {
-  readonly equals: (other: T) => Equatable.EqualsResult;
+  readonly equals: (other: T) => EqualsResult;
 
   constructor({
     equals,
     ...superParameters
   }: {
-    equals: (left: T, right: T) => Equatable.EqualsResult;
+    equals: (left: T, right: T) => EqualsResult;
   } & ConstructorParameters<typeof Harness<T, IdentifierT>>[0]) {
     super(superParameters);
     this.equals = (other) => equals(this.instance, other);

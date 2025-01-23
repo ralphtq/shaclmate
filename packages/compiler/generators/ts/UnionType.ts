@@ -1,6 +1,7 @@
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
+import type { TsFeature } from "../../enums/index.js";
 import type { Import } from "./Import.js";
 import { Type } from "./Type.js";
 import { objectInitializer } from "./objectInitializer.js";
@@ -96,10 +97,6 @@ ${this.memberTypeTraits
 
   override get mutable(): boolean {
     return this.memberTypes.some((memberType) => memberType.mutable);
-  }
-
-  override get useImports(): readonly Import[] {
-    return this.memberTypes.flatMap((memberType) => memberType.useImports);
   }
 
   @Memoize()
@@ -337,6 +334,12 @@ ${this.memberTypeTraits
         }),
       variables,
     });
+  }
+
+  override useImports(features: Set<TsFeature>): readonly Import[] {
+    return this.memberTypes.flatMap((memberType) =>
+      memberType.useImports(features),
+    );
   }
 
   private ternaryExpression({

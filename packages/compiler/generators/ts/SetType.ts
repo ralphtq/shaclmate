@@ -1,6 +1,8 @@
 import { invariant } from "ts-invariant";
 import { Memoize } from "typescript-memoize";
+import type { TsFeature } from "../../enums/index.js";
 import type { Import } from "./Import.js";
+import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import { Type } from "./Type.js";
 import { objectInitializer } from "./objectInitializer.js";
 
@@ -50,11 +52,7 @@ export class SetType extends Type {
   }
 
   override get equalsFunction(): string {
-    const itemTypeEqualsFunction = this.itemType.equalsFunction;
-    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
-      return "purifyHelpers.Equatable.arrayEquals";
-    }
-    return `(left, right) => purifyHelpers.Arrays.equals(left, right, ${itemTypeEqualsFunction})`;
+    return `((left, right) => arrayEquals(left, right, ${this.itemType.equalsFunction}))`;
   }
 
   override get jsonName(): string {
@@ -74,10 +72,6 @@ export class SetType extends Type {
       return `readonly (${this.itemType.name})[]`;
     }
     return `purify.NonEmptyList<${this.itemType.name}>`;
-  }
-
-  override get useImports(): readonly Import[] {
-    return this.itemType.useImports;
   }
 
   override fromJsonExpression({
@@ -140,6 +134,14 @@ export class SetType extends Type {
     return schema;
   }
 
+  override snippetDeclarations(features: Set<TsFeature>): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.arrayEquals);
+    }
+    return snippetDeclarations;
+  }
+
   override sparqlConstructTemplateTriples({
     context,
     variables,
@@ -187,5 +189,9 @@ export class SetType extends Type {
     return `${variables.value}.map((_item) => ${this.itemType.toRdfExpression({
       variables: { ...variables, value: "_item" },
     })})`;
+  }
+
+  override useImports(features: Set<TsFeature>): readonly Import[] {
+    return this.itemType.useImports(features);
   }
 }

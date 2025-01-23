@@ -3,7 +3,7 @@
     "shaclmate": "cli.js"
   },
   "dependencies": {
-    "@shaclmate/compiler": "2.0.14",
+    "@shaclmate/compiler": "2.0.15",
     "@types/n3": "^1.21.1",
     "@types/rdf-validate-shacl": "^0.4.7",
     "cmd-ts": "^0.13.0",
@@ -29,7 +29,7 @@
     "format:write": "biome format --write",
     "format:write:unsafe": "biome format --write --unsafe",
     "rebuild": "run-s clean build",
-    "link-dependencies": "npm link purify-ts-helpers rdfjs-resource",
+    "link-dependencies": "npm link rdfjs-resource",
     "lint": "biome lint",
     "lint:write": "biome lint --write",
     "lint:write:unsafe": "biome lint --write --unsafe",
@@ -46,5 +46,5 @@
   },
   "type": "module",
   "types": "index.d.ts",
-  "version": "2.0.14"
+  "version": "2.0.15"
 }

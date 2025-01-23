@@ -1,8 +1,9 @@
 import type { NamedNode } from "@rdfjs/types";
 import { rdf } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
-import type { MintingStrategy } from "../../enums/index.js";
+import type { MintingStrategy, TsFeature } from "../../enums/index.js";
 import { Import } from "./Import.js";
+import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import { Type } from "./Type.js";
 import { objectInitializer } from "./objectInitializer.js";
 
@@ -51,7 +52,7 @@ export class ListType extends Type {
   }
 
   override get equalsFunction(): string {
-    return `((left, right) => purifyHelpers.Arrays.equals(left, right, ${this.itemType.equalsFunction}))`;
+    return `((left, right) => arrayEquals(left, right, ${this.itemType.equalsFunction}))`;
   }
 
   override get jsonName(): string {
@@ -60,14 +61,6 @@ export class ListType extends Type {
 
   override get name(): string {
     return `${this.mutable ? "" : "readonly "}${this.itemType.name}[]`;
-  }
-
-  override get useImports(): readonly Import[] {
-    const imports: Import[] = this.itemType.useImports.concat();
-    if (this.identifierNodeKind === "NamedNode") {
-      imports.push(Import.SHA256);
-    }
-    return imports;
   }
 
   override fromJsonExpression({
@@ -107,6 +100,14 @@ export class ListType extends Type {
     parameters: Parameters<Type["jsonZodSchema"]>[0],
   ): ReturnType<Type["jsonZodSchema"]> {
     return `${this.itemType.jsonZodSchema(parameters)}.array()`;
+  }
+
+  override snippetDeclarations(features: Set<TsFeature>): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.arrayEquals);
+    }
+    return snippetDeclarations;
   }
 
   override sparqlConstructTemplateTriples({
@@ -374,5 +375,13 @@ export class ListType extends Type {
     listResource: ${mutableResourceTypeName};
   },
 ).listResource.identifier`;
+  }
+
+  override useImports(features: Set<TsFeature>): readonly Import[] {
+    const imports: Import[] = this.itemType.useImports(features).concat();
+    if (features.has("hash") && this.identifierNodeKind === "NamedNode") {
+      imports.push(Import.SHA256);
+    }
+    return imports;
   }
 }

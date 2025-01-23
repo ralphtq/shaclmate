@@ -35,7 +35,7 @@ export function fromJsonFunctionDeclarations(
     );
     initializers.push(`..._super${parentObjectTypeI}`);
     propertiesFromJsonFunctionReturnType.push(
-      `purifyHelpers.Eithers.UnwrapR<ReturnType<typeof ${parentObjectType.name}.propertiesFromJson>>`,
+      `UnwrapR<ReturnType<typeof ${parentObjectType.name}.propertiesFromJson>>`,
     );
   });
 

@@ -1,7 +1,6 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
 import type * as purify from "purify-ts";
 import { Either } from "purify-ts";
-import { Equatable } from "purify-ts-helpers";
 import type * as rdfjsResource from "rdfjs-resource";
 import type { z } from "zod";
 import { AbstractBaseClassForExternObjectType } from "./generated.js";
@@ -22,10 +21,7 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
   }
 
   // Called by interface functions
-  static equals(
-    left: ExternObjectType,
-    right: ExternObjectType,
-  ): Equatable.EqualsResult {
+  static equals(left: ExternObjectType, right: ExternObjectType) {
     return left.equals(right);
   }
 
@@ -72,8 +68,10 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
   }
 
   // Called by class methods
-  override equals(_other: ExternObjectType): Equatable.EqualsResult {
-    return Equatable.EqualsResult.Equal;
+  override equals(
+    _other: ExternObjectType,
+  ): ReturnType<AbstractBaseClassForExternObjectType["equals"]> {
+    return Either.of(true);
   }
 
   // Called by class methods

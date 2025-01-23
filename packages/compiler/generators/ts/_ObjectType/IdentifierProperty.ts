@@ -9,20 +9,19 @@ import type {
 import type {
   MintingStrategy,
   PropertyVisibility,
-  TsObjectDeclarationType,
 } from "../../../enums/index.js";
 import type { IdentifierType } from "../IdentifierType.js";
 import { Import } from "../Import.js";
+import { SnippetDeclarations } from "../SnippetDeclarations.js";
 import { Property } from "./Property.js";
 
 export class IdentifierProperty extends Property<IdentifierType> {
   readonly abstract: boolean;
-  readonly equalsFunction = "purifyHelpers.Equatable.booleanEquals";
+  readonly equalsFunction = "booleanEquals";
   readonly mutable = false;
   private readonly classDeclarationVisibility: Maybe<PropertyVisibility>;
   private readonly lazyObjectTypeMutable: () => boolean;
   private readonly mintingStrategy: MintingStrategy | "blankNode" | "none";
-  private readonly objectTypeDeclarationType: TsObjectDeclarationType;
   private readonly override: boolean;
 
   constructor({
@@ -30,7 +29,6 @@ export class IdentifierProperty extends Property<IdentifierType> {
     classDeclarationVisibility,
     lazyObjectTypeMutable,
     mintingStrategy,
-    objectTypeDeclarationType,
     override,
     ...superParameters
   }: {
@@ -38,7 +36,6 @@ export class IdentifierProperty extends Property<IdentifierType> {
     classDeclarationVisibility: Maybe<PropertyVisibility>;
     lazyObjectTypeMutable: () => boolean;
     mintingStrategy: Maybe<MintingStrategy>;
-    objectTypeDeclarationType: TsObjectDeclarationType;
     override: boolean;
     type: IdentifierType;
   } & ConstructorParameters<typeof Property>[0]) {
@@ -53,7 +50,6 @@ export class IdentifierProperty extends Property<IdentifierType> {
     } else {
       this.mintingStrategy = "none";
     }
-    this.objectTypeDeclarationType = objectTypeDeclarationType;
     this.lazyObjectTypeMutable = lazyObjectTypeMutable;
     this.override = override;
   }
@@ -141,13 +137,13 @@ export class IdentifierProperty extends Property<IdentifierType> {
   override get constructorParametersPropertySignature(): Maybe<
     OptionalKind<PropertySignatureStructure>
   > {
-    if (this.objectTypeDeclarationType === "class" && this.abstract) {
+    if (this.objectType.declarationType === "class" && this.abstract) {
       return Maybe.empty();
     }
 
     return Maybe.of({
       hasQuestionToken:
-        this.objectTypeDeclarationType === "class" &&
+        this.objectType.declarationType === "class" &&
         this.mintingStrategy !== "none",
       isReadonly: true,
       name: this.name,
@@ -156,9 +152,12 @@ export class IdentifierProperty extends Property<IdentifierType> {
   }
 
   override get declarationImports(): readonly Import[] {
-    const imports = this.type.useImports.concat();
+    const imports = this.type.useImports().concat();
 
-    if (this.objectTypeDeclarationType === "class") {
+    if (
+      this.objectType.features.has("hash") &&
+      this.objectType.declarationType === "class"
+    ) {
       switch (this.mintingStrategy) {
         case "sha256":
           imports.push(Import.SHA256);
@@ -186,6 +185,14 @@ export class IdentifierProperty extends Property<IdentifierType> {
       name: "@id",
       type: "string",
     };
+  }
+
+  override get snippetDeclarations(): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (this.objectType.features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.booleanEquals);
+    }
+    return snippetDeclarations;
   }
 
   override classConstructorStatements({

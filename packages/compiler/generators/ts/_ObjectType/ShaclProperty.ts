@@ -85,7 +85,7 @@ export class ShaclProperty extends Property<Type> {
   }
 
   override get declarationImports(): readonly Import[] {
-    return this.type.useImports;
+    return this.type.useImports(this.objectType.features);
   }
 
   override get equalsFunction(): string {
@@ -107,6 +107,10 @@ export class ShaclProperty extends Property<Type> {
       name: this.name,
       type: this.type.jsonName,
     };
+  }
+
+  override get snippetDeclarations(): readonly string[] {
+    return this.type.snippetDeclarations(this.objectType.features);
   }
 
   private get declarationComment(): string | undefined {

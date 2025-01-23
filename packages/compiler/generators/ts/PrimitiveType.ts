@@ -1,13 +1,13 @@
 import { Maybe } from "purify-ts";
-import type { Import } from "./Import.js";
+import type { TsFeature } from "../../enums/index.js";
 import { LiteralType } from "./LiteralType.js";
+import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import type { Type } from "./Type.js";
 
 export abstract class PrimitiveType<
   ValueT extends boolean | Date | string | number,
 > extends LiteralType {
-  override readonly equalsFunction: string =
-    "purifyHelpers.Equatable.strictEquals";
+  override readonly equalsFunction: string = "strictEquals";
   readonly primitiveDefaultValue: Maybe<ValueT>;
   readonly primitiveIn: readonly ValueT[];
 
@@ -32,10 +32,6 @@ export abstract class PrimitiveType<
     return this.name;
   }
 
-  override get useImports(): readonly Import[] {
-    return [];
-  }
-
   override fromJsonExpression({
     variables,
   }: Parameters<Type["fromJsonExpression"]>[0]): string {
@@ -46,6 +42,14 @@ export abstract class PrimitiveType<
     variables,
   }: Parameters<Type["hashStatements"]>[0]): readonly string[] {
     return [`${variables.hasher}.update(${variables.value}.toString());`];
+  }
+
+  override snippetDeclarations(features: Set<TsFeature>): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.strictEquals);
+    }
+    return snippetDeclarations;
   }
 
   override toJsonExpression({

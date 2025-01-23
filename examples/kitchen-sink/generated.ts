@@ -2,7 +2,6 @@ import type * as rdfjs from "@rdfjs/types";
 import { sha256 } from "js-sha256";
 import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
-import * as purifyHelpers from "purify-ts-helpers";
 import * as rdfLiteral from "rdf-literal";
 import * as rdfjsResource from "rdfjs-resource";
 import * as sparqljs from "sparqljs";
@@ -10,6 +9,203 @@ import * as uuid from "uuid";
 import { z as zod } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { ExternObjectType } from "./ExternObjectType.js";
+export type EqualsResult = purify.Either<EqualsResult.Unequal, true>;
+
+export namespace EqualsResult {
+  export const Equal: EqualsResult = purify.Either.of<Unequal, true>(true);
+
+  export function fromBooleanEqualsResult(
+    left: any,
+    right: any,
+    equalsResult: boolean | EqualsResult,
+  ): EqualsResult {
+    if (typeof equalsResult !== "boolean") {
+      return equalsResult;
+    }
+
+    if (equalsResult) {
+      return Equal;
+    }
+    return purify.Left({
+      left,
+      right,
+      type: "BooleanEquals",
+    });
+  }
+
+  export type Unequal =
+    | {
+        readonly left: {
+          readonly array: readonly any[];
+          readonly element: any;
+          readonly elementIndex: number;
+        };
+        readonly right: {
+          readonly array: readonly any[];
+          readonly unequals: readonly Unequal[];
+        };
+        readonly type: "ArrayElement";
+      }
+    | {
+        readonly left: readonly any[];
+        readonly right: readonly any[];
+        readonly type: "ArrayLength";
+      }
+    | {
+        readonly left: any;
+        readonly right: any;
+        readonly type: "BooleanEquals";
+      }
+    | {
+        readonly left: any;
+        readonly right: any;
+        readonly type: "LeftError";
+      }
+    | {
+        readonly right: any;
+        readonly type: "LeftNull";
+      }
+    | {
+        readonly left: bigint | boolean | number | string;
+        readonly right: bigint | boolean | number | string;
+        readonly type: "Primitive";
+      }
+    | {
+        readonly left: object;
+        readonly right: object;
+        readonly propertyName: string;
+        readonly propertyValuesUnequal: Unequal;
+        readonly type: "Property";
+      }
+    | {
+        readonly left: any;
+        readonly right: any;
+        readonly type: "RightError";
+      }
+    | {
+        readonly left: any;
+        readonly type: "RightNull";
+      };
+}
+/**
+ * Compare two objects with equals(other: T): boolean methods and return an EqualsResult.
+ */
+export function booleanEquals<T extends { equals: (other: T) => boolean }>(
+  left: T,
+  right: T,
+): EqualsResult {
+  return EqualsResult.fromBooleanEqualsResult(left, right, left.equals(right));
+}
+/**
+ * Compare two values for strict equality (===), returning an EqualsResult rather than a boolean.
+ */
+export function strictEquals<T extends bigint | boolean | number | string>(
+  left: T,
+  right: T,
+): EqualsResult {
+  return EqualsResult.fromBooleanEqualsResult(left, right, left === right);
+}
+export function maybeEquals<T>(
+  leftMaybe: purify.Maybe<T>,
+  rightMaybe: purify.Maybe<T>,
+  valueEquals: (left: T, right: T) => boolean | EqualsResult,
+): EqualsResult {
+  if (leftMaybe.isJust()) {
+    if (rightMaybe.isJust()) {
+      return EqualsResult.fromBooleanEqualsResult(
+        leftMaybe,
+        rightMaybe,
+        valueEquals(leftMaybe.unsafeCoerce(), rightMaybe.unsafeCoerce()),
+      );
+    }
+    return purify.Left({
+      left: leftMaybe.unsafeCoerce(),
+      type: "RightNull",
+    });
+  }
+
+  if (rightMaybe.isJust()) {
+    return purify.Left({
+      right: rightMaybe.unsafeCoerce(),
+      type: "LeftNull",
+    });
+  }
+
+  return EqualsResult.Equal;
+}
+export function arrayEquals<T>(
+  leftArray: readonly T[],
+  rightArray: readonly T[],
+  elementEquals: (left: T, right: T) => boolean | EqualsResult,
+): EqualsResult {
+  if (leftArray.length !== rightArray.length) {
+    return purify.Left({
+      left: leftArray,
+      right: rightArray,
+      type: "ArrayLength",
+    });
+  }
+
+  for (
+    let leftElementIndex = 0;
+    leftElementIndex < leftArray.length;
+    leftElementIndex++
+  ) {
+    const leftElement = leftArray[leftElementIndex];
+
+    const rightUnequals: EqualsResult.Unequal[] = [];
+    for (
+      let rightElementIndex = 0;
+      rightElementIndex < rightArray.length;
+      rightElementIndex++
+    ) {
+      const rightElement = rightArray[rightElementIndex];
+
+      const leftElementEqualsRightElement =
+        EqualsResult.fromBooleanEqualsResult(
+          leftElement,
+          rightElement,
+          elementEquals(leftElement, rightElement),
+        );
+      if (leftElementEqualsRightElement.isRight()) {
+        break; // left element === right element, break out of the right iteration
+      }
+      rightUnequals.push(
+        leftElementEqualsRightElement.extract() as EqualsResult.Unequal,
+      );
+    }
+
+    if (rightUnequals.length === rightArray.length) {
+      // All right elements were unequal to the left element
+      return purify.Left({
+        left: {
+          array: leftArray,
+          element: leftElement,
+          elementIndex: leftElementIndex,
+        },
+        right: {
+          array: rightArray,
+          unequals: rightUnequals,
+        },
+        type: "ArrayElement",
+      });
+    }
+    // Else there was a right element equal to the left element, continue to the next left element
+  }
+
+  return EqualsResult.Equal;
+}
+/**
+ * Compare two Dates and return an EqualsResult.
+ */
+export function dateEquals(left: Date, right: Date): EqualsResult {
+  return EqualsResult.fromBooleanEqualsResult(
+    left,
+    right,
+    left.getTime() === right.getTime(),
+  );
+}
+type UnwrapR<T> = T extends purify.Either<any, infer R> ? R : never;
 /**
  * A node shape that mints its identifier by generating a v4 UUID, if no identifier is supplied.
  */
@@ -35,11 +231,8 @@ export class UuidV4IriNodeShape {
     return this._identifier;
   }
 
-  equals(other: UuidV4IriNodeShape): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: UuidV4IriNodeShape): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -48,19 +241,18 @@ export class UuidV4IriNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty,
-          other.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty, other.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -329,11 +521,8 @@ export class UnionNodeShapeMember2 {
     return this._identifier;
   }
 
-  equals(other: UnionNodeShapeMember2): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: UnionNodeShapeMember2): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -342,19 +531,18 @@ export class UnionNodeShapeMember2 {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty2,
-          other.stringProperty2,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty2",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty2, other.stringProperty2).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty2",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -632,11 +820,8 @@ export class UnionNodeShapeMember1 {
     return this._identifier;
   }
 
-  equals(other: UnionNodeShapeMember1): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: UnionNodeShapeMember1): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -645,19 +830,18 @@ export class UnionNodeShapeMember1 {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty1,
-          other.stringProperty1,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty1",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty1, other.stringProperty1).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty1",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -940,11 +1124,8 @@ export class Sha256IriNodeShape {
     return this._identifier;
   }
 
-  equals(other: Sha256IriNodeShape): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: Sha256IriNodeShape): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -953,19 +1134,18 @@ export class Sha256IriNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty,
-          other.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty, other.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -1237,11 +1417,8 @@ export class NonClassNodeShape {
     return this._identifier;
   }
 
-  equals(other: NonClassNodeShape): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: NonClassNodeShape): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -1250,19 +1427,18 @@ export class NonClassNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty,
-          other.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty, other.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -1634,13 +1810,8 @@ export class NodeShapeWithUnionProperties {
     return this._identifier;
   }
 
-  equals(
-    other: NodeShapeWithUnionProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: NodeShapeWithUnionProperties): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -1649,40 +1820,32 @@ export class NodeShapeWithUnionProperties {
         type: "Property" as const,
       }))
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.orLiteralsProperty, other.orLiteralsProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "orLiteralsProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.orLiteralsProperty,
+          other.orLiteralsProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "orLiteralsProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.orTermsProperty,
+          other.orTermsProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "orTermsProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
       )
       .chain(() =>
         ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.orTermsProperty, other.orTermsProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "orTermsProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
-      )
-      .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
+          maybeEquals(
             left,
             right,
             (
@@ -1694,16 +1857,16 @@ export class NodeShapeWithUnionProperties {
                 | { type: "1-NonClassNodeShape"; value: NonClassNodeShape },
             ) => {
               if (left.type === "0-number" && right.type === "0-number") {
-                return purifyHelpers.Equatable.strictEquals(
-                  left.value,
-                  right.value,
-                );
+                return strictEquals(left.value, right.value);
               }
               if (
                 left.type === "1-NonClassNodeShape" &&
                 right.type === "1-NonClassNodeShape"
               ) {
-                return purifyHelpers.Equatable.equals(left.value, right.value);
+                return ((left, right) => left.equals(right))(
+                  left.value,
+                  right.value,
+                );
               }
 
               return purify.Left({
@@ -1729,7 +1892,7 @@ export class NodeShapeWithUnionProperties {
         ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -1890,9 +2053,7 @@ export class NodeShapeWithUnionProperties {
 }
 
 export namespace NodeShapeWithUnionProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -2546,10 +2707,8 @@ export class NodeShapeWithTermProperties {
       : dataFactory.blankNode();
   }
 
-  equals(
-    other: NodeShapeWithTermProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
+  equals(other: NodeShapeWithTermProperties): EqualsResult {
+    return ((left, right) => maybeEquals(left, right, strictEquals))(
       this.booleanProperty,
       other.booleanProperty,
     )
@@ -2561,69 +2720,54 @@ export class NodeShapeWithTermProperties {
         type: "Property" as const,
       }))
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(left, right, (left, right) =>
-            purifyHelpers.Equatable.EqualsResult.fromBooleanEqualsResult(
-              left,
-              right,
-              left.getTime() === right.getTime(),
-            ),
-          ))(this.dateTimeProperty, other.dateTimeProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "dateTimeProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
-      )
-      .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
-          this.identifier,
-          other.identifier,
+        ((left, right) => maybeEquals(left, right, dateEquals))(
+          this.dateTimeProperty,
+          other.dateTimeProperty,
         ).mapLeft((propertyValuesUnequal) => ({
           left: this,
           right: other,
-          propertyName: "identifier",
+          propertyName: "dateTimeProperty",
           propertyValuesUnequal,
           type: "Property" as const,
         })),
       )
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.iriProperty, other.iriProperty).mapLeft(
+        booleanEquals(this.identifier, other.identifier).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
-            propertyName: "iriProperty",
+            propertyName: "identifier",
             propertyValuesUnequal,
             type: "Property" as const,
           }),
         ),
       )
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.literalProperty, other.literalProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "literalProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.iriProperty,
+          other.iriProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "iriProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.literalProperty,
+          other.literalProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "literalProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        ((left, right) => maybeEquals(left, right, strictEquals))(
           this.numberProperty,
           other.numberProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -2635,7 +2779,7 @@ export class NodeShapeWithTermProperties {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
+        ((left, right) => maybeEquals(left, right, strictEquals))(
           this.stringProperty,
           other.stringProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -2647,23 +2791,19 @@ export class NodeShapeWithTermProperties {
         })),
       )
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.termProperty, other.termProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "termProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.termProperty,
+          other.termProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "termProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -2837,9 +2977,7 @@ export class NodeShapeWithTermProperties {
 }
 
 export namespace NodeShapeWithTermProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       booleanProperty: purify.Maybe<boolean>;
@@ -3456,13 +3594,8 @@ export class NodeShapeWithPropertyVisibilities {
     return this._identifier;
   }
 
-  equals(
-    other: NodeShapeWithPropertyVisibilities,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: NodeShapeWithPropertyVisibilities): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -3471,43 +3604,40 @@ export class NodeShapeWithPropertyVisibilities {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.privateProperty,
-          other.privateProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "privateProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.privateProperty, other.privateProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "privateProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.protectedProperty,
-          other.protectedProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "protectedProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.protectedProperty, other.protectedProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "protectedProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.publicProperty,
-          other.publicProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "publicProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.publicProperty, other.publicProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "publicProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -3584,9 +3714,7 @@ export class NodeShapeWithPropertyVisibilities {
 }
 
 export namespace NodeShapeWithPropertyVisibilities {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -3944,15 +4072,11 @@ export class NodeShapeWithPropertyCardinalities {
     return this._identifier;
   }
 
-  equals(
-    other: NodeShapeWithPropertyCardinalities,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return ((left, right) =>
-      purifyHelpers.Arrays.equals(
-        left,
-        right,
-        purifyHelpers.Equatable.strictEquals,
-      ))(this.emptyStringSetProperty, other.emptyStringSetProperty)
+  equals(other: NodeShapeWithPropertyCardinalities): EqualsResult {
+    return ((left, right) => arrayEquals(left, right, strictEquals))(
+      this.emptyStringSetProperty,
+      other.emptyStringSetProperty,
+    )
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -3961,24 +4085,18 @@ export class NodeShapeWithPropertyCardinalities {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
-          this.identifier,
-          other.identifier,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "identifier",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        booleanEquals(this.identifier, other.identifier).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "identifier",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Arrays.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.strictEquals,
-          ))(
+        ((left, right) => arrayEquals(left, right, strictEquals))(
           this.nonEmptyStringSetProperty,
           other.nonEmptyStringSetProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -3990,7 +4108,7 @@ export class NodeShapeWithPropertyCardinalities {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
+        ((left, right) => maybeEquals(left, right, strictEquals))(
           this.optionalStringProperty,
           other.optionalStringProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -4002,7 +4120,7 @@ export class NodeShapeWithPropertyCardinalities {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
+        strictEquals(
           this.requiredStringProperty,
           other.requiredStringProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -4014,7 +4132,7 @@ export class NodeShapeWithPropertyCardinalities {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -4112,9 +4230,7 @@ export class NodeShapeWithPropertyCardinalities {
 }
 
 export namespace NodeShapeWithPropertyCardinalities {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       emptyStringSetProperty: readonly string[];
@@ -4592,13 +4708,8 @@ export class NodeShapeWithMutableProperties {
         );
   }
 
-  equals(
-    other: NodeShapeWithMutableProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: NodeShapeWithMutableProperties): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -4608,12 +4719,8 @@ export class NodeShapeWithMutableProperties {
       }))
       .chain(() =>
         ((left, right) =>
-          purifyHelpers.Maybes.equals(left, right, (left, right) =>
-            purifyHelpers.Arrays.equals(
-              left,
-              right,
-              purifyHelpers.Equatable.strictEquals,
-            ),
+          maybeEquals(left, right, (left, right) =>
+            arrayEquals(left, right, strictEquals),
           ))(this.mutableListProperty, other.mutableListProperty).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
@@ -4625,7 +4732,7 @@ export class NodeShapeWithMutableProperties {
         ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
+        ((left, right) => maybeEquals(left, right, strictEquals))(
           this.mutableStringProperty,
           other.mutableStringProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -4637,7 +4744,7 @@ export class NodeShapeWithMutableProperties {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -4782,9 +4889,7 @@ export class NodeShapeWithMutableProperties {
 }
 
 export namespace NodeShapeWithMutableProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -5270,13 +5375,8 @@ export class NodeShapeWithListProperties {
     return this._identifier;
   }
 
-  equals(
-    other: NodeShapeWithListProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: NodeShapeWithListProperties): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -5286,12 +5386,8 @@ export class NodeShapeWithListProperties {
       }))
       .chain(() =>
         ((left, right) =>
-          purifyHelpers.Maybes.equals(left, right, (left, right) =>
-            purifyHelpers.Arrays.equals(
-              left,
-              right,
-              purifyHelpers.Equatable.equals,
-            ),
+          maybeEquals(left, right, (left, right) =>
+            arrayEquals(left, right, (left, right) => left.equals(right)),
           ))(this.objectListProperty, other.objectListProperty).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
@@ -5304,12 +5400,8 @@ export class NodeShapeWithListProperties {
       )
       .chain(() =>
         ((left, right) =>
-          purifyHelpers.Maybes.equals(left, right, (left, right) =>
-            purifyHelpers.Arrays.equals(
-              left,
-              right,
-              purifyHelpers.Equatable.strictEquals,
-            ),
+          maybeEquals(left, right, (left, right) =>
+            arrayEquals(left, right, strictEquals),
           ))(this.stringListProperty, other.stringListProperty).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
@@ -5321,7 +5413,7 @@ export class NodeShapeWithListProperties {
         ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -5534,9 +5626,7 @@ export class NodeShapeWithListProperties {
 }
 
 export namespace NodeShapeWithListProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6240,13 +6330,8 @@ export class NodeShapeWithLanguageInProperties {
     return this._identifier;
   }
 
-  equals(
-    other: NodeShapeWithLanguageInProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: NodeShapeWithLanguageInProperties): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -6255,39 +6340,31 @@ export class NodeShapeWithLanguageInProperties {
         type: "Property" as const,
       }))
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.languageInProperty, other.languageInProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "languageInProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.languageInProperty,
+          other.languageInProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "languageInProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
       )
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.literalProperty, other.literalProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "literalProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.literalProperty,
+          other.literalProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "literalProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -6397,9 +6474,7 @@ export class NodeShapeWithLanguageInProperties {
 }
 
 export namespace NodeShapeWithLanguageInProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6840,13 +6915,8 @@ export class NodeShapeWithInProperties {
       : dataFactory.blankNode();
   }
 
-  equals(
-    other: NodeShapeWithInProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: NodeShapeWithInProperties): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -6855,7 +6925,7 @@ export class NodeShapeWithInProperties {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
+        ((left, right) => maybeEquals(left, right, strictEquals))(
           this.inBooleansProperty,
           other.inBooleansProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -6867,41 +6937,31 @@ export class NodeShapeWithInProperties {
         })),
       )
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(left, right, (left, right) =>
-            purifyHelpers.Equatable.EqualsResult.fromBooleanEqualsResult(
-              left,
-              right,
-              left.getTime() === right.getTime(),
-            ),
-          ))(this.inDateTimesProperty, other.inDateTimesProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "inDateTimesProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
+        ((left, right) => maybeEquals(left, right, dateEquals))(
+          this.inDateTimesProperty,
+          other.inDateTimesProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "inDateTimesProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
       )
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.inIrisProperty, other.inIrisProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "inIrisProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.inIrisProperty,
+          other.inIrisProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "inIrisProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
+        ((left, right) => maybeEquals(left, right, strictEquals))(
           this.inNumbersProperty,
           other.inNumbersProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -6913,7 +6973,7 @@ export class NodeShapeWithInProperties {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
+        ((left, right) => maybeEquals(left, right, strictEquals))(
           this.inStringsProperty,
           other.inStringsProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -6925,7 +6985,7 @@ export class NodeShapeWithInProperties {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -7043,9 +7103,7 @@ export class NodeShapeWithInProperties {
 }
 
 export namespace NodeShapeWithInProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7142,22 +7200,20 @@ export namespace NodeShapeWithInProperties {
         )
         .head()
         .chain((_value) =>
-          _value
-            .toBoolean()
-            .chain((value) =>
-              value === true
-                ? purify.Either.of(value)
-                : purify.Left(
-                    new rdfjsResource.Resource.MistypedValueError({
-                      actualValue: rdfLiteral.toRdf(value),
-                      expectedValueType: "true",
-                      focusResource: _resource,
-                      predicate: dataFactory.namedNode(
-                        "http://example.com/inBooleansProperty",
-                      ),
-                    }),
-                  ),
-            ),
+          _value.toBoolean().chain((value) =>
+            value === true
+              ? purify.Either.of(value)
+              : purify.Left(
+                  new rdfjsResource.Resource.MistypedValueError({
+                    actualValue: rdfLiteral.toRdf(value),
+                    expectedValueType: "true",
+                    focusResource: _resource,
+                    predicate: dataFactory.namedNode(
+                      "http://example.com/inBooleansProperty",
+                    ),
+                  }),
+                ),
+          ),
         )
         .toMaybe(),
     );
@@ -7666,15 +7722,11 @@ export class NodeShapeWithHasValueProperties {
     return this._identifier;
   }
 
-  equals(
-    other: NodeShapeWithHasValueProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return ((left, right) =>
-      purifyHelpers.Maybes.equals(
-        left,
-        right,
-        purifyHelpers.Equatable.booleanEquals,
-      ))(this.hasIriProperty, other.hasIriProperty)
+  equals(other: NodeShapeWithHasValueProperties): EqualsResult {
+    return ((left, right) => maybeEquals(left, right, booleanEquals))(
+      this.hasIriProperty,
+      other.hasIriProperty,
+    )
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -7683,7 +7735,7 @@ export class NodeShapeWithHasValueProperties {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
+        ((left, right) => maybeEquals(left, right, strictEquals))(
           this.hasLiteralProperty,
           other.hasLiteralProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -7695,19 +7747,18 @@ export class NodeShapeWithHasValueProperties {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
-          this.identifier,
-          other.identifier,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "identifier",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        booleanEquals(this.identifier, other.identifier).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "identifier",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -7786,9 +7837,7 @@ export class NodeShapeWithHasValueProperties {
 }
 
 export namespace NodeShapeWithHasValueProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -8093,11 +8142,8 @@ export class InlineNodeShape {
     return this._identifier;
   }
 
-  equals(other: InlineNodeShape): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: InlineNodeShape): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -8106,19 +8152,18 @@ export class InlineNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty,
-          other.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty, other.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -8392,11 +8437,8 @@ export class ExternNodeShape {
     return this._identifier;
   }
 
-  equals(other: ExternNodeShape): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: ExternNodeShape): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -8405,19 +8447,18 @@ export class ExternNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty,
-          other.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty, other.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -8739,10 +8780,9 @@ export class NodeShapeWithExternProperties {
     return this._identifier;
   }
 
-  equals(
-    other: NodeShapeWithExternProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.maybeEquals(
+  equals(other: NodeShapeWithExternProperties): EqualsResult {
+    return ((left, right) =>
+      maybeEquals(left, right, (left, right) => left.equals(right)))(
       this.externObjectTypeProperty,
       other.externObjectTypeProperty,
     )
@@ -8754,35 +8794,31 @@ export class NodeShapeWithExternProperties {
         type: "Property" as const,
       }))
       .chain(() =>
-        ((left, right) =>
-          purifyHelpers.Maybes.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.booleanEquals,
-          ))(this.externProperty, other.externProperty).mapLeft(
+        ((left, right) => maybeEquals(left, right, booleanEquals))(
+          this.externProperty,
+          other.externProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "externProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        booleanEquals(this.identifier, other.identifier).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
-            propertyName: "externProperty",
+            propertyName: "identifier",
             propertyValuesUnequal,
             type: "Property" as const,
           }),
         ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
-          this.identifier,
-          other.identifier,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "identifier",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      )
-      .chain(() =>
-        purifyHelpers.Equatable.maybeEquals(
+        ((left, right) =>
+          maybeEquals(left, right, (left, right) => left.equals(right)))(
           this.inlineProperty,
           other.inlineProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -8794,7 +8830,7 @@ export class NodeShapeWithExternProperties {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -8894,9 +8930,7 @@ export class NodeShapeWithExternProperties {
 }
 
 export namespace NodeShapeWithExternProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       externObjectTypeProperty: purify.Maybe<ExternObjectType>;
@@ -9303,13 +9337,8 @@ export class NodeShapeWithExplicitRdfTypes {
     return this._identifier;
   }
 
-  equals(
-    other: NodeShapeWithExplicitRdfTypes,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: NodeShapeWithExplicitRdfTypes): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -9318,19 +9347,18 @@ export class NodeShapeWithExplicitRdfTypes {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty,
-          other.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty, other.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -9743,15 +9771,8 @@ export class NodeShapeWithDefaultValueProperties {
         );
   }
 
-  equals(
-    other: NodeShapeWithDefaultValueProperties,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return ((left, right) =>
-      purifyHelpers.Equatable.EqualsResult.fromBooleanEqualsResult(
-        left,
-        right,
-        left.getTime() === right.getTime(),
-      ))(this.dateTimeProperty, other.dateTimeProperty)
+  equals(other: NodeShapeWithDefaultValueProperties): EqualsResult {
+    return dateEquals(this.dateTimeProperty, other.dateTimeProperty)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -9760,7 +9781,7 @@ export class NodeShapeWithDefaultValueProperties {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
+        strictEquals(
           this.falseBooleanProperty,
           other.falseBooleanProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -9772,43 +9793,40 @@ export class NodeShapeWithDefaultValueProperties {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
-          this.identifier,
-          other.identifier,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "identifier",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        booleanEquals(this.identifier, other.identifier).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "identifier",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.numberProperty,
-          other.numberProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "numberProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.numberProperty, other.numberProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "numberProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty,
-          other.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty, other.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
+        strictEquals(
           this.trueBooleanProperty,
           other.trueBooleanProperty,
         ).mapLeft((propertyValuesUnequal) => ({
@@ -9820,7 +9838,7 @@ export class NodeShapeWithDefaultValueProperties {
         })),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -9913,9 +9931,7 @@ export class NodeShapeWithDefaultValueProperties {
 }
 
 export namespace NodeShapeWithDefaultValueProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       dateTimeProperty: Date;
@@ -10404,7 +10420,7 @@ export namespace NodeShapeWithDefaultValueProperties {
  * A node shape that only allows IRI identifiers.
  */
 export class IriNodeShape {
-  identifier: rdfjs.NamedNode;
+  readonly identifier: rdfjs.NamedNode;
   readonly stringProperty: string;
   readonly type = "IriNodeShape";
 
@@ -10416,11 +10432,8 @@ export class IriNodeShape {
     this.stringProperty = parameters.stringProperty;
   }
 
-  equals(other: IriNodeShape): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      this.identifier,
-      other.identifier,
-    )
+  equals(other: IriNodeShape): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -10429,19 +10442,18 @@ export class IriNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.stringProperty,
-          other.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(this.stringProperty, other.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -10707,11 +10719,8 @@ export namespace InterfaceUnionNodeShapeMember2b {
   export function equals(
     left: InterfaceUnionNodeShapeMember2b,
     right: InterfaceUnionNodeShapeMember2b,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      left.identifier,
-      right.identifier,
-    )
+  ): EqualsResult {
+    return booleanEquals(left.identifier, right.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: left,
         right: right,
@@ -10720,19 +10729,18 @@ export namespace InterfaceUnionNodeShapeMember2b {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          left.stringProperty2b,
-          right.stringProperty2b,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: left,
-          right: right,
-          propertyName: "stringProperty2b",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(left.stringProperty2b, right.stringProperty2b).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "stringProperty2b",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(left.type, right.type).mapLeft(
+        strictEquals(left.type, right.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: left,
             right: right,
@@ -10744,9 +10752,7 @@ export namespace InterfaceUnionNodeShapeMember2b {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11031,11 +11037,8 @@ export namespace InterfaceUnionNodeShapeMember2a {
   export function equals(
     left: InterfaceUnionNodeShapeMember2a,
     right: InterfaceUnionNodeShapeMember2a,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      left.identifier,
-      right.identifier,
-    )
+  ): EqualsResult {
+    return booleanEquals(left.identifier, right.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: left,
         right: right,
@@ -11044,19 +11047,18 @@ export namespace InterfaceUnionNodeShapeMember2a {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          left.stringProperty2a,
-          right.stringProperty2a,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: left,
-          right: right,
-          propertyName: "stringProperty2a",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(left.stringProperty2a, right.stringProperty2a).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "stringProperty2a",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(left.type, right.type).mapLeft(
+        strictEquals(left.type, right.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: left,
             right: right,
@@ -11068,9 +11070,7 @@ export namespace InterfaceUnionNodeShapeMember2a {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11355,11 +11355,8 @@ export namespace InterfaceUnionNodeShapeMember1 {
   export function equals(
     left: InterfaceUnionNodeShapeMember1,
     right: InterfaceUnionNodeShapeMember1,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      left.identifier,
-      right.identifier,
-    )
+  ): EqualsResult {
+    return booleanEquals(left.identifier, right.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: left,
         right: right,
@@ -11368,19 +11365,18 @@ export namespace InterfaceUnionNodeShapeMember1 {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          left.stringProperty1,
-          right.stringProperty1,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: left,
-          right: right,
-          propertyName: "stringProperty1",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(left.stringProperty1, right.stringProperty1).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "stringProperty1",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(left.type, right.type).mapLeft(
+        strictEquals(left.type, right.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: left,
             right: right,
@@ -11392,9 +11388,7 @@ export namespace InterfaceUnionNodeShapeMember1 {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11679,11 +11673,8 @@ export namespace InterfaceNodeShape {
   export function equals(
     left: InterfaceNodeShape,
     right: InterfaceNodeShape,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.booleanEquals(
-      left.identifier,
-      right.identifier,
-    )
+  ): EqualsResult {
+    return booleanEquals(left.identifier, right.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: left,
         right: right,
@@ -11692,19 +11683,18 @@ export namespace InterfaceNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          left.stringProperty,
-          right.stringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: left,
-          right: right,
-          propertyName: "stringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        strictEquals(left.stringProperty, right.stringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "stringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(left.type, right.type).mapLeft(
+        strictEquals(left.type, right.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: left,
             right: right,
@@ -11716,9 +11706,7 @@ export namespace InterfaceNodeShape {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11979,13 +11967,8 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
     this.abcStringProperty = parameters.abcStringProperty;
   }
 
-  equals(
-    other: AbstractBaseClassWithPropertiesNodeShape,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.strictEquals(
-      this.abcStringProperty,
-      other.abcStringProperty,
-    )
+  equals(other: AbstractBaseClassWithPropertiesNodeShape): EqualsResult {
+    return strictEquals(this.abcStringProperty, other.abcStringProperty)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -11994,19 +11977,18 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
-          this.identifier,
-          other.identifier,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "identifier",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        booleanEquals(this.identifier, other.identifier).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "identifier",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -12313,9 +12295,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
-    {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-    } & purifyHelpers.Eithers.UnwrapR<
+    { identifier: rdfjs.BlankNode | rdfjs.NamedNode } & UnwrapR<
       ReturnType<
         typeof AbstractBaseClassWithPropertiesNodeShape.propertiesFromJson
       >
@@ -12356,9 +12336,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     resource: rdfjsResource.Resource;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
-    {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-    } & purifyHelpers.Eithers.UnwrapR<
+    { identifier: rdfjs.BlankNode | rdfjs.NamedNode } & UnwrapR<
       ReturnType<
         typeof AbstractBaseClassWithPropertiesNodeShape.propertiesFromRdf
       >
@@ -12530,23 +12508,19 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
     return this._identifier;
   }
 
-  override equals(
-    other: ConcreteParentClassNodeShape,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.parentStringProperty,
-          other.parentStringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "parentStringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+  override equals(other: ConcreteParentClassNodeShape): EqualsResult {
+    return super.equals(other).chain(() =>
+      strictEquals(
+        this.parentStringProperty,
+        other.parentStringProperty,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "parentStringProperty",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<
@@ -12608,14 +12582,12 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       parentStringProperty: string;
-    } & purifyHelpers.Eithers.UnwrapR<
+    } & UnwrapR<
       ReturnType<
         typeof AbstractBaseClassWithoutPropertiesNodeShape.propertiesFromJson
       >
@@ -12668,7 +12640,7 @@ export namespace ConcreteParentClassNodeShape {
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       parentStringProperty: string;
-    } & purifyHelpers.Eithers.UnwrapR<
+    } & UnwrapR<
       ReturnType<
         typeof AbstractBaseClassWithoutPropertiesNodeShape.propertiesFromRdf
       >
@@ -12945,23 +12917,18 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
     return this._identifier;
   }
 
-  override equals(
-    other: ConcreteChildClassNodeShape,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        purifyHelpers.Equatable.strictEquals(
-          this.childStringProperty,
-          other.childStringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
+  override equals(other: ConcreteChildClassNodeShape): EqualsResult {
+    return super.equals(other).chain(() =>
+      strictEquals(this.childStringProperty, other.childStringProperty).mapLeft(
+        (propertyValuesUnequal) => ({
           left: this,
           right: other,
           propertyName: "childStringProperty",
           propertyValuesUnequal,
           type: "Property" as const,
-        })),
-      );
+        }),
+      ),
+    );
   }
 
   override hash<
@@ -13023,14 +12990,12 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       childStringProperty: string;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-    } & purifyHelpers.Eithers.UnwrapR<
+    } & UnwrapR<
       ReturnType<typeof ConcreteParentClassNodeShape.propertiesFromJson>
     >
   > {
@@ -13079,7 +13044,7 @@ export namespace ConcreteChildClassNodeShape {
     {
       childStringProperty: string;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-    } & purifyHelpers.Eithers.UnwrapR<
+    } & UnwrapR<
       ReturnType<typeof ConcreteParentClassNodeShape.propertiesFromRdf>
     >
   > {
@@ -13335,13 +13300,8 @@ export abstract class AbstractBaseClassForExternObjectType {
     this.abcStringProperty = parameters.abcStringProperty;
   }
 
-  equals(
-    other: AbstractBaseClassForExternObjectType,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.strictEquals(
-      this.abcStringProperty,
-      other.abcStringProperty,
-    )
+  equals(other: AbstractBaseClassForExternObjectType): EqualsResult {
+    return strictEquals(this.abcStringProperty, other.abcStringProperty)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
@@ -13350,19 +13310,18 @@ export abstract class AbstractBaseClassForExternObjectType {
         type: "Property" as const,
       }))
       .chain(() =>
-        purifyHelpers.Equatable.booleanEquals(
-          this.identifier,
-          other.identifier,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "identifier",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
+        booleanEquals(this.identifier, other.identifier).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "identifier",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
       )
       .chain(() =>
-        purifyHelpers.Equatable.strictEquals(this.type, other.type).mapLeft(
+        strictEquals(this.type, other.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
@@ -13629,28 +13588,26 @@ export namespace InterfaceUnionNodeShape {
   export function equals(
     left: InterfaceUnionNodeShape,
     right: InterfaceUnionNodeShape,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(
-      () => {
-        switch (left.type) {
-          case "InterfaceUnionNodeShapeMember1":
-            return InterfaceUnionNodeShapeMember1.equals(
-              left,
-              right as unknown as InterfaceUnionNodeShapeMember1,
-            );
-          case "InterfaceUnionNodeShapeMember2a":
-            return InterfaceUnionNodeShapeMember2a.equals(
-              left,
-              right as unknown as InterfaceUnionNodeShapeMember2a,
-            );
-          case "InterfaceUnionNodeShapeMember2b":
-            return InterfaceUnionNodeShapeMember2b.equals(
-              left,
-              right as unknown as InterfaceUnionNodeShapeMember2b,
-            );
-        }
-      },
-    );
+  ): EqualsResult {
+    return strictEquals(left.type, right.type).chain(() => {
+      switch (left.type) {
+        case "InterfaceUnionNodeShapeMember1":
+          return InterfaceUnionNodeShapeMember1.equals(
+            left,
+            right as unknown as InterfaceUnionNodeShapeMember1,
+          );
+        case "InterfaceUnionNodeShapeMember2a":
+          return InterfaceUnionNodeShapeMember2a.equals(
+            left,
+            right as unknown as InterfaceUnionNodeShapeMember2a,
+          );
+        case "InterfaceUnionNodeShapeMember2b":
+          return InterfaceUnionNodeShapeMember2b.equals(
+            left,
+            right as unknown as InterfaceUnionNodeShapeMember2b,
+          );
+      }
+    });
   }
 
   export function fromJson(
@@ -13933,23 +13890,21 @@ export namespace InterfaceUnionNodeShapeMember2 {
   export function equals(
     left: InterfaceUnionNodeShapeMember2,
     right: InterfaceUnionNodeShapeMember2,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(
-      () => {
-        switch (left.type) {
-          case "InterfaceUnionNodeShapeMember2a":
-            return InterfaceUnionNodeShapeMember2a.equals(
-              left,
-              right as unknown as InterfaceUnionNodeShapeMember2a,
-            );
-          case "InterfaceUnionNodeShapeMember2b":
-            return InterfaceUnionNodeShapeMember2b.equals(
-              left,
-              right as unknown as InterfaceUnionNodeShapeMember2b,
-            );
-        }
-      },
-    );
+  ): EqualsResult {
+    return strictEquals(left.type, right.type).chain(() => {
+      switch (left.type) {
+        case "InterfaceUnionNodeShapeMember2a":
+          return InterfaceUnionNodeShapeMember2a.equals(
+            left,
+            right as unknown as InterfaceUnionNodeShapeMember2a,
+          );
+        case "InterfaceUnionNodeShapeMember2b":
+          return InterfaceUnionNodeShapeMember2b.equals(
+            left,
+            right as unknown as InterfaceUnionNodeShapeMember2b,
+          );
+      }
+    });
   }
 
   export function fromJson(
@@ -14185,19 +14140,17 @@ export namespace UnionNodeShape {
   export function equals(
     left: UnionNodeShape,
     right: UnionNodeShape,
-  ): purifyHelpers.Equatable.EqualsResult {
-    return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(
-      () => {
-        switch (left.type) {
-          case "UnionNodeShapeMember1":
-            return left.equals(right as unknown as UnionNodeShapeMember1);
-          case "UnionNodeShapeMember2":
-            return left.equals(right as unknown as UnionNodeShapeMember2);
-          case "ExternObjectType":
-            return left.equals(right as unknown as ExternObjectType);
-        }
-      },
-    );
+  ): EqualsResult {
+    return strictEquals(left.type, right.type).chain(() => {
+      switch (left.type) {
+        case "UnionNodeShapeMember1":
+          return left.equals(right as unknown as UnionNodeShapeMember1);
+        case "UnionNodeShapeMember2":
+          return left.equals(right as unknown as UnionNodeShapeMember2);
+        case "ExternObjectType":
+          return left.equals(right as unknown as ExternObjectType);
+      }
+    });
   }
 
   export function fromJson(
