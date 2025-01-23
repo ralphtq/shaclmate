@@ -5,11 +5,12 @@ import type {
   MutableResourceSet,
   Resource,
 } from "rdfjs-resource";
+import type { EqualsResult } from "../../../../../examples/kitchen-sink/generated.js";
 import { Harness } from "./Harness.js";
 
 export class ClassHarness<
   T extends {
-    equals: (other: T) => Equatable.EqualsResult;
+    equals: (other: T) => EqualsResult;
     identifier: IdentifierT;
     toJson: () => any;
     toRdf: (options: {
