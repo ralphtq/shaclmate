@@ -104,7 +104,7 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     shaclmate:name "InterfaceUnionNodeShape" ;
     shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
     a sh:NodeShape ;
-    rdfs:comment "Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
+    rdfs:comment "Node shape that sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
     sh:xone (:InterfaceUnionNodeShapeMember1
         :InterfaceUnionNodeShapeMember2
     ) .
@@ -125,12 +125,33 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     shaclmate:name "InterfaceUnionNodeShapeMember2" ;
     shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
     a sh:NodeShape ;
+    rdfs:comment "A union node shape that is part of another union shape, to test composition of unions." ;
+    sh:xone (:InterfaceUnionNodeShapeMember2a
+        :InterfaceUnionNodeShapeMember2b
+    ) .
+
+:InterfaceUnionNodeShapeMember2a
+    shaclmate:name "InterfaceUnionNodeShapeMember2a" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a sh:NodeShape ;
     sh:property [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
-        sh:name "stringProperty2" ;
-        sh:path :stringProperty2
+        sh:name "stringProperty2a" ;
+        sh:path :stringProperty2a
+    ] .
+
+:InterfaceUnionNodeShapeMember2b
+    shaclmate:name "InterfaceUnionNodeShapeMember2b" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a sh:NodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "stringProperty2b" ;
+        sh:path :stringProperty2b
     ] .
 
 :IriNodeShape
@@ -146,45 +167,15 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
         sh:path :stringProperty
     ] .
 
-:ListShape
-    shaclmate:name "ListShape" ;
-    a owl:Class, sh:NodeShape ;
-    rdfs:comment "A node shape that models an RDF list. Should be transformed into a list data structure when used as a property instead of surfacing the RDF list structure in code." ;
-    rdfs:subClassOf rdf:List ;
-    sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:property :ListShape-first, :ListShape-rest .
-
-:ListShape-first
-    a sh:PropertyShape ;
-    sh:datatype xsd:string ;
-    sh:maxCount 1 ;
-    sh:minCount 1 ;
-    sh:name "first" ;
-    sh:path rdf:first .
-
-:ListShape-rest
-    a sh:PropertyShape ;
-    sh:maxCount 1 ;
-    sh:minCount 1 ;
-    sh:name "rest" ;
-    sh:path rdf:rest ;
-    sh:xone ([
-            sh:class :ListShape
-        ]
-        [
-            sh:hasValue ( )
-        ]
-    ) .
-
-:MutableListShape
+:MutableStringListShape
     shaclmate:mutable true ;
-    shaclmate:name "MutableListShape" ;
+    shaclmate:name "MutableStringListShape" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf rdf:List ;
     sh:nodeKind sh:BlankNodeOrIRI ;
-    sh:property :MutableListShape-first, :MutableListShape-rest .
+    sh:property :MutableStringListShape-first, :MutableStringListShape-rest .
 
-:MutableListShape-first
+:MutableStringListShape-first
     a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:maxCount 1 ;
@@ -192,14 +183,14 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     sh:name "first" ;
     sh:path rdf:first .
 
-:MutableListShape-rest
+:MutableStringListShape-rest
     a sh:PropertyShape ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:name "rest" ;
     sh:path rdf:rest ;
     sh:xone ([
-            sh:class :MutableListShape
+            sh:class :MutableStringListShape
         ]
         [
             sh:hasValue ( )
@@ -366,7 +357,7 @@ shaclmate:toRdfType's are added an serialization.""" ;
 :NodeShapeWithLanguageInProperties
     shaclmate:name "NodeShapeWithLanguageInProperties" ;
     a sh:NodeShape ;
-    rdfs:comment "Shape that uses the ListShape in a property." ;
+    rdfs:comment "Shape that uses the StringListShape in a property." ;
     sh:property [
         sh:languageIn ("en"
             "fr"
@@ -382,16 +373,20 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :literalProperty
     ] .
 
-:NodeShapeWithListProperty
-    shaclmate:name "NodeShapeWithListProperty" ;
+:NodeShapeWithListProperties
+    shaclmate:name "NodeShapeWithListProperties" ;
     a sh:NodeShape ;
-    rdfs:comment "Shape that uses the ListShape in a property." ;
+    rdfs:comment "Shape that uses the list shapes in properties." ;
     sh:property [
         sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:name "listProperty" ;
-        sh:node :ListShape ;
-        sh:path :listProperty
+        sh:name "objectListProperty" ;
+        sh:node :ObjectListShape ;
+        sh:path :objectListProperty
+    ], [
+        sh:maxCount 1 ;
+        sh:name "stringListProperty" ;
+        sh:node :StringListShape ;
+        sh:path :stringListProperty
     ] .
 
 :NodeShapeWithMutableProperties
@@ -410,7 +405,7 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:description "List-valued property that can't be reassigned but whose value can be mutated" ;
         sh:maxCount 1 ;
         sh:name "mutableListProperty" ;
-        sh:node :MutableListShape ;
+        sh:node :MutableStringListShape ;
         sh:path :mutableListProperty
     ] .
 
@@ -563,6 +558,36 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :stringProperty
     ] .
 
+:ObjectListShape
+    shaclmate:name "ObjectListShape" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "A node shape that models an RDF list. Should be transformed into a list data structure when used as a property instead of surfacing the RDF list structure in code." ;
+    rdfs:subClassOf rdf:List ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:property :ObjectListShape-first, :ObjectListShape-rest .
+
+:ObjectListShape-first
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "first" ;
+    sh:node :NonClassNodeShape ;
+    sh:path rdf:first .
+
+:ObjectListShape-rest
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "rest" ;
+    sh:path rdf:rest ;
+    sh:xone ([
+            sh:class :ObjectListShape
+        ]
+        [
+            sh:hasValue ( )
+        ]
+    ) .
+
 :Sha256IriNodeShape
     shaclmate:mintingStrategy shaclmate:_MintingStrategy_SHA256 ;
     shaclmate:name "Sha256IriNodeShape" ;
@@ -577,10 +602,40 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :stringProperty
     ] .
 
+:StringListShape
+    shaclmate:name "StringListShape" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "A node shape that models an RDF list. Should be transformed into a list data structure when used as a property instead of surfacing the RDF list structure in code." ;
+    rdfs:subClassOf rdf:List ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:property :StringListShape-first, :StringListShape-rest .
+
+:StringListShape-first
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "first" ;
+    sh:path rdf:first .
+
+:StringListShape-rest
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "rest" ;
+    sh:path rdf:rest ;
+    sh:xone ([
+            sh:class :StringListShape
+        ]
+        [
+            sh:hasValue ( )
+        ]
+    ) .
+
 :UnionNodeShape
     shaclmate:name "UnionNodeShape" ;
     a sh:NodeShape ;
-    rdfs:comment "Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
+    rdfs:comment "Node shape sh:xone's other node shapes. This will usually be generated as a discriminated union." ;
     sh:xone (:UnionNodeShapeMember1
         :UnionNodeShapeMember2
         :ExternObjectType

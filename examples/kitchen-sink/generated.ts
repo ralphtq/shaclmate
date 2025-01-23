@@ -230,11 +230,9 @@ export namespace UuidV4IriNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -248,11 +246,7 @@ export namespace UuidV4IriNodeShape {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        UuidV4IriNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        UuidV4IriNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -535,11 +529,9 @@ export namespace UnionNodeShapeMember2 {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -553,11 +545,7 @@ export namespace UnionNodeShapeMember2 {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        UnionNodeShapeMember2.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        UnionNodeShapeMember2.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -844,11 +832,9 @@ export namespace UnionNodeShapeMember1 {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -862,11 +848,7 @@ export namespace UnionNodeShapeMember1 {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        UnionNodeShapeMember1.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        UnionNodeShapeMember1.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -1153,11 +1135,9 @@ export namespace Sha256IriNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -1171,11 +1151,7 @@ export namespace Sha256IriNodeShape {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        Sha256IriNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        Sha256IriNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -1461,11 +1437,9 @@ export namespace NonClassNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -1479,11 +1453,7 @@ export namespace NonClassNodeShape {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        NonClassNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        NonClassNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -1920,7 +1890,9 @@ export class NodeShapeWithUnionProperties {
 }
 
 export namespace NodeShapeWithUnionProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -2247,11 +2219,9 @@ export namespace NodeShapeWithUnionProperties {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -2268,7 +2238,6 @@ export namespace NodeShapeWithUnionProperties {
         NodeShapeWithUnionProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -2868,7 +2837,9 @@ export class NodeShapeWithTermProperties {
 }
 
 export namespace NodeShapeWithTermProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       booleanProperty: purify.Maybe<boolean>;
@@ -3221,11 +3192,9 @@ export namespace NodeShapeWithTermProperties {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -3242,7 +3211,6 @@ export namespace NodeShapeWithTermProperties {
         NodeShapeWithTermProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -3616,7 +3584,9 @@ export class NodeShapeWithPropertyVisibilities {
 }
 
 export namespace NodeShapeWithPropertyVisibilities {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -3788,11 +3758,9 @@ export namespace NodeShapeWithPropertyVisibilities {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -3809,7 +3777,6 @@ export namespace NodeShapeWithPropertyVisibilities {
         NodeShapeWithPropertyVisibilities.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -4145,7 +4112,9 @@ export class NodeShapeWithPropertyCardinalities {
 }
 
 export namespace NodeShapeWithPropertyCardinalities {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       emptyStringSetProperty: readonly string[];
@@ -4396,11 +4365,9 @@ export namespace NodeShapeWithPropertyCardinalities {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -4417,7 +4384,6 @@ export namespace NodeShapeWithPropertyCardinalities {
         NodeShapeWithPropertyCardinalities.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -4765,7 +4731,9 @@ export class NodeShapeWithMutableProperties {
                 dataFactory.namedNode(
                   "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                 ),
-                dataFactory.namedNode("http://example.com/MutableListShape"),
+                dataFactory.namedNode(
+                  "http://example.com/MutableStringListShape",
+                ),
               );
 
               currentSubListResource.add(
@@ -4814,7 +4782,9 @@ export class NodeShapeWithMutableProperties {
 }
 
 export namespace NodeShapeWithMutableProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4999,11 +4969,9 @@ export namespace NodeShapeWithMutableProperties {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -5020,7 +4988,6 @@ export namespace NodeShapeWithMutableProperties {
         NodeShapeWithMutableProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -5257,19 +5224,43 @@ export namespace NodeShapeWithMutableProperties {
   }
 }
 /**
- * Shape that uses the ListShape in a property.
+ * Shape that uses the list shapes in properties.
  */
-export class NodeShapeWithListProperty {
+export class NodeShapeWithListProperties {
   private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
-  readonly listProperty: readonly string[];
-  readonly type = "NodeShapeWithListProperty";
+  readonly objectListProperty: purify.Maybe<readonly NonClassNodeShape[]>;
+  readonly stringListProperty: purify.Maybe<readonly string[]>;
+  readonly type = "NodeShapeWithListProperties";
 
   constructor(parameters: {
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
-    readonly listProperty: readonly string[];
+    readonly objectListProperty?:
+      | purify.Maybe<readonly NonClassNodeShape[]>
+      | readonly NonClassNodeShape[];
+    readonly stringListProperty?:
+      | purify.Maybe<readonly string[]>
+      | readonly string[];
   }) {
     this._identifier = parameters.identifier;
-    this.listProperty = parameters.listProperty;
+    if (purify.Maybe.isMaybe(parameters.objectListProperty)) {
+      this.objectListProperty = parameters.objectListProperty;
+    } else if (Array.isArray(parameters.objectListProperty)) {
+      this.objectListProperty = purify.Maybe.of(parameters.objectListProperty);
+    } else if (typeof parameters.objectListProperty === "undefined") {
+      this.objectListProperty = purify.Maybe.empty();
+    } else {
+      this.objectListProperty = parameters.objectListProperty as never;
+    }
+
+    if (purify.Maybe.isMaybe(parameters.stringListProperty)) {
+      this.stringListProperty = parameters.stringListProperty;
+    } else if (Array.isArray(parameters.stringListProperty)) {
+      this.stringListProperty = purify.Maybe.of(parameters.stringListProperty);
+    } else if (typeof parameters.stringListProperty === "undefined") {
+      this.stringListProperty = purify.Maybe.empty();
+    } else {
+      this.stringListProperty = parameters.stringListProperty as never;
+    }
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
@@ -5280,7 +5271,7 @@ export class NodeShapeWithListProperty {
   }
 
   equals(
-    other: NodeShapeWithListProperty,
+    other: NodeShapeWithListProperties,
   ): purifyHelpers.Equatable.EqualsResult {
     return purifyHelpers.Equatable.booleanEquals(
       this.identifier,
@@ -5295,15 +5286,35 @@ export class NodeShapeWithListProperty {
       }))
       .chain(() =>
         ((left, right) =>
-          purifyHelpers.Arrays.equals(
-            left,
-            right,
-            purifyHelpers.Equatable.strictEquals,
-          ))(this.listProperty, other.listProperty).mapLeft(
+          purifyHelpers.Maybes.equals(left, right, (left, right) =>
+            purifyHelpers.Arrays.equals(
+              left,
+              right,
+              purifyHelpers.Equatable.equals,
+            ),
+          ))(this.objectListProperty, other.objectListProperty).mapLeft(
           (propertyValuesUnequal) => ({
             left: this,
             right: other,
-            propertyName: "listProperty",
+            propertyName: "objectListProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        ((left, right) =>
+          purifyHelpers.Maybes.equals(left, right, (left, right) =>
+            purifyHelpers.Arrays.equals(
+              left,
+              right,
+              purifyHelpers.Equatable.strictEquals,
+            ),
+          ))(this.stringListProperty, other.stringListProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "stringListProperty",
             propertyValuesUnequal,
             type: "Property" as const,
           }),
@@ -5327,17 +5338,26 @@ export class NodeShapeWithListProperty {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
-    for (const _element0 of this.listProperty) {
-      _hasher.update(_element0);
-    }
-
+    this.objectListProperty.ifJust((_value0) => {
+      for (const _element1 of _value0) {
+        _element1.hash(_hasher);
+      }
+    });
+    this.stringListProperty.ifJust((_value0) => {
+      for (const _element1 of _value0) {
+        _hasher.update(_element1);
+      }
+    });
     return _hasher;
   }
 
   toJson(): {
     readonly "@id": string;
-    readonly listProperty: readonly string[];
-    readonly type: "NodeShapeWithListProperty";
+    readonly objectListProperty:
+      | readonly ReturnType<NonClassNodeShape["toJson"]>[]
+      | undefined;
+    readonly stringListProperty: readonly string[] | undefined;
+    readonly type: "NodeShapeWithListProperties";
   } {
     return JSON.parse(
       JSON.stringify({
@@ -5345,9 +5365,14 @@ export class NodeShapeWithListProperty {
           this.identifier.termType === "BlankNode"
             ? `_:${this.identifier.value}`
             : this.identifier.value,
-        listProperty: this.listProperty.map((_item) => _item),
+        objectListProperty: this.objectListProperty
+          .map((_item) => _item.map((_item) => _item.toJson()))
+          .extract(),
+        stringListProperty: this.stringListProperty
+          .map((_item) => _item.map((_item) => _item))
+          .extract(),
         type: this.type,
-      } satisfies ReturnType<NodeShapeWithListProperty["toJson"]>),
+      } satisfies ReturnType<NodeShapeWithListProperties["toJson"]>),
     );
   }
 
@@ -5364,63 +5389,141 @@ export class NodeShapeWithListProperty {
       mutateGraph,
     });
     _resource.add(
-      dataFactory.namedNode("http://example.com/listProperty"),
-      this.listProperty.reduce(
-        ({ currentSubListResource, listResource }, item, itemIndex, list) => {
-          if (itemIndex === 0) {
-            currentSubListResource = listResource;
-          } else {
-            const newSubListResource = resourceSet.mutableResource({
-              identifier: dataFactory.blankNode(),
-              mutateGraph,
-            });
-            currentSubListResource!.add(
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-              ),
-              newSubListResource.identifier,
-            );
-            currentSubListResource = newSubListResource;
-          }
+      dataFactory.namedNode("http://example.com/objectListProperty"),
+      this.objectListProperty.map(
+        (_value) =>
+          _value.reduce(
+            (
+              { currentSubListResource, listResource },
+              item,
+              itemIndex,
+              list,
+            ) => {
+              if (itemIndex === 0) {
+                currentSubListResource = listResource;
+              } else {
+                const newSubListResource = resourceSet.mutableResource({
+                  identifier: dataFactory.blankNode(),
+                  mutateGraph,
+                });
+                currentSubListResource!.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  newSubListResource.identifier,
+                );
+                currentSubListResource = newSubListResource;
+              }
 
-          currentSubListResource.add(
-            dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-            ),
-            dataFactory.namedNode("http://example.com/ListShape"),
-          );
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                ),
+                dataFactory.namedNode("http://example.com/ObjectListShape"),
+              );
 
-          currentSubListResource.add(
-            dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-            ),
-            item,
-          );
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                item.toRdf({
+                  mutateGraph: mutateGraph,
+                  resourceSet: resourceSet,
+                }),
+              );
 
-          if (itemIndex + 1 === list.length) {
-            currentSubListResource.add(
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-              ),
-              dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
-              ),
-            );
-          }
+              if (itemIndex + 1 === list.length) {
+                currentSubListResource.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+                  ),
+                );
+              }
 
-          return { currentSubListResource, listResource };
-        },
-        {
-          currentSubListResource: null,
-          listResource: resourceSet.mutableResource({
-            identifier: dataFactory.blankNode(),
-            mutateGraph,
-          }),
-        } as {
-          currentSubListResource: rdfjsResource.MutableResource | null;
-          listResource: rdfjsResource.MutableResource;
-        },
-      ).listResource.identifier,
+              return { currentSubListResource, listResource };
+            },
+            {
+              currentSubListResource: null,
+              listResource: resourceSet.mutableResource({
+                identifier: dataFactory.blankNode(),
+                mutateGraph,
+              }),
+            } as {
+              currentSubListResource: rdfjsResource.MutableResource | null;
+              listResource: rdfjsResource.MutableResource;
+            },
+          ).listResource.identifier,
+      ),
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/stringListProperty"),
+      this.stringListProperty.map(
+        (_value) =>
+          _value.reduce(
+            (
+              { currentSubListResource, listResource },
+              item,
+              itemIndex,
+              list,
+            ) => {
+              if (itemIndex === 0) {
+                currentSubListResource = listResource;
+              } else {
+                const newSubListResource = resourceSet.mutableResource({
+                  identifier: dataFactory.blankNode(),
+                  mutateGraph,
+                });
+                currentSubListResource!.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  newSubListResource.identifier,
+                );
+                currentSubListResource = newSubListResource;
+              }
+
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                ),
+                dataFactory.namedNode("http://example.com/StringListShape"),
+              );
+
+              currentSubListResource.add(
+                dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                item,
+              );
+
+              if (itemIndex + 1 === list.length) {
+                currentSubListResource.add(
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                  ),
+                  dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+                  ),
+                );
+              }
+
+              return { currentSubListResource, listResource };
+            },
+            {
+              currentSubListResource: null,
+              listResource: resourceSet.mutableResource({
+                identifier: dataFactory.blankNode(),
+                mutateGraph,
+              }),
+            } as {
+              currentSubListResource: rdfjsResource.MutableResource | null;
+              listResource: rdfjsResource.MutableResource;
+            },
+          ).listResource.identifier,
+      ),
     );
     return _resource;
   }
@@ -5430,12 +5533,15 @@ export class NodeShapeWithListProperty {
   }
 }
 
-export namespace NodeShapeWithListProperty {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+export namespace NodeShapeWithListProperties {
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      listProperty: readonly string[];
+      objectListProperty: purify.Maybe<readonly NonClassNodeShape[]>;
+      stringListProperty: purify.Maybe<readonly string[]>;
     }
   > {
     const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
@@ -5447,15 +5553,26 @@ export namespace NodeShapeWithListProperty {
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
-    const listProperty = _jsonObject["listProperty"].map((_item) => _item);
-    return purify.Either.of({ identifier, listProperty });
+    const objectListProperty = purify.Maybe.fromNullable(
+      _jsonObject["objectListProperty"],
+    ).map((_item) =>
+      _item.map((_item) => NonClassNodeShape.fromJson(_item).unsafeCoerce()),
+    );
+    const stringListProperty = purify.Maybe.fromNullable(
+      _jsonObject["stringListProperty"],
+    ).map((_item) => _item.map((_item) => _item));
+    return purify.Either.of({
+      identifier,
+      objectListProperty,
+      stringListProperty,
+    });
   }
 
   export function fromJson(
     json: unknown,
-  ): purify.Either<zod.ZodError, NodeShapeWithListProperty> {
-    return NodeShapeWithListProperty.propertiesFromJson(json).map(
-      (properties) => new NodeShapeWithListProperty(properties),
+  ): purify.Either<zod.ZodError, NodeShapeWithListProperties> {
+    return NodeShapeWithListProperties.propertiesFromJson(json).map(
+      (properties) => new NodeShapeWithListProperties(properties),
     );
   }
 
@@ -5474,47 +5591,92 @@ export namespace NodeShapeWithListProperty {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      listProperty: readonly string[];
+      objectListProperty: purify.Maybe<readonly NonClassNodeShape[]>;
+      stringListProperty: purify.Maybe<readonly string[]>;
     }
   > {
     const identifier = _resource.identifier;
-    const _listPropertyEither: purify.Either<
+    const _objectListPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
-      readonly string[]
-    > = _resource
-      .values(dataFactory.namedNode("http://example.com/listProperty"), {
-        unique: true,
-      })
-      .head()
-      .chain((value) => value.toList())
-      .map((values) =>
-        values.flatMap((_value) =>
-          _value
-            .toValues()
-            .head()
-            .chain((_value) => _value.toString())
-            .toMaybe()
-            .toList(),
-        ),
-      );
-    if (_listPropertyEither.isLeft()) {
-      return _listPropertyEither;
+      purify.Maybe<readonly NonClassNodeShape[]>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://example.com/objectListProperty"),
+          { unique: true },
+        )
+        .head()
+        .chain((value) => value.toList())
+        .map((values) =>
+          values.flatMap((_value) =>
+            _value
+              .toValues()
+              .head()
+              .chain((value) => value.toResource())
+              .chain((_resource) =>
+                NonClassNodeShape.fromRdf({
+                  ..._context,
+                  ignoreRdfType: true,
+                  languageIn: _languageIn,
+                  resource: _resource,
+                }),
+              )
+              .toMaybe()
+              .toList(),
+          ),
+        )
+        .toMaybe(),
+    );
+    if (_objectListPropertyEither.isLeft()) {
+      return _objectListPropertyEither;
     }
 
-    const listProperty = _listPropertyEither.unsafeCoerce();
-    return purify.Either.of({ identifier, listProperty });
+    const objectListProperty = _objectListPropertyEither.unsafeCoerce();
+    const _stringListPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<readonly string[]>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://example.com/stringListProperty"),
+          { unique: true },
+        )
+        .head()
+        .chain((value) => value.toList())
+        .map((values) =>
+          values.flatMap((_value) =>
+            _value
+              .toValues()
+              .head()
+              .chain((_value) => _value.toString())
+              .toMaybe()
+              .toList(),
+          ),
+        )
+        .toMaybe(),
+    );
+    if (_stringListPropertyEither.isLeft()) {
+      return _stringListPropertyEither;
+    }
+
+    const stringListProperty = _stringListPropertyEither.unsafeCoerce();
+    return purify.Either.of({
+      identifier,
+      objectListProperty,
+      stringListProperty,
+    });
   }
 
   export function fromRdf(
     parameters: Parameters<
-      typeof NodeShapeWithListProperty.propertiesFromRdf
+      typeof NodeShapeWithListProperties.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
-    NodeShapeWithListProperty
+    NodeShapeWithListProperties
   > {
-    return NodeShapeWithListProperty.propertiesFromRdf(parameters).map(
-      (properties) => new NodeShapeWithListProperty(properties),
+    return NodeShapeWithListProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithListProperties(properties),
     );
   }
 
@@ -5531,11 +5693,17 @@ export namespace NodeShapeWithListProperty {
           scope: `${scopePrefix}/properties/@id`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/listProperty`, type: "Control" },
+        NonClassNodeShape.jsonUiSchema({
+          scopePrefix: `${scopePrefix}/properties/objectListProperty`,
+        }),
+        {
+          scope: `${scopePrefix}/properties/stringListProperty`,
+          type: "Control",
+        },
         {
           rule: {
             condition: {
-              schema: { const: "NodeShapeWithListProperty" },
+              schema: { const: "NodeShapeWithListProperties" },
               scope: `${scopePrefix}/properties/type`,
             },
             effect: "HIDE",
@@ -5544,7 +5712,7 @@ export namespace NodeShapeWithListProperty {
           type: "Control",
         },
       ],
-      label: "NodeShapeWithListProperty",
+      label: "NodeShapeWithListProperties",
       type: "Group",
     };
   }
@@ -5552,8 +5720,9 @@ export namespace NodeShapeWithListProperty {
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
-      listProperty: zod.string().array(),
-      type: zod.literal("NodeShapeWithListProperty"),
+      objectListProperty: NonClassNodeShape.jsonZodSchema().array().optional(),
+      stringListProperty: zod.string().array().optional(),
+      type: zod.literal("NodeShapeWithListProperties"),
     });
   }
 
@@ -5562,28 +5731,25 @@ export namespace NodeShapeWithListProperty {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
       template: (queryParameters.template ?? []).concat(
-        NodeShapeWithListProperty.sparqlConstructTemplateTriples({
+        NodeShapeWithListProperties.sparqlConstructTemplateTriples({
           ignoreRdfType,
           subject,
         }),
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        NodeShapeWithListProperty.sparqlWherePatterns({
+        NodeShapeWithListProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -5598,7 +5764,7 @@ export namespace NodeShapeWithListProperty {
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
-      NodeShapeWithListProperty.sparqlConstructQuery(parameters),
+      NodeShapeWithListProperties.sparqlConstructQuery(parameters),
     );
   }
 
@@ -5608,56 +5774,120 @@ export namespace NodeShapeWithListProperty {
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
     const subject =
-      parameters?.subject ?? dataFactory.variable!("nodeShapeWithListProperty");
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithListProperties");
     const variablePrefix =
       parameters?.variablePrefix ??
       (subject.termType === "Variable"
         ? subject.value
-        : "nodeShapeWithListProperty");
+        : "nodeShapeWithListProperties");
     return [
       {
-        object: dataFactory.variable!(`${variablePrefix}ListProperty`),
-        predicate: dataFactory.namedNode("http://example.com/listProperty"),
+        object: dataFactory.variable!(`${variablePrefix}ObjectListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/objectListProperty",
+        ),
         subject,
       },
       {
-        subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}ObjectListProperty`),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
         object: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}Item0`,
+          `${`${variablePrefix}ObjectListProperty`}Item0`,
         ),
       },
+      ...NonClassNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}ObjectListProperty`}Item0`,
+        ),
+        variablePrefix: `${`${variablePrefix}ObjectListProperty`}Item0`,
+      }),
       {
-        subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
+        subject: dataFactory.variable!(`${variablePrefix}ObjectListProperty`),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
         ),
         object: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}Rest0`,
+          `${`${variablePrefix}ObjectListProperty`}Rest0`,
         ),
       },
       {
         subject: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}RestN`,
+          `${`${variablePrefix}ObjectListProperty`}RestN`,
         ),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
         ),
         object: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}ItemN`,
+          `${`${variablePrefix}ObjectListProperty`}ItemN`,
         ),
       },
+      ...NonClassNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}ObjectListProperty`}ItemN`,
+        ),
+        variablePrefix: `${`${variablePrefix}ObjectListProperty`}ItemN`,
+      }),
       {
         subject: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}RestN`,
+          `${`${variablePrefix}ObjectListProperty`}RestN`,
         ),
         predicate: dataFactory.namedNode(
           "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
         ),
         object: dataFactory.variable!(
-          `${`${variablePrefix}ListProperty`}RestNBasic`,
+          `${`${variablePrefix}ObjectListProperty`}RestNBasic`,
+        ),
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/stringListProperty",
+        ),
+        subject,
+      },
+      {
+        subject: dataFactory.variable!(`${variablePrefix}StringListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}Item0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(`${variablePrefix}StringListProperty`),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}Rest0`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}ItemN`,
+        ),
+      },
+      {
+        subject: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}RestN`,
+        ),
+        predicate: dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+        ),
+        object: dataFactory.variable!(
+          `${`${variablePrefix}StringListProperty`}RestNBasic`,
         ),
       },
     ];
@@ -5669,86 +5899,166 @@ export namespace NodeShapeWithListProperty {
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
     const subject =
-      parameters?.subject ?? dataFactory.variable!("nodeShapeWithListProperty");
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithListProperties");
     const variablePrefix =
       parameters?.variablePrefix ??
       (subject.termType === "Variable"
         ? subject.value
-        : "nodeShapeWithListProperty");
+        : "nodeShapeWithListProperties");
     return [
       {
-        triples: [
-          {
-            object: dataFactory.variable!(`${variablePrefix}ListProperty`),
-            predicate: dataFactory.namedNode("http://example.com/listProperty"),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-      {
-        type: "bgp",
-        triples: [
-          {
-            subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
-            predicate: dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
-            ),
-            object: dataFactory.variable!(
-              `${`${variablePrefix}ListProperty`}Item0`,
-            ),
-          },
-        ],
-      },
-      {
-        type: "bgp",
-        triples: [
-          {
-            subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
-            predicate: dataFactory.namedNode(
-              "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-            ),
-            object: dataFactory.variable!(
-              `${`${variablePrefix}ListProperty`}Rest0`,
-            ),
-          },
-        ],
-      },
-      {
-        type: "optional",
         patterns: [
           {
-            type: "bgp",
             triples: [
               {
-                subject: dataFactory.variable!(`${variablePrefix}ListProperty`),
-                predicate: {
-                  type: "path",
-                  pathType: "*",
-                  items: [
-                    dataFactory.namedNode(
-                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
-                    ),
-                  ],
-                },
                 object: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}RestN`,
+                  `${variablePrefix}ObjectListProperty`,
                 ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/objectListProperty",
+                ),
+                subject,
               },
             ],
+            type: "bgp",
           },
           {
             type: "bgp",
             triples: [
               {
                 subject: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}RestN`,
+                  `${variablePrefix}ObjectListProperty`,
                 ),
                 predicate: dataFactory.namedNode(
                   "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
                 ),
                 object: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}ItemN`,
+                  `${`${variablePrefix}ObjectListProperty`}Item0`,
+                ),
+              },
+            ],
+          },
+          ...NonClassNodeShape.sparqlWherePatterns({
+            ignoreRdfType: true,
+            subject: dataFactory.variable!(
+              `${`${variablePrefix}ObjectListProperty`}Item0`,
+            ),
+            variablePrefix: `${`${variablePrefix}ObjectListProperty`}Item0`,
+          }),
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${variablePrefix}ObjectListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}ObjectListProperty`}Rest0`,
+                ),
+              },
+            ],
+          },
+          {
+            type: "optional",
+            patterns: [
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${variablePrefix}ObjectListProperty`,
+                    ),
+                    predicate: {
+                      type: "path",
+                      pathType: "*",
+                      items: [
+                        dataFactory.namedNode(
+                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                        ),
+                      ],
+                    },
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}RestN`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}ItemN`,
+                    ),
+                  },
+                ],
+              },
+              ...NonClassNodeShape.sparqlWherePatterns({
+                ignoreRdfType: true,
+                subject: dataFactory.variable!(
+                  `${`${variablePrefix}ObjectListProperty`}ItemN`,
+                ),
+                variablePrefix: `${`${variablePrefix}ObjectListProperty`}ItemN`,
+              }),
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}ObjectListProperty`}RestNBasic`,
+                    ),
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}StringListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/stringListProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+          {
+            type: "bgp",
+            triples: [
+              {
+                subject: dataFactory.variable!(
+                  `${variablePrefix}StringListProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                ),
+                object: dataFactory.variable!(
+                  `${`${variablePrefix}StringListProperty`}Item0`,
                 ),
               },
             ],
@@ -5758,24 +6068,84 @@ export namespace NodeShapeWithListProperty {
             triples: [
               {
                 subject: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}RestN`,
+                  `${variablePrefix}StringListProperty`,
                 ),
                 predicate: dataFactory.namedNode(
                   "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
                 ),
                 object: dataFactory.variable!(
-                  `${`${variablePrefix}ListProperty`}RestNBasic`,
+                  `${`${variablePrefix}StringListProperty`}Rest0`,
                 ),
               },
             ],
           },
+          {
+            type: "optional",
+            patterns: [
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${variablePrefix}StringListProperty`,
+                    ),
+                    predicate: {
+                      type: "path",
+                      pathType: "*",
+                      items: [
+                        dataFactory.namedNode(
+                          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                        ),
+                      ],
+                    },
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}RestN`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}ItemN`,
+                    ),
+                  },
+                ],
+              },
+              {
+                type: "bgp",
+                triples: [
+                  {
+                    subject: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}RestN`,
+                    ),
+                    predicate: dataFactory.namedNode(
+                      "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                    ),
+                    object: dataFactory.variable!(
+                      `${`${variablePrefix}StringListProperty`}RestNBasic`,
+                    ),
+                  },
+                ],
+              },
+            ],
+          },
         ],
+        type: "optional",
       },
     ];
   }
 }
 /**
- * Shape that uses the ListShape in a property.
+ * Shape that uses the StringListShape in a property.
  */
 export class NodeShapeWithLanguageInProperties {
   private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
@@ -6027,7 +6397,9 @@ export class NodeShapeWithLanguageInProperties {
 }
 
 export namespace NodeShapeWithLanguageInProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6246,11 +6618,9 @@ export namespace NodeShapeWithLanguageInProperties {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -6267,7 +6637,6 @@ export namespace NodeShapeWithLanguageInProperties {
         NodeShapeWithLanguageInProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -6674,7 +7043,9 @@ export class NodeShapeWithInProperties {
 }
 
 export namespace NodeShapeWithInProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6771,20 +7142,22 @@ export namespace NodeShapeWithInProperties {
         )
         .head()
         .chain((_value) =>
-          _value.toBoolean().chain((value) =>
-            value === true
-              ? purify.Either.of(value)
-              : purify.Left(
-                  new rdfjsResource.Resource.MistypedValueError({
-                    actualValue: rdfLiteral.toRdf(value),
-                    expectedValueType: "true",
-                    focusResource: _resource,
-                    predicate: dataFactory.namedNode(
-                      "http://example.com/inBooleansProperty",
-                    ),
-                  }),
-                ),
-          ),
+          _value
+            .toBoolean()
+            .chain((value) =>
+              value === true
+                ? purify.Either.of(value)
+                : purify.Left(
+                    new rdfjsResource.Resource.MistypedValueError({
+                      actualValue: rdfLiteral.toRdf(value),
+                      expectedValueType: "true",
+                      focusResource: _resource,
+                      predicate: dataFactory.namedNode(
+                        "http://example.com/inBooleansProperty",
+                      ),
+                    }),
+                  ),
+            ),
         )
         .toMaybe(),
     );
@@ -7052,11 +7425,9 @@ export namespace NodeShapeWithInProperties {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -7073,7 +7444,6 @@ export namespace NodeShapeWithInProperties {
         NodeShapeWithInProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -7416,7 +7786,9 @@ export class NodeShapeWithHasValueProperties {
 }
 
 export namespace NodeShapeWithHasValueProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -7580,11 +7952,9 @@ export namespace NodeShapeWithHasValueProperties {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -7601,7 +7971,6 @@ export namespace NodeShapeWithHasValueProperties {
         NodeShapeWithHasValueProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -7924,11 +8293,9 @@ export namespace InlineNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -7942,11 +8309,7 @@ export namespace InlineNodeShape {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        InlineNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        InlineNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -8229,11 +8592,9 @@ export namespace ExternNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -8247,11 +8608,7 @@ export namespace ExternNodeShape {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        ExternNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        ExternNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -8537,7 +8894,9 @@ export class NodeShapeWithExternProperties {
 }
 
 export namespace NodeShapeWithExternProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       externObjectTypeProperty: purify.Maybe<ExternObjectType>;
@@ -8747,11 +9106,9 @@ export namespace NodeShapeWithExternProperties {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -8768,7 +9125,6 @@ export namespace NodeShapeWithExternProperties {
         NodeShapeWithExternProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -9185,11 +9541,9 @@ export namespace NodeShapeWithExplicitRdfTypes {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -9206,7 +9560,6 @@ export namespace NodeShapeWithExplicitRdfTypes {
         NodeShapeWithExplicitRdfTypes.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -9560,7 +9913,9 @@ export class NodeShapeWithDefaultValueProperties {
 }
 
 export namespace NodeShapeWithDefaultValueProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       dateTimeProperty: Date;
@@ -9850,11 +10205,9 @@ export namespace NodeShapeWithDefaultValueProperties {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -9871,7 +10224,6 @@ export namespace NodeShapeWithDefaultValueProperties {
         NodeShapeWithDefaultValueProperties.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -10259,11 +10611,9 @@ export namespace IriNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -10274,11 +10624,7 @@ export namespace IriNodeShape {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        IriNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        IriNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -10341,26 +10687,26 @@ export namespace IriNodeShape {
     ];
   }
 }
-export interface InterfaceUnionNodeShapeMember2 {
+export interface InterfaceUnionNodeShapeMember2b {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly stringProperty2: string;
-  readonly type: "InterfaceUnionNodeShapeMember2";
+  readonly stringProperty2b: string;
+  readonly type: "InterfaceUnionNodeShapeMember2b";
 }
 
-export namespace InterfaceUnionNodeShapeMember2 {
+export namespace InterfaceUnionNodeShapeMember2b {
   export function create(parameters: {
     readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-    readonly stringProperty2: string;
-  }): InterfaceUnionNodeShapeMember2 {
+    readonly stringProperty2b: string;
+  }): InterfaceUnionNodeShapeMember2b {
     const identifier = parameters.identifier;
-    const stringProperty2 = parameters.stringProperty2;
-    const type = "InterfaceUnionNodeShapeMember2" as const;
-    return { identifier, stringProperty2, type };
+    const stringProperty2b = parameters.stringProperty2b;
+    const type = "InterfaceUnionNodeShapeMember2b" as const;
+    return { identifier, stringProperty2b, type };
   }
 
   export function equals(
-    left: InterfaceUnionNodeShapeMember2,
-    right: InterfaceUnionNodeShapeMember2,
+    left: InterfaceUnionNodeShapeMember2b,
+    right: InterfaceUnionNodeShapeMember2b,
   ): purifyHelpers.Equatable.EqualsResult {
     return purifyHelpers.Equatable.booleanEquals(
       left.identifier,
@@ -10375,12 +10721,12 @@ export namespace InterfaceUnionNodeShapeMember2 {
       }))
       .chain(() =>
         purifyHelpers.Equatable.strictEquals(
-          left.stringProperty2,
-          right.stringProperty2,
+          left.stringProperty2b,
+          right.stringProperty2b,
         ).mapLeft((propertyValuesUnequal) => ({
           left: left,
           right: right,
-          propertyName: "stringProperty2",
+          propertyName: "stringProperty2b",
           propertyValuesUnequal,
           type: "Property" as const,
         })),
@@ -10398,12 +10744,14 @@ export namespace InterfaceUnionNodeShapeMember2 {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      stringProperty2: string;
-      type: "InterfaceUnionNodeShapeMember2";
+      stringProperty2b: string;
+      type: "InterfaceUnionNodeShapeMember2b";
     }
   > {
     const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
@@ -10415,15 +10763,15 @@ export namespace InterfaceUnionNodeShapeMember2 {
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
-    const stringProperty2 = _jsonObject["stringProperty2"];
-    const type = "InterfaceUnionNodeShapeMember2" as const;
-    return purify.Either.of({ identifier, stringProperty2, type });
+    const stringProperty2b = _jsonObject["stringProperty2b"];
+    const type = "InterfaceUnionNodeShapeMember2b" as const;
+    return purify.Either.of({ identifier, stringProperty2b, type });
   }
 
   export function fromJson(
     json: unknown,
-  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2> {
-    return InterfaceUnionNodeShapeMember2.propertiesFromJson(json);
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2b> {
+    return InterfaceUnionNodeShapeMember2b.propertiesFromJson(json);
   }
 
   export function propertiesFromRdf({
@@ -10441,38 +10789,38 @@ export namespace InterfaceUnionNodeShapeMember2 {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      stringProperty2: string;
-      type: "InterfaceUnionNodeShapeMember2";
+      stringProperty2b: string;
+      type: "InterfaceUnionNodeShapeMember2b";
     }
   > {
     const identifier = _resource.identifier;
-    const _stringProperty2Either: purify.Either<
+    const _stringProperty2bEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       string
     > = _resource
-      .values(dataFactory.namedNode("http://example.com/stringProperty2"), {
+      .values(dataFactory.namedNode("http://example.com/stringProperty2b"), {
         unique: true,
       })
       .head()
       .chain((_value) => _value.toString());
-    if (_stringProperty2Either.isLeft()) {
-      return _stringProperty2Either;
+    if (_stringProperty2bEither.isLeft()) {
+      return _stringProperty2bEither;
     }
 
-    const stringProperty2 = _stringProperty2Either.unsafeCoerce();
-    const type = "InterfaceUnionNodeShapeMember2" as const;
-    return purify.Either.of({ identifier, stringProperty2, type });
+    const stringProperty2b = _stringProperty2bEither.unsafeCoerce();
+    const type = "InterfaceUnionNodeShapeMember2b" as const;
+    return purify.Either.of({ identifier, stringProperty2b, type });
   }
 
   export function fromRdf(
     parameters: Parameters<
-      typeof InterfaceUnionNodeShapeMember2.propertiesFromRdf
+      typeof InterfaceUnionNodeShapeMember2b.propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
-    InterfaceUnionNodeShapeMember2
+    InterfaceUnionNodeShapeMember2b
   > {
-    return InterfaceUnionNodeShapeMember2.propertiesFromRdf(parameters);
+    return InterfaceUnionNodeShapeMember2b.propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -10488,11 +10836,14 @@ export namespace InterfaceUnionNodeShapeMember2 {
           scope: `${scopePrefix}/properties/@id`,
           type: "Control",
         },
-        { scope: `${scopePrefix}/properties/stringProperty2`, type: "Control" },
+        {
+          scope: `${scopePrefix}/properties/stringProperty2b`,
+          type: "Control",
+        },
         {
           rule: {
             condition: {
-              schema: { const: "InterfaceUnionNodeShapeMember2" },
+              schema: { const: "InterfaceUnionNodeShapeMember2b" },
               scope: `${scopePrefix}/properties/type`,
             },
             effect: "HIDE",
@@ -10501,7 +10852,7 @@ export namespace InterfaceUnionNodeShapeMember2 {
           type: "Control",
         },
       ],
-      label: "InterfaceUnionNodeShapeMember2",
+      label: "InterfaceUnionNodeShapeMember2b",
       type: "Group",
     };
   }
@@ -10509,8 +10860,8 @@ export namespace InterfaceUnionNodeShapeMember2 {
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
-      stringProperty2: zod.string(),
-      type: zod.literal("InterfaceUnionNodeShapeMember2"),
+      stringProperty2b: zod.string(),
+      type: zod.literal("InterfaceUnionNodeShapeMember2b"),
     });
   }
 
@@ -10519,10 +10870,10 @@ export namespace InterfaceUnionNodeShapeMember2 {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(
-    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _interfaceUnionNodeShapeMember2b: InterfaceUnionNodeShapeMember2b,
     _hasher: HasherT,
   ): HasherT {
-    _hasher.update(_interfaceUnionNodeShapeMember2.stringProperty2);
+    _hasher.update(_interfaceUnionNodeShapeMember2b.stringProperty2b);
     return _hasher;
   }
 
@@ -10531,28 +10882,25 @@ export namespace InterfaceUnionNodeShapeMember2 {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
       template: (queryParameters.template ?? []).concat(
-        InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+        InterfaceUnionNodeShapeMember2b.sparqlConstructTemplateTriples({
           ignoreRdfType,
           subject,
         }),
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+        InterfaceUnionNodeShapeMember2b.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -10567,7 +10915,7 @@ export namespace InterfaceUnionNodeShapeMember2 {
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
-      InterfaceUnionNodeShapeMember2.sparqlConstructQuery(parameters),
+      InterfaceUnionNodeShapeMember2b.sparqlConstructQuery(parameters),
     );
   }
 
@@ -10578,16 +10926,16 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }): readonly sparqljs.Triple[] {
     const subject =
       parameters?.subject ??
-      dataFactory.variable!("interfaceUnionNodeShapeMember2");
+      dataFactory.variable!("interfaceUnionNodeShapeMember2b");
     const variablePrefix =
       parameters?.variablePrefix ??
       (subject.termType === "Variable"
         ? subject.value
-        : "interfaceUnionNodeShapeMember2");
+        : "interfaceUnionNodeShapeMember2b");
     return [
       {
-        object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
-        predicate: dataFactory.namedNode("http://example.com/stringProperty2"),
+        object: dataFactory.variable!(`${variablePrefix}StringProperty2b`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty2b"),
         subject,
       },
     ];
@@ -10600,19 +10948,19 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }): readonly sparqljs.Pattern[] {
     const subject =
       parameters?.subject ??
-      dataFactory.variable!("interfaceUnionNodeShapeMember2");
+      dataFactory.variable!("interfaceUnionNodeShapeMember2b");
     const variablePrefix =
       parameters?.variablePrefix ??
       (subject.termType === "Variable"
         ? subject.value
-        : "interfaceUnionNodeShapeMember2");
+        : "interfaceUnionNodeShapeMember2b");
     return [
       {
         triples: [
           {
-            object: dataFactory.variable!(`${variablePrefix}StringProperty2`),
+            object: dataFactory.variable!(`${variablePrefix}StringProperty2b`),
             predicate: dataFactory.namedNode(
-              "http://example.com/stringProperty2",
+              "http://example.com/stringProperty2b",
             ),
             subject,
           },
@@ -10623,26 +10971,26 @@ export namespace InterfaceUnionNodeShapeMember2 {
   }
 
   export function toJson(
-    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _interfaceUnionNodeShapeMember2b: InterfaceUnionNodeShapeMember2b,
   ): {
     readonly "@id": string;
-    readonly stringProperty2: string;
-    readonly type: "InterfaceUnionNodeShapeMember2";
+    readonly stringProperty2b: string;
+    readonly type: "InterfaceUnionNodeShapeMember2b";
   } {
     return JSON.parse(
       JSON.stringify({
         "@id":
-          _interfaceUnionNodeShapeMember2.identifier.termType === "BlankNode"
-            ? `_:${_interfaceUnionNodeShapeMember2.identifier.value}`
-            : _interfaceUnionNodeShapeMember2.identifier.value,
-        stringProperty2: _interfaceUnionNodeShapeMember2.stringProperty2,
-        type: _interfaceUnionNodeShapeMember2.type,
-      } satisfies ReturnType<typeof InterfaceUnionNodeShapeMember2.toJson>),
+          _interfaceUnionNodeShapeMember2b.identifier.termType === "BlankNode"
+            ? `_:${_interfaceUnionNodeShapeMember2b.identifier.value}`
+            : _interfaceUnionNodeShapeMember2b.identifier.value,
+        stringProperty2b: _interfaceUnionNodeShapeMember2b.stringProperty2b,
+        type: _interfaceUnionNodeShapeMember2b.type,
+      } satisfies ReturnType<typeof InterfaceUnionNodeShapeMember2b.toJson>),
     );
   }
 
   export function toRdf(
-    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _interfaceUnionNodeShapeMember2b: InterfaceUnionNodeShapeMember2b,
     {
       mutateGraph,
       resourceSet,
@@ -10653,12 +11001,336 @@ export namespace InterfaceUnionNodeShapeMember2 {
     },
   ): rdfjsResource.MutableResource {
     const _resource = resourceSet.mutableResource({
-      identifier: _interfaceUnionNodeShapeMember2.identifier,
+      identifier: _interfaceUnionNodeShapeMember2b.identifier,
       mutateGraph,
     });
     _resource.add(
-      dataFactory.namedNode("http://example.com/stringProperty2"),
-      _interfaceUnionNodeShapeMember2.stringProperty2,
+      dataFactory.namedNode("http://example.com/stringProperty2b"),
+      _interfaceUnionNodeShapeMember2b.stringProperty2b,
+    );
+    return _resource;
+  }
+}
+export interface InterfaceUnionNodeShapeMember2a {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly stringProperty2a: string;
+  readonly type: "InterfaceUnionNodeShapeMember2a";
+}
+
+export namespace InterfaceUnionNodeShapeMember2a {
+  export function create(parameters: {
+    readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly stringProperty2a: string;
+  }): InterfaceUnionNodeShapeMember2a {
+    const identifier = parameters.identifier;
+    const stringProperty2a = parameters.stringProperty2a;
+    const type = "InterfaceUnionNodeShapeMember2a" as const;
+    return { identifier, stringProperty2a, type };
+  }
+
+  export function equals(
+    left: InterfaceUnionNodeShapeMember2a,
+    right: InterfaceUnionNodeShapeMember2a,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.booleanEquals(
+      left.identifier,
+      right.identifier,
+    )
+      .mapLeft((propertyValuesUnequal) => ({
+        left: left,
+        right: right,
+        propertyName: "identifier",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      }))
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          left.stringProperty2a,
+          right.stringProperty2a,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: left,
+          right: right,
+          propertyName: "stringProperty2a",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(left.type, right.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
+    zod.ZodError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty2a: string;
+      type: "InterfaceUnionNodeShapeMember2a";
+    }
+  > {
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+    if (!_jsonSafeParseResult.success) {
+      return purify.Left(_jsonSafeParseResult.error);
+    }
+
+    const _jsonObject = _jsonSafeParseResult.data;
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty2a = _jsonObject["stringProperty2a"];
+    const type = "InterfaceUnionNodeShapeMember2a" as const;
+    return purify.Either.of({ identifier, stringProperty2a, type });
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2a> {
+    return InterfaceUnionNodeShapeMember2a.propertiesFromJson(json);
+  }
+
+  export function propertiesFromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty2a: string;
+      type: "InterfaceUnionNodeShapeMember2a";
+    }
+  > {
+    const identifier = _resource.identifier;
+    const _stringProperty2aEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/stringProperty2a"), {
+        unique: true,
+      })
+      .head()
+      .chain((_value) => _value.toString());
+    if (_stringProperty2aEither.isLeft()) {
+      return _stringProperty2aEither;
+    }
+
+    const stringProperty2a = _stringProperty2aEither.unsafeCoerce();
+    const type = "InterfaceUnionNodeShapeMember2a" as const;
+    return purify.Either.of({ identifier, stringProperty2a, type });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof InterfaceUnionNodeShapeMember2a.propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    InterfaceUnionNodeShapeMember2a
+  > {
+    return InterfaceUnionNodeShapeMember2a.propertiesFromRdf(parameters);
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      elements: [
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/stringProperty2a`,
+          type: "Control",
+        },
+        {
+          rule: {
+            condition: {
+              schema: { const: "InterfaceUnionNodeShapeMember2a" },
+              scope: `${scopePrefix}/properties/type`,
+            },
+            effect: "HIDE",
+          },
+          scope: `${scopePrefix}/properties/type`,
+          type: "Control",
+        },
+      ],
+      label: "InterfaceUnionNodeShapeMember2a",
+      type: "Group",
+    };
+  }
+
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty2a: zod.string(),
+      type: zod.literal("InterfaceUnionNodeShapeMember2a"),
+    });
+  }
+
+  export function hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _interfaceUnionNodeShapeMember2a: InterfaceUnionNodeShapeMember2a,
+    _hasher: HasherT,
+  ): HasherT {
+    _hasher.update(_interfaceUnionNodeShapeMember2a.stringProperty2a);
+    return _hasher;
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShapeMember2a.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShapeMember2a.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceUnionNodeShapeMember2a.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember2a");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember2a");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty2a`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty2a"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("interfaceUnionNodeShapeMember2a");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "interfaceUnionNodeShapeMember2a");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}StringProperty2a`),
+            predicate: dataFactory.namedNode(
+              "http://example.com/stringProperty2a",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
+  export function toJson(
+    _interfaceUnionNodeShapeMember2a: InterfaceUnionNodeShapeMember2a,
+  ): {
+    readonly "@id": string;
+    readonly stringProperty2a: string;
+    readonly type: "InterfaceUnionNodeShapeMember2a";
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id":
+          _interfaceUnionNodeShapeMember2a.identifier.termType === "BlankNode"
+            ? `_:${_interfaceUnionNodeShapeMember2a.identifier.value}`
+            : _interfaceUnionNodeShapeMember2a.identifier.value,
+        stringProperty2a: _interfaceUnionNodeShapeMember2a.stringProperty2a,
+        type: _interfaceUnionNodeShapeMember2a.type,
+      } satisfies ReturnType<typeof InterfaceUnionNodeShapeMember2a.toJson>),
+    );
+  }
+
+  export function toRdf(
+    _interfaceUnionNodeShapeMember2a: InterfaceUnionNodeShapeMember2a,
+    {
+      mutateGraph,
+      resourceSet,
+    }: {
+      ignoreRdfType?: boolean;
+      mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource({
+      identifier: _interfaceUnionNodeShapeMember2a.identifier,
+      mutateGraph,
+    });
+    _resource.add(
+      dataFactory.namedNode("http://example.com/stringProperty2a"),
+      _interfaceUnionNodeShapeMember2a.stringProperty2a,
     );
     return _resource;
   }
@@ -10720,7 +11392,9 @@ export namespace InterfaceUnionNodeShapeMember1 {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -10853,11 +11527,9 @@ export namespace InterfaceUnionNodeShapeMember1 {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -10874,7 +11546,6 @@ export namespace InterfaceUnionNodeShapeMember1 {
         InterfaceUnionNodeShapeMember1.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -11045,7 +11716,9 @@ export namespace InterfaceNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11170,11 +11843,9 @@ export namespace InterfaceNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -11188,11 +11859,7 @@ export namespace InterfaceNodeShape {
       ),
       type: "query",
       where: (queryParameters.where ?? []).concat(
-        InterfaceNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-          variablePrefix,
-        }),
+        InterfaceNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
       ),
     };
   }
@@ -11513,11 +12180,9 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -11533,7 +12198,6 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
         AbstractBaseClassWithPropertiesNodeShape.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -11645,7 +12309,9 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
 }
 
 namespace AbstractBaseClassWithoutPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11752,11 +12418,9 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -11772,7 +12436,6 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
         AbstractBaseClassWithoutPropertiesNodeShape.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -11870,18 +12533,20 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
   override equals(
     other: ConcreteParentClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.strictEquals(
-        this.parentStringProperty,
-        other.parentStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "parentStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.parentStringProperty,
+          other.parentStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "parentStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -11943,7 +12608,9 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -12111,11 +12778,9 @@ export namespace ConcreteParentClassNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -12132,7 +12797,6 @@ export namespace ConcreteParentClassNodeShape {
         ConcreteParentClassNodeShape.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -12284,18 +12948,20 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   override equals(
     other: ConcreteChildClassNodeShape,
   ): purifyHelpers.Equatable.EqualsResult {
-    return super.equals(other).chain(() =>
-      purifyHelpers.Equatable.strictEquals(
-        this.childStringProperty,
-        other.childStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "childStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        purifyHelpers.Equatable.strictEquals(
+          this.childStringProperty,
+          other.childStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "childStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -12357,7 +13023,9 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       childStringProperty: string;
@@ -12512,11 +13180,9 @@ export namespace ConcreteChildClassNodeShape {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -12533,7 +13199,6 @@ export namespace ConcreteChildClassNodeShape {
         ConcreteChildClassNodeShape.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -12862,11 +13527,9 @@ export namespace AbstractBaseClassForExternObjectType {
       ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
       subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
     } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, variablePrefix, ...queryParameters } =
-      parameters ?? {};
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
 
     return {
       ...queryParameters,
@@ -12883,7 +13546,6 @@ export namespace AbstractBaseClassForExternObjectType {
         AbstractBaseClassForExternObjectType.sparqlWherePatterns({
           ignoreRdfType,
           subject,
-          variablePrefix,
         }),
       ),
     };
@@ -12956,11 +13618,12 @@ export namespace AbstractBaseClassForExternObjectType {
   }
 }
 /**
- * Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union.
+ * Node shape that sh:xone's other node shapes. This will usually be generated as a discriminated union.
  */
 export type InterfaceUnionNodeShape =
   | InterfaceUnionNodeShapeMember1
-  | InterfaceUnionNodeShapeMember2;
+  | InterfaceUnionNodeShapeMember2a
+  | InterfaceUnionNodeShapeMember2b;
 
 export namespace InterfaceUnionNodeShape {
   export function equals(
@@ -12975,10 +13638,15 @@ export namespace InterfaceUnionNodeShape {
               left,
               right as unknown as InterfaceUnionNodeShapeMember1,
             );
-          case "InterfaceUnionNodeShapeMember2":
-            return InterfaceUnionNodeShapeMember2.equals(
+          case "InterfaceUnionNodeShapeMember2a":
+            return InterfaceUnionNodeShapeMember2a.equals(
               left,
-              right as unknown as InterfaceUnionNodeShapeMember2,
+              right as unknown as InterfaceUnionNodeShapeMember2a,
+            );
+          case "InterfaceUnionNodeShapeMember2b":
+            return InterfaceUnionNodeShapeMember2b.equals(
+              left,
+              right as unknown as InterfaceUnionNodeShapeMember2b,
             );
         }
       },
@@ -12993,13 +13661,21 @@ export namespace InterfaceUnionNodeShape {
         zod.ZodError,
         InterfaceUnionNodeShape
       >
-    ).altLazy(
-      () =>
-        InterfaceUnionNodeShapeMember2.fromJson(json) as purify.Either<
-          zod.ZodError,
-          InterfaceUnionNodeShape
-        >,
-    );
+    )
+      .altLazy(
+        () =>
+          InterfaceUnionNodeShapeMember2a.fromJson(json) as purify.Either<
+            zod.ZodError,
+            InterfaceUnionNodeShape
+          >,
+      )
+      .altLazy(
+        () =>
+          InterfaceUnionNodeShapeMember2b.fromJson(json) as purify.Either<
+            zod.ZodError,
+            InterfaceUnionNodeShape
+          >,
+      );
   }
 
   export function fromRdf(parameters: {
@@ -13015,13 +13691,21 @@ export namespace InterfaceUnionNodeShape {
         rdfjsResource.Resource.ValueError,
         InterfaceUnionNodeShape
       >
-    ).altLazy(
-      () =>
-        InterfaceUnionNodeShapeMember2.fromRdf(parameters) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          InterfaceUnionNodeShape
-        >,
-    );
+    )
+      .altLazy(
+        () =>
+          InterfaceUnionNodeShapeMember2a.fromRdf(parameters) as purify.Either<
+            rdfjsResource.Resource.ValueError,
+            InterfaceUnionNodeShape
+          >,
+      )
+      .altLazy(
+        () =>
+          InterfaceUnionNodeShapeMember2b.fromRdf(parameters) as purify.Either<
+            rdfjsResource.Resource.ValueError,
+            InterfaceUnionNodeShape
+          >,
+      );
   }
 
   export function hash<
@@ -13038,8 +13722,13 @@ export namespace InterfaceUnionNodeShape {
           _interfaceUnionNodeShape,
           _hasher,
         );
-      case "InterfaceUnionNodeShapeMember2":
-        return InterfaceUnionNodeShapeMember2.hash(
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.hash(
+          _interfaceUnionNodeShape,
+          _hasher,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.hash(
           _interfaceUnionNodeShape,
           _hasher,
         );
@@ -13049,38 +13738,43 @@ export namespace InterfaceUnionNodeShape {
   export function jsonZodSchema() {
     return zod.discriminatedUnion("type", [
       InterfaceUnionNodeShapeMember1.jsonZodSchema(),
-      InterfaceUnionNodeShapeMember2.jsonZodSchema(),
+      InterfaceUnionNodeShapeMember2a.jsonZodSchema(),
+      InterfaceUnionNodeShapeMember2b.jsonZodSchema(),
     ]);
   }
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable!("interfaceUnionNodeShape");
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: InterfaceUnionNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: InterfaceUnionNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -13088,48 +13782,95 @@ export namespace InterfaceUnionNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
-    subject: rdfjs.Variable;
+  export function sparqlConstructTemplateTriples(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       ...InterfaceUnionNodeShapeMember1.sparqlConstructTemplateTriples({
-        subject,
-        variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember1`,
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!(
+            "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember1",
+          ),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember1`
+          : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember1",
       }).concat(),
-      ...InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
-        subject,
-        variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember2`,
+      ...InterfaceUnionNodeShapeMember2a.sparqlConstructTemplateTriples({
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!(
+            "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2a",
+          ),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2a`
+          : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2a",
+      }).concat(),
+      ...InterfaceUnionNodeShapeMember2b.sparqlConstructTemplateTriples({
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!(
+            "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2b",
+          ),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2b`
+          : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2b",
       }).concat(),
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
-    subject: rdfjs.Variable;
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
         patterns: [
           {
             patterns: InterfaceUnionNodeShapeMember1.sparqlWherePatterns({
-              subject,
-              variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember1`,
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!(
+                  "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember1",
+                ),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember1`
+                : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember1",
             }).concat(),
             type: "group",
           },
           {
-            patterns: InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
-              subject,
-              variablePrefix: `${variablePrefix}InterfaceUnionNodeShapeMember2`,
+            patterns: InterfaceUnionNodeShapeMember2a.sparqlWherePatterns({
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!(
+                  "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2a",
+                ),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2a`
+                : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2a",
+            }).concat(),
+            type: "group",
+          },
+          {
+            patterns: InterfaceUnionNodeShapeMember2b.sparqlWherePatterns({
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!(
+                  "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2b",
+                ),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2b`
+                : "interfaceUnionNodeShapeInterfaceUnionNodeShapeMember2b",
             }).concat(),
             type: "group",
           },
@@ -13143,12 +13884,15 @@ export namespace InterfaceUnionNodeShape {
     _interfaceUnionNodeShape: InterfaceUnionNodeShape,
   ):
     | ReturnType<typeof InterfaceUnionNodeShapeMember1.toJson>
-    | ReturnType<typeof InterfaceUnionNodeShapeMember2.toJson> {
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2a.toJson>
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2b.toJson> {
     switch (_interfaceUnionNodeShape.type) {
       case "InterfaceUnionNodeShapeMember1":
         return InterfaceUnionNodeShapeMember1.toJson(_interfaceUnionNodeShape);
-      case "InterfaceUnionNodeShapeMember2":
-        return InterfaceUnionNodeShapeMember2.toJson(_interfaceUnionNodeShape);
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.toJson(_interfaceUnionNodeShape);
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.toJson(_interfaceUnionNodeShape);
     }
   }
 
@@ -13165,8 +13909,13 @@ export namespace InterfaceUnionNodeShape {
           _interfaceUnionNodeShape,
           _parameters,
         );
-      case "InterfaceUnionNodeShapeMember2":
-        return InterfaceUnionNodeShapeMember2.toRdf(
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.toRdf(
+          _interfaceUnionNodeShape,
+          _parameters,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.toRdf(
           _interfaceUnionNodeShape,
           _parameters,
         );
@@ -13174,7 +13923,258 @@ export namespace InterfaceUnionNodeShape {
   }
 }
 /**
- * Node that that sh:xone's other node shapes. This will usually be generated as a discriminated union.
+ * A union node shape that is part of another union shape, to test composition of unions.
+ */
+export type InterfaceUnionNodeShapeMember2 =
+  | InterfaceUnionNodeShapeMember2a
+  | InterfaceUnionNodeShapeMember2b;
+
+export namespace InterfaceUnionNodeShapeMember2 {
+  export function equals(
+    left: InterfaceUnionNodeShapeMember2,
+    right: InterfaceUnionNodeShapeMember2,
+  ): purifyHelpers.Equatable.EqualsResult {
+    return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(
+      () => {
+        switch (left.type) {
+          case "InterfaceUnionNodeShapeMember2a":
+            return InterfaceUnionNodeShapeMember2a.equals(
+              left,
+              right as unknown as InterfaceUnionNodeShapeMember2a,
+            );
+          case "InterfaceUnionNodeShapeMember2b":
+            return InterfaceUnionNodeShapeMember2b.equals(
+              left,
+              right as unknown as InterfaceUnionNodeShapeMember2b,
+            );
+        }
+      },
+    );
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2> {
+    return (
+      InterfaceUnionNodeShapeMember2a.fromJson(json) as purify.Either<
+        zod.ZodError,
+        InterfaceUnionNodeShapeMember2
+      >
+    ).altLazy(
+      () =>
+        InterfaceUnionNodeShapeMember2b.fromJson(json) as purify.Either<
+          zod.ZodError,
+          InterfaceUnionNodeShapeMember2
+        >,
+    );
+  }
+
+  export function fromRdf(parameters: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    InterfaceUnionNodeShapeMember2
+  > {
+    return (
+      InterfaceUnionNodeShapeMember2a.fromRdf(parameters) as purify.Either<
+        rdfjsResource.Resource.ValueError,
+        InterfaceUnionNodeShapeMember2
+      >
+    ).altLazy(
+      () =>
+        InterfaceUnionNodeShapeMember2b.fromRdf(parameters) as purify.Either<
+          rdfjsResource.Resource.ValueError,
+          InterfaceUnionNodeShapeMember2
+        >,
+    );
+  }
+
+  export function hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _hasher: HasherT,
+  ): HasherT {
+    switch (_interfaceUnionNodeShapeMember2.type) {
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.hash(
+          _interfaceUnionNodeShapeMember2,
+          _hasher,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.hash(
+          _interfaceUnionNodeShapeMember2,
+          _hasher,
+        );
+    }
+  }
+
+  export function jsonZodSchema() {
+    return zod.discriminatedUnion("type", [
+      InterfaceUnionNodeShapeMember2a.jsonZodSchema(),
+      InterfaceUnionNodeShapeMember2b.jsonZodSchema(),
+    ]);
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        InterfaceUnionNodeShapeMember2.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        InterfaceUnionNodeShapeMember2.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      InterfaceUnionNodeShapeMember2.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    return [
+      ...InterfaceUnionNodeShapeMember2a.sparqlConstructTemplateTriples({
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!(
+            "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2a",
+          ),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2a`
+          : "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2a",
+      }).concat(),
+      ...InterfaceUnionNodeShapeMember2b.sparqlConstructTemplateTriples({
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!(
+            "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2b",
+          ),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2b`
+          : "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2b",
+      }).concat(),
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    return [
+      {
+        patterns: [
+          {
+            patterns: InterfaceUnionNodeShapeMember2a.sparqlWherePatterns({
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!(
+                  "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2a",
+                ),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2a`
+                : "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2a",
+            }).concat(),
+            type: "group",
+          },
+          {
+            patterns: InterfaceUnionNodeShapeMember2b.sparqlWherePatterns({
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!(
+                  "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2b",
+                ),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}InterfaceUnionNodeShapeMember2b`
+                : "interfaceUnionNodeShapeMember2InterfaceUnionNodeShapeMember2b",
+            }).concat(),
+            type: "group",
+          },
+        ],
+        type: "union",
+      },
+    ];
+  }
+
+  export function toJson(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+  ):
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2a.toJson>
+    | ReturnType<typeof InterfaceUnionNodeShapeMember2b.toJson> {
+    switch (_interfaceUnionNodeShapeMember2.type) {
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.toJson(
+          _interfaceUnionNodeShapeMember2,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.toJson(
+          _interfaceUnionNodeShapeMember2,
+        );
+    }
+  }
+
+  export function toRdf(
+    _interfaceUnionNodeShapeMember2: InterfaceUnionNodeShapeMember2,
+    _parameters: {
+      mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    switch (_interfaceUnionNodeShapeMember2.type) {
+      case "InterfaceUnionNodeShapeMember2a":
+        return InterfaceUnionNodeShapeMember2a.toRdf(
+          _interfaceUnionNodeShapeMember2,
+          _parameters,
+        );
+      case "InterfaceUnionNodeShapeMember2b":
+        return InterfaceUnionNodeShapeMember2b.toRdf(
+          _interfaceUnionNodeShapeMember2,
+          _parameters,
+        );
+    }
+  }
+}
+/**
+ * Node shape sh:xone's other node shapes. This will usually be generated as a discriminated union.
  */
 export type UnionNodeShape =
   | UnionNodeShapeMember1
@@ -13277,32 +14277,36 @@ export namespace UnionNodeShape {
 
   export function sparqlConstructQuery(
     parameters?: {
+      ignoreRdfType?: boolean;
       prefixes?: { [prefix: string]: string };
-      subject: rdfjs.Variable;
-    } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    >,
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
   ): sparqljs.ConstructQuery {
-    const subject =
-      parameters?.subject ?? dataFactory.variable!("unionNodeShape");
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
     return {
-      ...parameters,
+      ...queryParameters,
       prefixes: parameters?.prefixes ?? {},
       queryType: "CONSTRUCT",
-      template: UnionNodeShape.sparqlConstructTemplateTriples({
-        subject,
-      }).concat(),
+      template: (queryParameters.template ?? []).concat(
+        UnionNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
       type: "query",
-      where: UnionNodeShape.sparqlWherePatterns({ subject }).concat(),
+      where: (queryParameters.where ?? []).concat(
+        UnionNodeShape.sparqlWherePatterns({ ignoreRdfType, subject }),
+      ),
     };
   }
 
   export function sparqlConstructQueryString(
-    parameters?: { subject: rdfjs.Variable } & Omit<
-      sparqljs.ConstructQuery,
-      "prefixes" | "queryType" | "template" | "where"
-    > &
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
       sparqljs.GeneratorOptions,
   ): string {
     return new sparqljs.Generator(parameters).stringify(
@@ -13310,59 +14314,83 @@ export namespace UnionNodeShape {
     );
   }
 
-  export function sparqlConstructTemplateTriples({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
-    subject: rdfjs.Variable;
+  export function sparqlConstructTemplateTriples(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Triple[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       ...UnionNodeShapeMember1.sparqlConstructTemplateTriples({
-        subject,
-        variablePrefix: `${variablePrefix}UnionNodeShapeMember1`,
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!("unionNodeShapeUnionNodeShapeMember1"),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}UnionNodeShapeMember1`
+          : "unionNodeShapeUnionNodeShapeMember1",
       }).concat(),
       ...UnionNodeShapeMember2.sparqlConstructTemplateTriples({
-        subject,
-        variablePrefix: `${variablePrefix}UnionNodeShapeMember2`,
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!("unionNodeShapeUnionNodeShapeMember2"),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}UnionNodeShapeMember2`
+          : "unionNodeShapeUnionNodeShapeMember2",
       }).concat(),
       ...ExternObjectType.sparqlConstructTemplateTriples({
-        subject,
-        variablePrefix: `${variablePrefix}ExternObjectType`,
+        ignoreRdfType: parameters?.ignoreRdfType,
+        subject:
+          parameters.subject ??
+          dataFactory.variable!("unionNodeShapeExternObjectType"),
+        variablePrefix: parameters?.variablePrefix
+          ? `${parameters.variablePrefix}ExternObjectType`
+          : "unionNodeShapeExternObjectType",
       }).concat(),
     ];
   }
 
-  export function sparqlWherePatterns({
-    subject,
-    variablePrefix: variablePrefixParameter,
-  }: {
-    subject: rdfjs.Variable;
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
-    const variablePrefix = variablePrefixParameter ?? subject.value;
     return [
       {
         patterns: [
           {
             patterns: UnionNodeShapeMember1.sparqlWherePatterns({
-              subject,
-              variablePrefix: `${variablePrefix}UnionNodeShapeMember1`,
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!("unionNodeShapeUnionNodeShapeMember1"),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}UnionNodeShapeMember1`
+                : "unionNodeShapeUnionNodeShapeMember1",
             }).concat(),
             type: "group",
           },
           {
             patterns: UnionNodeShapeMember2.sparqlWherePatterns({
-              subject,
-              variablePrefix: `${variablePrefix}UnionNodeShapeMember2`,
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!("unionNodeShapeUnionNodeShapeMember2"),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}UnionNodeShapeMember2`
+                : "unionNodeShapeUnionNodeShapeMember2",
             }).concat(),
             type: "group",
           },
           {
             patterns: ExternObjectType.sparqlWherePatterns({
-              subject,
-              variablePrefix: `${variablePrefix}ExternObjectType`,
+              ignoreRdfType: parameters?.ignoreRdfType,
+              subject:
+                parameters.subject ??
+                dataFactory.variable!("unionNodeShapeExternObjectType"),
+              variablePrefix: parameters?.variablePrefix
+                ? `${parameters.variablePrefix}ExternObjectType`
+                : "unionNodeShapeExternObjectType",
             }).concat(),
             type: "group",
           },

@@ -14,6 +14,8 @@ import type { Import } from "./Import.js";
 import type { ObjectType } from "./ObjectType.js";
 import type { Type } from "./Type.js";
 import { hasherTypeConstraint } from "./_ObjectType/hashFunctionOrMethodDeclaration.js";
+import { sparqlConstructQueryFunctionDeclaration } from "./_ObjectType/sparqlConstructQueryFunctionDeclaration.js";
+import { sparqlConstructQueryStringFunctionDeclaration } from "./_ObjectType/sparqlConstructQueryStringFunctionDeclaration.js";
 import { objectInitializer } from "./objectInitializer.js";
 import { tsComment } from "./tsComment.js";
 
@@ -300,56 +302,24 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
     }
 
     return [
-      {
-        isExported: true,
-        kind: StructureKind.Function,
-        name: "sparqlConstructQuery",
-        parameters: [
-          {
-            hasQuestionToken: true,
-            name: "parameters",
-            type: '{ prefixes?: { [prefix: string]: string }; subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where">',
-          },
-        ],
-        returnType: "sparqljs.ConstructQuery",
-        statements: [
-          `const subject = parameters?.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}");`,
-          `return { ...parameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: ${this.name}.sparqlConstructTemplateTriples({ subject }).concat(), type: "query", where: ${this.name}.sparqlWherePatterns({ subject }).concat() };`,
-        ],
-      },
-      {
-        isExported: true,
-        kind: StructureKind.Function,
-        name: "sparqlConstructQueryString",
-        parameters: [
-          {
-            hasQuestionToken: true,
-            name: "parameters",
-            type: '{ subject: rdfjs.Variable } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "template" | "where"> & sparqljs.GeneratorOptions',
-          },
-        ],
-        returnType: "string",
-        statements: [
-          `return new sparqljs.Generator(parameters).stringify(${this.name}.sparqlConstructQuery(parameters));`,
-        ],
-      },
+      sparqlConstructQueryFunctionDeclaration.bind(this)(),
+      sparqlConstructQueryStringFunctionDeclaration.bind(this)(),
       {
         isExported: true,
         kind: StructureKind.Function,
         name: "sparqlConstructTemplateTriples",
         parameters: [
           {
-            name: "{ subject, variablePrefix: variablePrefixParameter }",
-            type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+            name: "parameters",
+            type: '{ ignoreRdfType?: boolean, subject?: sparqljs.Triple["subject"], variablePrefix?: string }',
           },
         ],
         returnType: "readonly sparqljs.Triple[]",
         statements: [
-          "const variablePrefix = variablePrefixParameter ?? subject.value;",
           `return [${this.memberTypes
             .map(
               (memberType) =>
-                `...${memberType.name}.sparqlConstructTemplateTriples({ subject, variablePrefix: \`\${variablePrefix}${pascalCase(memberType.name)}\` }).concat()`,
+                `...${memberType.name}.sparqlConstructTemplateTriples({ ignoreRdfType: parameters?.ignoreRdfType, subject: parameters.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}${pascalCase(memberType.name)}"), variablePrefix: parameters?.variablePrefix ? \`\${parameters.variablePrefix}${pascalCase(memberType.name)}\` : "${camelCase(this.name)}${pascalCase(memberType.name)}" }).concat()`,
             )
             .join(", ")}];`,
         ],
@@ -360,17 +330,16 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
         name: "sparqlWherePatterns",
         parameters: [
           {
-            name: "{ subject, variablePrefix: variablePrefixParameter }",
-            type: "{ subject: rdfjs.Variable, variablePrefix?: string }",
+            name: "parameters",
+            type: '{ ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"], variablePrefix?: string }',
           },
         ],
         returnType: "readonly sparqljs.Pattern[]",
         statements: [
-          "const variablePrefix = variablePrefixParameter ?? subject.value;",
           `return [{ patterns: [${this.memberTypes
             .map((memberType) =>
               objectInitializer({
-                patterns: `${memberType.name}.sparqlWherePatterns({ subject, variablePrefix: \`\${variablePrefix}${pascalCase(memberType.name)}\` }).concat()`,
+                patterns: `${memberType.name}.sparqlWherePatterns({ ignoreRdfType: parameters?.ignoreRdfType, subject: parameters.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}${pascalCase(memberType.name)}"), variablePrefix: parameters?.variablePrefix ? \`\${parameters.variablePrefix}${pascalCase(memberType.name)}\` : "${camelCase(this.name)}${pascalCase(memberType.name)}" }).concat()`,
                 type: '"group"',
               }),
             )

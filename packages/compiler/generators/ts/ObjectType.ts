@@ -241,7 +241,7 @@ export class ObjectType extends DeclaredType {
       return `Parameters<typeof ${this.name}.fromJson>[0]`;
     }
     throw new RangeError(
-      "jsonName called when neither fromJson nor toJson features are enabled",
+      `${this.name}: jsonName called when neither fromJson nor toJson features are enabled`,
     );
   }
 

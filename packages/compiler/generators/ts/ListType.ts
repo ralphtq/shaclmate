@@ -258,7 +258,7 @@ export class ListType extends Type {
               predicate: this.rdfjsTermExpression(rdf.first),
               object: itemNVariable,
             })}] }`,
-            ...this.itemType.sparqlConstructTemplateTriples({
+            ...this.itemType.sparqlWherePatterns({
               context: "type",
               variables: {
                 subject: itemNVariable,

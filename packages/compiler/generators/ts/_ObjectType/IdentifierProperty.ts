@@ -122,6 +122,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
       case "none":
         // Immutable, public identifier property, no getter
         return Maybe.of({
+          isReadonly: true,
           name: this.name,
           type: this.type.name,
         });
