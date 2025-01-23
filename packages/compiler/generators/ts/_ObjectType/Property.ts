@@ -7,7 +7,11 @@ import {
   type PropertySignatureStructure,
   Scope,
 } from "ts-morph";
-import type { PropertyVisibility } from "../../../enums/index.js";
+import type {
+  PropertyVisibility,
+  TsFeature,
+  TsObjectDeclarationType,
+} from "../../../enums/index.js";
 import type { Import } from "../Import.js";
 import type { Type } from "../Type.js";
 import { rdfjsTermExpression } from "./rdfjsTermExpression.js";
@@ -21,31 +25,26 @@ export abstract class Property<
   abstract readonly classGetAccessorDeclaration: Maybe<
     OptionalKind<GetAccessorDeclarationStructure>
   >;
-
   /**
    * Optional property declaration to include in a class declaration of the object type.
    */
   abstract readonly classPropertyDeclaration: Maybe<
     OptionalKind<PropertyDeclarationStructure>
   >;
-
   /**
    * Optional property to include in the parameters object of a class constructor.
    */
   abstract readonly constructorParametersPropertySignature: Maybe<
     OptionalKind<PropertySignatureStructure>
   >;
-
   /**
-   * Function declaration that takes two values of the property and compares them, returning and purifyHelpers.Equatable.EqualsResult.
+   * Function declaration that takes two values of the property and compares them, returning and EqualsResult.
    */
   abstract readonly equalsFunction: string;
-
   /**
    * Signature of the property in an interface version of the object.
    */
   abstract readonly interfacePropertySignature: OptionalKind<PropertySignatureStructure>;
-
   /**
    * Signature of the property when serialized to JSON (the type of toJsonObjectMember).
    */
@@ -59,6 +58,15 @@ export abstract class Property<
    */
   readonly name: string;
   /**
+   * Reusable function, type, and other declarations that are not particular to this property but that property-specific code
+   * relies on. For example, the equals function/method of ObjectType has a custom return type that's the same across all
+   * ObjectType's. Instead of re-declaring the return type anonymously on every equals function, declare a named type
+   * as a snippet and reference it.
+   *
+   * The generator deduplicates snippet declarations across all types before adding them to the source.
+   */
+  abstract readonly snippetDeclarations: readonly string[];
+  /**
    * Property type
 .   */
   readonly type: TypeT;
@@ -67,20 +75,27 @@ export abstract class Property<
    */
   readonly visibility: PropertyVisibility;
   protected readonly dataFactoryVariable: string;
+  protected readonly objectType: {
+    readonly declarationType: TsObjectDeclarationType;
+    readonly features: Set<TsFeature>;
+  };
 
   constructor({
     dataFactoryVariable,
     name,
+    objectType,
     type,
     visibility,
   }: {
     dataFactoryVariable: string;
     name: string;
+    objectType: Property<TypeT>["objectType"];
     type: TypeT;
     visibility: PropertyVisibility;
   }) {
     this.dataFactoryVariable = dataFactoryVariable;
     this.name = name;
+    this.objectType = objectType;
     this.type = type;
     this.visibility = visibility;
   }

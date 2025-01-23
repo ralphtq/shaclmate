@@ -3,7 +3,7 @@ import { Either, Left } from "purify-ts";
 import { invariant } from "ts-invariant";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
-import { TsFeature } from "../enums/TsFeature.js";
+import { TsFeature } from "../enums/index.js";
 import * as input from "../input/index.js";
 import { logger } from "../logger.js";
 import type { NodeShapeAstType } from "./NodeShapeAstType.js";

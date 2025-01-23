@@ -12,11 +12,13 @@ import {
 import { Memoize } from "typescript-memoize";
 import type {
   MintingStrategy,
+  TsFeature,
   TsObjectDeclarationType,
 } from "../../enums/index.js";
 import { DeclaredType } from "./DeclaredType.js";
 import type { IdentifierType } from "./IdentifierType.js";
 import { Import } from "./Import.js";
+import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import type { Type } from "./Type.js";
 import * as _ObjectType from "./_ObjectType/index.js";
 import {
@@ -122,9 +124,6 @@ export class ObjectType extends DeclaredType {
     const imports: Import[] = this.properties.flatMap(
       (property) => property.declarationImports,
     );
-    if (this.features.has("equals")) {
-      imports.push(Import.PURIFY_HELPERS);
-    }
     if (this.features.has("fromJson") || this.features.has("jsonSchema")) {
       imports.push(Import.ZOD);
     }
@@ -133,7 +132,6 @@ export class ObjectType extends DeclaredType {
     }
     if (this.features.has("fromRdf") || this.features.has("toRdf")) {
       imports.push(Import.PURIFY);
-      imports.push(Import.PURIFY_HELPERS);
       imports.push(Import.RDFJS_RESOURCE);
     }
     if (this.features.has("sparql")) {
@@ -194,7 +192,7 @@ export class ObjectType extends DeclaredType {
   override get equalsFunction(): string {
     switch (this.declarationType) {
       case "class":
-        return "purifyHelpers.Equatable.equals";
+        return "((left, right) => left.equals(right))";
       case "interface":
         return `${this.name}.equals`;
       default:
@@ -303,10 +301,6 @@ export class ObjectType extends DeclaredType {
     return properties;
   }
 
-  override get useImports(): readonly Import[] {
-    return this.imports;
-  }
-
   protected get thisVariable(): string {
     switch (this.declarationType) {
       case "class":
@@ -378,6 +372,23 @@ export class ObjectType extends DeclaredType {
     };
   }
 
+  override snippetDeclarations(): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (this.features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.EqualsResult);
+    }
+    if (
+      (this.features.has("fromJson") || this.features.has("fromRdf")) &&
+      this.parentObjectTypes.length > 0
+    ) {
+      snippetDeclarations.push(SnippetDeclarations.UnwrapR);
+    }
+    for (const property of this.ownProperties) {
+      snippetDeclarations.push(...property.snippetDeclarations);
+    }
+    return snippetDeclarations;
+  }
+
   override sparqlConstructTemplateTriples({
     context,
     variables,
@@ -434,6 +445,10 @@ export class ObjectType extends DeclaredType {
       case "interface":
         return `${this.name}.toRdf(${variables.value}, { mutateGraph: ${variables.mutateGraph}, resourceSet: ${variables.resourceSet} })`;
     }
+  }
+
+  override useImports(_features: Set<TsFeature>): readonly Import[] {
+    return this.imports;
   }
 
   protected ensureAtMostOneSuperObjectType() {

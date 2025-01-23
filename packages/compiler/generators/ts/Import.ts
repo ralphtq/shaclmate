@@ -12,12 +12,6 @@ export namespace Import {
     namespaceImport: "purify",
   };
 
-  export const PURIFY_HELPERS: Import = {
-    kind: StructureKind.ImportDeclaration,
-    moduleSpecifier: "purify-ts-helpers",
-    namespaceImport: "purifyHelpers",
-  };
-
   export const RDF_LITERAL: Import = {
     kind: StructureKind.ImportDeclaration,
     moduleSpecifier: "rdf-literal",

@@ -52,9 +52,14 @@ export class TsGenerator implements Generator {
     // sourceFile.addStatements(this.configuration.dataFactoryImport);
     sourceFile.addStatements('import { DataFactory as dataFactory } from "n3"');
 
+    const declaredTypes: (ObjectType | ObjectUnionType)[] = [
+      ...objectTypes,
+      ...objectUnionTypes,
+    ];
+
     // Gather imports
     const imports: Import[] = [];
-    for (const declaredType of [...objectTypes, ...objectUnionTypes]) {
+    for (const declaredType of declaredTypes) {
       imports.push(...declaredType.declarationImports);
     }
     // Deduplicate and add imports
@@ -77,6 +82,19 @@ export class TsGenerator implements Generator {
       ) {
         sourceFile.addStatements([import_]);
         addedStructureImports.push(import_);
+      }
+    }
+
+    // Deduplicate and add snippet declarations
+    const addedSnippetDeclarations = new Set<string>();
+    for (const declaredType of declaredTypes) {
+      for (const snippetDeclaration of declaredType.snippetDeclarations(
+        declaredType.features,
+      )) {
+        if (!addedSnippetDeclarations.has(snippetDeclaration)) {
+          sourceFile.addStatements([snippetDeclaration]);
+          addedSnippetDeclarations.add(snippetDeclaration);
+        }
       }
     }
 

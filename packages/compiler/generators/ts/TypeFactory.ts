@@ -279,7 +279,7 @@ export class TypeFactory {
       lazyProperties: () => {
         const properties: ObjectType.Property[] = astType.properties.map(
           (astProperty) =>
-            this.createObjectTypePropertyFromAstProperty(astProperty),
+            this.createObjectTypePropertyFromAstProperty(astType, astProperty),
         );
 
         let identifierPropertyClassDeclarationVisibility: Maybe<PropertyVisibility>;
@@ -316,7 +316,10 @@ export class TypeFactory {
               properties.some(
                 (property) => property.mutable || property.type.mutable,
               ),
-            objectTypeDeclarationType: astType.tsObjectDeclarationType,
+            objectType: {
+              declarationType: astType.tsObjectDeclarationType,
+              features: astType.tsFeatures,
+            },
             override: astType.parentObjectTypes.length > 0,
             type: identifierType,
             visibility: "public",
@@ -341,7 +344,10 @@ export class TypeFactory {
               abstract: astType.abstract,
               dataFactoryVariable: this.dataFactoryVariable,
               name: astType.tsTypeDiscriminatorPropertyName,
-              objectTypeDeclarationType: objectType.declarationType,
+              objectType: {
+                declarationType: astType.tsObjectDeclarationType,
+                features: astType.tsFeatures,
+              },
               override: objectType.parentObjectTypes.length > 0,
               type: new ObjectType.TypeDiscriminatorProperty.Type({
                 mutable: false,
@@ -366,6 +372,7 @@ export class TypeFactory {
   }
 
   private createObjectTypePropertyFromAstProperty(
+    astObjectType: ast.ObjectType,
     astObjectTypeProperty: ast.ObjectType.Property,
   ): ObjectType.Property {
     {
@@ -383,6 +390,10 @@ export class TypeFactory {
       description: astObjectTypeProperty.description,
       label: astObjectTypeProperty.label,
       mutable: astObjectTypeProperty.mutable.orDefault(false),
+      objectType: {
+        declarationType: astObjectType.tsObjectDeclarationType,
+        features: astObjectType.tsFeatures,
+      },
       name: tsName(astObjectTypeProperty.name),
       path: astObjectTypeProperty.path.iri,
       type: this.createTypeFromAstType(astObjectTypeProperty.type),

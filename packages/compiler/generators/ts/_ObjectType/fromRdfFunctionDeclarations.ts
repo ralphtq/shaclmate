@@ -33,7 +33,7 @@ export function fromRdfFunctionDeclarations(
     );
     initializers.push(`..._super${parentObjectTypeI}`);
     propertiesFromRdfFunctionReturnType.push(
-      `purifyHelpers.Eithers.UnwrapR<ReturnType<typeof ${parentObjectType.name}.propertiesFromRdf>>`,
+      `UnwrapR<ReturnType<typeof ${parentObjectType.name}.propertiesFromRdf>>`,
     );
   });
 

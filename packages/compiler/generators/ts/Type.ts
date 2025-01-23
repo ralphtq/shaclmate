@@ -1,6 +1,7 @@
 import type { BlankNode, Literal, NamedNode, Variable } from "@rdfjs/types";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
+import type { TsFeature } from "../../enums/index.js";
 import type { Import } from "./Import.js";
 import { rdfjsTermExpression } from "./_ObjectType/rdfjsTermExpression.js";
 import { objectInitializer } from "./objectInitializer.js";
@@ -18,7 +19,7 @@ export abstract class Type {
 
   /**
    * A function (reference or declaration) that compares two property values of this type, returning a
-   * purifyHelpers.Equatable.EqualsResult.
+   * EqualsResult.
    */
   abstract readonly equalsFunction: string;
 
@@ -34,10 +35,6 @@ export abstract class Type {
    * Name of the type.
    */
   abstract readonly name: string;
-  /**
-   * Imports necessary to use this type.
-   */
-  abstract readonly useImports: readonly Import[];
   protected readonly dataFactoryVariable: string;
 
   constructor({
@@ -102,6 +99,18 @@ export abstract class Type {
    * Zod schema for the JSON version of the type (the result of propertyToJson).
    */
   abstract jsonZodSchema(parameters: { variables: { zod: string } }): string;
+
+  /**
+   * Reusable function, type, and other declarations that are not particular to this type but that type-specific code
+   * relies on. For example, the equals function/method of ObjectType has a custom return type that's the same across all
+   * ObjectType's. Instead of re-declaring the return type anonymously on every equals function, declare a named type
+   * as a snippet and reference it.
+   *
+   * The generator deduplicates snippet declarations across all types before adding them to the source.
+   */
+  snippetDeclarations(_features: Set<TsFeature>): readonly string[] {
+    return [];
+  }
 
   /**
    * An array of SPARQL.js CONSTRUCT template triples for a value of this type, as strings (so they can incorporate runtime calls).
@@ -243,6 +252,13 @@ export abstract class Type {
       value: string;
     };
   }): string;
+
+  /**
+   * Imports necessary to use this type.
+   */
+  useImports(_features: Set<TsFeature>): readonly Import[] {
+    return [];
+  }
 
   protected rdfjsTermExpression(
     rdfjsTerm:

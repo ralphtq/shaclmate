@@ -1,10 +1,11 @@
+import type { TsFeature } from "../../enums/index.js";
 import { PrimitiveType } from "./PrimitiveType.js";
+import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import type { Type } from "./Type.js";
 import { objectInitializer } from "./objectInitializer.js";
 
 export class DateTimeType extends PrimitiveType<Date> {
-  override readonly equalsFunction =
-    "(left, right) => purifyHelpers.Equatable.EqualsResult.fromBooleanEqualsResult(left, right, left.getTime() === right.getTime())";
+  override readonly equalsFunction = "dateEquals";
   readonly kind = "DateTimeType";
   override readonly mutable = true;
 
@@ -65,6 +66,14 @@ export class DateTimeType extends PrimitiveType<Date> {
       expression = `${expression}.chain(value => { ${this.primitiveIn.map((value) => `if (value.getTime() === ${value.getTime()}) { return purify.Either.of(value); }`).join(" ")} return purify.Left(new rdfjsResource.Resource.MistypedValueError(${objectInitializer({ actualValue: "rdfLiteral.toRdf(value)", expectedValueType: JSON.stringify(this.name), focusResource: variables.resource, predicate: variables.predicate })})); })`;
     }
     return expression;
+  }
+
+  override snippetDeclarations(features: Set<TsFeature>): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.dateEquals);
+    }
+    return snippetDeclarations;
   }
 
   override toJsonExpression({

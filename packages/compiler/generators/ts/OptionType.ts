@@ -1,5 +1,7 @@
 import { Memoize } from "typescript-memoize";
+import type { TsFeature } from "../../enums/index.js";
 import { Import } from "./Import.js";
+import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import { Type } from "./Type.js";
 
 export class OptionType extends Type {
@@ -43,14 +45,7 @@ export class OptionType extends Type {
   }
 
   override get equalsFunction(): string {
-    const itemTypeEqualsFunction = this.itemType.equalsFunction;
-    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.equals") {
-      return "purifyHelpers.Equatable.maybeEquals";
-    }
-    if (itemTypeEqualsFunction === "purifyHelpers.Equatable.strictEquals") {
-      return "purifyHelpers.Equatable.booleanEquals"; // Use Maybe.equals
-    }
-    return `(left, right) => purifyHelpers.Maybes.equals(left, right, ${itemTypeEqualsFunction})`;
+    return `((left, right) => maybeEquals(left, right, ${this.itemType.equalsFunction}))`;
   }
 
   override get jsonName(): string {
@@ -64,10 +59,6 @@ export class OptionType extends Type {
   @Memoize()
   override get name(): string {
     return `purify.Maybe<${this.itemType.name}>`;
-  }
-
-  override get useImports(): readonly Import[] {
-    return [...this.itemType.useImports, Import.PURIFY];
   }
 
   override fromJsonExpression({
@@ -115,6 +106,14 @@ export class OptionType extends Type {
     parameters: Parameters<Type["jsonZodSchema"]>[0],
   ): ReturnType<Type["jsonZodSchema"]> {
     return `${this.itemType.jsonZodSchema(parameters)}.optional()`;
+  }
+
+  override snippetDeclarations(features: Set<TsFeature>): readonly string[] {
+    const snippetDeclarations: string[] = [];
+    if (features.has("equals")) {
+      snippetDeclarations.push(SnippetDeclarations.maybeEquals);
+    }
+    return snippetDeclarations;
   }
 
   override sparqlConstructTemplateTriples({
@@ -166,5 +165,9 @@ export class OptionType extends Type {
       return variables.value;
     }
     return `${variables.value}.map((_value) => ${itemTypeToRdfExpression})`;
+  }
+
+  override useImports(features: Set<TsFeature>): readonly Import[] {
+    return [...this.itemType.useImports(features), Import.PURIFY];
   }
 }

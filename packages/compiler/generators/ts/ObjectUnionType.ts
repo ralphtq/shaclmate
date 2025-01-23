@@ -82,7 +82,9 @@ export class ObjectUnionType extends DeclaredType {
   }
 
   override get declarationImports(): readonly Import[] {
-    return this.memberTypes.flatMap((memberType) => memberType.useImports);
+    return this.memberTypes.flatMap((memberType) =>
+      memberType.useImports(this.features),
+    );
   }
 
   get declarations() {
@@ -132,10 +134,6 @@ export class ObjectUnionType extends DeclaredType {
     return this.memberTypes.some((memberType) => memberType.mutable);
   }
 
-  override get useImports(): readonly Import[] {
-    return [];
-  }
-
   @Memoize()
   protected get thisVariable(): string {
     return `_${camelCase(this.name)}`;
@@ -173,9 +171,9 @@ export class ObjectUnionType extends DeclaredType {
           type: this.name,
         },
       ],
-      returnType: "purifyHelpers.Equatable.EqualsResult",
+      returnType: "EqualsResult",
       statements: `\
-return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
+return strictEquals(left.type, right.type).chain(() => {
   switch (left.${this._discriminatorProperty.name}) {
    ${caseBlocks.join(" ")}
   }
@@ -519,6 +517,10 @@ return purifyHelpers.Equatable.strictEquals(left.type, right.type).chain(() => {
       case "interface":
         return `${this.name}.toRdf(${variables.value}, ${options})`;
     }
+  }
+
+  override useImports(): readonly Import[] {
+    return [];
   }
 
   private rdfjsResourceType(options?: { mutable?: boolean }): ReturnType<
