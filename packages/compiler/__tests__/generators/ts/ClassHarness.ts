@@ -1,5 +1,4 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
-import type { Equatable } from "purify-ts-helpers";
 import type {
   MutableResource,
   MutableResourceSet,
@@ -20,7 +19,7 @@ export class ClassHarness<
   },
   IdentifierT extends BlankNode | NamedNode,
 > extends Harness<T, IdentifierT> {
-  override equals(other: T): Equatable.EqualsResult {
+  override equals(other: T): EqualsResult {
     return this.instance.equals(other);
   }
 
