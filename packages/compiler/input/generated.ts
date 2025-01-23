@@ -2,8 +2,8 @@ import type * as rdfjs from "@rdfjs/types";
 import { PropertyPath } from "@shaclmate/shacl-ast/PropertyPath.js";
 import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
-import type * as purifyHelpers from "purify-ts-helpers";
 import * as rdfjsResource from "rdfjs-resource";
+type UnwrapR<T> = T extends purify.Either<any, infer R> ? R : never;
 export interface BaseShaclCoreShape {
   readonly and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
   readonly classes: readonly rdfjs.NamedNode[];
@@ -905,9 +905,7 @@ export namespace ShaclCorePropertyShape {
       path: PropertyPath;
       type: "ShaclCorePropertyShape" | "ShaclmatePropertyShape";
       uniqueLang: purify.Maybe<boolean>;
-    } & purifyHelpers.Eithers.UnwrapR<
-      ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>
-    >
+    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>>
   > {
     const _super0Either = BaseShaclCoreShape.propertiesFromRdf({
       ..._context,
@@ -1169,9 +1167,7 @@ export namespace ShaclmatePropertyShape {
           | "http://minorg.github.io/shaclmate/ns#_Visibility_Public"
         >
       >;
-    } & purifyHelpers.Eithers.UnwrapR<
-      ReturnType<typeof ShaclCorePropertyShape.propertiesFromRdf>
-    >
+    } & UnwrapR<ReturnType<typeof ShaclCorePropertyShape.propertiesFromRdf>>
   > {
     const _super0Either = ShaclCorePropertyShape.propertiesFromRdf({
       ..._context,
@@ -1538,9 +1534,7 @@ export namespace ShaclmateOntology {
       tsObjectIdentifierPropertyName: purify.Maybe<string>;
       tsObjectTypeDiscriminatorPropertyName: purify.Maybe<string>;
       type: "ShaclmateOntology";
-    } & purifyHelpers.Eithers.UnwrapR<
-      ReturnType<typeof OwlOntology.propertiesFromRdf>
-    >
+    } & UnwrapR<ReturnType<typeof OwlOntology.propertiesFromRdf>>
   > {
     const _super0Either = OwlOntology.propertiesFromRdf({
       ..._context,
@@ -2360,9 +2354,7 @@ export namespace ShaclCoreNodeShape {
       ignoredProperties: purify.Maybe<readonly rdfjs.NamedNode[]>;
       properties: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
       type: "ShaclCoreNodeShape" | "ShaclmateNodeShape";
-    } & purifyHelpers.Eithers.UnwrapR<
-      ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>
-    >
+    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>>
   > {
     const _super0Either = BaseShaclCoreShape.propertiesFromRdf({
       ..._context,
@@ -2599,9 +2591,7 @@ export namespace ShaclmateNodeShape {
       tsObjectIdentifierPropertyName: purify.Maybe<string>;
       tsObjectTypeDiscriminatorPropertyName: purify.Maybe<string>;
       type: "ShaclmateNodeShape";
-    } & purifyHelpers.Eithers.UnwrapR<
-      ReturnType<typeof ShaclCoreNodeShape.propertiesFromRdf>
-    >
+    } & UnwrapR<ReturnType<typeof ShaclCoreNodeShape.propertiesFromRdf>>
   > {
     const _super0Either = ShaclCoreNodeShape.propertiesFromRdf({
       ..._context,
