@@ -155,6 +155,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.equalsFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.fromJsonFunctionDeclarations.bind(this)(),
       ..._ObjectType.fromRdfFunctionDeclarations.bind(this)(),
+      ..._ObjectType.fromRdfTypeVariableDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonUiSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),

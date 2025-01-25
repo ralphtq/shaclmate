@@ -9525,6 +9525,10 @@ export namespace NodeShapeWithExplicitRdfTypes {
     );
   }
 
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://example.com/FromRdfType",
+  );
+
   export function jsonSchema() {
     return zodToJsonSchema(jsonZodSchema());
   }
@@ -12709,6 +12713,10 @@ export namespace ConcreteParentClassNodeShape {
     );
   }
 
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://example.com/ConcreteParentClassNodeShape",
+  );
+
   export function jsonSchema() {
     return zodToJsonSchema(concreteParentClassNodeShapeJsonZodSchema());
   }
@@ -13106,6 +13114,10 @@ export namespace ConcreteChildClassNodeShape {
       (properties) => new ConcreteChildClassNodeShape(properties),
     );
   }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://example.com/ConcreteChildClassNodeShape",
+  );
 
   export function jsonSchema() {
     return zodToJsonSchema(concreteChildClassNodeShapeJsonZodSchema());
