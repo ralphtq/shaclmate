@@ -2570,7 +2570,10 @@ export class NodeShapeWithTermProperties {
     readonly booleanProperty?: boolean | purify.Maybe<boolean>;
     readonly dateTimeProperty?: Date | purify.Maybe<Date>;
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
-    readonly iriProperty?: rdfjs.NamedNode | purify.Maybe<rdfjs.NamedNode>;
+    readonly iriProperty?:
+      | rdfjs.NamedNode
+      | purify.Maybe<rdfjs.NamedNode>
+      | string;
     readonly literalProperty?:
       | rdfjs.Literal
       | Date
@@ -2616,6 +2619,10 @@ export class NodeShapeWithTermProperties {
       this.iriProperty = parameters.iriProperty;
     } else if (typeof parameters.iriProperty === "object") {
       this.iriProperty = purify.Maybe.of(parameters.iriProperty);
+    } else if (typeof parameters.iriProperty === "string") {
+      this.iriProperty = purify.Maybe.of(
+        dataFactory.namedNode(parameters.iriProperty),
+      );
     } else if (typeof parameters.iriProperty === "undefined") {
       this.iriProperty = purify.Maybe.empty();
     } else {
@@ -7688,15 +7695,21 @@ export namespace NodeShapeWithInProperties {
  * Shape with sh:in constraining its identifier.
  */
 export class NodeShapeWithInIdentifier {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
+  readonly identifier: rdfjs.NamedNode<
+    | "http://example.com/NodeShapeWithInIdentifierInstance1"
+    | "http://example.com/NodeShapeWithInIdentifierInstance2"
+  >;
   readonly stringProperty: purify.Maybe<string>;
   readonly type = "NodeShapeWithInIdentifier";
 
   constructor(parameters: {
-    readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly identifier: rdfjs.NamedNode<
+      | "http://example.com/NodeShapeWithInIdentifierInstance1"
+      | "http://example.com/NodeShapeWithInIdentifierInstance2"
+    >;
     readonly stringProperty?: purify.Maybe<string> | string;
   }) {
-    this._identifier = parameters.identifier;
+    this.identifier = parameters.identifier;
     if (purify.Maybe.isMaybe(parameters.stringProperty)) {
       this.stringProperty = parameters.stringProperty;
     } else if (typeof parameters.stringProperty === "string") {
@@ -7706,13 +7719,6 @@ export class NodeShapeWithInIdentifier {
     } else {
       this.stringProperty = parameters.stringProperty as never;
     }
-  }
-
-  get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.blankNode();
-    }
-    return this._identifier;
   }
 
   equals(other: NodeShapeWithInIdentifier): EqualsResult {
@@ -7767,10 +7773,7 @@ export class NodeShapeWithInIdentifier {
   } {
     return JSON.parse(
       JSON.stringify({
-        "@id":
-          this.identifier.termType === "BlankNode"
-            ? `_:${this.identifier.value}`
-            : this.identifier.value,
+        "@id": this.identifier.value,
         stringProperty: this.stringProperty.map((_item) => _item).extract(),
         type: this.type,
       } satisfies ReturnType<NodeShapeWithInIdentifier["toJson"]>),
@@ -7784,8 +7787,8 @@ export class NodeShapeWithInIdentifier {
     ignoreRdfType?: boolean;
     mutateGraph: rdfjsResource.MutableResource.MutateGraph;
     resourceSet: rdfjsResource.MutableResourceSet;
-  }): rdfjsResource.MutableResource {
-    const _resource = resourceSet.mutableResource({
+  }): rdfjsResource.MutableResource<rdfjs.NamedNode> {
+    const _resource = resourceSet.mutableNamedResource({
       identifier: this.identifier,
       mutateGraph,
     });
@@ -7805,7 +7808,10 @@ export namespace NodeShapeWithInIdentifier {
   export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      identifier: rdfjs.NamedNode<
+        | "http://example.com/NodeShapeWithInIdentifierInstance1"
+        | "http://example.com/NodeShapeWithInIdentifierInstance2"
+      >;
       stringProperty: purify.Maybe<string>;
     }
   > {
@@ -7815,9 +7821,7 @@ export namespace NodeShapeWithInIdentifier {
     }
 
     const _jsonObject = _jsonSafeParseResult.data;
-    const identifier = _jsonObject["@id"].startsWith("_:")
-      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
-      : dataFactory.namedNode(_jsonObject["@id"]);
+    const identifier = dataFactory.namedNode(_jsonObject["@id"]);
     const stringProperty = purify.Maybe.fromNullable(
       _jsonObject["stringProperty"],
     );
@@ -7842,11 +7846,14 @@ export namespace NodeShapeWithInIdentifier {
     [_index: string]: any;
     ignoreRdfType?: boolean;
     languageIn?: readonly string[];
-    resource: rdfjsResource.Resource;
+    resource: rdfjsResource.Resource<rdfjs.NamedNode>;
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
     {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      identifier: rdfjs.NamedNode<
+        | "http://example.com/NodeShapeWithInIdentifierInstance1"
+        | "http://example.com/NodeShapeWithInIdentifierInstance2"
+      >;
       stringProperty: purify.Maybe<string>;
     }
   > {
@@ -8031,7 +8038,10 @@ export class NodeShapeWithHasValueProperties {
   readonly type = "NodeShapeWithHasValueProperties";
 
   constructor(parameters: {
-    readonly hasIriProperty?: rdfjs.NamedNode | purify.Maybe<rdfjs.NamedNode>;
+    readonly hasIriProperty?:
+      | rdfjs.NamedNode
+      | purify.Maybe<rdfjs.NamedNode>
+      | string;
     readonly hasLiteralProperty?: purify.Maybe<string> | string;
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
   }) {
@@ -8039,6 +8049,10 @@ export class NodeShapeWithHasValueProperties {
       this.hasIriProperty = parameters.hasIriProperty;
     } else if (typeof parameters.hasIriProperty === "object") {
       this.hasIriProperty = purify.Maybe.of(parameters.hasIriProperty);
+    } else if (typeof parameters.hasIriProperty === "string") {
+      this.hasIriProperty = purify.Maybe.of(
+        dataFactory.namedNode(parameters.hasIriProperty),
+      );
     } else if (typeof parameters.hasIriProperty === "undefined") {
       this.hasIriProperty = purify.Maybe.empty();
     } else {
@@ -9071,7 +9085,8 @@ export class NodeShapeWithExternProperties {
       | purify.Maybe<ExternObjectType>;
     readonly externProperty?:
       | (rdfjs.BlankNode | rdfjs.NamedNode)
-      | purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode>;
+      | purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode>
+      | string;
     readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
     readonly inlineProperty?: InlineNodeShape | purify.Maybe<InlineNodeShape>;
   }) {
@@ -9095,6 +9110,10 @@ export class NodeShapeWithExternProperties {
       this.externProperty = parameters.externProperty;
     } else if (typeof parameters.externProperty === "object") {
       this.externProperty = purify.Maybe.of(parameters.externProperty);
+    } else if (typeof parameters.externProperty === "string") {
+      this.externProperty = purify.Maybe.of(
+        dataFactory.namedNode(parameters.externProperty),
+      );
     } else if (typeof parameters.externProperty === "undefined") {
       this.externProperty = purify.Maybe.empty();
     } else {

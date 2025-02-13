@@ -49,13 +49,13 @@ export function transformPropertyShapeToAstCompositeType(
           nodeKinds.add(astType.identifierNodeKind);
           break;
         case "ObjectType":
-          nodeKinds = astType.nodeKinds;
+          nodeKinds = astType.identifierKinds;
           break;
         case "ObjectIntersectionType":
         case "ObjectUnionType":
           nodeKinds = new Set();
           for (const memberType of astType.memberTypes) {
-            for (const nodeKind of memberType.nodeKinds) {
+            for (const nodeKind of memberType.identifierKinds) {
               nodeKinds.add(nodeKind);
             }
           }

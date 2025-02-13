@@ -1,6 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import type { Maybe } from "purify-ts";
-import type { MintingStrategy } from "../enums/MintingStrategy.js";
+import type { IdentifierMintingStrategy } from "../enums/IdentifierMintingStrategy.js";
 import type { Name } from "./Name.js";
 import type { Type } from "./Type.js";
 
@@ -38,7 +38,7 @@ export interface ListType {
   /**
    * Strategy for minting new list and sub-list identifiers.
    */
-  readonly mintingStrategy: Maybe<MintingStrategy>;
+  readonly mintingStrategy: Maybe<IdentifierMintingStrategy>;
   /**
    * The list should be mutable in generated code.
    */

@@ -1,7 +1,10 @@
 import type { NamedNode } from "@rdfjs/types";
 import { rdf } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
-import type { MintingStrategy, TsFeature } from "../../enums/index.js";
+import type {
+  IdentifierMintingStrategy,
+  TsFeature,
+} from "../../enums/index.js";
 import { Import } from "./Import.js";
 import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import { Type } from "./Type.js";
@@ -12,7 +15,7 @@ export class ListType extends Type {
   readonly kind = "ListType";
   override readonly mutable: boolean;
   private readonly identifierNodeKind: "BlankNode" | "NamedNode";
-  private readonly mintingStrategy: MintingStrategy;
+  private readonly mintingStrategy: IdentifierMintingStrategy;
   private readonly toRdfTypes: readonly NamedNode[];
 
   constructor({
@@ -25,7 +28,7 @@ export class ListType extends Type {
   }: {
     identifierNodeKind: ListType["identifierNodeKind"];
     itemType: Type;
-    mintingStrategy: Maybe<MintingStrategy>;
+    mintingStrategy: Maybe<IdentifierMintingStrategy>;
     mutable: boolean;
     toRdfTypes: readonly NamedNode[];
   } & ConstructorParameters<typeof Type>[0]) {

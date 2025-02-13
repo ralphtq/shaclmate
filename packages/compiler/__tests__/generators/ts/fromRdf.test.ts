@@ -89,7 +89,7 @@ describe("fromRdf", () => {
         resource: new MutableResourceSet({
           dataFactory,
           dataset: dataset,
-        }).resource(identifier),
+        }).namedResource(identifier),
       }),
     ).toBeUndefined();
   });

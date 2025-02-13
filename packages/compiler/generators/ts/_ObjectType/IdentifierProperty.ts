@@ -7,7 +7,7 @@ import type {
   PropertySignatureStructure,
 } from "ts-morph";
 import type {
-  MintingStrategy,
+  IdentifierMintingStrategy,
   PropertyVisibility,
 } from "../../../enums/index.js";
 import type { IdentifierType } from "../IdentifierType.js";
@@ -20,22 +20,25 @@ export class IdentifierProperty extends Property<IdentifierType> {
   readonly equalsFunction = "booleanEquals";
   readonly mutable = false;
   private readonly classDeclarationVisibility: Maybe<PropertyVisibility>;
+  private readonly identifierMintingStrategy:
+    | IdentifierMintingStrategy
+    | "blankNode"
+    | "none";
   private readonly lazyObjectTypeMutable: () => boolean;
-  private readonly mintingStrategy: MintingStrategy | "blankNode" | "none";
   private readonly override: boolean;
 
   constructor({
     abstract,
     classDeclarationVisibility,
     lazyObjectTypeMutable,
-    mintingStrategy,
+    identifierMintingStrategy,
     override,
     ...superParameters
   }: {
     abstract: boolean;
     classDeclarationVisibility: Maybe<PropertyVisibility>;
     lazyObjectTypeMutable: () => boolean;
-    mintingStrategy: Maybe<MintingStrategy>;
+    identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
     override: boolean;
     type: IdentifierType;
   } & ConstructorParameters<typeof Property>[0]) {
@@ -43,12 +46,12 @@ export class IdentifierProperty extends Property<IdentifierType> {
     invariant(this.visibility === "public");
     this.abstract = abstract;
     this.classDeclarationVisibility = classDeclarationVisibility;
-    if (mintingStrategy.isJust()) {
-      this.mintingStrategy = mintingStrategy.unsafeCoerce();
+    if (identifierMintingStrategy.isJust()) {
+      this.identifierMintingStrategy = identifierMintingStrategy.unsafeCoerce();
     } else if (this.type.nodeKinds.has("BlankNode")) {
-      this.mintingStrategy = "blankNode";
+      this.identifierMintingStrategy = "blankNode";
     } else {
-      this.mintingStrategy = "none";
+      this.identifierMintingStrategy = "none";
     }
     this.lazyObjectTypeMutable = lazyObjectTypeMutable;
     this.override = override;
@@ -62,7 +65,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     }
 
     let mintIdentifier: string;
-    switch (this.mintingStrategy) {
+    switch (this.identifierMintingStrategy) {
       case "blankNode":
         mintIdentifier = "dataFactory.blankNode()";
         break;
@@ -114,7 +117,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
       return Maybe.empty();
     }
 
-    switch (this.mintingStrategy) {
+    switch (this.identifierMintingStrategy) {
       case "none":
         // Immutable, public identifier property, no getter
         return Maybe.of({
@@ -144,7 +147,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     return Maybe.of({
       hasQuestionToken:
         this.objectType.declarationType === "class" &&
-        this.mintingStrategy !== "none",
+        this.identifierMintingStrategy !== "none",
       isReadonly: true,
       name: this.name,
       type: this.type.name,
@@ -158,7 +161,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
       this.objectType.features.has("hash") &&
       this.objectType.declarationType === "class"
     ) {
-      switch (this.mintingStrategy) {
+      switch (this.identifierMintingStrategy) {
         case "sha256":
           imports.push(Import.SHA256);
           break;

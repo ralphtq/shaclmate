@@ -249,8 +249,8 @@ export class TypeFactory {
       dataFactoryVariable: this.dataFactoryVariable,
       defaultValue: Maybe.empty(),
       hasValues: [],
-      in_: [],
-      nodeKinds: astType.nodeKinds,
+      in_: astType.identifierIn,
+      nodeKinds: astType.identifierKinds,
     });
 
     const objectType = new ObjectType({
@@ -310,7 +310,7 @@ export class TypeFactory {
             classDeclarationVisibility:
               identifierPropertyClassDeclarationVisibility,
             dataFactoryVariable: this.dataFactoryVariable,
-            mintingStrategy: astType.mintingStrategy,
+            identifierMintingStrategy: astType.identifierMintingStrategy,
             name: astType.tsIdentifierPropertyName,
             lazyObjectTypeMutable: () =>
               properties.some(
@@ -363,7 +363,7 @@ export class TypeFactory {
           left.name.localeCompare(right.name),
         );
       },
-      mintingStrategy: astType.mintingStrategy,
+      mintingStrategy: astType.identifierMintingStrategy,
       name: tsName(astType.name),
       toRdfTypes: astType.toRdfTypes,
     });

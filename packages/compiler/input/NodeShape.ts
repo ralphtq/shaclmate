@@ -2,7 +2,7 @@ import type { NamedNode } from "@rdfjs/types";
 import { NodeShape as ShaclCoreNodeShape } from "@shaclmate/shacl-ast";
 import { Maybe } from "purify-ts";
 import type {
-  MintingStrategy,
+  IdentifierMintingStrategy,
   TsFeature,
   TsObjectDeclarationType,
 } from "../enums/index.js";
@@ -116,7 +116,7 @@ export class NodeShape extends ShaclCoreNodeShape<
     return Maybe.empty();
   }
 
-  get mintingStrategy(): Maybe<MintingStrategy> {
+  get mintingStrategy(): Maybe<IdentifierMintingStrategy> {
     const thisMintingStrategy = this._mintingStrategy;
     if (thisMintingStrategy.isNothing()) {
       for (const ancestorNodeShape of this.ancestorNodeShapes) {
@@ -247,7 +247,7 @@ export class NodeShape extends ShaclCoreNodeShape<
       .tsObjectTypeDiscriminatorPropertyName;
   }
 
-  private get _mintingStrategy(): Maybe<MintingStrategy> {
+  private get _mintingStrategy(): Maybe<IdentifierMintingStrategy> {
     return this.generatedShaclmateNodeShape.mintingStrategy.map((iri) => {
       switch (iri.value) {
         case "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256":

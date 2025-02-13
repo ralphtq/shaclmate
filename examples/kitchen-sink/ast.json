@@ -448,7 +448,7 @@
                 },
                 "shaclmateName": "ExternObjectType"
               },
-              "nodeKinds": [
+              "identifierKinds": [
                 "BlankNode",
                 "NamedNode"
               ]
@@ -497,7 +497,7 @@
                 },
                 "shaclmateName": "InlineNodeShape"
               },
-              "nodeKinds": [
+              "identifierKinds": [
                 "BlankNode",
                 "NamedNode"
               ]
@@ -845,7 +845,7 @@
                   },
                   "shaclmateName": "NonClassNodeShape"
                 },
-                "nodeKinds": [
+                "identifierKinds": [
                   "BlankNode",
                   "NamedNode"
                 ]
@@ -1327,7 +1327,7 @@
                     },
                     "shaclmateName": "NonClassNodeShape"
                   },
-                  "nodeKinds": [
+                  "identifierKinds": [
                     "BlankNode",
                     "NamedNode"
                   ]
