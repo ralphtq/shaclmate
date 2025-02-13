@@ -6836,6 +6836,8 @@ export class NodeShapeWithInProperties {
     readonly inBooleansProperty?: purify.Maybe<true> | true;
     readonly inDateTimesProperty?: Date | purify.Maybe<Date>;
     readonly inIrisProperty?:
+      | "http://example.com/NodeShapeWithInPropertiesIri1"
+      | "http://example.com/NodeShapeWithInPropertiesIri2"
       | purify.Maybe<
           rdfjs.NamedNode<
             | "http://example.com/NodeShapeWithInPropertiesIri1"
@@ -6882,6 +6884,10 @@ export class NodeShapeWithInProperties {
       this.inIrisProperty = parameters.inIrisProperty;
     } else if (typeof parameters.inIrisProperty === "object") {
       this.inIrisProperty = purify.Maybe.of(parameters.inIrisProperty);
+    } else if (typeof parameters.inIrisProperty === "string") {
+      this.inIrisProperty = purify.Maybe.of(
+        dataFactory.namedNode(parameters.inIrisProperty),
+      );
     } else if (typeof parameters.inIrisProperty === "undefined") {
       this.inIrisProperty = purify.Maybe.empty();
     } else {
@@ -7666,6 +7672,343 @@ export namespace NodeShapeWithInProperties {
                 ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/inStringsProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+    ];
+  }
+}
+/**
+ * Shape with sh:in constraining its identifier.
+ */
+export class NodeShapeWithInIdentifier {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
+  readonly stringProperty: purify.Maybe<string>;
+  readonly type = "NodeShapeWithInIdentifier";
+
+  constructor(parameters: {
+    readonly identifier?: rdfjs.BlankNode | rdfjs.NamedNode;
+    readonly stringProperty?: purify.Maybe<string> | string;
+  }) {
+    this._identifier = parameters.identifier;
+    if (purify.Maybe.isMaybe(parameters.stringProperty)) {
+      this.stringProperty = parameters.stringProperty;
+    } else if (typeof parameters.stringProperty === "string") {
+      this.stringProperty = purify.Maybe.of(parameters.stringProperty);
+    } else if (typeof parameters.stringProperty === "undefined") {
+      this.stringProperty = purify.Maybe.empty();
+    } else {
+      this.stringProperty = parameters.stringProperty as never;
+    }
+  }
+
+  get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
+    if (typeof this._identifier === "undefined") {
+      this._identifier = dataFactory.blankNode();
+    }
+    return this._identifier;
+  }
+
+  equals(other: NodeShapeWithInIdentifier): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
+      .mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "identifier",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      }))
+      .chain(() =>
+        ((left, right) => maybeEquals(left, right, strictEquals))(
+          this.stringProperty,
+          other.stringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "stringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
+        strictEquals(this.type, other.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(_hasher: HasherT): HasherT {
+    this.stringProperty.ifJust((_value0) => {
+      _hasher.update(_value0);
+    });
+    return _hasher;
+  }
+
+  toJson(): {
+    readonly "@id": string;
+    readonly stringProperty: string | undefined;
+    readonly type: "NodeShapeWithInIdentifier";
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
+        stringProperty: this.stringProperty.map((_item) => _item).extract(),
+        type: this.type,
+      } satisfies ReturnType<NodeShapeWithInIdentifier["toJson"]>),
+    );
+  }
+
+  toRdf({
+    mutateGraph,
+    resourceSet,
+  }: {
+    ignoreRdfType?: boolean;
+    mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+    resourceSet: rdfjsResource.MutableResourceSet;
+  }): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource({
+      identifier: this.identifier,
+      mutateGraph,
+    });
+    _resource.add(
+      dataFactory.namedNode("http://example.com/stringProperty"),
+      this.stringProperty,
+    );
+    return _resource;
+  }
+
+  toString(): string {
+    return JSON.stringify(this.toJson());
+  }
+}
+
+export namespace NodeShapeWithInIdentifier {
+  export function propertiesFromJson(_json: unknown): purify.Either<
+    zod.ZodError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty: purify.Maybe<string>;
+    }
+  > {
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+    if (!_jsonSafeParseResult.success) {
+      return purify.Left(_jsonSafeParseResult.error);
+    }
+
+    const _jsonObject = _jsonSafeParseResult.data;
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const stringProperty = purify.Maybe.fromNullable(
+      _jsonObject["stringProperty"],
+    );
+    return purify.Either.of({ identifier, stringProperty });
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, NodeShapeWithInIdentifier> {
+    return NodeShapeWithInIdentifier.propertiesFromJson(json).map(
+      (properties) => new NodeShapeWithInIdentifier(properties),
+    );
+  }
+
+  export function propertiesFromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      stringProperty: purify.Maybe<string>;
+    }
+  > {
+    const identifier = _resource.identifier;
+    const _stringPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<string>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/stringProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => _value.toString())
+        .toMaybe(),
+    );
+    if (_stringPropertyEither.isLeft()) {
+      return _stringPropertyEither;
+    }
+
+    const stringProperty = _stringPropertyEither.unsafeCoerce();
+    return purify.Either.of({ identifier, stringProperty });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof NodeShapeWithInIdentifier.propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    NodeShapeWithInIdentifier
+  > {
+    return NodeShapeWithInIdentifier.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithInIdentifier(properties),
+    );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      elements: [
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/stringProperty`, type: "Control" },
+        {
+          rule: {
+            condition: {
+              schema: { const: "NodeShapeWithInIdentifier" },
+              scope: `${scopePrefix}/properties/type`,
+            },
+            effect: "HIDE",
+          },
+          scope: `${scopePrefix}/properties/type`,
+          type: "Control",
+        },
+      ],
+      label: "NodeShapeWithInIdentifier",
+      type: "Group",
+    };
+  }
+
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      stringProperty: zod.string().optional(),
+      type: zod.literal("NodeShapeWithInIdentifier"),
+    });
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithInIdentifier.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithInIdentifier.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithInIdentifier.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithInIdentifier");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithInIdentifier");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}StringProperty`),
+        predicate: dataFactory.namedNode("http://example.com/stringProperty"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ?? dataFactory.variable!("nodeShapeWithInIdentifier");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithInIdentifier");
+    return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
+                  `${variablePrefix}StringProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/stringProperty",
                 ),
                 subject,
               },

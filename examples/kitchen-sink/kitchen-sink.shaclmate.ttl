@@ -315,6 +315,20 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :hasLiteralProperty
     ] .
 
+:NodeShapeWithInIdentifier
+    shaclmate:name "NodeShapeWithInIdentifier" ;
+    a sh:NodeShape ;
+    rdfs:comment "Shape with sh:in constraining its identifier." ;
+    sh:in (:NodeShapeWithInIdentifierInstance1
+        :NodeShapeWithInIdentifierInstance2
+    ) ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:name "stringProperty" ;
+        sh:path :stringProperty
+    ] .
+
 :NodeShapeWithInProperties
     shaclmate:name "NodeShapeWithInProperties" ;
     a sh:NodeShape ;
