@@ -1,7 +1,7 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
 import { Memoize } from "typescript-memoize";
 import { TermType } from "./TermType.js";
-import { Type } from "./Type.js";
+import type { Type } from "./Type.js";
 
 export class IdentifierType extends TermType<BlankNode | NamedNode> {
   readonly kind = "IdentifierType";
