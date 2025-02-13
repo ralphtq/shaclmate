@@ -84,14 +84,13 @@ describe("fromRdf", () => {
         dataFactory.literal("whatever"),
       ),
     );
-    expect(
-      kitchenSink.NodeShapeWithInIdentifier.fromRdf({
-        resource: new MutableResourceSet({
-          dataFactory,
-          dataset: dataset,
-        }).namedResource(identifier),
-      }),
-    ).toBeUndefined();
+    const instance = kitchenSink.NodeShapeWithInIdentifier.fromRdf({
+      resource: new MutableResourceSet({
+        dataFactory,
+        dataset: dataset,
+      }).namedResource(identifier),
+    }).extract();
+    expect(instance).toBeInstanceOf(Error);
   });
 
   it("ignore invalid IRI property values (sh:in)", ({ expect }) => {
