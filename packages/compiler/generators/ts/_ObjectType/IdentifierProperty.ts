@@ -1,3 +1,4 @@
+import { rdf } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import type {
@@ -144,13 +145,20 @@ export class IdentifierProperty extends Property<IdentifierType> {
       return Maybe.empty();
     }
 
+    const typeNames = new Set<string>(); // Remove duplicates with a set
+    for (const conversion of this.type.conversions) {
+      if (conversion.sourceTypeName !== "undefined") {
+        typeNames.add(conversion.sourceTypeName);
+      }
+    }
+
     return Maybe.of({
       hasQuestionToken:
         this.objectType.declarationType === "class" &&
         this.identifierMintingStrategy !== "none",
       isReadonly: true,
       name: this.name,
-      type: this.type.name,
+      type: [...typeNames].sort().join(" | "),
     });
   }
 
@@ -206,11 +214,33 @@ export class IdentifierProperty extends Property<IdentifierType> {
     if (this.abstract) {
       return [];
     }
-    return this.classPropertyDeclaration
-      .map((classPropertyDeclaration) => [
+    if (this.classPropertyDeclaration.isNothing()) {
+      return [];
+    }
+    const classPropertyDeclaration =
+      this.classPropertyDeclaration.unsafeCoerce();
+
+    const typeConversions = this.type.conversions;
+    if (typeConversions.length === 1) {
+      return [
         `this.${classPropertyDeclaration.name} = ${variables.parameter};`,
-      ])
-      .orDefault([]);
+      ];
+    }
+    const statements: string[] = [];
+    for (const conversion of this.type.conversions) {
+      if (conversion.sourceTypeName !== "undefined") {
+        statements.push(
+          `if (${conversion.sourceTypeCheckExpression(variables.parameter)}) { this.${classPropertyDeclaration.name} = ${conversion.conversionExpression(variables.parameter)}; }`,
+        );
+      }
+    }
+    if (!classPropertyDeclaration.hasQuestionToken) {
+      // We shouldn't need this else, since the parameter now has the never type, but have to add it to appease the TypeScript compiler
+      statements.push(
+        `{ this.${classPropertyDeclaration.name} =( ${variables.parameter}) as never;\n }`,
+      );
+    }
+    return [statements.join(" else ")];
   }
 
   override fromJsonStatements({
@@ -228,6 +258,14 @@ export class IdentifierProperty extends Property<IdentifierType> {
   }: Parameters<
     Property<IdentifierType>["fromRdfStatements"]
   >[0]): readonly string[] {
+    if (this.type.in_.length > 0 && this.type.isNamedNodeKind) {
+      // Treat sh:in as a union of the IRIs
+      // rdfjs.NamedNode<"http://example.com/1" | "http://example.com/2">
+      return [
+        `let ${this.name}: ${this.type.name};`,
+        `switch (${variables.resource}.identifier.value) { ${this.type.in_.map((iri) => `case "${iri.value}": ${this.name} = ${this.rdfjsTermExpression(iri)}; break;`).join(" ")} default: return purify.Left(new rdfjsResource.Resource.MistypedValueError({ actualValue: ${variables.resource}.identifier, expectedValueType: ${JSON.stringify(this.type.name)}, focusResource: ${variables.resource}, predicate: ${this.rdfjsTermExpression(rdf.subject)} })); }`,
+      ];
+    }
     return [`const ${this.name} = ${variables.resource}.identifier`];
   }
 
@@ -240,7 +278,23 @@ export class IdentifierProperty extends Property<IdentifierType> {
   }: Parameters<
     Property<IdentifierType>["interfaceConstructorStatements"]
   >[0]): readonly string[] {
-    return [`const ${this.name} = ${variables.parameter}`];
+    const typeConversions = this.type.conversions;
+    if (typeConversions.length === 1) {
+      return [`const ${this.name} = ${variables.parameter};`];
+    }
+    const statements: string[] = [`let ${this.name}: ${this.type.name};`];
+    const conversionBranches: string[] = [];
+    for (const conversion of this.type.conversions) {
+      conversionBranches.push(
+        `if (${conversion.sourceTypeCheckExpression(variables.parameter)}) { ${this.name} = ${conversion.conversionExpression(variables.parameter)}; }`,
+      );
+    }
+    // We shouldn't need this else, since the parameter now has the never type, but have to add it to appease the TypeScript compiler
+    conversionBranches.push(
+      `{ ${this.name} =( ${variables.parameter}) as never;\n }`,
+    );
+    statements.push(conversionBranches.join(" else "));
+    return statements;
   }
 
   override jsonUiSchemaElement({
@@ -258,9 +312,18 @@ export class IdentifierProperty extends Property<IdentifierType> {
   }: Parameters<Property<IdentifierType>["jsonZodSchema"]>[0]): ReturnType<
     Property<IdentifierType>["jsonZodSchema"]
   > {
+    let schema: string;
+    if (this.type.in_.length > 0 && this.type.isNamedNodeKind) {
+      // Treat sh:in as a union of the IRIs
+      // rdfjs.NamedNode<"http://example.com/1" | "http://example.com/2">
+      schema = `${variables.zod}.enum(${JSON.stringify(this.type.in_.map((iri) => iri.value))})`;
+    } else {
+      schema = `${variables.zod}.string().min(1)`;
+    }
+
     return {
       key: this.jsonPropertySignature.name,
-      schema: `${variables.zod}.string().min(1)`,
+      schema,
     };
   }
 
