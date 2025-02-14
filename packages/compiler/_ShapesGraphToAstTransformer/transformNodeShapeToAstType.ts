@@ -1,5 +1,5 @@
 import { rdf } from "@tpluscode/rdf-ns-builders";
-import { Either, Left } from "purify-ts";
+import { Either, Left, Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import type { ShapesGraphToAstTransformer } from "../ShapesGraphToAstTransformer.js";
 import type * as ast from "../ast/index.js";
@@ -195,6 +195,10 @@ export function transformNodeShapeToAstType(
     return Either.of(compositeType);
   }
 
+  const identifierIn = nodeShape.constraints.in_.filter(
+    (term) => term.termType === "NamedNode",
+  );
+
   // Put a placeholder in the cache to deal with cyclic references
   // If this node shape's properties (directly or indirectly) refer to the node shape itself,
   // we'll return this placeholder.
@@ -209,9 +213,12 @@ export function transformNodeShapeToAstType(
     fromRdfType: nodeShape.fromRdfType,
     label: pickLiteral(nodeShape.labels).map((literal) => literal.value),
     kind: "ObjectType",
-    mintingStrategy: nodeShape.mintingStrategy,
+    identifierIn,
+    identifierMintingStrategy:
+      identifierIn.length === 0 ? nodeShape.mintingStrategy : Maybe.empty(),
+    identifierKinds:
+      identifierIn.length === 0 ? nodeShape.nodeKinds : new Set(["NamedNode"]),
     name: this.shapeAstName(nodeShape),
-    nodeKinds: nodeShape.nodeKinds,
     properties: [], // This is mutable, we'll populate it below.
     parentObjectTypes: [], // This is mutable, we'll populate it below
     toRdfTypes: nodeShape.toRdfTypes,

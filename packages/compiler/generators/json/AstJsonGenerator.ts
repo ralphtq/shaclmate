@@ -98,7 +98,12 @@ function typeToJson(type: ast.Type): AstJson.Type {
           type.parentObjectTypes.length > 0
             ? type.parentObjectTypes.map((type) => nameToJson(type.name))
             : undefined,
-        nodeKinds: [...type.nodeKinds],
+        identifierIn:
+          type.identifierIn.length > 0
+            ? type.identifierIn.map(termToJson)
+            : undefined,
+        identifierKinds: [...type.identifierKinds],
+        identifierMintingStrategy: type.identifierMintingStrategy.extract(),
         toRdfTypes:
           type.toRdfTypes.length > 0
             ? type.toRdfTypes.map(termToJson)

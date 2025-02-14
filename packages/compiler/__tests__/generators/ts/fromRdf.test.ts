@@ -72,29 +72,28 @@ describe("fromRdf", () => {
     expect(instance.hasLiteralProperty.isNothing()).toStrictEqual(true);
   });
 
-  it("preserve valid IRI values (sh:in)", ({ expect }) => {
+  it("ignore invalid identifier values (sh:in)", ({ expect }) => {
     const dataset = new N3.Store();
-    const identifier = dataFactory.blankNode();
-    const object = dataFactory.namedNode(
-      "http://example.com/NodeShapeWithInPropertiesIri1",
+    const identifier = dataFactory.namedNode(
+      "http://example.com/InvalidIdentifier",
     );
     dataset.add(
       dataFactory.quad(
         identifier,
-        dataFactory.namedNode("http://example.com/inIrisProperty"),
-        object,
+        dataFactory.namedNode("http://example.com/stringProperty"),
+        dataFactory.literal("whatever"),
       ),
     );
-    const instance = kitchenSink.NodeShapeWithInProperties.fromRdf({
+    const instance = kitchenSink.NodeShapeWithInIdentifier.fromRdf({
       resource: new MutableResourceSet({
         dataFactory,
         dataset: dataset,
-      }).resource(identifier),
-    }).unsafeCoerce();
-    expect(instance.inIrisProperty.unsafeCoerce().equals(object));
+      }).namedResource(identifier),
+    }).extract();
+    expect(instance).toBeInstanceOf(Error);
   });
 
-  it("ignore invalid IRI values (sh:in)", ({ expect }) => {
+  it("ignore invalid IRI property values (sh:in)", ({ expect }) => {
     const dataset = new N3.Store();
     const identifier = dataFactory.blankNode();
     dataset.add(
@@ -115,26 +114,7 @@ describe("fromRdf", () => {
     expect(instance.inIrisProperty.isNothing()).toStrictEqual(true);
   });
 
-  it("preserve valid literal values (sh:in)", ({ expect }) => {
-    const dataset = new N3.Store();
-    const identifier = dataFactory.blankNode();
-    dataset.add(
-      dataFactory.quad(
-        identifier,
-        dataFactory.namedNode("http://example.com/inStringsProperty"),
-        dataFactory.literal("text"),
-      ),
-    );
-    const instance = kitchenSink.NodeShapeWithInProperties.fromRdf({
-      resource: new MutableResourceSet({
-        dataFactory,
-        dataset: dataset,
-      }).resource(identifier),
-    }).unsafeCoerce();
-    expect(instance.inStringsProperty.unsafeCoerce()).toStrictEqual("text");
-  });
-
-  it("ignore invalid literal values (sh:in)", ({ expect }) => {
+  it("ignore invalid literal property values (sh:in)", ({ expect }) => {
     const dataset = new N3.Store();
     const identifier = dataFactory.blankNode();
     const predicate = dataFactory.namedNode(

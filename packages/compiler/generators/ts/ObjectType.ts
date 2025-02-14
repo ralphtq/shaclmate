@@ -11,7 +11,7 @@ import {
 } from "ts-morph";
 import { Memoize } from "typescript-memoize";
 import type {
-  MintingStrategy,
+  IdentifierMintingStrategy,
   TsFeature,
   TsObjectDeclarationType,
 } from "../../enums/index.js";
@@ -35,7 +35,7 @@ export class ObjectType extends DeclaredType {
   protected readonly extern: boolean;
   protected readonly fromRdfType: Maybe<NamedNode>;
   protected readonly label: Maybe<string>;
-  protected readonly mintingStrategy: Maybe<MintingStrategy>;
+  protected readonly mintingStrategy: Maybe<IdentifierMintingStrategy>;
   protected readonly toRdfTypes: readonly NamedNode[];
   private readonly imports: readonly string[];
   private readonly lazyAncestorObjectTypes: () => readonly ObjectType[];
@@ -70,7 +70,7 @@ export class ObjectType extends DeclaredType {
     lazyDescendantObjectTypes: () => readonly ObjectType[];
     lazyParentObjectTypes: () => readonly ObjectType[];
     lazyProperties: () => readonly ObjectType.Property[];
-    mintingStrategy: Maybe<MintingStrategy>;
+    mintingStrategy: Maybe<IdentifierMintingStrategy>;
     toRdfTypes: readonly NamedNode[];
   } & ConstructorParameters<typeof DeclaredType>[0]) {
     super(superParameters);

@@ -1,10 +1,10 @@
 import type { NamedNode } from "@rdfjs/types";
-import type { PredicatePath } from "@shaclmate/shacl-ast";
+import type { NodeKind, PredicatePath } from "@shaclmate/shacl-ast";
 import type { Maybe } from "purify-ts";
 import { Resource } from "rdfjs-resource";
 import genericToposort from "toposort";
 import type {
-  MintingStrategy,
+  IdentifierMintingStrategy,
   PropertyVisibility,
   TsFeature,
   TsObjectDeclarationType,
@@ -69,6 +69,25 @@ export interface ObjectType {
   readonly fromRdfType: Maybe<NamedNode>;
 
   /**
+   * Instances of this ObjectType must have explicit identifiers and the identifiers must be in this list of IRIs.
+   *
+   * Mutually exclusive with minting strategies
+   */
+  readonly identifierIn: readonly NamedNode[];
+
+  /**
+   * The RDF node kinds this ObjectType may be identified by.
+   *
+   * Used to associate instances with an RDF identifier.
+   */
+  readonly identifierKinds: Set<Exclude<NodeKind, "Literal">>;
+
+  /**
+   * Strategy for minting new object identifiers.
+   */
+  readonly identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
+
+  /**
    * Type discriminator.
    */
   readonly kind: "ObjectType";
@@ -79,21 +98,9 @@ export interface ObjectType {
   readonly label: Maybe<string>;
 
   /**
-   * Strategy for minting new object identifiers.
-   */
-  readonly mintingStrategy: Maybe<MintingStrategy>;
-
-  /**
    * Name of this type, usually derived from sh:name or shaclmate:name.
    */
   readonly name: Name;
-
-  /**
-   * The RDF node kinds this ObjectType may be identified by.
-   *
-   * Used to associate instances with an RDF identifier.
-   */
-  readonly nodeKinds: Set<"BlankNode" | "NamedNode">;
 
   /**
    * Immediate parent ObjectTypes of this Object types.

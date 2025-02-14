@@ -7,16 +7,15 @@ export class IdentifierType extends TermType<BlankNode | NamedNode> {
   readonly kind = "IdentifierType";
 
   override get conversions(): readonly Type.Conversion[] {
-    if (this.in_.length === 0) {
-      return super.conversions;
-    }
-
     return super.conversions.concat([
       {
         conversionExpression: (value) =>
           `${this.dataFactoryVariable}.namedNode(${value})`,
         sourceTypeCheckExpression: (value) => `typeof ${value} === "string"`,
-        sourceTypeName: this.in_.map((iri) => `"${iri.value}"`).join(" | "),
+        sourceTypeName:
+          this.in_.length > 0
+            ? this.in_.map((iri) => `"${iri.value}"`).join(" | ")
+            : "string",
       },
     ]);
   }

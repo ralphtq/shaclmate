@@ -173,6 +173,18 @@ export const harnesses = {
     sparqlConstructQueryString:
       kitchenSink.NodeShapeWithHasValueProperties.sparqlConstructQueryString,
   }),
+  nodeShapeWithInIdentifier: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithInIdentifier.fromJson,
+    fromRdf: kitchenSink.NodeShapeWithInIdentifier.fromRdf,
+    instance: new kitchenSink.NodeShapeWithInIdentifier({
+      identifier: dataFactory.namedNode(
+        "http://example.com/NodeShapeWithInIdentifierInstance1",
+      ),
+      stringProperty: "doesn't matter",
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithInIdentifier.sparqlConstructQueryString,
+  }),
   nodeShapeWithInIrisProperty: new ClassHarness({
     fromJson: kitchenSink.NodeShapeWithInProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,

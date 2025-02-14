@@ -1,4 +1,4 @@
 /**
  * TypeScript enum corresponding to shaclmate:mintingStrategy, for simpler manipulation.
  */
-export type MintingStrategy = "sha256" | "uuidv4";
+export type IdentifierMintingStrategy = "sha256" | "uuidv4";
