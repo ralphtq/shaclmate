@@ -219,14 +219,14 @@ return strictEquals(left.type, right.type).chain(() => {
       name: "fromRdf",
       parameters: [
         {
-          name: "parameters",
+          name: "{ ignoreRdfType, resource, ...context }",
           type: `{ [_index: string]: any; ignoreRdfType?: boolean; resource: ${this.rdfjsResourceType().name}; }`,
         },
       ],
       returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>`,
       statements: [
         `return ${this.memberTypes.reduce((expression, memberType) => {
-          const memberTypeExpression = `(${memberType.name}.fromRdf(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
+          const memberTypeExpression = `(${memberType.name}.fromRdf({ ...context, resource }) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
           return expression.length > 0
             ? `${expression}.altLazy(() => ${memberTypeExpression})`
             : memberTypeExpression;
@@ -306,6 +306,7 @@ return strictEquals(left.type, right.type).chain(() => {
         isExported: true,
         kind: StructureKind.Function,
         name: "sparqlConstructTemplateTriples",
+        // Accept ignoreRdfType in order to reuse code but don't pass it through, since deserialization may depend on it
         parameters: [
           {
             name: "parameters",
@@ -317,7 +318,7 @@ return strictEquals(left.type, right.type).chain(() => {
           `return [${this.memberTypes
             .map(
               (memberType) =>
-                `...${memberType.name}.sparqlConstructTemplateTriples({ ignoreRdfType: parameters?.ignoreRdfType, subject: parameters.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}${pascalCase(memberType.name)}"), variablePrefix: parameters?.variablePrefix ? \`\${parameters.variablePrefix}${pascalCase(memberType.name)}\` : "${camelCase(this.name)}${pascalCase(memberType.name)}" }).concat()`,
+                `...${memberType.name}.sparqlConstructTemplateTriples({ subject: parameters.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}${pascalCase(memberType.name)}"), variablePrefix: parameters?.variablePrefix ? \`\${parameters.variablePrefix}${pascalCase(memberType.name)}\` : "${camelCase(this.name)}${pascalCase(memberType.name)}" }).concat()`,
             )
             .join(", ")}];`,
         ],
@@ -326,6 +327,7 @@ return strictEquals(left.type, right.type).chain(() => {
         isExported: true,
         kind: StructureKind.Function,
         name: "sparqlWherePatterns",
+        // Accept ignoreRdfType in order to reuse code but don't pass it through, since deserialization may depend on it
         parameters: [
           {
             name: "parameters",
@@ -337,7 +339,7 @@ return strictEquals(left.type, right.type).chain(() => {
           `return [{ patterns: [${this.memberTypes
             .map((memberType) =>
               objectInitializer({
-                patterns: `${memberType.name}.sparqlWherePatterns({ ignoreRdfType: parameters?.ignoreRdfType, subject: parameters.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}${pascalCase(memberType.name)}"), variablePrefix: parameters?.variablePrefix ? \`\${parameters.variablePrefix}${pascalCase(memberType.name)}\` : "${camelCase(this.name)}${pascalCase(memberType.name)}" }).concat()`,
+                patterns: `${memberType.name}.sparqlWherePatterns({ subject: parameters.subject ?? ${this.dataFactoryVariable}.variable!("${camelCase(this.name)}${pascalCase(memberType.name)}"), variablePrefix: parameters?.variablePrefix ? \`\${parameters.variablePrefix}${pascalCase(memberType.name)}\` : "${camelCase(this.name)}${pascalCase(memberType.name)}" }).concat()`,
                 type: '"group"',
               }),
             )
@@ -439,7 +441,8 @@ return strictEquals(left.type, right.type).chain(() => {
   override fromRdfExpression({
     variables,
   }: Parameters<Type["fromRdfExpression"]>[0]): string {
-    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: _resource }))`;
+    // Don't ignoreRdfType, we may need it to distinguish the union members
+    return `${variables.resourceValues}.head().chain(value => value.to${this.rdfjsResourceType().named ? "Named" : ""}Resource()).chain(_resource => ${this.name}.fromRdf({ ...${variables.context}, languageIn: ${variables.languageIn}, resource: _resource }))`;
   }
 
   override hashStatements({
@@ -467,7 +470,6 @@ return strictEquals(left.type, right.type).chain(() => {
       case "type":
         return [
           `...${this.name}.sparqlConstructTemplateTriples(${objectInitializer({
-            ignoreRdfType: true,
             subject: variables.subject,
             variablePrefix: variables.variablePrefix,
           })})`,
@@ -485,7 +487,6 @@ return strictEquals(left.type, right.type).chain(() => {
       case "type":
         return [
           `...${this.name}.sparqlWherePatterns(${objectInitializer({
-            ignoreRdfType: true,
             subject: variables.subject,
             variablePrefix: variables.variablePrefix,
           })})`,
