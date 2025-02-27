@@ -1124,6 +1124,10 @@ export namespace ShaclCorePropertyShape {
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyShape> {
     return ShaclCorePropertyShape.propertiesFromRdf(parameters);
   }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/ns/shacl#PropertyShape",
+  );
 }
 export interface ShaclmatePropertyShape extends ShaclCorePropertyShape {
   readonly extern: purify.Maybe<boolean>;
@@ -1345,6 +1349,10 @@ export namespace ShaclmatePropertyShape {
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclmatePropertyShape> {
     return ShaclmatePropertyShape.propertiesFromRdf(parameters);
   }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/ns/shacl#PropertyShape",
+  );
 }
 export interface OwlOntology {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -1435,11 +1443,16 @@ export namespace OwlOntology {
   ): purify.Either<rdfjsResource.Resource.ValueError, OwlOntology> {
     return OwlOntology.propertiesFromRdf(parameters);
   }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/2002/07/owl#Ontology",
+  );
 }
 export interface ShaclmateOntology extends OwlOntology {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly tsDataFactoryVariable: purify.Maybe<string>;
   readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1448,20 +1461,23 @@ export interface ShaclmateOntology extends OwlOntology {
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
   >[];
   readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1497,6 +1513,7 @@ export namespace ShaclmateOntology {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       tsDataFactoryVariable: purify.Maybe<string>;
       tsFeatureExcludes: readonly rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1505,20 +1522,23 @@ export namespace ShaclmateOntology {
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
       >[];
       tsFeatureIncludes: readonly rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1588,6 +1608,7 @@ export namespace ShaclmateOntology {
     const _tsFeatureExcludesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1596,6 +1617,7 @@ export namespace ShaclmateOntology {
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1616,10 +1638,11 @@ export namespace ShaclmateOntology {
             .chain((_value) =>
               _value.toIri().chain((iri) => {
                 switch (iri.value) {
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1628,6 +1651,29 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1640,6 +1686,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1648,6 +1695,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1660,6 +1708,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1668,6 +1717,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1680,6 +1730,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1688,6 +1739,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1700,6 +1752,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1708,6 +1761,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1720,6 +1774,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1728,6 +1783,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1740,6 +1796,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1748,6 +1805,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1760,6 +1818,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1768,6 +1827,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1776,10 +1836,11 @@ export namespace ShaclmateOntology {
                     >(
                       iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1788,6 +1849,29 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_None">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1800,6 +1884,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1808,6 +1893,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1820,6 +1906,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1828,6 +1915,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1840,6 +1928,7 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -1848,6 +1937,7 @@ export namespace ShaclmateOntology {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1861,7 +1951,7 @@ export namespace ShaclmateOntology {
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: iri,
                         expectedValueType:
-                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_None" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
                           "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
@@ -1883,14 +1973,16 @@ export namespace ShaclmateOntology {
     const _tsFeatureIncludesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1911,18 +2003,42 @@ export namespace ShaclmateOntology {
             .chain((_value) =>
               _value.toIri().chain((iri) => {
                 switch (iri.value) {
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1935,14 +2051,16 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1955,14 +2073,16 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1975,14 +2095,16 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -1991,38 +2113,20 @@ export namespace ShaclmateOntology {
                     >(
                       iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
-                    return purify.Either.of<
-                      rdfjsResource.Resource.ValueError,
-                      rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                      >
-                    >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Json">,
-                    );
                   case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2031,18 +2135,42 @@ export namespace ShaclmateOntology {
                     >(
                       iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Json">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2055,14 +2183,16 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2071,18 +2201,42 @@ export namespace ShaclmateOntology {
                     >(
                       iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_None">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2095,14 +2249,16 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2115,14 +2271,16 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2135,14 +2293,16 @@ export namespace ShaclmateOntology {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2156,7 +2316,7 @@ export namespace ShaclmateOntology {
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: iri,
                         expectedValueType:
-                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_None" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
                           "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
@@ -2325,6 +2485,10 @@ export namespace ShaclmateOntology {
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclmateOntology> {
     return ShaclmateOntology.propertiesFromRdf(parameters);
   }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/2002/07/owl#Ontology",
+  );
 }
 export interface ShaclCoreNodeShape extends BaseShaclCoreShape {
   readonly closed: purify.Maybe<boolean>;
@@ -2468,6 +2632,10 @@ export namespace ShaclCoreNodeShape {
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreNodeShape> {
     return ShaclCoreNodeShape.propertiesFromRdf(parameters);
   }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/ns/shacl#NodeShape",
+  );
 }
 export interface ShaclmateNodeShape extends ShaclCoreNodeShape {
   readonly abstract: purify.Maybe<boolean>;
@@ -2485,6 +2653,7 @@ export interface ShaclmateNodeShape extends ShaclCoreNodeShape {
   readonly name: purify.Maybe<string>;
   readonly toRdfTypes: readonly rdfjs.NamedNode[];
   readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2493,20 +2662,23 @@ export interface ShaclmateNodeShape extends ShaclCoreNodeShape {
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
   >[];
   readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+    | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
     | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2554,6 +2726,7 @@ export namespace ShaclmateNodeShape {
       name: purify.Maybe<string>;
       toRdfTypes: readonly rdfjs.NamedNode[];
       tsFeatureExcludes: readonly rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2562,20 +2735,23 @@ export namespace ShaclmateNodeShape {
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
       >[];
       tsFeatureIncludes: readonly rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2824,6 +3000,7 @@ export namespace ShaclmateNodeShape {
     const _tsFeatureExcludesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2832,6 +3009,7 @@ export namespace ShaclmateNodeShape {
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2852,10 +3030,11 @@ export namespace ShaclmateNodeShape {
             .chain((_value) =>
               _value.toIri().chain((iri) => {
                 switch (iri.value) {
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2864,6 +3043,29 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2876,6 +3078,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2884,6 +3087,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2896,6 +3100,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2904,6 +3109,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2916,6 +3122,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2924,6 +3131,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2936,6 +3144,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2944,6 +3153,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2956,6 +3166,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2964,6 +3175,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2976,6 +3188,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -2984,6 +3197,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -2996,6 +3210,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -3004,6 +3219,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3012,10 +3228,11 @@ export namespace ShaclmateNodeShape {
                     >(
                       iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -3024,6 +3241,29 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_None">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3036,6 +3276,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -3044,6 +3285,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3056,6 +3298,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -3064,6 +3307,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3076,6 +3320,7 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
@@ -3084,6 +3329,7 @@ export namespace ShaclmateNodeShape {
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3097,7 +3343,7 @@ export namespace ShaclmateNodeShape {
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: iri,
                         expectedValueType:
-                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_None" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
                           "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
@@ -3119,14 +3365,16 @@ export namespace ShaclmateNodeShape {
     const _tsFeatureIncludesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.NamedNode<
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3147,18 +3395,42 @@ export namespace ShaclmateNodeShape {
             .chain((_value) =>
               _value.toIri().chain((iri) => {
                 switch (iri.value) {
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3171,14 +3443,16 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3191,14 +3465,16 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3211,14 +3487,16 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3227,38 +3505,20 @@ export namespace ShaclmateNodeShape {
                     >(
                       iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
-                    return purify.Either.of<
-                      rdfjsResource.Resource.ValueError,
-                      rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
-                      >
-                    >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Json">,
-                    );
                   case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3267,18 +3527,42 @@ export namespace ShaclmateNodeShape {
                     >(
                       iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Json">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3291,14 +3575,16 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3307,18 +3593,42 @@ export namespace ShaclmateNodeShape {
                     >(
                       iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                      >
+                    >(
+                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_None">,
+                    );
+                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                    return purify.Either.of<
+                      rdfjsResource.Resource.ValueError,
+                      rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3331,14 +3641,16 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3351,14 +3663,16 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3371,14 +3685,16 @@ export namespace ShaclmateNodeShape {
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
+                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
                         | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
@@ -3392,7 +3708,7 @@ export namespace ShaclmateNodeShape {
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: iri,
                         expectedValueType:
-                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_None" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
                           "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
@@ -3568,6 +3884,10 @@ export namespace ShaclmateNodeShape {
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclmateNodeShape> {
     return ShaclmateNodeShape.propertiesFromRdf(parameters);
   }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/ns/shacl#NodeShape",
+  );
 }
 export interface ShaclCorePropertyGroup {
   readonly comments: readonly rdfjs.Literal[];
@@ -3696,48 +4016,60 @@ export namespace ShaclCorePropertyGroup {
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyGroup> {
     return ShaclCorePropertyGroup.propertiesFromRdf(parameters);
   }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/ns/shacl#PropertyGroup",
+  );
 }
 export type ShaclCoreShape = ShaclCoreNodeShape | ShaclCorePropertyShape;
 
 export namespace ShaclCoreShape {
-  export function fromRdf(parameters: {
+  export function fromRdf({
+    ignoreRdfType,
+    resource,
+    ...context
+  }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreShape> {
     return (
-      ShaclCoreNodeShape.fromRdf(parameters) as purify.Either<
+      ShaclCoreNodeShape.fromRdf({ ...context, resource }) as purify.Either<
         rdfjsResource.Resource.ValueError,
         ShaclCoreShape
       >
     ).altLazy(
       () =>
-        ShaclCorePropertyShape.fromRdf(parameters) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          ShaclCoreShape
-        >,
+        ShaclCorePropertyShape.fromRdf({
+          ...context,
+          resource,
+        }) as purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreShape>,
     );
   }
 }
 export type ShaclmateShape = ShaclmateNodeShape | ShaclCorePropertyShape;
 
 export namespace ShaclmateShape {
-  export function fromRdf(parameters: {
+  export function fromRdf({
+    ignoreRdfType,
+    resource,
+    ...context
+  }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, ShaclmateShape> {
     return (
-      ShaclmateNodeShape.fromRdf(parameters) as purify.Either<
+      ShaclmateNodeShape.fromRdf({ ...context, resource }) as purify.Either<
         rdfjsResource.Resource.ValueError,
         ShaclmateShape
       >
     ).altLazy(
       () =>
-        ShaclCorePropertyShape.fromRdf(parameters) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          ShaclmateShape
-        >,
+        ShaclCorePropertyShape.fromRdf({
+          ...context,
+          resource,
+        }) as purify.Either<rdfjsResource.Resource.ValueError, ShaclmateShape>,
     );
   }
 }
