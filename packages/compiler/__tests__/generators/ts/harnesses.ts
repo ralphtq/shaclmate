@@ -133,6 +133,16 @@ export const harnesses = {
       kitchenSink.NodeShapeWithDefaultValueProperties
         .sparqlConstructQueryString,
   }),
+  nodeShapeWithEmptyListProperty: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithListProperties.fromJson,
+    fromRdf: kitchenSink.NodeShapeWithListProperties.fromRdf,
+    instance: new kitchenSink.NodeShapeWithListProperties({
+      identifier,
+      stringListProperty: [],
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithListProperties.sparqlConstructQueryString,
+  }),
   nodeShapeWithExplicitRdfTypes: new ClassHarness({
     fromJson: kitchenSink.NodeShapeWithExplicitRdfTypes.fromJson,
     fromRdf: kitchenSink.NodeShapeWithExplicitRdfTypes.fromRdf,
