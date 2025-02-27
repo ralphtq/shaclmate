@@ -199,6 +199,11 @@ export class ListType extends Type {
     variables,
     context,
   }: Parameters<Type["sparqlWherePatterns"]>[0]): readonly string[] {
+    // Need to handle two cases:
+    // (1) (?s, ?p, ?list) where ?list binds to rdf:nil
+    // (2) (?s, ?p, ?list) (?list, rdf:first, "element") (?list, rdf:rest, rdf:nil) etc. where list binds to the head of a list
+    // Case (2) is case (1) with OPTIONAL graph patterns to handle actual list elements.
+
     switch (context) {
       case "property":
         return super.sparqlWherePatterns({ context, variables });
@@ -285,7 +290,8 @@ export class ListType extends Type {
           `{ type: "optional", patterns: [${optionalPatterns.join(", ")}] }`,
         );
 
-        return patterns;
+        // Having an optional around everything handles the rdf:nil case
+        return [`{ type: "optional", patterns: [${patterns.join(", ")}] }`];
       }
     }
   }
