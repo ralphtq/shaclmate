@@ -276,6 +276,7 @@ export class UuidV4IriNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.stringProperty);
     return _hasher;
   }
@@ -573,6 +574,7 @@ export class UnionNodeShapeMember2 {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.stringProperty2);
     return _hasher;
   }
@@ -879,6 +881,7 @@ export class UnionNodeShapeMember1 {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.stringProperty1);
     return _hasher;
   }
@@ -1490,6 +1493,7 @@ export class NonClassNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.stringProperty);
     return _hasher;
   }
@@ -1951,6 +1955,7 @@ export class NodeShapeWithUnionProperties {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     this.orLiteralsProperty.ifJust((_value0) => {
       _hasher.update(_value0.datatype.value);
       _hasher.update(_value0.language);
@@ -2095,7 +2100,9 @@ export class NodeShapeWithUnionProperties {
 }
 
 export namespace NodeShapeWithUnionProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -2882,6 +2889,7 @@ export class NodeShapeWithTermProperties {
     this.dateTimeProperty.ifJust((_value0) => {
       _hasher.update(_value0.toISOString());
     });
+    _hasher.update(this.identifier.value);
     this.iriProperty.ifJust((_value0) => {
       _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
@@ -3033,7 +3041,9 @@ export class NodeShapeWithTermProperties {
 }
 
 export namespace NodeShapeWithTermProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       booleanProperty: purify.Maybe<boolean>;
@@ -3717,6 +3727,7 @@ export class NodeShapeWithPropertyVisibilities {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.privateProperty);
     _hasher.update(this.protectedProperty);
     _hasher.update(this.publicProperty);
@@ -3777,7 +3788,9 @@ export class NodeShapeWithPropertyVisibilities {
 }
 
 export namespace NodeShapeWithPropertyVisibilities {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4223,6 +4236,7 @@ export class NodeShapeWithPropertyCardinalities {
       _hasher.update(_item0);
     }
 
+    _hasher.update(this.identifier.value);
     for (const _item0 of this.nonEmptyStringSetProperty) {
       _hasher.update(_item0);
     }
@@ -4300,7 +4314,9 @@ export class NodeShapeWithPropertyCardinalities {
 }
 
 export namespace NodeShapeWithPropertyCardinalities {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       emptyStringSetProperty: readonly string[];
@@ -4969,7 +4985,9 @@ export class NodeShapeWithMutableProperties {
 }
 
 export namespace NodeShapeWithMutableProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -5522,6 +5540,7 @@ export class NodeShapeWithListProperties {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     this.objectListProperty.ifJust((_value0) => {
       for (const _element1 of _value0) {
         _element1.hash(_hasher);
@@ -5724,7 +5743,9 @@ export class NodeShapeWithListProperties {
 }
 
 export namespace NodeShapeWithListProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6496,6 +6517,7 @@ export class NodeShapeWithLanguageInProperties {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     this.languageInProperty.ifJust((_value0) => {
       _hasher.update(_value0.datatype.value);
       _hasher.update(_value0.language);
@@ -6589,7 +6611,9 @@ export class NodeShapeWithLanguageInProperties {
 }
 
 export namespace NodeShapeWithLanguageInProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7130,6 +7154,7 @@ export class NodeShapeWithInProperties {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     this.inBooleansProperty.ifJust((_value0) => {
       _hasher.update(_value0.toString());
     });
@@ -7231,7 +7256,9 @@ export class NodeShapeWithInProperties {
 }
 
 export namespace NodeShapeWithInProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7328,20 +7355,22 @@ export namespace NodeShapeWithInProperties {
         )
         .head()
         .chain((_value) =>
-          _value.toBoolean().chain((value) =>
-            value === true
-              ? purify.Either.of(value)
-              : purify.Left(
-                  new rdfjsResource.Resource.MistypedValueError({
-                    actualValue: rdfLiteral.toRdf(value),
-                    expectedValueType: "true",
-                    focusResource: _resource,
-                    predicate: dataFactory.namedNode(
-                      "http://example.com/inBooleansProperty",
-                    ),
-                  }),
-                ),
-          ),
+          _value
+            .toBoolean()
+            .chain((value) =>
+              value === true
+                ? purify.Either.of(value)
+                : purify.Left(
+                    new rdfjsResource.Resource.MistypedValueError({
+                      actualValue: rdfLiteral.toRdf(value),
+                      expectedValueType: "true",
+                      focusResource: _resource,
+                      predicate: dataFactory.namedNode(
+                        "http://example.com/inBooleansProperty",
+                      ),
+                    }),
+                  ),
+            ),
         )
         .toMaybe(),
     );
@@ -7885,6 +7914,7 @@ export class NodeShapeWithInIdentifier {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     this.stringProperty.ifJust((_value0) => {
       _hasher.update(_value0);
     });
@@ -7930,7 +7960,9 @@ export class NodeShapeWithInIdentifier {
 }
 
 export namespace NodeShapeWithInIdentifier {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.NamedNode<
@@ -8301,6 +8333,7 @@ export class NodeShapeWithHasValueProperties {
     this.hasLiteralProperty.ifJust((_value0) => {
       _hasher.update(_value0);
     });
+    _hasher.update(this.identifier.value);
     return _hasher;
   }
 
@@ -8356,7 +8389,9 @@ export class NodeShapeWithHasValueProperties {
 }
 
 export namespace NodeShapeWithHasValueProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -8706,6 +8741,7 @@ export class InlineNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.stringProperty);
     return _hasher;
   }
@@ -9008,6 +9044,7 @@ export class ExternNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.stringProperty);
     return _hasher;
   }
@@ -9399,6 +9436,7 @@ export class NodeShapeWithExternProperties {
       _hasher.update(_value0.termType);
       _hasher.update(_value0.value);
     });
+    _hasher.update(this.identifier.value);
     this.inlineProperty.ifJust((_value0) => {
       _value0.hash(_hasher);
     });
@@ -9475,7 +9513,9 @@ export class NodeShapeWithExternProperties {
 }
 
 export namespace NodeShapeWithExternProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       externObjectTypeProperty: purify.Maybe<ExternObjectType>;
@@ -9927,6 +9967,7 @@ export class NodeShapeWithExplicitRdfTypes {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.stringProperty);
     return _hasher;
   }
@@ -10494,7 +10535,9 @@ export class NodeShapeWithDefaultValueProperties {
 }
 
 export namespace NodeShapeWithDefaultValueProperties {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       dateTimeProperty: Date;
@@ -11040,6 +11083,7 @@ export class IriNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
     _hasher.update(this.stringProperty);
     return _hasher;
   }
@@ -11330,7 +11374,9 @@ export namespace InterfaceUnionNodeShapeMember2b {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11457,6 +11503,7 @@ export namespace InterfaceUnionNodeShapeMember2b {
     _interfaceUnionNodeShapeMember2b: InterfaceUnionNodeShapeMember2b,
     _hasher: HasherT,
   ): HasherT {
+    _hasher.update(_interfaceUnionNodeShapeMember2b.identifier.value);
     _hasher.update(_interfaceUnionNodeShapeMember2b.stringProperty2b);
     return _hasher;
   }
@@ -11656,7 +11703,9 @@ export namespace InterfaceUnionNodeShapeMember2a {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11783,6 +11832,7 @@ export namespace InterfaceUnionNodeShapeMember2a {
     _interfaceUnionNodeShapeMember2a: InterfaceUnionNodeShapeMember2a,
     _hasher: HasherT,
   ): HasherT {
+    _hasher.update(_interfaceUnionNodeShapeMember2a.identifier.value);
     _hasher.update(_interfaceUnionNodeShapeMember2a.stringProperty2a);
     return _hasher;
   }
@@ -11982,7 +12032,9 @@ export namespace InterfaceUnionNodeShapeMember1 {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -12106,6 +12158,7 @@ export namespace InterfaceUnionNodeShapeMember1 {
     _interfaceUnionNodeShapeMember1: InterfaceUnionNodeShapeMember1,
     _hasher: HasherT,
   ): HasherT {
+    _hasher.update(_interfaceUnionNodeShapeMember1.identifier.value);
     _hasher.update(_interfaceUnionNodeShapeMember1.stringProperty1);
     return _hasher;
   }
@@ -12308,7 +12361,9 @@ export namespace InterfaceNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -12424,6 +12479,7 @@ export namespace InterfaceNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_interfaceNodeShape: InterfaceNodeShape, _hasher: HasherT): HasherT {
+    _hasher.update(_interfaceNodeShape.identifier.value);
     _hasher.update(_interfaceNodeShape.stringProperty);
     return _hasher;
   }
@@ -13118,18 +13174,20 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
   }
 
   override equals(other: ConcreteParentClassNodeShape): EqualsResult {
-    return super.equals(other).chain(() =>
-      strictEquals(
-        this.parentStringProperty,
-        other.parentStringProperty,
-      ).mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
-        propertyName: "parentStringProperty",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      })),
-    );
+    return super
+      .equals(other)
+      .chain(() =>
+        strictEquals(
+          this.parentStringProperty,
+          other.parentStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "parentStringProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      );
   }
 
   override hash<
@@ -13191,7 +13249,9 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -13531,17 +13591,20 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   }
 
   override equals(other: ConcreteChildClassNodeShape): EqualsResult {
-    return super.equals(other).chain(() =>
-      strictEquals(this.childStringProperty, other.childStringProperty).mapLeft(
-        (propertyValuesUnequal) => ({
+    return super
+      .equals(other)
+      .chain(() =>
+        strictEquals(
+          this.childStringProperty,
+          other.childStringProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
           left: this,
           right: other,
           propertyName: "childStringProperty",
           propertyValuesUnequal,
           type: "Property" as const,
-        }),
-      ),
-    );
+        })),
+      );
   }
 
   override hash<
@@ -13603,7 +13666,9 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
     zod.ZodError,
     {
       childStringProperty: string;

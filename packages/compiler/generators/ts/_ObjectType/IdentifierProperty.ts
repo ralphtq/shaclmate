@@ -269,8 +269,26 @@ export class IdentifierProperty extends Property<IdentifierType> {
     return [`const ${this.name} = ${variables.resource}.identifier`];
   }
 
-  override hashStatements(): readonly string[] {
-    return [];
+  override hashStatements({
+    variables,
+  }: Parameters<
+    Property<IdentifierType>["hashStatements"]
+  >[0]): readonly string[] {
+    if (this.abstract) {
+      // Identifier will only be hashed by a concrete class.
+      return [];
+    }
+
+    switch (this.identifierMintingStrategy) {
+      case "blankNode":
+      case "none":
+      case "uuidv4":
+        // The identifier minting won't call hash, so we should hash the identifier.
+        return [`${variables.hasher}.update(${variables.value}.value);`];
+      case "sha256":
+        // The identifier minting will call hash, so we can't hash the identifier.
+        return [];
+    }
   }
 
   override interfaceConstructorStatements({
