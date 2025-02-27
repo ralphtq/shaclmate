@@ -343,7 +343,7 @@ export class ListType extends Type {
       }
     }
 
-    return `${variables.value}.reduce(({ currentSubListResource, listResource }, item, itemIndex, list) => {
+    return `${variables.value}.length > 0 ? ${variables.value}.reduce(({ currentSubListResource, listResource }, item, itemIndex, list) => {
     if (itemIndex === 0) {
       currentSubListResource = listResource;
     } else {
@@ -377,7 +377,7 @@ export class ListType extends Type {
     currentSubListResource: ${mutableResourceTypeName} | null;
     listResource: ${mutableResourceTypeName};
   },
-).listResource.identifier`;
+).listResource.identifier : dataFactory.namedNode("${rdf.nil.value}")`;
   }
 
   override useImports(features: Set<TsFeature>): readonly Import[] {
