@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@shaclmate/shacl-ast": "2.0.15",
+    "@shaclmate/shacl-ast": "2.0.16",
     "@rdfjs/prefix-map": "^0.1.2",
     "@rdfjs/term-map": "^2.0.2",
     "@rdfjs/term-set": "^2.0.3",
@@ -20,7 +20,7 @@
     "typescript-memoize": "^1.1.1"
   },
   "devDependencies": {
-    "@shaclmate/runtime": "2.0.15",
+    "@shaclmate/runtime": "2.0.16",
     "oxigraph": "^0.4.0"
   },
   "files": [
@@ -73,5 +73,5 @@
   },
   "type": "module",
   "types": "index.d.ts",
-  "version": "2.0.15"
+  "version": "2.0.16"
 }
