@@ -40,11 +40,11 @@ export function toRdfFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
     usedIgnoreRdfTypeVariable = !this.parentObjectTypes[0].abstract;
   } else if (this.identifierType.isNamedNodeKind) {
     statements.push(
-      `const ${variables.resource} = ${variables.resourceSet}.mutableNamedResource({ identifier: ${this.thisVariable}.${this.identifierProperty.name}, ${variables.mutateGraph} });`,
+      `const ${variables.resource} = ${variables.resourceSet}.mutableNamedResource(${this.thisVariable}.${this.identifierProperty.name}, { ${variables.mutateGraph} });`,
     );
   } else {
     statements.push(
-      `const ${variables.resource} = ${variables.resourceSet}.mutableResource({ identifier: ${this.thisVariable}.${this.identifierProperty.name}, ${variables.mutateGraph} });`,
+      `const ${variables.resource} = ${variables.resourceSet}.mutableResource(${this.thisVariable}.${this.identifierProperty.name}, { ${variables.mutateGraph} });`,
     );
   }
 
@@ -77,7 +77,7 @@ export function toRdfFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
   }
   parameters.push({
     name: `{ ${usedIgnoreRdfTypeVariable ? `${variables.ignoreRdfType}, ` : ""}${variables.mutateGraph}, ${variables.resourceSet} }`,
-    type: `{ ${variables.ignoreRdfType}?: boolean; ${variables.mutateGraph}: rdfjsResource.MutableResource.MutateGraph, ${variables.resourceSet}: rdfjsResource.MutableResourceSet }`,
+    type: `{ ${variables.ignoreRdfType}?: boolean; ${variables.mutateGraph}?: rdfjsResource.MutableResource.MutateGraph, ${variables.resourceSet}: rdfjsResource.MutableResourceSet }`,
   });
 
   return Maybe.of({

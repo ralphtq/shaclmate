@@ -353,9 +353,8 @@ export class ListType extends Type {
     if (itemIndex === 0) {
       currentSubListResource = listResource;
     } else {
-      const newSubListResource = ${variables.resourceSet}.${resourceSetMethodName}(${objectInitializer(
+      const newSubListResource = ${variables.resourceSet}.${resourceSetMethodName}(${subListIdentifier}, ${objectInitializer(
         {
-          identifier: subListIdentifier,
           mutateGraph: variables.mutateGraph,
         },
       )});
@@ -375,10 +374,11 @@ export class ListType extends Type {
   },
   {
     currentSubListResource: null,
-    listResource: resourceSet.${resourceSetMethodName}(${objectInitializer({
-      identifier: listIdentifier,
-      mutateGraph: variables.mutateGraph,
-    })}),
+    listResource: resourceSet.${resourceSetMethodName}(${listIdentifier}, ${objectInitializer(
+      {
+        mutateGraph: variables.mutateGraph,
+      },
+    )}),
   } as {
     currentSubListResource: ${mutableResourceTypeName} | null;
     listResource: ${mutableResourceTypeName};

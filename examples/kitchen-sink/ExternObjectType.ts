@@ -88,7 +88,7 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
     mutateGraph,
     resourceSet,
   }: {
-    mutateGraph: rdfjsResource.MutableResource.MutateGraph;
+    mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
     resourceSet: rdfjsResource.MutableResourceSet;
   }) {
     const resource = super.toRdf({ mutateGraph, resourceSet });
