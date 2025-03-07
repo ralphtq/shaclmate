@@ -106,7 +106,9 @@ export class ListType extends Type {
   }
 
   override snippetDeclarations(features: Set<TsFeature>): readonly string[] {
-    const snippetDeclarations: string[] = [];
+    const snippetDeclarations: string[] = this.itemType
+      .snippetDeclarations(features)
+      .concat();
     if (features.has("equals")) {
       snippetDeclarations.push(SnippetDeclarations.arrayEquals);
     }
