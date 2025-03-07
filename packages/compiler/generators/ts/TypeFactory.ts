@@ -9,6 +9,7 @@ import type { PropertyVisibility } from "../../enums/index.js";
 import { logger } from "../../logger.js";
 import { BooleanType } from "./BooleanType.js";
 import { DateTimeType } from "./DateTimeType.js";
+import { DateType } from "./DateType.js";
 import { IdentifierType } from "./IdentifierType.js";
 import { ListType } from "./ListType.js";
 import { LiteralType } from "./LiteralType.js";
@@ -95,8 +96,8 @@ export class TypeFactory {
             });
           }
 
-          if (datatype.equals(xsd.dateTime)) {
-            return new DateTimeType({
+          if (datatype.equals(xsd.date) || datatype.equals(xsd.dateTime)) {
+            return new (datatype.equals(xsd.date) ? DateType : DateTimeType)({
               dataFactoryVariable: this.dataFactoryVariable,
               defaultValue: astType.defaultValue,
               hasValues: astType.hasValues,

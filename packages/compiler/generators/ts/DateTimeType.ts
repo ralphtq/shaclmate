@@ -1,3 +1,5 @@
+import type { NamedNode } from "@rdfjs/types";
+import { xsd } from "@tpluscode/rdf-ns-builders";
 import type { TsFeature } from "../../enums/index.js";
 import { PrimitiveType } from "./PrimitiveType.js";
 import { SnippetDeclarations } from "./SnippetDeclarations.js";
@@ -6,8 +8,10 @@ import { objectInitializer } from "./objectInitializer.js";
 
 export class DateTimeType extends PrimitiveType<Date> {
   override readonly equalsFunction = "dateEquals";
-  readonly kind = "DateTimeType";
+  readonly kind: "DateTimeType" | "DateType" = "DateTimeType";
   override readonly mutable = true;
+  protected readonly xsdDatatype: NamedNode = xsd.dateTime;
+  protected readonly zodDatatype: string = "datetime";
 
   override get conversions(): readonly Type.Conversion[] {
     const conversions: Type.Conversion[] = [
@@ -53,7 +57,7 @@ export class DateTimeType extends PrimitiveType<Date> {
   override jsonZodSchema({
     variables,
   }: Parameters<Type["jsonZodSchema"]>[0]): ReturnType<Type["jsonZodSchema"]> {
-    return `${variables.zod}.string().datetime()`;
+    return `${variables.zod}.string().${this.zodDatatype}()`;
   }
 
   override propertyFromRdfResourceValueExpression({
@@ -63,7 +67,7 @@ export class DateTimeType extends PrimitiveType<Date> {
   >[0]): string {
     let expression = `${variables.resourceValue}.toDate()`;
     if (this.primitiveIn.length > 0) {
-      expression = `${expression}.chain(value => { ${this.primitiveIn.map((value) => `if (value.getTime() === ${value.getTime()}) { return purify.Either.of(value); }`).join(" ")} return purify.Left(new rdfjsResource.Resource.MistypedValueError(${objectInitializer({ actualValue: "rdfLiteral.toRdf(value)", expectedValueType: JSON.stringify(this.name), focusResource: variables.resource, predicate: variables.predicate })})); })`;
+      expression = `${expression}.chain(value => { ${this.primitiveIn.map((value) => `if (value.getTime() === ${value.getTime()}) { return purify.Either.of(value); }`).join(" ")} return purify.Left(new rdfjsResource.Resource.MistypedValueError(${objectInitializer({ actualValue: `rdfLiteral.toRdf(value, ${objectInitializer({ dataFactory: this.dataFactoryVariable, datatype: this.rdfjsTermExpression(this.xsdDatatype) })})`, expectedValueType: JSON.stringify(this.name), focusResource: variables.resource, predicate: variables.predicate })})); })`;
     }
     return expression;
   }
@@ -85,11 +89,12 @@ export class DateTimeType extends PrimitiveType<Date> {
   override toRdfExpression({
     variables,
   }: Parameters<PrimitiveType<Date>["toRdfExpression"]>[0]): string {
+    const valueToRdf = `rdfLiteral.toRdf(${variables.value}, ${objectInitializer({ dataFactory: this.dataFactoryVariable, datatype: this.rdfjsTermExpression(this.xsdDatatype) })})`;
     return this.primitiveDefaultValue
       .map(
         (defaultValue) =>
-          `${variables.value}.getTime() !== ${defaultValue.getTime()} ? ${variables.value} : undefined`,
+          `${variables.value}.getTime() !== ${defaultValue.getTime()} ? ${valueToRdf} : undefined`,
       )
-      .orDefault(variables.value);
+      .orDefault(valueToRdf);
   }
 }

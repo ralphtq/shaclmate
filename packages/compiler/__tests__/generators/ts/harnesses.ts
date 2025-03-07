@@ -123,6 +123,7 @@ export const harnesses = {
     fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
       falseBooleanProperty: false,
+      dateProperty: new Date("2025-03-06"),
       dateTimeProperty: new Date(1523268000000),
       identifier,
       numberProperty: 0,
@@ -292,6 +293,7 @@ export const harnesses = {
     fromRdf: kitchenSink.NodeShapeWithTermProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithTermProperties({
       booleanProperty: true,
+      dateProperty: new Date("2025-03-06"),
       dateTimeProperty: new Date(),
       identifier,
       iriProperty: dataFactory.namedNode("http://example.com"),

@@ -209,6 +209,12 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
         sh:name "falseBooleanProperty" ;
         sh:path :falseBooleanProperty
     ], [
+        sh:defaultValue "2018-04-09"^^xsd:date ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "dateProperty" ;
+        sh:path :dateProperty
+    ], [
         sh:defaultValue "2018-04-09T10:00:00Z"^^xsd:dateTime ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
@@ -490,6 +496,11 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:maxCount 1 ;
         sh:name "booleanProperty" ;
         sh:path :booleanProperty
+    ], [
+        sh:datatype xsd:date ;
+        sh:maxCount 1 ;
+        sh:name "dateProperty" ;
+        sh:path :dateProperty
     ], [
         sh:datatype xsd:dateTime ;
         sh:maxCount 1 ;

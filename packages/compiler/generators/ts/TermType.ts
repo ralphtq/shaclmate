@@ -48,18 +48,21 @@ export class TermType<
     if (this.nodeKinds.has("Literal")) {
       conversions.push(
         {
-          conversionExpression: (value) => `rdfLiteral.toRdf(${value})`,
+          conversionExpression: (value) =>
+            `rdfLiteral.toRdf(${value}, ${objectInitializer({ dataFactory: this.dataFactoryVariable })})`,
           sourceTypeCheckExpression: (value) => `typeof ${value} === "boolean"`,
           sourceTypeName: "boolean",
         },
         {
-          conversionExpression: (value) => `rdfLiteral.toRdf(${value})`,
+          conversionExpression: (value) =>
+            `rdfLiteral.toRdf(${value}, ${objectInitializer({ dataFactory: this.dataFactoryVariable })})`,
           sourceTypeCheckExpression: (value) =>
             `typeof ${value} === "object" && ${value} instanceof Date`,
           sourceTypeName: "Date",
         },
         {
-          conversionExpression: (value) => `rdfLiteral.toRdf(${value})`,
+          conversionExpression: (value) =>
+            `rdfLiteral.toRdf(${value}, ${objectInitializer({ dataFactory: this.dataFactoryVariable })})`,
           sourceTypeCheckExpression: (value) => `typeof ${value} === "number"`,
           sourceTypeName: "number",
         },

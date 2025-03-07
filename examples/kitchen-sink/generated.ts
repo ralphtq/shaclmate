@@ -1777,18 +1777,18 @@ export class NodeShapeWithUnionProperties {
       this.orLiteralsProperty = parameters.orLiteralsProperty;
     } else if (typeof parameters.orLiteralsProperty === "boolean") {
       this.orLiteralsProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.orLiteralsProperty),
+        rdfLiteral.toRdf(parameters.orLiteralsProperty, { dataFactory }),
       );
     } else if (
       typeof parameters.orLiteralsProperty === "object" &&
       parameters.orLiteralsProperty instanceof Date
     ) {
       this.orLiteralsProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.orLiteralsProperty),
+        rdfLiteral.toRdf(parameters.orLiteralsProperty, { dataFactory }),
       );
     } else if (typeof parameters.orLiteralsProperty === "number") {
       this.orLiteralsProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.orLiteralsProperty),
+        rdfLiteral.toRdf(parameters.orLiteralsProperty, { dataFactory }),
       );
     } else if (typeof parameters.orLiteralsProperty === "string") {
       this.orLiteralsProperty = purify.Maybe.of(
@@ -1806,18 +1806,18 @@ export class NodeShapeWithUnionProperties {
       this.orTermsProperty = parameters.orTermsProperty;
     } else if (typeof parameters.orTermsProperty === "boolean") {
       this.orTermsProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.orTermsProperty),
+        rdfLiteral.toRdf(parameters.orTermsProperty, { dataFactory }),
       );
     } else if (
       typeof parameters.orTermsProperty === "object" &&
       parameters.orTermsProperty instanceof Date
     ) {
       this.orTermsProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.orTermsProperty),
+        rdfLiteral.toRdf(parameters.orTermsProperty, { dataFactory }),
       );
     } else if (typeof parameters.orTermsProperty === "number") {
       this.orTermsProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.orTermsProperty),
+        rdfLiteral.toRdf(parameters.orTermsProperty, { dataFactory }),
       );
     } else if (typeof parameters.orTermsProperty === "string") {
       this.orTermsProperty = purify.Maybe.of(
@@ -2598,6 +2598,7 @@ export namespace NodeShapeWithUnionProperties {
  */
 export class NodeShapeWithTermProperties {
   readonly booleanProperty: purify.Maybe<boolean>;
+  readonly dateProperty: purify.Maybe<Date>;
   readonly dateTimeProperty: purify.Maybe<Date>;
   private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
   readonly iriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -2611,6 +2612,7 @@ export class NodeShapeWithTermProperties {
 
   constructor(parameters: {
     readonly booleanProperty?: boolean | purify.Maybe<boolean>;
+    readonly dateProperty?: Date | purify.Maybe<Date>;
     readonly dateTimeProperty?: Date | purify.Maybe<Date>;
     readonly identifier?: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
     readonly iriProperty?:
@@ -2642,6 +2644,19 @@ export class NodeShapeWithTermProperties {
       this.booleanProperty = purify.Maybe.empty();
     } else {
       this.booleanProperty = parameters.booleanProperty as never;
+    }
+
+    if (purify.Maybe.isMaybe(parameters.dateProperty)) {
+      this.dateProperty = parameters.dateProperty;
+    } else if (
+      typeof parameters.dateProperty === "object" &&
+      parameters.dateProperty instanceof Date
+    ) {
+      this.dateProperty = purify.Maybe.of(parameters.dateProperty);
+    } else if (typeof parameters.dateProperty === "undefined") {
+      this.dateProperty = purify.Maybe.empty();
+    } else {
+      this.dateProperty = parameters.dateProperty as never;
     }
 
     if (purify.Maybe.isMaybe(parameters.dateTimeProperty)) {
@@ -2683,18 +2698,18 @@ export class NodeShapeWithTermProperties {
       this.literalProperty = parameters.literalProperty;
     } else if (typeof parameters.literalProperty === "boolean") {
       this.literalProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.literalProperty),
+        rdfLiteral.toRdf(parameters.literalProperty, { dataFactory }),
       );
     } else if (
       typeof parameters.literalProperty === "object" &&
       parameters.literalProperty instanceof Date
     ) {
       this.literalProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.literalProperty),
+        rdfLiteral.toRdf(parameters.literalProperty, { dataFactory }),
       );
     } else if (typeof parameters.literalProperty === "number") {
       this.literalProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.literalProperty),
+        rdfLiteral.toRdf(parameters.literalProperty, { dataFactory }),
       );
     } else if (typeof parameters.literalProperty === "string") {
       this.literalProperty = purify.Maybe.of(
@@ -2732,18 +2747,18 @@ export class NodeShapeWithTermProperties {
       this.termProperty = parameters.termProperty;
     } else if (typeof parameters.termProperty === "boolean") {
       this.termProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.termProperty),
+        rdfLiteral.toRdf(parameters.termProperty, { dataFactory }),
       );
     } else if (
       typeof parameters.termProperty === "object" &&
       parameters.termProperty instanceof Date
     ) {
       this.termProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.termProperty),
+        rdfLiteral.toRdf(parameters.termProperty, { dataFactory }),
       );
     } else if (typeof parameters.termProperty === "number") {
       this.termProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.termProperty),
+        rdfLiteral.toRdf(parameters.termProperty, { dataFactory }),
       );
     } else if (typeof parameters.termProperty === "string") {
       this.termProperty = purify.Maybe.of(
@@ -2776,6 +2791,18 @@ export class NodeShapeWithTermProperties {
         propertyValuesUnequal,
         type: "Property" as const,
       }))
+      .chain(() =>
+        ((left, right) => maybeEquals(left, right, dateEquals))(
+          this.dateProperty,
+          other.dateProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "dateProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
       .chain(() =>
         ((left, right) => maybeEquals(left, right, dateEquals))(
           this.dateTimeProperty,
@@ -2880,6 +2907,9 @@ export class NodeShapeWithTermProperties {
     this.booleanProperty.ifJust((_value0) => {
       _hasher.update(_value0.toString());
     });
+    this.dateProperty.ifJust((_value0) => {
+      _hasher.update(_value0.toISOString());
+    });
     this.dateTimeProperty.ifJust((_value0) => {
       _hasher.update(_value0.toISOString());
     });
@@ -2909,6 +2939,7 @@ export class NodeShapeWithTermProperties {
 
   toJson(): {
     readonly booleanProperty: boolean | undefined;
+    readonly dateProperty: string | undefined;
     readonly dateTimeProperty: string | undefined;
     readonly "@id": string;
     readonly iriProperty: { readonly "@id": string } | undefined;
@@ -2940,6 +2971,9 @@ export class NodeShapeWithTermProperties {
     return JSON.parse(
       JSON.stringify({
         booleanProperty: this.booleanProperty.map((_item) => _item).extract(),
+        dateProperty: this.dateProperty
+          .map((_item) => _item.toISOString().replace(/T.*$/, ""))
+          .extract(),
         dateTimeProperty: this.dateTimeProperty
           .map((_item) => _item.toISOString())
           .extract(),
@@ -3002,8 +3036,26 @@ export class NodeShapeWithTermProperties {
       this.booleanProperty,
     );
     _resource.add(
+      dataFactory.namedNode("http://example.com/dateProperty"),
+      this.dateProperty.map((_value) =>
+        rdfLiteral.toRdf(_value, {
+          dataFactory,
+          datatype: dataFactory.namedNode(
+            "http://www.w3.org/2001/XMLSchema#date",
+          ),
+        }),
+      ),
+    );
+    _resource.add(
       dataFactory.namedNode("http://example.com/dateTimeProperty"),
-      this.dateTimeProperty,
+      this.dateTimeProperty.map((_value) =>
+        rdfLiteral.toRdf(_value, {
+          dataFactory,
+          datatype: dataFactory.namedNode(
+            "http://www.w3.org/2001/XMLSchema#dateTime",
+          ),
+        }),
+      ),
     );
     _resource.add(
       dataFactory.namedNode("http://example.com/iriProperty"),
@@ -3040,6 +3092,7 @@ export namespace NodeShapeWithTermProperties {
     zod.ZodError,
     {
       booleanProperty: purify.Maybe<boolean>;
+      dateProperty: purify.Maybe<Date>;
       dateTimeProperty: purify.Maybe<Date>;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       iriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -3060,6 +3113,9 @@ export namespace NodeShapeWithTermProperties {
     const booleanProperty = purify.Maybe.fromNullable(
       _jsonObject["booleanProperty"],
     );
+    const dateProperty = purify.Maybe.fromNullable(
+      _jsonObject["dateProperty"],
+    ).map((_item) => new Date(_item));
     const dateTimeProperty = purify.Maybe.fromNullable(
       _jsonObject["dateTimeProperty"],
     ).map((_item) => new Date(_item));
@@ -3105,6 +3161,7 @@ export namespace NodeShapeWithTermProperties {
     );
     return purify.Either.of({
       booleanProperty,
+      dateProperty,
       dateTimeProperty,
       identifier,
       iriProperty,
@@ -3138,6 +3195,7 @@ export namespace NodeShapeWithTermProperties {
     rdfjsResource.Resource.ValueError,
     {
       booleanProperty: purify.Maybe<boolean>;
+      dateProperty: purify.Maybe<Date>;
       dateTimeProperty: purify.Maybe<Date>;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       iriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -3166,6 +3224,23 @@ export namespace NodeShapeWithTermProperties {
     }
 
     const booleanProperty = _booleanPropertyEither.unsafeCoerce();
+    const _datePropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<Date>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://example.com/dateProperty"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => _value.toDate())
+        .toMaybe(),
+    );
+    if (_datePropertyEither.isLeft()) {
+      return _datePropertyEither;
+    }
+
+    const dateProperty = _datePropertyEither.unsafeCoerce();
     const _dateTimePropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<Date>
@@ -3284,6 +3359,7 @@ export namespace NodeShapeWithTermProperties {
     const termProperty = _termPropertyEither.unsafeCoerce();
     return purify.Either.of({
       booleanProperty,
+      dateProperty,
       dateTimeProperty,
       identifier,
       iriProperty,
@@ -3316,6 +3392,7 @@ export namespace NodeShapeWithTermProperties {
     return {
       elements: [
         { scope: `${scopePrefix}/properties/booleanProperty`, type: "Control" },
+        { scope: `${scopePrefix}/properties/dateProperty`, type: "Control" },
         {
           scope: `${scopePrefix}/properties/dateTimeProperty`,
           type: "Control",
@@ -3350,6 +3427,7 @@ export namespace NodeShapeWithTermProperties {
   export function jsonZodSchema() {
     return zod.object({
       booleanProperty: zod.boolean().optional(),
+      dateProperty: zod.string().date().optional(),
       dateTimeProperty: zod.string().datetime().optional(),
       "@id": zod.string().min(1),
       iriProperty: zod.object({ "@id": zod.string().min(1) }).optional(),
@@ -3446,6 +3524,11 @@ export namespace NodeShapeWithTermProperties {
         subject,
       },
       {
+        object: dataFactory.variable!(`${variablePrefix}DateProperty`),
+        predicate: dataFactory.namedNode("http://example.com/dateProperty"),
+        subject,
+      },
+      {
         object: dataFactory.variable!(`${variablePrefix}DateTimeProperty`),
         predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
         subject,
@@ -3502,6 +3585,23 @@ export namespace NodeShapeWithTermProperties {
                 ),
                 predicate: dataFactory.namedNode(
                   "http://example.com/booleanProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(`${variablePrefix}DateProperty`),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/dateProperty",
                 ),
                 subject,
               },
@@ -6393,18 +6493,18 @@ export class NodeShapeWithLanguageInProperties {
       this.languageInProperty = parameters.languageInProperty;
     } else if (typeof parameters.languageInProperty === "boolean") {
       this.languageInProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.languageInProperty),
+        rdfLiteral.toRdf(parameters.languageInProperty, { dataFactory }),
       );
     } else if (
       typeof parameters.languageInProperty === "object" &&
       parameters.languageInProperty instanceof Date
     ) {
       this.languageInProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.languageInProperty),
+        rdfLiteral.toRdf(parameters.languageInProperty, { dataFactory }),
       );
     } else if (typeof parameters.languageInProperty === "number") {
       this.languageInProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.languageInProperty),
+        rdfLiteral.toRdf(parameters.languageInProperty, { dataFactory }),
       );
     } else if (typeof parameters.languageInProperty === "string") {
       this.languageInProperty = purify.Maybe.of(
@@ -6422,18 +6522,18 @@ export class NodeShapeWithLanguageInProperties {
       this.literalProperty = parameters.literalProperty;
     } else if (typeof parameters.literalProperty === "boolean") {
       this.literalProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.literalProperty),
+        rdfLiteral.toRdf(parameters.literalProperty, { dataFactory }),
       );
     } else if (
       typeof parameters.literalProperty === "object" &&
       parameters.literalProperty instanceof Date
     ) {
       this.literalProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.literalProperty),
+        rdfLiteral.toRdf(parameters.literalProperty, { dataFactory }),
       );
     } else if (typeof parameters.literalProperty === "number") {
       this.literalProperty = purify.Maybe.of(
-        rdfLiteral.toRdf(parameters.literalProperty),
+        rdfLiteral.toRdf(parameters.literalProperty, { dataFactory }),
       );
     } else if (typeof parameters.literalProperty === "string") {
       this.literalProperty = purify.Maybe.of(
@@ -7220,7 +7320,14 @@ export class NodeShapeWithInProperties {
     );
     _resource.add(
       dataFactory.namedNode("http://example.com/inDateTimesProperty"),
-      this.inDateTimesProperty,
+      this.inDateTimesProperty.map((_value) =>
+        rdfLiteral.toRdf(_value, {
+          dataFactory,
+          datatype: dataFactory.namedNode(
+            "http://www.w3.org/2001/XMLSchema#dateTime",
+          ),
+        }),
+      ),
     );
     _resource.add(
       dataFactory.namedNode("http://example.com/inIrisProperty"),
@@ -7383,7 +7490,12 @@ export namespace NodeShapeWithInProperties {
             }
             return purify.Left(
               new rdfjsResource.Resource.MistypedValueError({
-                actualValue: rdfLiteral.toRdf(value),
+                actualValue: rdfLiteral.toRdf(value, {
+                  dataFactory,
+                  datatype: dataFactory.namedNode(
+                    "http://www.w3.org/2001/XMLSchema#dateTime",
+                  ),
+                }),
                 expectedValueType: "Date",
                 focusResource: _resource,
                 predicate: dataFactory.namedNode(
@@ -10280,6 +10392,7 @@ export namespace NodeShapeWithExplicitRdfTypes {
  * Shape with sh:defaultValue properties.
  */
 export class NodeShapeWithDefaultValueProperties {
+  readonly dateProperty: Date;
   readonly dateTimeProperty: Date;
   readonly falseBooleanProperty: boolean;
   private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
@@ -10289,6 +10402,7 @@ export class NodeShapeWithDefaultValueProperties {
   readonly type = "NodeShapeWithDefaultValueProperties";
 
   constructor(parameters: {
+    readonly dateProperty?: Date;
     readonly dateTimeProperty?: Date;
     readonly falseBooleanProperty?: boolean;
     readonly identifier?: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
@@ -10296,6 +10410,17 @@ export class NodeShapeWithDefaultValueProperties {
     readonly stringProperty?: string;
     readonly trueBooleanProperty?: boolean;
   }) {
+    if (
+      typeof parameters.dateProperty === "object" &&
+      parameters.dateProperty instanceof Date
+    ) {
+      this.dateProperty = parameters.dateProperty;
+    } else if (typeof parameters.dateProperty === "undefined") {
+      this.dateProperty = new Date("2018-04-09T00:00:00.000Z");
+    } else {
+      this.dateProperty = parameters.dateProperty as never;
+    }
+
     if (
       typeof parameters.dateTimeProperty === "object" &&
       parameters.dateTimeProperty instanceof Date
@@ -10357,14 +10482,25 @@ export class NodeShapeWithDefaultValueProperties {
   }
 
   equals(other: NodeShapeWithDefaultValueProperties): EqualsResult {
-    return dateEquals(this.dateTimeProperty, other.dateTimeProperty)
+    return dateEquals(this.dateProperty, other.dateProperty)
       .mapLeft((propertyValuesUnequal) => ({
         left: this,
         right: other,
-        propertyName: "dateTimeProperty",
+        propertyName: "dateProperty",
         propertyValuesUnequal,
         type: "Property" as const,
       }))
+      .chain(() =>
+        dateEquals(this.dateTimeProperty, other.dateTimeProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "dateTimeProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
       .chain(() =>
         strictEquals(
           this.falseBooleanProperty,
@@ -10440,6 +10576,7 @@ export class NodeShapeWithDefaultValueProperties {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_hasher: HasherT): HasherT {
+    _hasher.update(this.dateProperty.toISOString());
     _hasher.update(this.dateTimeProperty.toISOString());
     _hasher.update(this.falseBooleanProperty.toString());
     _hasher.update(this.numberProperty.toString());
@@ -10449,6 +10586,7 @@ export class NodeShapeWithDefaultValueProperties {
   }
 
   toJson(): {
+    readonly dateProperty: string;
     readonly dateTimeProperty: string;
     readonly falseBooleanProperty: boolean;
     readonly "@id": string;
@@ -10459,6 +10597,7 @@ export class NodeShapeWithDefaultValueProperties {
   } {
     return JSON.parse(
       JSON.stringify({
+        dateProperty: this.dateProperty.toISOString().replace(/T.*$/, ""),
         dateTimeProperty: this.dateTimeProperty.toISOString(),
         falseBooleanProperty: this.falseBooleanProperty,
         "@id":
@@ -10485,9 +10624,25 @@ export class NodeShapeWithDefaultValueProperties {
       mutateGraph,
     });
     _resource.add(
+      dataFactory.namedNode("http://example.com/dateProperty"),
+      this.dateProperty.getTime() !== 1523232000000
+        ? rdfLiteral.toRdf(this.dateProperty, {
+            dataFactory,
+            datatype: dataFactory.namedNode(
+              "http://www.w3.org/2001/XMLSchema#date",
+            ),
+          })
+        : undefined,
+    );
+    _resource.add(
       dataFactory.namedNode("http://example.com/dateTimeProperty"),
       this.dateTimeProperty.getTime() !== 1523268000000
-        ? this.dateTimeProperty
+        ? rdfLiteral.toRdf(this.dateTimeProperty, {
+            dataFactory,
+            datatype: dataFactory.namedNode(
+              "http://www.w3.org/2001/XMLSchema#dateTime",
+            ),
+          })
         : undefined,
     );
     _resource.add(
@@ -10520,6 +10675,7 @@ export namespace NodeShapeWithDefaultValueProperties {
   ): purify.Either<
     zod.ZodError,
     {
+      dateProperty: Date;
       dateTimeProperty: Date;
       falseBooleanProperty: boolean;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -10534,6 +10690,7 @@ export namespace NodeShapeWithDefaultValueProperties {
     }
 
     const _jsonObject = _jsonSafeParseResult.data;
+    const dateProperty = new Date(_jsonObject["dateProperty"]);
     const dateTimeProperty = new Date(_jsonObject["dateTimeProperty"]);
     const falseBooleanProperty = _jsonObject["falseBooleanProperty"];
     const identifier = _jsonObject["@id"].startsWith("_:")
@@ -10543,6 +10700,7 @@ export namespace NodeShapeWithDefaultValueProperties {
     const stringProperty = _jsonObject["stringProperty"];
     const trueBooleanProperty = _jsonObject["trueBooleanProperty"];
     return purify.Either.of({
+      dateProperty,
       dateTimeProperty,
       falseBooleanProperty,
       identifier,
@@ -10574,6 +10732,7 @@ export namespace NodeShapeWithDefaultValueProperties {
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
     {
+      dateProperty: Date;
       dateTimeProperty: Date;
       falseBooleanProperty: boolean;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -10582,6 +10741,32 @@ export namespace NodeShapeWithDefaultValueProperties {
       trueBooleanProperty: boolean;
     }
   > {
+    const _datePropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      Date
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/dateProperty"), {
+        unique: true,
+      })
+      .head()
+      .alt(
+        purify.Either.of(
+          new rdfjsResource.Resource.Value({
+            subject: _resource,
+            predicate: dataFactory.namedNode("http://example.com/dateProperty"),
+            object: dataFactory.literal(
+              "2018-04-09",
+              dataFactory.namedNode("http://www.w3.org/2001/XMLSchema#date"),
+            ),
+          }),
+        ),
+      )
+      .chain((_value) => _value.toDate());
+    if (_datePropertyEither.isLeft()) {
+      return _datePropertyEither;
+    }
+
+    const dateProperty = _datePropertyEither.unsafeCoerce();
     const _dateTimePropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       Date
@@ -10724,6 +10909,7 @@ export namespace NodeShapeWithDefaultValueProperties {
 
     const trueBooleanProperty = _trueBooleanPropertyEither.unsafeCoerce();
     return purify.Either.of({
+      dateProperty,
       dateTimeProperty,
       falseBooleanProperty,
       identifier,
@@ -10754,6 +10940,7 @@ export namespace NodeShapeWithDefaultValueProperties {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
+        { scope: `${scopePrefix}/properties/dateProperty`, type: "Control" },
         {
           scope: `${scopePrefix}/properties/dateTimeProperty`,
           type: "Control",
@@ -10792,6 +10979,7 @@ export namespace NodeShapeWithDefaultValueProperties {
 
   export function jsonZodSchema() {
     return zod.object({
+      dateProperty: zod.string().date(),
       dateTimeProperty: zod.string().datetime(),
       falseBooleanProperty: zod.boolean(),
       "@id": zod.string().min(1),
@@ -10859,6 +11047,11 @@ export namespace NodeShapeWithDefaultValueProperties {
         : "nodeShapeWithDefaultValueProperties");
     return [
       {
+        object: dataFactory.variable!(`${variablePrefix}DateProperty`),
+        predicate: dataFactory.namedNode("http://example.com/dateProperty"),
+        subject,
+      },
+      {
         object: dataFactory.variable!(`${variablePrefix}DateTimeProperty`),
         predicate: dataFactory.namedNode("http://example.com/dateTimeProperty"),
         subject,
@@ -10904,6 +11097,23 @@ export namespace NodeShapeWithDefaultValueProperties {
         ? subject.value
         : "nodeShapeWithDefaultValueProperties");
     return [
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(`${variablePrefix}DateProperty`),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/dateProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
       {
         patterns: [
           {
