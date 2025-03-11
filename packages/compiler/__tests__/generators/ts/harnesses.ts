@@ -259,6 +259,7 @@ export const harnesses = {
       identifier,
       mutableListProperty: ["test1", "test2"],
       mutableStringProperty: "test",
+      mutableSetProperty: ["test1", "test2"],
     }),
     sparqlConstructQueryString:
       kitchenSink.NodeShapeWithMutableProperties.sparqlConstructQueryString,

@@ -10,19 +10,23 @@ export class SetType extends Type {
   readonly itemType: Type;
   readonly kind = "SetType";
   private readonly minCount: number;
+  private readonly _mutable: boolean;
 
   constructor({
     itemType,
     minCount,
+    mutable,
     ...superParameters
   }: ConstructorParameters<typeof Type>[0] & {
     itemType: Type;
+    mutable: boolean;
     minCount: number;
   }) {
     super(superParameters);
     this.itemType = itemType;
     this.minCount = minCount;
     invariant(this.minCount >= 0);
+    this._mutable = mutable;
   }
 
   override get conversions(): readonly Type.Conversion[] {
@@ -56,18 +60,18 @@ export class SetType extends Type {
   }
 
   override get jsonName(): string {
-    if (this.minCount === 0) {
-      return `readonly (${this.itemType.jsonName})[]`;
-    }
-    return `purify.NonEmptyList<${this.itemType.jsonName}>`;
+    return `readonly (${this.itemType.jsonName})[]`;
   }
 
   override get mutable(): boolean {
-    return this.itemType.mutable;
+    return this._mutable || this.itemType.mutable;
   }
 
   @Memoize()
   override get name(): string {
+    if (this._mutable) {
+      return `(${this.itemType.name})[]`;
+    }
     if (this.minCount === 0) {
       return `readonly (${this.itemType.name})[]`;
     }
@@ -78,7 +82,7 @@ export class SetType extends Type {
     variables,
   }: Parameters<Type["fromJsonExpression"]>[0]): string {
     let expression = variables.value;
-    if (this.minCount > 0) {
+    if (!this._mutable && this.minCount > 0) {
       expression = `purify.NonEmptyList.fromArray(${expression}).unsafeCoerce()`;
     }
     const itemFromJsonExpression = this.itemType.fromJsonExpression({
@@ -95,7 +99,7 @@ export class SetType extends Type {
     const itemFromRdfExpression = this.itemType.fromRdfExpression({
       variables: { ...variables, resourceValues: "_item.toValues()" },
     });
-    if (this.minCount === 0) {
+    if (this._mutable || this.minCount === 0) {
       return `purify.Either.of([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())])`;
     }
     return `purify.NonEmptyList.fromArray([...${variables.resourceValues}.flatMap(_item => ${itemFromRdfExpression}.toMaybe().toList())]).toEither(new rdfjsResource.Resource.ValueError(${objectInitializer({ focusResource: variables.resource, message: `\`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} is empty\``, predicate: variables.predicate })}))`;

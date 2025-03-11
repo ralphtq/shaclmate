@@ -216,6 +216,7 @@ export class TypeFactory {
         return new SetType({
           dataFactoryVariable: this.dataFactoryVariable,
           itemType: this.createTypeFromAstType(astType.itemType),
+          mutable: astType.mutable.orDefault(false),
           minCount: astType.minCount,
         });
       case "TermType":

@@ -133,6 +133,16 @@ export function maybeEquals<T>(
 
   return EqualsResult.Equal;
 }
+/**
+ * Compare two Dates and return an EqualsResult.
+ */
+export function dateEquals(left: Date, right: Date): EqualsResult {
+  return EqualsResult.fromBooleanEqualsResult(
+    left,
+    right,
+    left.getTime() === right.getTime(),
+  );
+}
 export function arrayEquals<T>(
   leftArray: readonly T[],
   rightArray: readonly T[],
@@ -195,16 +205,6 @@ export function arrayEquals<T>(
 
   return EqualsResult.Equal;
 }
-/**
- * Compare two Dates and return an EqualsResult.
- */
-export function dateEquals(left: Date, right: Date): EqualsResult {
-  return EqualsResult.fromBooleanEqualsResult(
-    left,
-    right,
-    left.getTime() === right.getTime(),
-  );
-}
 type UnwrapR<T> = T extends purify.Either<any, infer R> ? R : never;
 /**
  * A node shape that mints its identifier by generating a v4 UUID, if no identifier is supplied.
@@ -222,6 +222,7 @@ export class UuidV4IriNodeShape {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -521,6 +522,7 @@ export class UnionNodeShapeMember2 {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -827,6 +829,7 @@ export class UnionNodeShapeMember1 {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -1136,6 +1139,7 @@ export class Sha256IriNodeShape {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -1437,6 +1441,7 @@ export class NonClassNodeShape {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -1769,6 +1774,7 @@ export class NodeShapeWithUnionProperties {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -2094,9 +2100,7 @@ export class NodeShapeWithUnionProperties {
 }
 
 export namespace NodeShapeWithUnionProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -2676,6 +2680,7 @@ export class NodeShapeWithTermProperties {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -3086,9 +3091,7 @@ export class NodeShapeWithTermProperties {
 }
 
 export namespace NodeShapeWithTermProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       booleanProperty: purify.Maybe<boolean>;
@@ -3744,6 +3747,7 @@ export class NodeShapeWithPropertyVisibilities {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -3880,9 +3884,7 @@ export class NodeShapeWithPropertyVisibilities {
 }
 
 export namespace NodeShapeWithPropertyVisibilities {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4220,6 +4222,7 @@ export class NodeShapeWithPropertyCardinalities {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -4343,7 +4346,7 @@ export class NodeShapeWithPropertyCardinalities {
   toJson(): {
     readonly emptyStringSetProperty: readonly string[];
     readonly "@id": string;
-    readonly nonEmptyStringSetProperty: purify.NonEmptyList<string>;
+    readonly nonEmptyStringSetProperty: readonly string[];
     readonly optionalStringProperty: string | undefined;
     readonly requiredStringProperty: string;
     readonly type: "NodeShapeWithPropertyCardinalities";
@@ -4405,9 +4408,7 @@ export class NodeShapeWithPropertyCardinalities {
 }
 
 export namespace NodeShapeWithPropertyCardinalities {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       emptyStringSetProperty: readonly string[];
@@ -4841,6 +4842,10 @@ export class NodeShapeWithMutableProperties {
    */
   readonly mutableListProperty: purify.Maybe<string[]>;
   /**
+   * Set-valued property that can't be reassigned but whose value can be mutated
+   */
+  mutableSetProperty: string[];
+  /**
    * String-valued property that can be re-assigned
    */
   mutableStringProperty: purify.Maybe<string>;
@@ -4849,12 +4854,14 @@ export class NodeShapeWithMutableProperties {
   constructor(parameters: {
     readonly identifier?: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
     readonly mutableListProperty?: purify.Maybe<string[]> | string[];
+    readonly mutableSetProperty?: readonly string[];
     readonly mutableStringProperty?: purify.Maybe<string> | string;
   }) {
     if (typeof parameters.identifier === "object") {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -4869,6 +4876,14 @@ export class NodeShapeWithMutableProperties {
       this.mutableListProperty = purify.Maybe.empty();
     } else {
       this.mutableListProperty = parameters.mutableListProperty as never;
+    }
+
+    if (typeof parameters.mutableSetProperty === "undefined") {
+      this.mutableSetProperty = [];
+    } else if (Array.isArray(parameters.mutableSetProperty)) {
+      this.mutableSetProperty = parameters.mutableSetProperty;
+    } else {
+      this.mutableSetProperty = parameters.mutableSetProperty as never;
     }
 
     if (purify.Maybe.isMaybe(parameters.mutableStringProperty)) {
@@ -4916,6 +4931,18 @@ export class NodeShapeWithMutableProperties {
         ),
       )
       .chain(() =>
+        ((left, right) => arrayEquals(left, right, strictEquals))(
+          this.mutableSetProperty,
+          other.mutableSetProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: this,
+          right: other,
+          propertyName: "mutableSetProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
+      )
+      .chain(() =>
         ((left, right) => maybeEquals(left, right, strictEquals))(
           this.mutableStringProperty,
           other.mutableStringProperty,
@@ -4950,6 +4977,10 @@ export class NodeShapeWithMutableProperties {
         _hasher.update(_element1);
       }
     });
+    for (const _item0 of this.mutableSetProperty) {
+      _hasher.update(_item0);
+    }
+
     this.mutableStringProperty.ifJust((_value0) => {
       _hasher.update(_value0);
     });
@@ -4959,6 +4990,7 @@ export class NodeShapeWithMutableProperties {
   toJson(): {
     readonly "@id": string;
     readonly mutableListProperty: readonly string[] | undefined;
+    readonly mutableSetProperty: readonly string[];
     readonly mutableStringProperty: string | undefined;
     readonly type: "NodeShapeWithMutableProperties";
   } {
@@ -4971,6 +5003,7 @@ export class NodeShapeWithMutableProperties {
         mutableListProperty: this.mutableListProperty
           .map((_item) => _item.map((_item) => _item))
           .extract(),
+        mutableSetProperty: this.mutableSetProperty.map((_item) => _item),
         mutableStringProperty: this.mutableStringProperty
           .map((_item) => _item)
           .extract(),
@@ -5063,6 +5096,10 @@ export class NodeShapeWithMutableProperties {
       ),
     );
     _resource.add(
+      dataFactory.namedNode("http://example.com/mutableSetProperty"),
+      this.mutableSetProperty.map((_item) => _item),
+    );
+    _resource.add(
       dataFactory.namedNode("http://example.com/mutableStringProperty"),
       this.mutableStringProperty,
     );
@@ -5075,13 +5112,12 @@ export class NodeShapeWithMutableProperties {
 }
 
 export namespace NodeShapeWithMutableProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       mutableListProperty: purify.Maybe<string[]>;
+      mutableSetProperty: string[];
       mutableStringProperty: purify.Maybe<string>;
     }
   > {
@@ -5097,12 +5133,14 @@ export namespace NodeShapeWithMutableProperties {
     const mutableListProperty = purify.Maybe.fromNullable(
       _jsonObject["mutableListProperty"],
     ).map((_item) => _item.map((_item) => _item));
+    const mutableSetProperty = _jsonObject["mutableSetProperty"];
     const mutableStringProperty = purify.Maybe.fromNullable(
       _jsonObject["mutableStringProperty"],
     );
     return purify.Either.of({
       identifier,
       mutableListProperty,
+      mutableSetProperty,
       mutableStringProperty,
     });
   }
@@ -5131,6 +5169,7 @@ export namespace NodeShapeWithMutableProperties {
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       mutableListProperty: purify.Maybe<string[]>;
+      mutableSetProperty: string[];
       mutableStringProperty: purify.Maybe<string>;
     }
   > {
@@ -5163,6 +5202,29 @@ export namespace NodeShapeWithMutableProperties {
     }
 
     const mutableListProperty = _mutableListPropertyEither.unsafeCoerce();
+    const _mutableSetPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string[]
+    > = purify.Either.of([
+      ..._resource
+        .values(
+          dataFactory.namedNode("http://example.com/mutableSetProperty"),
+          { unique: true },
+        )
+        .flatMap((_item) =>
+          _item
+            .toValues()
+            .head()
+            .chain((_value) => _value.toString())
+            .toMaybe()
+            .toList(),
+        ),
+    ]);
+    if (_mutableSetPropertyEither.isLeft()) {
+      return _mutableSetPropertyEither;
+    }
+
+    const mutableSetProperty = _mutableSetPropertyEither.unsafeCoerce();
     const _mutableStringPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<string>
@@ -5184,6 +5246,7 @@ export namespace NodeShapeWithMutableProperties {
     return purify.Either.of({
       identifier,
       mutableListProperty,
+      mutableSetProperty,
       mutableStringProperty,
     });
   }
@@ -5219,6 +5282,10 @@ export namespace NodeShapeWithMutableProperties {
           type: "Control",
         },
         {
+          scope: `${scopePrefix}/properties/mutableSetProperty`,
+          type: "Control",
+        },
+        {
           scope: `${scopePrefix}/properties/mutableStringProperty`,
           type: "Control",
         },
@@ -5248,6 +5315,12 @@ export namespace NodeShapeWithMutableProperties {
         .optional()
         .describe(
           "List-valued property that can't be reassigned but whose value can be mutated",
+        ),
+      mutableSetProperty: zod
+        .string()
+        .array()
+        .describe(
+          "Set-valued property that can't be reassigned but whose value can be mutated",
         ),
       mutableStringProperty: zod
         .string()
@@ -5359,6 +5432,13 @@ export namespace NodeShapeWithMutableProperties {
         object: dataFactory.variable!(
           `${`${variablePrefix}MutableListProperty`}RestNBasic`,
         ),
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}MutableSetProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/mutableSetProperty",
+        ),
+        subject,
       },
       {
         object: dataFactory.variable!(`${variablePrefix}MutableStringProperty`),
@@ -5505,6 +5585,25 @@ export namespace NodeShapeWithMutableProperties {
             triples: [
               {
                 object: dataFactory.variable!(
+                  `${variablePrefix}MutableSetProperty`,
+                ),
+                predicate: dataFactory.namedNode(
+                  "http://example.com/mutableSetProperty",
+                ),
+                subject,
+              },
+            ],
+            type: "bgp",
+          },
+        ],
+        type: "optional",
+      },
+      {
+        patterns: [
+          {
+            triples: [
+              {
+                object: dataFactory.variable!(
                   `${variablePrefix}MutableStringProperty`,
                 ),
                 predicate: dataFactory.namedNode(
@@ -5543,6 +5642,7 @@ export class NodeShapeWithListProperties {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -5832,9 +5932,7 @@ export class NodeShapeWithListProperties {
 }
 
 export namespace NodeShapeWithListProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6485,6 +6583,7 @@ export class NodeShapeWithLanguageInProperties {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -6699,9 +6798,7 @@ export class NodeShapeWithLanguageInProperties {
 }
 
 export namespace NodeShapeWithLanguageInProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7085,6 +7182,7 @@ export class NodeShapeWithInProperties {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -7350,9 +7448,7 @@ export class NodeShapeWithInProperties {
 }
 
 export namespace NodeShapeWithInProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7449,22 +7545,20 @@ export namespace NodeShapeWithInProperties {
         )
         .head()
         .chain((_value) =>
-          _value
-            .toBoolean()
-            .chain((value) =>
-              value === true
-                ? purify.Either.of(value)
-                : purify.Left(
-                    new rdfjsResource.Resource.MistypedValueError({
-                      actualValue: rdfLiteral.toRdf(value),
-                      expectedValueType: "true",
-                      focusResource: _resource,
-                      predicate: dataFactory.namedNode(
-                        "http://example.com/inBooleansProperty",
-                      ),
-                    }),
-                  ),
-            ),
+          _value.toBoolean().chain((value) =>
+            value === true
+              ? purify.Either.of(value)
+              : purify.Left(
+                  new rdfjsResource.Resource.MistypedValueError({
+                    actualValue: rdfLiteral.toRdf(value),
+                    expectedValueType: "true",
+                    focusResource: _resource,
+                    predicate: dataFactory.namedNode(
+                      "http://example.com/inBooleansProperty",
+                    ),
+                  }),
+                ),
+          ),
         )
         .toMaybe(),
     );
@@ -8058,9 +8152,7 @@ export class NodeShapeWithInIdentifier {
 }
 
 export namespace NodeShapeWithInIdentifier {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.NamedNode<
@@ -8359,6 +8451,7 @@ export class NodeShapeWithHasValueProperties {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -8486,9 +8579,7 @@ export class NodeShapeWithHasValueProperties {
 }
 
 export namespace NodeShapeWithHasValueProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       hasIriProperty: purify.Maybe<rdfjs.NamedNode>;
@@ -8786,6 +8877,7 @@ export class InlineNodeShape {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -9088,6 +9180,7 @@ export class ExternNodeShape {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -9432,6 +9525,7 @@ export class NodeShapeWithExternProperties {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -9607,9 +9701,7 @@ export class NodeShapeWithExternProperties {
 }
 
 export namespace NodeShapeWithExternProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       externObjectTypeProperty: purify.Maybe<ExternObjectType>;
@@ -10009,6 +10101,7 @@ export class NodeShapeWithExplicitRdfTypes {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -10444,6 +10537,7 @@ export class NodeShapeWithDefaultValueProperties {
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -10670,9 +10764,7 @@ export class NodeShapeWithDefaultValueProperties {
 }
 
 export namespace NodeShapeWithDefaultValueProperties {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       dateProperty: Date;
@@ -11563,9 +11655,7 @@ export namespace InterfaceUnionNodeShapeMember2b {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11892,9 +11982,7 @@ export namespace InterfaceUnionNodeShapeMember2a {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -12221,9 +12309,7 @@ export namespace InterfaceUnionNodeShapeMember1 {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -12550,9 +12636,7 @@ export namespace InterfaceNodeShape {
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -13345,6 +13429,7 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
       this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
       this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
       this._identifier = parameters.identifier as never;
     }
@@ -13362,20 +13447,18 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
   }
 
   override equals(other: ConcreteParentClassNodeShape): EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        strictEquals(
-          this.parentStringProperty,
-          other.parentStringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "parentStringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+    return super.equals(other).chain(() =>
+      strictEquals(
+        this.parentStringProperty,
+        other.parentStringProperty,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "parentStringProperty",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<
@@ -13437,9 +13520,7 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -13779,20 +13860,17 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   }
 
   override equals(other: ConcreteChildClassNodeShape): EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        strictEquals(
-          this.childStringProperty,
-          other.childStringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
+    return super.equals(other).chain(() =>
+      strictEquals(this.childStringProperty, other.childStringProperty).mapLeft(
+        (propertyValuesUnequal) => ({
           left: this,
           right: other,
           propertyName: "childStringProperty",
           propertyValuesUnequal,
           type: "Property" as const,
-        })),
-      );
+        }),
+      ),
+    );
   }
 
   override hash<
@@ -13854,9 +13932,7 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       childStringProperty: string;

@@ -13,9 +13,9 @@ import { objectInitializer } from "./objectInitializer.js";
 export class ListType extends Type {
   readonly itemType: Type;
   readonly kind = "ListType";
-  override readonly mutable: boolean;
   private readonly identifierNodeKind: "BlankNode" | "NamedNode";
   private readonly mintingStrategy: IdentifierMintingStrategy;
+  private readonly _mutable: boolean;
   private readonly toRdfTypes: readonly NamedNode[];
 
   constructor({
@@ -36,7 +36,7 @@ export class ListType extends Type {
     this.identifierNodeKind = identifierNodeKind;
     this.itemType = itemType;
     this.mintingStrategy = mintingStrategy.orDefault("sha256");
-    this.mutable = mutable;
+    this._mutable = mutable;
     this.toRdfTypes = toRdfTypes;
   }
 
@@ -62,8 +62,12 @@ export class ListType extends Type {
     return `readonly (${this.itemType.jsonName})[]`;
   }
 
+  override get mutable(): boolean {
+    return this._mutable || this.itemType.mutable;
+  }
+
   override get name(): string {
-    return `${this.mutable ? "" : "readonly "}${this.itemType.name}[]`;
+    return `${this._mutable ? "" : "readonly "}${this.itemType.name}[]`;
   }
 
   override fromJsonExpression({

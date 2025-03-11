@@ -51,6 +51,7 @@ export function transformPropertyShapeToAstType(
           return {
             itemType,
             kind: "SetType",
+            mutable: shape.mutable,
             minCount: 0,
           };
         }
@@ -76,6 +77,7 @@ export function transformPropertyShapeToAstType(
         itemType,
         kind: "SetType",
         minCount: minCount.orDefault(0),
+        mutable: shape.mutable,
       };
     });
 }

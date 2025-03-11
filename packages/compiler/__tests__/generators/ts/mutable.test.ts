@@ -36,4 +36,19 @@ describe("mutable", () => {
       "urn:shaclmate:object:NodeShapeWithMutableProperties:60303ae22b998861bce3b28f33eec1be758a213c86c93c076dbe9f558c11c752",
     );
   });
+
+  it("mutable set", ({ expect }) => {
+    const instance = new kitchenSink.NodeShapeWithMutableProperties({
+      mutableSetProperty: ["test1", "test2"],
+    });
+    expect(instance.mutableSetProperty).toStrictEqual(["test1", "test2"]);
+    expect(instance.identifier.value).toStrictEqual(
+      "urn:shaclmate:object:NodeShapeWithMutableProperties:4f980b6f9baa6965f760d0bf2b2ccbee483032e5df01d77bbd9e25f7517a06b9",
+    );
+    instance.mutableSetProperty.push("test3");
+    // Hash-based identifier should change when the property does
+    expect(instance.identifier.value).toStrictEqual(
+      "urn:shaclmate:object:NodeShapeWithMutableProperties:0708b4ca464c40390706888030555d860e4a0d2bc6c487392c1655b082131629",
+    );
+  });
 });

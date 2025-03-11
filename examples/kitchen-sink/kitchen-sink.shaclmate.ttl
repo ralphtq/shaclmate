@@ -427,6 +427,12 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:name "mutableListProperty" ;
         sh:node :MutableStringListShape ;
         sh:path :mutableListProperty
+    ], [
+        shaclmate:mutable true ;
+        sh:datatype xsd:string ;
+        sh:description "Set-valued property that can't be reassigned but whose value can be mutated" ;
+        sh:name "mutableSetProperty" ;
+        sh:path :mutableSetProperty
     ] .
 
 :NodeShapeWithPropertyCardinalities
