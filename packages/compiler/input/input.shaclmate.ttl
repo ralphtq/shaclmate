@@ -11,7 +11,7 @@ shaclmate:ShaclmateNodeShape
     shaclmate:name "ShaclmateNodeShape" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf shaclmate:ShaclCoreNodeShape ;
-    sh:property shaclmate:ShaclmateNodeShape-abstract, shaclmate:ShaclmateNodeShape-export, shaclmate:ShaclmateNodeShape-fromRdfType, shaclmate:ShaclmateNodeShape-mintingStrategy, shaclmate:ShaclmateNodeShape-toRdfTypes, shaclmate:ShaclmateShape-extern, shaclmate:ShaclmateShape-mutable, shaclmate:ShaclmateShape-name, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
+    sh:property shaclmate:ShaclmateNodeShape-abstract, shaclmate:ShaclmateNodeShape-export, shaclmate:ShaclmateNodeShape-fromRdfType, shaclmate:ShaclmateNodeShape-identifierMintingStrategy, shaclmate:ShaclmateNodeShape-toRdfTypes, shaclmate:ShaclmateShape-extern, shaclmate:ShaclmateShape-mutable, shaclmate:ShaclmateShape-name, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
 
 shaclmate:ShaclmateNodeShape-abstract
     a sh:PropertyShape ;
@@ -34,14 +34,14 @@ shaclmate:ShaclmateNodeShape-fromRdfType
     sh:nodeKind sh:IRI ;
     sh:path shaclmate:fromRdfType .
 
-shaclmate:ShaclmateNodeShape-mintingStrategy
+shaclmate:ShaclmateNodeShape-identifierMintingStrategy
     a sh:PropertyShape ;
-    sh:in (shaclmate:_MintingStrategy_SHA256
-        shaclmate:_MintingStrategy_UUIDv4
+    sh:in (shaclmate:_IdentifierMintingStrategy_SHA256
+        shaclmate:_IdentifierMintingStrategy_UUIDv4
     ) ;
     sh:maxCount 1 ;
-    sh:name "mintingStrategy" ;
-    sh:path shaclmate:mintingStrategy .
+    sh:name "identifierMintingStrategy" ;
+    sh:path shaclmate:identifierMintingStrategy .
 
 shaclmate:ShaclmateNodeShape-toRdfTypes
     a sh:PropertyShape ;

@@ -38,7 +38,7 @@ export interface ListType {
   /**
    * Strategy for minting new list and sub-list identifiers.
    */
-  readonly mintingStrategy: Maybe<IdentifierMintingStrategy>;
+  readonly identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
   /**
    * The list should be mutable in generated code.
    */

@@ -32,7 +32,7 @@ function transformNodeShapeToListType(
     label: pickLiteral(nodeShape.labels).map((literal) => literal.value),
     mutable: nodeShape.mutable,
     name: this.shapeAstName(nodeShape),
-    mintingStrategy: nodeShape.mintingStrategy,
+    identifierMintingStrategy: nodeShape.identifierMintingStrategy,
     toRdfTypes: nodeShape.toRdfTypes,
   };
 
@@ -215,7 +215,9 @@ export function transformNodeShapeToAstType(
     kind: "ObjectType",
     identifierIn,
     identifierMintingStrategy:
-      identifierIn.length === 0 ? nodeShape.mintingStrategy : Maybe.empty(),
+      identifierIn.length === 0
+        ? nodeShape.identifierMintingStrategy
+        : Maybe.empty(),
     identifierKinds:
       identifierIn.length === 0 ? nodeShape.nodeKinds : new Set(["NamedNode"]),
     name: this.shapeAstName(nodeShape),

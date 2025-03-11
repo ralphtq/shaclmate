@@ -116,7 +116,7 @@ export class NodeShape extends ShaclCoreNodeShape<
     return Maybe.empty();
   }
 
-  get mintingStrategy(): Maybe<IdentifierMintingStrategy> {
+  get identifierMintingStrategy(): Maybe<IdentifierMintingStrategy> {
     const thisMintingStrategy = this._mintingStrategy;
     if (thisMintingStrategy.isNothing()) {
       for (const ancestorNodeShape of this.ancestorNodeShapes) {
@@ -248,15 +248,17 @@ export class NodeShape extends ShaclCoreNodeShape<
   }
 
   private get _mintingStrategy(): Maybe<IdentifierMintingStrategy> {
-    return this.generatedShaclmateNodeShape.mintingStrategy.map((iri) => {
-      switch (iri.value) {
-        case "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256":
-          return "sha256";
-        case "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4":
-          return "uuidv4";
-        default:
-          throw new RangeError(iri.value);
-      }
-    });
+    return this.generatedShaclmateNodeShape.identifierMintingStrategy.map(
+      (iri) => {
+        switch (iri.value) {
+          case "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256":
+            return "sha256";
+          case "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4":
+            return "uuidv4";
+          default:
+            throw new RangeError(iri.value);
+        }
+      },
+    );
   }
 }

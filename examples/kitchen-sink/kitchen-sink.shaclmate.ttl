@@ -27,7 +27,7 @@
 :AbstractBaseClassWithPropertiesNodeShape
     shaclmate:abstract true ;
     shaclmate:export false ;
-    shaclmate:mintingStrategy shaclmate:_MintingStrategy_SHA256 ;
+    shaclmate:identifierMintingStrategy shaclmate:_IdentifierMintingStrategy_SHA256 ;
     shaclmate:name "AbstractBaseClassWithPropertiesNodeShape" ;
     a owl:Class, sh:NodeShape ;
     rdfs:comment """Node shape that serves as an abstract base class for child node shapes.
@@ -198,7 +198,7 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     ) .
 
 :NodeShapeWithDefaultValueProperties
-    shaclmate:mintingStrategy shaclmate:_MintingStrategy_SHA256 ;
+    shaclmate:identifierMintingStrategy shaclmate:_IdentifierMintingStrategy_SHA256 ;
     shaclmate:name "NodeShapeWithDefaultValueProperties" ;
     a sh:NodeShape ;
     rdfs:comment "Shape with sh:defaultValue properties." ;
@@ -410,7 +410,7 @@ shaclmate:toRdfType's are added an serialization.""" ;
     ] .
 
 :NodeShapeWithMutableProperties
-    shaclmate:mintingStrategy shaclmate:_MintingStrategy_SHA256 ;
+    shaclmate:identifierMintingStrategy shaclmate:_IdentifierMintingStrategy_SHA256 ;
     shaclmate:name "NodeShapeWithMutableProperties" ;
     a sh:NodeShape ;
     rdfs:comment "Shape with shaclmate:mutable properties." ;
@@ -620,7 +620,7 @@ shaclmate:toRdfType's are added an serialization.""" ;
     ) .
 
 :Sha256IriNodeShape
-    shaclmate:mintingStrategy shaclmate:_MintingStrategy_SHA256 ;
+    shaclmate:identifierMintingStrategy shaclmate:_IdentifierMintingStrategy_SHA256 ;
     shaclmate:name "Sha256IriNodeShape" ;
     a sh:NodeShape ;
     rdfs:comment "A node shape that mints its identifier by hashing (other) contents, if no identifier is supplied." ;
@@ -695,7 +695,7 @@ shaclmate:toRdfType's are added an serialization.""" ;
     ] .
 
 :UuidV4IriNodeShape
-    shaclmate:mintingStrategy shaclmate:_MintingStrategy_UUIDv4 ;
+    shaclmate:identifierMintingStrategy shaclmate:_IdentifierMintingStrategy_UUIDv4 ;
     shaclmate:name "UuidV4IriNodeShape" ;
     a sh:NodeShape ;
     rdfs:comment "A node shape that mints its identifier by generating a v4 UUID, if no identifier is supplied." ;

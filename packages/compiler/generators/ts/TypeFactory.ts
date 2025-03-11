@@ -57,7 +57,7 @@ export class TypeFactory {
           identifierNodeKind: astType.identifierNodeKind,
           itemType: this.createTypeFromAstType(astType.itemType),
           mutable: astType.mutable.orDefault(false),
-          mintingStrategy: astType.mintingStrategy,
+          identifierMintingStrategy: astType.identifierMintingStrategy,
           toRdfTypes: astType.toRdfTypes,
         });
       }
@@ -365,7 +365,7 @@ export class TypeFactory {
           left.name.localeCompare(right.name),
         );
       },
-      mintingStrategy: astType.identifierMintingStrategy,
+      identifierMintingStrategy: astType.identifierMintingStrategy,
       name: tsName(astType.name),
       toRdfTypes: astType.toRdfTypes,
     });

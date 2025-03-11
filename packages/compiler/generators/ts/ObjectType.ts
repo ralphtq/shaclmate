@@ -35,7 +35,7 @@ export class ObjectType extends DeclaredType {
   protected readonly extern: boolean;
   protected readonly fromRdfType: Maybe<NamedNode>;
   protected readonly label: Maybe<string>;
-  protected readonly mintingStrategy: Maybe<IdentifierMintingStrategy>;
+  protected readonly identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
   protected readonly toRdfTypes: readonly NamedNode[];
   private readonly imports: readonly string[];
   private readonly lazyAncestorObjectTypes: () => readonly ObjectType[];
@@ -55,7 +55,7 @@ export class ObjectType extends DeclaredType {
     lazyParentObjectTypes,
     lazyProperties,
     imports,
-    mintingStrategy,
+    identifierMintingStrategy,
     toRdfTypes,
     ...superParameters
   }: {
@@ -70,7 +70,7 @@ export class ObjectType extends DeclaredType {
     lazyDescendantObjectTypes: () => readonly ObjectType[];
     lazyParentObjectTypes: () => readonly ObjectType[];
     lazyProperties: () => readonly ObjectType.Property[];
-    mintingStrategy: Maybe<IdentifierMintingStrategy>;
+    identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
     toRdfTypes: readonly NamedNode[];
   } & ConstructorParameters<typeof DeclaredType>[0]) {
     super(superParameters);
@@ -86,7 +86,7 @@ export class ObjectType extends DeclaredType {
     this.lazyDescendantObjectTypes = lazyDescendantObjectTypes;
     this.lazyParentObjectTypes = lazyParentObjectTypes;
     this.lazyProperties = lazyProperties;
-    this.mintingStrategy = mintingStrategy;
+    this.identifierMintingStrategy = identifierMintingStrategy;
     this.toRdfTypes = toRdfTypes;
   }
 

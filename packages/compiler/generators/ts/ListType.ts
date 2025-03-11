@@ -14,28 +14,29 @@ export class ListType extends Type {
   readonly itemType: Type;
   readonly kind = "ListType";
   private readonly identifierNodeKind: "BlankNode" | "NamedNode";
-  private readonly mintingStrategy: IdentifierMintingStrategy;
+  private readonly identifierMintingStrategy: IdentifierMintingStrategy;
   private readonly _mutable: boolean;
   private readonly toRdfTypes: readonly NamedNode[];
 
   constructor({
     identifierNodeKind,
     itemType,
-    mintingStrategy,
+    identifierMintingStrategy,
     mutable,
     toRdfTypes,
     ...superParameters
   }: {
     identifierNodeKind: ListType["identifierNodeKind"];
     itemType: Type;
-    mintingStrategy: Maybe<IdentifierMintingStrategy>;
+    identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
     mutable: boolean;
     toRdfTypes: readonly NamedNode[];
   } & ConstructorParameters<typeof Type>[0]) {
     super(superParameters);
     this.identifierNodeKind = identifierNodeKind;
     this.itemType = itemType;
-    this.mintingStrategy = mintingStrategy.orDefault("sha256");
+    this.identifierMintingStrategy =
+      identifierMintingStrategy.orDefault("sha256");
     this._mutable = mutable;
     this.toRdfTypes = toRdfTypes;
   }
@@ -331,7 +332,7 @@ export class ListType extends Type {
         break;
       }
       case "NamedNode": {
-        switch (this.mintingStrategy) {
+        switch (this.identifierMintingStrategy) {
           case "sha256":
             listIdentifier = `dataFactory.namedNode(\`urn:shaclmate:list:\${${variables.value}.reduce(
         (_hasher, _item) => {

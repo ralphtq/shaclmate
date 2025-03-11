@@ -2643,10 +2643,10 @@ export interface ShaclmateNodeShape extends ShaclCoreNodeShape {
   readonly extern: purify.Maybe<boolean>;
   readonly fromRdfType: purify.Maybe<rdfjs.NamedNode>;
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly mintingStrategy: purify.Maybe<
+  readonly identifierMintingStrategy: purify.Maybe<
     rdfjs.NamedNode<
-      | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256"
-      | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4"
+      | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
+      | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
     >
   >;
   readonly mutable: purify.Maybe<boolean>;
@@ -2716,10 +2716,10 @@ export namespace ShaclmateNodeShape {
       extern: purify.Maybe<boolean>;
       fromRdfType: purify.Maybe<rdfjs.NamedNode>;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      mintingStrategy: purify.Maybe<
+      identifierMintingStrategy: purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256"
-          | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4"
+          | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
+          | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
         >
       >;
       mutable: purify.Maybe<boolean>;
@@ -2874,19 +2874,19 @@ export namespace ShaclmateNodeShape {
 
     const fromRdfType = _fromRdfTypeEither.unsafeCoerce();
     const identifier = _resource.identifier;
-    const _mintingStrategyEither: purify.Either<
+    const _identifierMintingStrategyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256"
-          | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4"
+          | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
+          | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
         >
       >
     > = purify.Either.of(
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#mintingStrategy",
+            "http://minorg.github.io/shaclmate/ns#identifierMintingStrategy",
           ),
           { unique: true },
         )
@@ -2894,35 +2894,35 @@ export namespace ShaclmateNodeShape {
         .chain((_value) =>
           _value.toIri().chain((iri) => {
             switch (iri.value) {
-              case "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256":
+              case "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256"
-                    | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4"
+                    | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
+                    | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256">,
+                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256">,
                 );
-              case "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4":
+              case "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256"
-                    | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4"
+                    | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
+                    | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4">,
+                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4">,
                 );
               default:
                 return purify.Left(
                   new rdfjsResource.Resource.MistypedValueError({
                     actualValue: iri,
                     expectedValueType:
-                      'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_MintingStrategy_SHA256" | "http://minorg.github.io/shaclmate/ns#_MintingStrategy_UUIDv4">',
+                      'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256" | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4">',
                     focusResource: _resource,
                     predicate: dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#mintingStrategy",
+                      "http://minorg.github.io/shaclmate/ns#identifierMintingStrategy",
                     ),
                   }),
                 );
@@ -2931,11 +2931,12 @@ export namespace ShaclmateNodeShape {
         )
         .toMaybe(),
     );
-    if (_mintingStrategyEither.isLeft()) {
-      return _mintingStrategyEither;
+    if (_identifierMintingStrategyEither.isLeft()) {
+      return _identifierMintingStrategyEither;
     }
 
-    const mintingStrategy = _mintingStrategyEither.unsafeCoerce();
+    const identifierMintingStrategy =
+      _identifierMintingStrategyEither.unsafeCoerce();
     const _mutableEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<boolean>
@@ -3865,7 +3866,7 @@ export namespace ShaclmateNodeShape {
       extern,
       fromRdfType,
       identifier,
-      mintingStrategy,
+      identifierMintingStrategy,
       mutable,
       name,
       toRdfTypes,
