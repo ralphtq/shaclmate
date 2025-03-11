@@ -228,18 +228,21 @@ export class IdentifierProperty extends Property<IdentifierType> {
     }
     const statements: string[] = [];
     for (const conversion of this.type.conversions) {
-      if (conversion.sourceTypeName !== "undefined") {
-        statements.push(
-          `if (${conversion.sourceTypeCheckExpression(variables.parameter)}) { this.${classPropertyDeclaration.name} = ${conversion.conversionExpression(variables.parameter)}; }`,
-        );
-      }
-    }
-    if (!classPropertyDeclaration.hasQuestionToken) {
-      // We shouldn't need this else, since the parameter now has the never type, but have to add it to appease the TypeScript compiler
+      invariant(conversion.sourceTypeName !== "undefined");
       statements.push(
-        `{ this.${classPropertyDeclaration.name} =( ${variables.parameter}) as never;\n }`,
+        `if (${conversion.sourceTypeCheckExpression(variables.parameter)}) { this.${classPropertyDeclaration.name} = ${conversion.conversionExpression(variables.parameter)}; }`,
       );
     }
+
+    if (classPropertyDeclaration.name.startsWith("_")) {
+      statements.push(`if (typeof ${variables.parameter} === "undefined") { }`);
+    }
+
+    // We shouldn't need this else, since the parameter now has the never type, but have to add it to appease the TypeScript compiler
+    statements.push(
+      `{ this.${classPropertyDeclaration.name} =( ${variables.parameter}) as never;\n }`,
+    );
+
     return [statements.join(" else ")];
   }
 
