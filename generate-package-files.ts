@@ -155,24 +155,26 @@ for (const package_ of packages) {
   const packageDirectoryPath = path.join(myDirPath, "packages", package_.name);
   const srcDirectoryPath = path.join(packageDirectoryPath, "src");
 
-  fs.mkdirSync(srcDirectoryPath, { recursive: true });
+  fs.mkdirSync(packageDirectoryPath, { recursive: true });
 
   const files = new Set<string>();
-  for (const dirent of fs.readdirSync(srcDirectoryPath, {
-    withFileTypes: true,
-    recursive: true,
-  })) {
-    if (!dirent.name.endsWith(".ts") || !dirent.isFile()) {
-      continue;
-    }
-    for (const fileNameGlob of ["*.js", "*.d.ts"]) {
-      files.add(
-        path.join(
-          "dist",
-          path.relative(srcDirectoryPath, dirent.parentPath),
-          fileNameGlob,
-        ),
-      );
+  if (fs.existsSync(srcDirectoryPath)) {
+    for (const dirent of fs.readdirSync(srcDirectoryPath, {
+      withFileTypes: true,
+      recursive: true,
+    })) {
+      if (!dirent.name.endsWith(".ts") || !dirent.isFile()) {
+        continue;
+      }
+      for (const fileNameGlob of ["*.js", "*.d.ts"]) {
+        files.add(
+          path.join(
+            "dist",
+            path.relative(srcDirectoryPath, dirent.parentPath),
+            fileNameGlob,
+          ),
+        );
+      }
     }
   }
 

@@ -15,6 +15,16 @@
     "zod-to-json-schema": "3.24.1"
   },
   "devDependencies": {},
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/*.d.ts",
+    "dist/*.js"
+  ],
   "license": "Apache-2.0",
   "name": "@shaclmate/runtime",
   "scripts": {
