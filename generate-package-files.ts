@@ -206,8 +206,7 @@ for (const package_ of packages) {
           check: "biome check",
           "check:write": "biome check --write",
           "check:write:unsafe": "biome check --write --unsafe",
-          clean:
-            "rimraf -g **/*.d.ts* **/*.js **/*.js.map tsconfig.tsbuildinfo",
+          clean: "rimraf dist",
           format: "biome format",
           "format:write": "biome format --write",
           "format:write:unsafe": "biome format --write --unsafe",
