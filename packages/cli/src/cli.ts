@@ -1,9 +1,7 @@
-#!/usr/bin/env npm exec tsx --
+#!/usr/bin/env node --
 import * as fs from "node:fs";
-// @ts-ignore
-import type { PrefixMapInit } from "@rdfjs/prefix-map/PrefixMap";
-// @ts-ignore
-import PrefixMap from "@rdfjs/prefix-map/PrefixMap";
+import type { PrefixMapInit } from "@rdfjs/prefix-map/PrefixMap.js";
+import PrefixMap from "@rdfjs/prefix-map/PrefixMap.js";
 import { Compiler } from "@shaclmate/compiler";
 import { generators } from "@shaclmate/compiler";
 import {
@@ -14,7 +12,7 @@ import {
   string,
   subcommands,
 } from "cmd-ts";
-import { ExistingPath } from "cmd-ts/dist/esm/batteries/fs.js";
+import { ExistingPath } from "cmd-ts/dist/cjs/batteries/fs.js";
 import * as N3 from "n3";
 import { DataFactory, Parser, Store } from "n3";
 import { pino } from "pino";
