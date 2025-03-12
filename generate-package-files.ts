@@ -5,7 +5,7 @@ import path from "node:path";
 import url from "node:url";
 import { stringify as stringifyYaml } from "yaml";
 
-const VERSION = "2.0.16";
+const VERSION = "2.0.17";
 
 type PackageName = "cli" | "compiler" | "runtime" | "shacl-ast";
 
@@ -37,23 +37,32 @@ const externalDependencyVersions = {
   "rdfjs-resource": "1.0.16",
 };
 
+// Packages should be topologically sorted
 const packages: readonly Package[] = [
   {
-    bin: {
-      shaclmate: "dist/cli.js",
-    },
     dependencies: {
       external: {
-        "@types/n3": externalDependencyVersions["@types/n3"],
-        "@types/rdf-validate-shacl": "^0.4.7",
-        "cmd-ts": "^0.13.0",
-        n3: externalDependencyVersions["n3"],
-        pino: externalDependencyVersions["pino"],
-        "rdf-validate-shacl": "^0.5.6",
+        "@rdfjs/term-map": externalDependencyVersions["@rdfjs/term-map"],
+        "@rdfjs/term-set": externalDependencyVersions["@rdfjs/term-set"],
+        "@rdfjs/types": externalDependencyVersions["@rdfjs/types"],
+        "@tpluscode/rdf-ns-builders":
+          externalDependencyVersions["@tpluscode/rdf-ns-builders"],
+        "@types/rdfjs__term-map":
+          externalDependencyVersions["@types/rdfjs__term-map"],
+        "@types/rdfjs__term-set":
+          externalDependencyVersions["@types/rdfjs__term-set"],
+        "purify-ts": externalDependencyVersions["purify-ts"],
+        "rdfjs-resource": externalDependencyVersions["rdfjs-resource"],
       },
-      internal: ["compiler"],
     },
-    name: "cli",
+    devDependencies: {
+      external: {
+        "@types/n3": externalDependencyVersions["@types/n3"],
+        n3: externalDependencyVersions["n3"],
+      },
+    },
+    linkableDependencies: ["rdfjs-resource"],
+    name: "shacl-ast",
   },
   {
     dependencies: {
@@ -112,29 +121,21 @@ const packages: readonly Package[] = [
     name: "runtime",
   },
   {
+    bin: {
+      shaclmate: "dist/cli.js",
+    },
     dependencies: {
       external: {
-        "@rdfjs/term-map": externalDependencyVersions["@rdfjs/term-map"],
-        "@rdfjs/term-set": externalDependencyVersions["@rdfjs/term-set"],
-        "@rdfjs/types": externalDependencyVersions["@rdfjs/types"],
-        "@tpluscode/rdf-ns-builders":
-          externalDependencyVersions["@tpluscode/rdf-ns-builders"],
-        "@types/rdfjs__term-map":
-          externalDependencyVersions["@types/rdfjs__term-map"],
-        "@types/rdfjs__term-set":
-          externalDependencyVersions["@types/rdfjs__term-set"],
-        "purify-ts": externalDependencyVersions["purify-ts"],
-        "rdfjs-resource": externalDependencyVersions["rdfjs-resource"],
-      },
-    },
-    devDependencies: {
-      external: {
         "@types/n3": externalDependencyVersions["@types/n3"],
+        "@types/rdf-validate-shacl": "^0.4.7",
+        "cmd-ts": "^0.13.0",
         n3: externalDependencyVersions["n3"],
+        pino: externalDependencyVersions["pino"],
+        "rdf-validate-shacl": "^0.5.6",
       },
+      internal: ["compiler"],
     },
-    linkableDependencies: ["rdfjs-resource"],
-    name: "shacl-ast",
+    name: "cli",
   },
 ];
 
@@ -204,7 +205,13 @@ for (const package_ of packages) {
         license: "Apache-2.0",
         name: `@shaclmate/${package_.name}`,
         scripts: {
-          build: "tsc -b",
+          build: `tsc -b${
+            package_.bin
+              ? ` && ${Object.values(package_.bin)
+                  .map((bin) => `chmod +x ${bin}`)
+                  .join(" && ")}`
+              : ""
+          }`,
           check: "biome check",
           "check:write": "biome check --write",
           "check:write:unsafe": "biome check --write --unsafe",

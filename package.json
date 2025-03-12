@@ -32,15 +32,15 @@
     "test:coverage": "npm run test:coverage --if-present --workspaces",
     "unlink": "npm run unlink --workspaces",
     "watch": "run-p watch:*",
-    "watch:cli": "npm run watch -w @shaclmate/cli",
+    "watch:shacl-ast": "npm run watch -w @shaclmate/shacl-ast",
     "watch:compiler": "npm run watch -w @shaclmate/compiler",
     "watch:runtime": "npm run watch -w @shaclmate/runtime",
-    "watch:shacl-ast": "npm run watch -w @shaclmate/shacl-ast"
+    "watch:cli": "npm run watch -w @shaclmate/cli"
   },
   "workspaces": [
-    "packages/cli",
+    "packages/shacl-ast",
     "packages/compiler",
     "packages/runtime",
-    "packages/shacl-ast"
+    "packages/cli"
   ]
 }
