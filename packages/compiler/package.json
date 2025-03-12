@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@shaclmate/shacl-ast": "2.0.16",
+    "@shaclmate/shacl-ast": "2.0.17",
     "@rdfjs/prefix-map": "^0.1.2",
     "@rdfjs/term-map": "^2.0.2",
     "@rdfjs/term-set": "^2.0.3",
@@ -20,30 +20,35 @@
     "typescript-memoize": "^1.1.1"
   },
   "devDependencies": {
-    "@shaclmate/runtime": "2.0.16",
+    "@shaclmate/runtime": "2.0.17",
     "oxigraph": "^0.4.0"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
-    "*.d.ts",
-    "*.js",
-    "_ShapesGraphToAstTransformer/*.d.ts",
-    "_ShapesGraphToAstTransformer/*.js",
-    "ast/*.d.ts",
-    "ast/*.js",
-    "enums/*.d.ts",
-    "enums/*.js",
-    "generators/*.d.ts",
-    "generators/*.js",
-    "generators/json/*.d.ts",
-    "generators/json/*.js",
-    "generators/ts/*.d.ts",
-    "generators/ts/*.js",
-    "generators/ts/_ObjectType/*.d.ts",
-    "generators/ts/_ObjectType/*.js",
-    "input/*.d.ts",
-    "input/*.js"
+    "dist/*.d.ts",
+    "dist/*.js",
+    "dist/_ShapesGraphToAstTransformer/*.d.ts",
+    "dist/_ShapesGraphToAstTransformer/*.js",
+    "dist/ast/*.d.ts",
+    "dist/ast/*.js",
+    "dist/enums/*.d.ts",
+    "dist/enums/*.js",
+    "dist/generators/*.d.ts",
+    "dist/generators/*.js",
+    "dist/generators/json/*.d.ts",
+    "dist/generators/json/*.js",
+    "dist/generators/ts/*.d.ts",
+    "dist/generators/ts/*.js",
+    "dist/generators/ts/_ObjectType/*.d.ts",
+    "dist/generators/ts/_ObjectType/*.js",
+    "dist/input/*.d.ts",
+    "dist/input/*.js"
   ],
-  "main": "index.js",
   "license": "Apache-2.0",
   "name": "@shaclmate/compiler",
   "scripts": {
@@ -51,7 +56,7 @@
     "check": "biome check",
     "check:write": "biome check --write",
     "check:write:unsafe": "biome check --write --unsafe",
-    "clean": "rimraf -g **/*.d.ts* **/*.js **/*.js.map tsconfig.tsbuildinfo",
+    "clean": "rimraf dist",
     "format": "biome format",
     "format:write": "biome format --write",
     "format:write:unsafe": "biome format --write --unsafe",
@@ -72,6 +77,5 @@
     "url": "git+https://github.com/minorg/shaclmate"
   },
   "type": "module",
-  "types": "index.d.ts",
-  "version": "2.0.16"
+  "version": "2.0.17"
 }

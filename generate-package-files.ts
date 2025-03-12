@@ -1,9 +1,11 @@
+#!/usr/bin/env npm exec tsx --
+
 import fs from "node:fs";
 import path from "node:path";
 import url from "node:url";
 import { stringify as stringifyYaml } from "yaml";
 
-const VERSION = "2.0.16";
+const VERSION = "2.0.17";
 
 type PackageName = "cli" | "compiler" | "runtime" | "shacl-ast";
 
@@ -35,23 +37,32 @@ const externalDependencyVersions = {
   "rdfjs-resource": "1.0.16",
 };
 
+// Packages should be topologically sorted
 const packages: readonly Package[] = [
   {
-    bin: {
-      shaclmate: "cli.js",
-    },
     dependencies: {
       external: {
-        "@types/n3": externalDependencyVersions["@types/n3"],
-        "@types/rdf-validate-shacl": "^0.4.7",
-        "cmd-ts": "^0.13.0",
-        n3: externalDependencyVersions["n3"],
-        pino: externalDependencyVersions["pino"],
-        "rdf-validate-shacl": "^0.5.6",
+        "@rdfjs/term-map": externalDependencyVersions["@rdfjs/term-map"],
+        "@rdfjs/term-set": externalDependencyVersions["@rdfjs/term-set"],
+        "@rdfjs/types": externalDependencyVersions["@rdfjs/types"],
+        "@tpluscode/rdf-ns-builders":
+          externalDependencyVersions["@tpluscode/rdf-ns-builders"],
+        "@types/rdfjs__term-map":
+          externalDependencyVersions["@types/rdfjs__term-map"],
+        "@types/rdfjs__term-set":
+          externalDependencyVersions["@types/rdfjs__term-set"],
+        "purify-ts": externalDependencyVersions["purify-ts"],
+        "rdfjs-resource": externalDependencyVersions["rdfjs-resource"],
       },
-      internal: ["compiler"],
     },
-    name: "cli",
+    devDependencies: {
+      external: {
+        "@types/n3": externalDependencyVersions["@types/n3"],
+        n3: externalDependencyVersions["n3"],
+      },
+    },
+    linkableDependencies: ["rdfjs-resource"],
+    name: "shacl-ast",
   },
   {
     dependencies: {
@@ -110,29 +121,21 @@ const packages: readonly Package[] = [
     name: "runtime",
   },
   {
+    bin: {
+      shaclmate: "dist/cli.js",
+    },
     dependencies: {
       external: {
-        "@rdfjs/term-map": externalDependencyVersions["@rdfjs/term-map"],
-        "@rdfjs/term-set": externalDependencyVersions["@rdfjs/term-set"],
-        "@rdfjs/types": externalDependencyVersions["@rdfjs/types"],
-        "@tpluscode/rdf-ns-builders":
-          externalDependencyVersions["@tpluscode/rdf-ns-builders"],
-        "@types/rdfjs__term-map":
-          externalDependencyVersions["@types/rdfjs__term-map"],
-        "@types/rdfjs__term-set":
-          externalDependencyVersions["@types/rdfjs__term-set"],
-        "purify-ts": externalDependencyVersions["purify-ts"],
-        "rdfjs-resource": externalDependencyVersions["rdfjs-resource"],
-      },
-    },
-    devDependencies: {
-      external: {
         "@types/n3": externalDependencyVersions["@types/n3"],
+        "@types/rdf-validate-shacl": "^0.4.7",
+        "cmd-ts": "^0.13.0",
         n3: externalDependencyVersions["n3"],
+        pino: externalDependencyVersions["pino"],
+        "rdf-validate-shacl": "^0.5.6",
       },
+      internal: ["compiler"],
     },
-    linkableDependencies: ["rdfjs-resource"],
-    name: "shacl-ast",
+    name: "cli",
   },
 ];
 
@@ -151,29 +154,28 @@ for (const package_ of packages) {
   }
 
   const packageDirectoryPath = path.join(myDirPath, "packages", package_.name);
+  const srcDirectoryPath = path.join(packageDirectoryPath, "src");
 
   fs.mkdirSync(packageDirectoryPath, { recursive: true });
 
   const files = new Set<string>();
-  for (const dirent of fs.readdirSync(packageDirectoryPath, {
-    withFileTypes: true,
-    recursive: true,
-  })) {
-    if (
-      !dirent.name.endsWith(".ts") ||
-      !dirent.isFile() ||
-      dirent.path.startsWith(path.join(packageDirectoryPath, "node_modules")) ||
-      dirent.path.startsWith(path.join(packageDirectoryPath, "__tests__"))
-    ) {
-      continue;
-    }
-    for (const fileNameGlob of ["*.js", "*.d.ts"]) {
-      files.add(
-        path.join(
-          path.relative(packageDirectoryPath, dirent.parentPath),
-          fileNameGlob,
-        ),
-      );
+  if (fs.existsSync(srcDirectoryPath)) {
+    for (const dirent of fs.readdirSync(srcDirectoryPath, {
+      withFileTypes: true,
+      recursive: true,
+    })) {
+      if (!dirent.name.endsWith(".ts") || !dirent.isFile()) {
+        continue;
+      }
+      for (const fileNameGlob of ["*.js", "*.d.ts"]) {
+        files.add(
+          path.join(
+            "dist",
+            path.relative(srcDirectoryPath, dirent.parentPath),
+            fileNameGlob,
+          ),
+        );
+      }
     }
   }
 
@@ -190,17 +192,30 @@ for (const package_ of packages) {
           ...internalDevDependencies,
           ...package_.devDependencies?.external,
         },
+        exports:
+          files.size > 0
+            ? {
+                ".": {
+                  types: "./dist/index.d.ts",
+                  default: "./dist/index.js",
+                },
+              }
+            : undefined,
         files: files.size > 0 ? [...files].sort() : undefined,
-        main: files.size > 0 ? "index.js" : undefined,
         license: "Apache-2.0",
         name: `@shaclmate/${package_.name}`,
         scripts: {
-          build: "tsc -b",
+          build: `tsc -b${
+            package_.bin
+              ? ` && ${Object.values(package_.bin)
+                  .map((bin) => `chmod +x ${bin}`)
+                  .join(" && ")}`
+              : ""
+          }`,
           check: "biome check",
           "check:write": "biome check --write",
           "check:write:unsafe": "biome check --write --unsafe",
-          clean:
-            "rimraf -g **/*.d.ts* **/*.js **/*.js.map tsconfig.tsbuildinfo",
+          clean: "rimraf dist",
           format: "biome format",
           "format:write": "biome format --write",
           "format:write:unsafe": "biome format --write --unsafe",
@@ -221,7 +236,6 @@ for (const package_ of packages) {
           url: "git+https://github.com/minorg/shaclmate",
         },
         type: "module",
-        types: "index.d.ts",
         version: VERSION,
       },
       undefined,
@@ -246,6 +260,7 @@ fs.writeFileSync(
     {
       devDependencies: {
         "@biomejs/biome": "1.9.4",
+        "@tsconfig/node18": "^18.2.4",
         "@tsconfig/strictest": "^2.0.5",
         "@types/node": "^22",
         "@vitest/coverage-v8": "^3.0.1",

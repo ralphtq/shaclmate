@@ -1,6 +1,5 @@
+import { RdfjsShapesGraph, defaultFactory } from "@shaclmate/shacl-ast";
 import { describe, it } from "vitest";
-import { RdfjsShapesGraph } from "../RdfjsShapesGraph.js";
-import { defaultFactory } from "../defaultFactory.js";
 import { testData } from "./testData.js";
 
 describe("RdfjsShapesGraph", () => {

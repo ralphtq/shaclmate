@@ -1,9 +1,9 @@
+#!/usr/bin/env node --
 import * as fs from "node:fs";
-import type { PrefixMapInit } from "@rdfjs/prefix-map/PrefixMap";
-import PrefixMap from "@rdfjs/prefix-map/PrefixMap";
+import type { PrefixMapInit } from "@rdfjs/prefix-map/PrefixMap.js";
+import PrefixMap from "@rdfjs/prefix-map/PrefixMap.js";
 import { Compiler } from "@shaclmate/compiler";
-import * as generators from "@shaclmate/compiler/generators";
-import type { Generator } from "@shaclmate/compiler/generators/Generator";
+import { generators } from "@shaclmate/compiler";
 import {
   command,
   option,
@@ -12,10 +12,10 @@ import {
   string,
   subcommands,
 } from "cmd-ts";
-import { ExistingPath } from "cmd-ts/dist/esm/batteries/fs.js";
+import { ExistingPath } from "cmd-ts/dist/cjs/batteries/fs.js";
 import * as N3 from "n3";
 import { DataFactory, Parser, Store } from "n3";
-import pino from "pino";
+import { pino } from "pino";
 import SHACLValidator from "rdf-validate-shacl";
 import { dashDataset } from "./dashDataset.js";
 import { shaclShaclDataset } from "./shaclShaclDataset.js";
@@ -51,7 +51,7 @@ function generate({
   inputFilePaths,
   outputFilePath,
 }: {
-  generator: Generator;
+  generator: generators.Generator;
   inputFilePaths: readonly string[];
   outputFilePath: string;
 }): void {
@@ -72,6 +72,7 @@ function generate({
         null,
         (prefix, prefixNode) => {
           const existingIriPrefix = iriPrefixes.find(
+            // @ts-ignore
             (iriPrefix) =>
               iriPrefix[0] === prefix || iriPrefix[1].equals(prefixNode),
           );

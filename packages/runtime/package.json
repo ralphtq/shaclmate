@@ -15,11 +15,16 @@
     "zod-to-json-schema": "3.24.1"
   },
   "devDependencies": {},
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
-    "*.d.ts",
-    "*.js"
+    "dist/*.d.ts",
+    "dist/*.js"
   ],
-  "main": "index.js",
   "license": "Apache-2.0",
   "name": "@shaclmate/runtime",
   "scripts": {
@@ -27,7 +32,7 @@
     "check": "biome check",
     "check:write": "biome check --write",
     "check:write:unsafe": "biome check --write --unsafe",
-    "clean": "rimraf -g **/*.d.ts* **/*.js **/*.js.map tsconfig.tsbuildinfo",
+    "clean": "rimraf dist",
     "format": "biome format",
     "format:write": "biome format --write",
     "format:write:unsafe": "biome format --write --unsafe",
@@ -48,6 +53,5 @@
     "url": "git+https://github.com/minorg/shaclmate"
   },
   "type": "module",
-  "types": "index.d.ts",
-  "version": "2.0.16"
+  "version": "2.0.17"
 }
