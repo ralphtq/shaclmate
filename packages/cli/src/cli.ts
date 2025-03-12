@@ -1,4 +1,4 @@
-#!/usr/bin/env node --
+#!/usr/bin/env node
 import * as fs from "node:fs";
 import type { PrefixMapInit } from "@rdfjs/prefix-map/PrefixMap.js";
 import PrefixMap from "@rdfjs/prefix-map/PrefixMap.js";

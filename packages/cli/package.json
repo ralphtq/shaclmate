@@ -3,7 +3,7 @@
     "shaclmate": "dist/cli.js"
   },
   "dependencies": {
-    "@shaclmate/compiler": "2.0.17",
+    "@shaclmate/compiler": "2.0.18",
     "@types/n3": "^1.21.1",
     "@types/rdf-validate-shacl": "^0.4.7",
     "cmd-ts": "^0.13.0",
@@ -50,5 +50,5 @@
     "url": "git+https://github.com/minorg/shaclmate"
   },
   "type": "module",
-  "version": "2.0.17"
+  "version": "2.0.18"
 }

@@ -3,6 +3,7 @@ import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
 import * as rdfjsResource from "rdfjs-resource";
 import { PropertyPath } from "./PropertyPath.js";
+type UnwrapR<T> = T extends purify.Either<any, infer R> ? R : never;
 export interface BaseShaclCoreShape {
   readonly and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
   readonly classes: readonly rdfjs.NamedNode[];
@@ -49,7 +50,7 @@ export interface BaseShaclCoreShape {
 }
 
 export namespace BaseShaclCoreShape {
-  export function fromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -875,7 +876,7 @@ export interface ShaclCorePropertyShape extends BaseShaclCoreShape {
 }
 
 export namespace ShaclCorePropertyShape {
-  export function fromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -886,230 +887,243 @@ export namespace ShaclCorePropertyShape {
     ignoreRdfType?: boolean;
     languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
-  }): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyShape> {
-    return BaseShaclCoreShape.fromRdf({
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      defaultValue: purify.Maybe<
+        rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
+      >;
+      descriptions: readonly rdfjs.Literal[];
+      groups: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      names: readonly rdfjs.Literal[];
+      order: purify.Maybe<number>;
+      path: PropertyPath;
+      type: "ShaclCorePropertyShape";
+      uniqueLang: purify.Maybe<boolean>;
+    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>>
+  > {
+    const _super0Either = BaseShaclCoreShape.propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
       resource: _resource,
-    }).chain((_super) => {
-      if (
-        !_ignoreRdfType &&
-        !_resource.isInstanceOf(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#PropertyShape"),
+    });
+    if (_super0Either.isLeft()) {
+      return _super0Either;
+    }
+
+    const _super0 = _super0Either.unsafeCoerce();
+    if (
+      !_ignoreRdfType &&
+      !_resource.isInstanceOf(
+        dataFactory.namedNode("http://www.w3.org/ns/shacl#PropertyShape"),
+      )
+    ) {
+      return purify.Left(
+        new rdfjsResource.Resource.ValueError({
+          focusResource: _resource,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          predicate: dataFactory.namedNode(
+            "http://www.w3.org/ns/shacl#PropertyShape",
+          ),
+        }),
+      );
+    }
+
+    const _defaultValueEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://www.w3.org/ns/shacl#defaultValue"),
+          { unique: true },
         )
-      ) {
-        return purify.Left(
-          new rdfjsResource.Resource.ValueError({
-            focusResource: _resource,
-            message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
-            predicate: dataFactory.namedNode(
-              "http://www.w3.org/ns/shacl#PropertyShape",
-            ),
-          }),
-        );
-      }
-      const _defaultValueEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
-      > = purify.Either.of(
-        _resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#defaultValue"),
-            { unique: true },
-          )
-          .head()
-          .chain((_value) => purify.Either.of(_value.toTerm()))
-          .toMaybe(),
-      );
-      if (_defaultValueEither.isLeft()) {
-        return _defaultValueEither;
-      }
-      const defaultValue = _defaultValueEither.unsafeCoerce();
-      const _descriptionsEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        readonly rdfjs.Literal[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#description"),
-            { unique: true },
-          )
-          .flatMap((_item) =>
-            _item
-              .toValues()
-              .filter((_value) => {
-                const _languageInOrDefault = _languageIn ?? [];
-                if (_languageInOrDefault.length === 0) {
-                  return true;
-                }
-                const _valueLiteral = _value.toLiteral().toMaybe().extract();
-                if (typeof _valueLiteral === "undefined") {
-                  return false;
-                }
-                return _languageInOrDefault.some(
-                  (_languageIn) => _languageIn === _valueLiteral.language,
-                );
-              })
-              .head()
-              .chain((_value) => _value.toLiteral())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
-      if (_descriptionsEither.isLeft()) {
-        return _descriptionsEither;
-      }
-      const descriptions = _descriptionsEither.unsafeCoerce();
-      const _groupsEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
-      > = purify.Either.of([
-        ..._resource
-          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#group"), {
-            unique: true,
-          })
-          .flatMap((_item) =>
-            _item
-              .toValues()
-              .head()
-              .chain((_value) => _value.toIdentifier())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
-      if (_groupsEither.isLeft()) {
-        return _groupsEither;
-      }
-      const groups = _groupsEither.unsafeCoerce();
-      const identifier = _resource.identifier;
-      const _namesEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        readonly rdfjs.Literal[]
-      > = purify.Either.of([
-        ..._resource
-          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#name"), {
-            unique: true,
-          })
-          .flatMap((_item) =>
-            _item
-              .toValues()
-              .filter((_value) => {
-                const _languageInOrDefault = _languageIn ?? [];
-                if (_languageInOrDefault.length === 0) {
-                  return true;
-                }
-                const _valueLiteral = _value.toLiteral().toMaybe().extract();
-                if (typeof _valueLiteral === "undefined") {
-                  return false;
-                }
-                return _languageInOrDefault.some(
-                  (_languageIn) => _languageIn === _valueLiteral.language,
-                );
-              })
-              .head()
-              .chain((_value) => _value.toLiteral())
-              .toMaybe()
-              .toList(),
-          ),
-      ]);
-      if (_namesEither.isLeft()) {
-        return _namesEither;
-      }
-      const names = _namesEither.unsafeCoerce();
-      const _orderEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        purify.Maybe<number>
-      > = purify.Either.of(
-        _resource
-          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#order"), {
-            unique: true,
-          })
-          .head()
-          .chain((_value) => _value.toNumber())
-          .toMaybe(),
-      );
-      if (_orderEither.isLeft()) {
-        return _orderEither;
-      }
-      const order = _orderEither.unsafeCoerce();
-      const _pathEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        PropertyPath
-      > = _resource
-        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#path"), {
+        .head()
+        .chain((_value) => purify.Either.of(_value.toTerm()))
+        .toMaybe(),
+    );
+    if (_defaultValueEither.isLeft()) {
+      return _defaultValueEither;
+    }
+
+    const defaultValue = _defaultValueEither.unsafeCoerce();
+    const _descriptionsEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      readonly rdfjs.Literal[]
+    > = purify.Either.of([
+      ..._resource
+        .values(
+          dataFactory.namedNode("http://www.w3.org/ns/shacl#description"),
+          { unique: true },
+        )
+        .flatMap((_item) =>
+          _item
+            .toValues()
+            .filter((_value) => {
+              const _languageInOrDefault = _languageIn ?? [];
+              if (_languageInOrDefault.length === 0) {
+                return true;
+              }
+              const _valueLiteral = _value.toLiteral().toMaybe().extract();
+              if (typeof _valueLiteral === "undefined") {
+                return false;
+              }
+              return _languageInOrDefault.some(
+                (_languageIn) => _languageIn === _valueLiteral.language,
+              );
+            })
+            .head()
+            .chain((_value) => _value.toLiteral())
+            .toMaybe()
+            .toList(),
+        ),
+    ]);
+    if (_descriptionsEither.isLeft()) {
+      return _descriptionsEither;
+    }
+
+    const descriptions = _descriptionsEither.unsafeCoerce();
+    const _groupsEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
+    > = purify.Either.of([
+      ..._resource
+        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#group"), {
+          unique: true,
+        })
+        .flatMap((_item) =>
+          _item
+            .toValues()
+            .head()
+            .chain((_value) => _value.toIdentifier())
+            .toMaybe()
+            .toList(),
+        ),
+    ]);
+    if (_groupsEither.isLeft()) {
+      return _groupsEither;
+    }
+
+    const groups = _groupsEither.unsafeCoerce();
+    const identifier = _resource.identifier;
+    const _namesEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      readonly rdfjs.Literal[]
+    > = purify.Either.of([
+      ..._resource
+        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#name"), {
+          unique: true,
+        })
+        .flatMap((_item) =>
+          _item
+            .toValues()
+            .filter((_value) => {
+              const _languageInOrDefault = _languageIn ?? [];
+              if (_languageInOrDefault.length === 0) {
+                return true;
+              }
+              const _valueLiteral = _value.toLiteral().toMaybe().extract();
+              if (typeof _valueLiteral === "undefined") {
+                return false;
+              }
+              return _languageInOrDefault.some(
+                (_languageIn) => _languageIn === _valueLiteral.language,
+              );
+            })
+            .head()
+            .chain((_value) => _value.toLiteral())
+            .toMaybe()
+            .toList(),
+        ),
+    ]);
+    if (_namesEither.isLeft()) {
+      return _namesEither;
+    }
+
+    const names = _namesEither.unsafeCoerce();
+    const _orderEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<number>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#order"), {
           unique: true,
         })
         .head()
-        .chain((value) => value.toResource())
-        .chain((_resource) =>
-          PropertyPath.fromRdf({
-            ..._context,
-            ignoreRdfType: true,
-            languageIn: _languageIn,
-            resource: _resource,
-          }),
-        );
-      if (_pathEither.isLeft()) {
-        return _pathEither;
-      }
-      const path = _pathEither.unsafeCoerce();
-      const type = "ShaclCorePropertyShape" as const;
-      const _uniqueLangEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        purify.Maybe<boolean>
-      > = purify.Either.of(
-        _resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#uniqueLang"),
-            { unique: true },
-          )
-          .head()
-          .chain((_value) => _value.toBoolean())
-          .toMaybe(),
+        .chain((_value) => _value.toNumber())
+        .toMaybe(),
+    );
+    if (_orderEither.isLeft()) {
+      return _orderEither;
+    }
+
+    const order = _orderEither.unsafeCoerce();
+    const _pathEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      PropertyPath
+    > = _resource
+      .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#path"), {
+        unique: true,
+      })
+      .head()
+      .chain((value) => value.toResource())
+      .chain((_resource) =>
+        PropertyPath.fromRdf({
+          ..._context,
+          ignoreRdfType: true,
+          languageIn: _languageIn,
+          resource: _resource,
+        }),
       );
-      if (_uniqueLangEither.isLeft()) {
-        return _uniqueLangEither;
-      }
-      const uniqueLang = _uniqueLangEither.unsafeCoerce();
-      return purify.Either.of({
-        and: _super.and,
-        classes: _super.classes,
-        comments: _super.comments,
-        datatype: _super.datatype,
-        deactivated: _super.deactivated,
-        flags: _super.flags,
-        hasValues: _super.hasValues,
-        identifier,
-        in_: _super.in_,
-        isDefinedBy: _super.isDefinedBy,
-        labels: _super.labels,
-        languageIn: _super.languageIn,
-        maxCount: _super.maxCount,
-        maxExclusive: _super.maxExclusive,
-        maxInclusive: _super.maxInclusive,
-        maxLength: _super.maxLength,
-        minCount: _super.minCount,
-        minExclusive: _super.minExclusive,
-        minInclusive: _super.minInclusive,
-        minLength: _super.minLength,
-        nodeKind: _super.nodeKind,
-        nodes: _super.nodes,
-        not: _super.not,
-        or: _super.or,
-        patterns: _super.patterns,
-        xone: _super.xone,
-        defaultValue,
-        descriptions,
-        groups,
-        names,
-        order,
-        path,
-        type,
-        uniqueLang,
-      });
+    if (_pathEither.isLeft()) {
+      return _pathEither;
+    }
+
+    const path = _pathEither.unsafeCoerce();
+    const type = "ShaclCorePropertyShape" as const;
+    const _uniqueLangEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<boolean>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://www.w3.org/ns/shacl#uniqueLang"),
+          { unique: true },
+        )
+        .head()
+        .chain((_value) => _value.toBoolean())
+        .toMaybe(),
+    );
+    if (_uniqueLangEither.isLeft()) {
+      return _uniqueLangEither;
+    }
+
+    const uniqueLang = _uniqueLangEither.unsafeCoerce();
+    return purify.Either.of({
+      ..._super0,
+      defaultValue,
+      descriptions,
+      groups,
+      identifier,
+      names,
+      order,
+      path,
+      type,
+      uniqueLang,
     });
   }
+
+  export function fromRdf(
+    parameters: Parameters<typeof ShaclCorePropertyShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyShape> {
+    return ShaclCorePropertyShape.propertiesFromRdf(parameters);
+  }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/ns/shacl#PropertyShape",
+  );
 }
 export interface ShaclCorePropertyGroup {
   readonly comments: readonly rdfjs.Literal[];
@@ -1119,7 +1133,7 @@ export interface ShaclCorePropertyGroup {
 }
 
 export namespace ShaclCorePropertyGroup {
-  export function fromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1130,7 +1144,15 @@ export namespace ShaclCorePropertyGroup {
     ignoreRdfType?: boolean;
     languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
-  }): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyGroup> {
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      comments: readonly rdfjs.Literal[];
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      labels: readonly rdfjs.Literal[];
+      type: "ShaclCorePropertyGroup";
+    }
+  > {
     if (
       !_ignoreRdfType &&
       !_resource.isInstanceOf(
@@ -1224,6 +1246,16 @@ export namespace ShaclCorePropertyGroup {
     const type = "ShaclCorePropertyGroup" as const;
     return purify.Either.of({ comments, identifier, labels, type });
   }
+
+  export function fromRdf(
+    parameters: Parameters<typeof ShaclCorePropertyGroup.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyGroup> {
+    return ShaclCorePropertyGroup.propertiesFromRdf(parameters);
+  }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/ns/shacl#PropertyGroup",
+  );
 }
 export interface ShaclCoreNodeShape extends BaseShaclCoreShape {
   readonly closed: purify.Maybe<boolean>;
@@ -1234,7 +1266,7 @@ export interface ShaclCoreNodeShape extends BaseShaclCoreShape {
 }
 
 export namespace ShaclCoreNodeShape {
-  export function fromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1245,132 +1277,132 @@ export namespace ShaclCoreNodeShape {
     ignoreRdfType?: boolean;
     languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
-  }): purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreNodeShape> {
-    return BaseShaclCoreShape.fromRdf({
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      closed: purify.Maybe<boolean>;
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      ignoredProperties: purify.Maybe<readonly rdfjs.NamedNode[]>;
+      properties: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
+      type: "ShaclCoreNodeShape";
+    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>>
+  > {
+    const _super0Either = BaseShaclCoreShape.propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
       resource: _resource,
-    }).chain((_super) => {
-      if (
-        !_ignoreRdfType &&
-        !_resource.isInstanceOf(
-          dataFactory.namedNode("http://www.w3.org/ns/shacl#NodeShape"),
+    });
+    if (_super0Either.isLeft()) {
+      return _super0Either;
+    }
+
+    const _super0 = _super0Either.unsafeCoerce();
+    if (
+      !_ignoreRdfType &&
+      !_resource.isInstanceOf(
+        dataFactory.namedNode("http://www.w3.org/ns/shacl#NodeShape"),
+      )
+    ) {
+      return purify.Left(
+        new rdfjsResource.Resource.ValueError({
+          focusResource: _resource,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          predicate: dataFactory.namedNode(
+            "http://www.w3.org/ns/shacl#NodeShape",
+          ),
+        }),
+      );
+    }
+
+    const _closedEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<boolean>
+    > = purify.Either.of(
+      _resource
+        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#closed"), {
+          unique: true,
+        })
+        .head()
+        .chain((_value) => _value.toBoolean())
+        .toMaybe(),
+    );
+    if (_closedEither.isLeft()) {
+      return _closedEither;
+    }
+
+    const closed = _closedEither.unsafeCoerce();
+    const identifier = _resource.identifier;
+    const _ignoredPropertiesEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<readonly rdfjs.NamedNode[]>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode("http://www.w3.org/ns/shacl#ignoredProperties"),
+          { unique: true },
         )
-      ) {
-        return purify.Left(
-          new rdfjsResource.Resource.ValueError({
-            focusResource: _resource,
-            message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
-            predicate: dataFactory.namedNode(
-              "http://www.w3.org/ns/shacl#NodeShape",
-            ),
-          }),
-        );
-      }
-      const _closedEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        purify.Maybe<boolean>
-      > = purify.Either.of(
-        _resource
-          .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#closed"), {
-            unique: true,
-          })
-          .head()
-          .chain((_value) => _value.toBoolean())
-          .toMaybe(),
-      );
-      if (_closedEither.isLeft()) {
-        return _closedEither;
-      }
-      const closed = _closedEither.unsafeCoerce();
-      const identifier = _resource.identifier;
-      const _ignoredPropertiesEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        purify.Maybe<readonly rdfjs.NamedNode[]>
-      > = purify.Either.of(
-        _resource
-          .values(
-            dataFactory.namedNode(
-              "http://www.w3.org/ns/shacl#ignoredProperties",
-            ),
-            { unique: true },
-          )
-          .head()
-          .chain((value) => value.toList())
-          .map((values) =>
-            values.flatMap((_value) =>
-              _value
-                .toValues()
-                .head()
-                .chain((_value) => _value.toIri())
-                .toMaybe()
-                .toList(),
-            ),
-          )
-          .toMaybe(),
-      );
-      if (_ignoredPropertiesEither.isLeft()) {
-        return _ignoredPropertiesEither;
-      }
-      const ignoredProperties = _ignoredPropertiesEither.unsafeCoerce();
-      const _propertiesEither: purify.Either<
-        rdfjsResource.Resource.ValueError,
-        readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
-      > = purify.Either.of([
-        ..._resource
-          .values(
-            dataFactory.namedNode("http://www.w3.org/ns/shacl#property"),
-            { unique: true },
-          )
-          .flatMap((_item) =>
-            _item
+        .head()
+        .chain((value) => value.toList())
+        .map((values) =>
+          values.flatMap((_value) =>
+            _value
               .toValues()
               .head()
-              .chain((_value) => _value.toIdentifier())
+              .chain((_value) => _value.toIri())
               .toMaybe()
               .toList(),
           ),
-      ]);
-      if (_propertiesEither.isLeft()) {
-        return _propertiesEither;
-      }
-      const properties = _propertiesEither.unsafeCoerce();
-      const type = "ShaclCoreNodeShape" as const;
-      return purify.Either.of({
-        and: _super.and,
-        classes: _super.classes,
-        comments: _super.comments,
-        datatype: _super.datatype,
-        deactivated: _super.deactivated,
-        flags: _super.flags,
-        hasValues: _super.hasValues,
-        identifier,
-        in_: _super.in_,
-        isDefinedBy: _super.isDefinedBy,
-        labels: _super.labels,
-        languageIn: _super.languageIn,
-        maxCount: _super.maxCount,
-        maxExclusive: _super.maxExclusive,
-        maxInclusive: _super.maxInclusive,
-        maxLength: _super.maxLength,
-        minCount: _super.minCount,
-        minExclusive: _super.minExclusive,
-        minInclusive: _super.minInclusive,
-        minLength: _super.minLength,
-        nodeKind: _super.nodeKind,
-        nodes: _super.nodes,
-        not: _super.not,
-        or: _super.or,
-        patterns: _super.patterns,
-        xone: _super.xone,
-        closed,
-        ignoredProperties,
-        properties,
-        type,
-      });
+        )
+        .toMaybe(),
+    );
+    if (_ignoredPropertiesEither.isLeft()) {
+      return _ignoredPropertiesEither;
+    }
+
+    const ignoredProperties = _ignoredPropertiesEither.unsafeCoerce();
+    const _propertiesEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      readonly (rdfjs.BlankNode | rdfjs.NamedNode)[]
+    > = purify.Either.of([
+      ..._resource
+        .values(dataFactory.namedNode("http://www.w3.org/ns/shacl#property"), {
+          unique: true,
+        })
+        .flatMap((_item) =>
+          _item
+            .toValues()
+            .head()
+            .chain((_value) => _value.toIdentifier())
+            .toMaybe()
+            .toList(),
+        ),
+    ]);
+    if (_propertiesEither.isLeft()) {
+      return _propertiesEither;
+    }
+
+    const properties = _propertiesEither.unsafeCoerce();
+    const type = "ShaclCoreNodeShape" as const;
+    return purify.Either.of({
+      ..._super0,
+      closed,
+      identifier,
+      ignoredProperties,
+      properties,
+      type,
     });
   }
+
+  export function fromRdf(
+    parameters: Parameters<typeof ShaclCoreNodeShape.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreNodeShape> {
+    return ShaclCoreNodeShape.propertiesFromRdf(parameters);
+  }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/ns/shacl#NodeShape",
+  );
 }
 export interface OwlOntology {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -1379,7 +1411,7 @@ export interface OwlOntology {
 }
 
 export namespace OwlOntology {
-  export function fromRdf({
+  export function propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1390,7 +1422,14 @@ export namespace OwlOntology {
     ignoreRdfType?: boolean;
     languageIn?: readonly string[];
     resource: rdfjsResource.Resource;
-  }): purify.Either<rdfjsResource.Resource.ValueError, OwlOntology> {
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      labels: readonly rdfjs.Literal[];
+      type: "OwlOntology";
+    }
+  > {
     if (
       !_ignoreRdfType &&
       !_resource.isInstanceOf(
@@ -1448,26 +1487,40 @@ export namespace OwlOntology {
     const type = "OwlOntology" as const;
     return purify.Either.of({ identifier, labels, type });
   }
+
+  export function fromRdf(
+    parameters: Parameters<typeof OwlOntology.propertiesFromRdf>[0],
+  ): purify.Either<rdfjsResource.Resource.ValueError, OwlOntology> {
+    return OwlOntology.propertiesFromRdf(parameters);
+  }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://www.w3.org/2002/07/owl#Ontology",
+  );
 }
 export type ShaclCoreShape = ShaclCoreNodeShape | ShaclCorePropertyShape;
 
 export namespace ShaclCoreShape {
-  export function fromRdf(parameters: {
+  export function fromRdf({
+    ignoreRdfType,
+    resource,
+    ...context
+  }: {
     [_index: string]: any;
     ignoreRdfType?: boolean;
     resource: rdfjsResource.Resource;
   }): purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreShape> {
     return (
-      ShaclCoreNodeShape.fromRdf(parameters) as purify.Either<
+      ShaclCoreNodeShape.fromRdf({ ...context, resource }) as purify.Either<
         rdfjsResource.Resource.ValueError,
         ShaclCoreShape
       >
     ).altLazy(
       () =>
-        ShaclCorePropertyShape.fromRdf(parameters) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          ShaclCoreShape
-        >,
+        ShaclCorePropertyShape.fromRdf({
+          ...context,
+          resource,
+        }) as purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreShape>,
     );
   }
 }

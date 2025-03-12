@@ -1,8 +1,8 @@
 import type * as rdfjs from "@rdfjs/types";
-import { PropertyPath } from "@shaclmate/shacl-ast/PropertyPath.js";
 import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
 import * as rdfjsResource from "rdfjs-resource";
+import { PropertyPath } from "./PropertyPath.js";
 type UnwrapR<T> = T extends purify.Either<any, infer R> ? R : never;
 export interface BaseShaclCoreShape {
   readonly and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
