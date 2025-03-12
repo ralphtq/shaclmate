@@ -1,5 +1,5 @@
 import type * as rdfjs from "@rdfjs/types";
-import { PropertyPath } from "@shaclmate/shacl-ast/PropertyPath.js";
+import { PropertyPath } from "@shaclmate/shacl-ast";
 import { DataFactory as dataFactory } from "n3";
 import * as purify from "purify-ts";
 import * as rdfjsResource from "rdfjs-resource";
