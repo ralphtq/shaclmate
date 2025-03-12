@@ -43,6 +43,5 @@
     "url": "git+https://github.com/minorg/shaclmate"
   },
   "type": "module",
-  "types": "index.d.ts",
   "version": "2.0.16"
 }

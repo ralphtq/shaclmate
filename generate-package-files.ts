@@ -168,7 +168,8 @@ for (const package_ of packages) {
     for (const fileNameGlob of ["*.js", "*.d.ts"]) {
       files.add(
         path.join(
-          path.relative(packageDirectoryPath, dirent.parentPath),
+          "dist",
+          path.relative(srcDirectoryPath, dirent.parentPath),
           fileNameGlob,
         ),
       );
@@ -227,7 +228,6 @@ for (const package_ of packages) {
           url: "git+https://github.com/minorg/shaclmate",
         },
         type: "module",
-        types: "index.d.ts",
         version: VERSION,
       },
       undefined,

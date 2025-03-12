@@ -19,8 +19,8 @@
     }
   },
   "files": [
-    "src/*.d.ts",
-    "src/*.js"
+    "dist/*.d.ts",
+    "dist/*.js"
   ],
   "license": "Apache-2.0",
   "name": "@shaclmate/cli",
@@ -50,6 +50,5 @@
     "url": "git+https://github.com/minorg/shaclmate"
   },
   "type": "module",
-  "types": "index.d.ts",
   "version": "2.0.16"
 }

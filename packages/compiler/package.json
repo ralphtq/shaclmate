@@ -23,6 +23,32 @@
     "@shaclmate/runtime": "2.0.16",
     "oxigraph": "^0.4.0"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/*.d.ts",
+    "dist/*.js",
+    "dist/_ShapesGraphToAstTransformer/*.d.ts",
+    "dist/_ShapesGraphToAstTransformer/*.js",
+    "dist/ast/*.d.ts",
+    "dist/ast/*.js",
+    "dist/enums/*.d.ts",
+    "dist/enums/*.js",
+    "dist/generators/*.d.ts",
+    "dist/generators/*.js",
+    "dist/generators/json/*.d.ts",
+    "dist/generators/json/*.js",
+    "dist/generators/ts/*.d.ts",
+    "dist/generators/ts/*.js",
+    "dist/generators/ts/_ObjectType/*.d.ts",
+    "dist/generators/ts/_ObjectType/*.js",
+    "dist/input/*.d.ts",
+    "dist/input/*.js"
+  ],
   "license": "Apache-2.0",
   "name": "@shaclmate/compiler",
   "scripts": {
@@ -51,6 +77,5 @@
     "url": "git+https://github.com/minorg/shaclmate"
   },
   "type": "module",
-  "types": "index.d.ts",
   "version": "2.0.16"
 }

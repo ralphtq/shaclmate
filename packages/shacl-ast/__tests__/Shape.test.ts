@@ -1,9 +1,8 @@
 import type { NamedNode } from "@rdfjs/types";
+import { RdfjsShapesGraph, defaultFactory } from "@shaclmate/shacl-ast";
 import { dash, schema, xsd } from "@tpluscode/rdf-ns-builders";
 import { DataFactory as dataFactory } from "n3";
 import { describe, expect, it } from "vitest";
-import { RdfjsShapesGraph } from "../RdfjsShapesGraph.js";
-import { defaultFactory } from "../defaultFactory.js";
 import { testData } from "./testData.js";
 
 describe("RdfjsShape", () => {
