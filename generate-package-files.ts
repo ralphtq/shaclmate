@@ -40,7 +40,7 @@ const externalDependencyVersions = {
 const packages: readonly Package[] = [
   {
     bin: {
-      shaclmate: "cli.js",
+      shaclmate: "dist/cli.js",
     },
     dependencies: {
       external: {
@@ -253,6 +253,7 @@ fs.writeFileSync(
     {
       devDependencies: {
         "@biomejs/biome": "1.9.4",
+        "@tsconfig/node18": "^18.2.4",
         "@tsconfig/strictest": "^2.0.5",
         "@types/node": "^22",
         "@vitest/coverage-v8": "^3.0.1",

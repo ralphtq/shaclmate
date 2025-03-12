@@ -1,6 +1,6 @@
 {
   "bin": {
-    "shaclmate": "cli.js"
+    "shaclmate": "dist/cli.js"
   },
   "dependencies": {
     "@shaclmate/compiler": "2.0.16",
