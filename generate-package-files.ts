@@ -1,3 +1,5 @@
+#!/usr/bin/env npm exec tsx --
+
 import fs from "node:fs";
 import path from "node:path";
 import url from "node:url";
@@ -151,20 +153,16 @@ for (const package_ of packages) {
   }
 
   const packageDirectoryPath = path.join(myDirPath, "packages", package_.name);
+  const srcDirectoryPath = path.join(packageDirectoryPath, "src");
 
-  fs.mkdirSync(packageDirectoryPath, { recursive: true });
+  fs.mkdirSync(srcDirectoryPath, { recursive: true });
 
   const files = new Set<string>();
-  for (const dirent of fs.readdirSync(packageDirectoryPath, {
+  for (const dirent of fs.readdirSync(srcDirectoryPath, {
     withFileTypes: true,
     recursive: true,
   })) {
-    if (
-      !dirent.name.endsWith(".ts") ||
-      !dirent.isFile() ||
-      dirent.path.startsWith(path.join(packageDirectoryPath, "node_modules")) ||
-      dirent.path.startsWith(path.join(packageDirectoryPath, "__tests__"))
-    ) {
+    if (!dirent.name.endsWith(".ts") || !dirent.isFile()) {
       continue;
     }
     for (const fileNameGlob of ["*.js", "*.d.ts"]) {
@@ -190,8 +188,16 @@ for (const package_ of packages) {
           ...internalDevDependencies,
           ...package_.devDependencies?.external,
         },
+        exports:
+          files.size > 0
+            ? {
+                ".": {
+                  types: "./dist/index.d.ts",
+                  default: "./dist/index.js",
+                },
+              }
+            : undefined,
         files: files.size > 0 ? [...files].sort() : undefined,
-        main: files.size > 0 ? "index.js" : undefined,
         license: "Apache-2.0",
         name: `@shaclmate/${package_.name}`,
         scripts: {

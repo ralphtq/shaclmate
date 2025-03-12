@@ -15,11 +15,6 @@
     "zod-to-json-schema": "3.24.1"
   },
   "devDependencies": {},
-  "files": [
-    "*.d.ts",
-    "*.js"
-  ],
-  "main": "index.js",
   "license": "Apache-2.0",
   "name": "@shaclmate/runtime",
   "scripts": {

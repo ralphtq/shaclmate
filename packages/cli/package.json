@@ -12,11 +12,16 @@
     "rdf-validate-shacl": "^0.5.6"
   },
   "devDependencies": {},
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
-    "*.d.ts",
-    "*.js"
+    "src/*.d.ts",
+    "src/*.js"
   ],
-  "main": "index.js",
   "license": "Apache-2.0",
   "name": "@shaclmate/cli",
   "scripts": {

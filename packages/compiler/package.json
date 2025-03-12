@@ -23,27 +23,6 @@
     "@shaclmate/runtime": "2.0.16",
     "oxigraph": "^0.4.0"
   },
-  "files": [
-    "*.d.ts",
-    "*.js",
-    "_ShapesGraphToAstTransformer/*.d.ts",
-    "_ShapesGraphToAstTransformer/*.js",
-    "ast/*.d.ts",
-    "ast/*.js",
-    "enums/*.d.ts",
-    "enums/*.js",
-    "generators/*.d.ts",
-    "generators/*.js",
-    "generators/json/*.d.ts",
-    "generators/json/*.js",
-    "generators/ts/*.d.ts",
-    "generators/ts/*.js",
-    "generators/ts/_ObjectType/*.d.ts",
-    "generators/ts/_ObjectType/*.js",
-    "input/*.d.ts",
-    "input/*.js"
-  ],
-  "main": "index.js",
   "license": "Apache-2.0",
   "name": "@shaclmate/compiler",
   "scripts": {
