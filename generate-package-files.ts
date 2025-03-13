@@ -175,9 +175,10 @@ const packages: readonly Package[] = [
     directory: "examples",
     name: "forms",
     scripts: {
-      clean: "rimraf build",
+      clean: "rimraf dist",
       dev: "vite --port 3000",
       build: "tsc && vite build",
+      rebuild: "run-s clean build",
       start: "vite preview --port 3000",
     },
   },
