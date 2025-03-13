@@ -27,9 +27,9 @@ export class Ontology extends OwlOntology {
     return this.generatedShaclmateOntology.tsObjectDeclarationType.map(
       (iri) => {
         switch (iri.value) {
-          case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class":
+          case "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class":
             return "class";
-          case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface":
+          case "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface":
             return "interface";
           default:
             throw new RangeError(iri.value);

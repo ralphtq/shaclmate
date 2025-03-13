@@ -1137,9 +1137,9 @@ export interface ShaclmatePropertyShape extends ShaclCorePropertyShape {
   readonly type: "ShaclmatePropertyShape";
   readonly visibility: purify.Maybe<
     rdfjs.NamedNode<
-      | "http://minorg.github.io/shaclmate/ns#_Visibility_Private"
-      | "http://minorg.github.io/shaclmate/ns#_Visibility_Protected"
-      | "http://minorg.github.io/shaclmate/ns#_Visibility_Public"
+      | "http://purl.org/shaclmate/ontology#_Visibility_Private"
+      | "http://purl.org/shaclmate/ontology#_Visibility_Protected"
+      | "http://purl.org/shaclmate/ontology#_Visibility_Public"
     >
   >;
 }
@@ -1166,9 +1166,9 @@ export namespace ShaclmatePropertyShape {
       type: "ShaclmatePropertyShape";
       visibility: purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_Visibility_Private"
-          | "http://minorg.github.io/shaclmate/ns#_Visibility_Protected"
-          | "http://minorg.github.io/shaclmate/ns#_Visibility_Public"
+          | "http://purl.org/shaclmate/ontology#_Visibility_Private"
+          | "http://purl.org/shaclmate/ontology#_Visibility_Protected"
+          | "http://purl.org/shaclmate/ontology#_Visibility_Public"
         >
       >;
     } & UnwrapR<ReturnType<typeof ShaclCorePropertyShape.propertiesFromRdf>>
@@ -1207,7 +1207,7 @@ export namespace ShaclmatePropertyShape {
     > = purify.Either.of(
       _resource
         .values(
-          dataFactory.namedNode("http://minorg.github.io/shaclmate/ns#extern"),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#extern"),
           { unique: true },
         )
         .head()
@@ -1226,7 +1226,7 @@ export namespace ShaclmatePropertyShape {
     > = purify.Either.of(
       _resource
         .values(
-          dataFactory.namedNode("http://minorg.github.io/shaclmate/ns#mutable"),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#mutable"),
           { unique: true },
         )
         .head()
@@ -1244,7 +1244,7 @@ export namespace ShaclmatePropertyShape {
     > = purify.Either.of(
       _resource
         .values(
-          dataFactory.namedNode("http://minorg.github.io/shaclmate/ns#name"),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#name"),
           { unique: true },
         )
         .head()
@@ -1261,16 +1261,16 @@ export namespace ShaclmatePropertyShape {
       rdfjsResource.Resource.ValueError,
       purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_Visibility_Private"
-          | "http://minorg.github.io/shaclmate/ns#_Visibility_Protected"
-          | "http://minorg.github.io/shaclmate/ns#_Visibility_Public"
+          | "http://purl.org/shaclmate/ontology#_Visibility_Private"
+          | "http://purl.org/shaclmate/ontology#_Visibility_Protected"
+          | "http://purl.org/shaclmate/ontology#_Visibility_Public"
         >
       >
     > = purify.Either.of(
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#visibility",
+            "http://purl.org/shaclmate/ontology#visibility",
           ),
           { unique: true },
         )
@@ -1278,48 +1278,48 @@ export namespace ShaclmatePropertyShape {
         .chain((_value) =>
           _value.toIri().chain((iri) => {
             switch (iri.value) {
-              case "http://minorg.github.io/shaclmate/ns#_Visibility_Private":
+              case "http://purl.org/shaclmate/ontology#_Visibility_Private":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Private"
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Protected"
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Public"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Private"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Protected"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Public"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_Visibility_Private">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_Visibility_Private">,
                 );
-              case "http://minorg.github.io/shaclmate/ns#_Visibility_Protected":
+              case "http://purl.org/shaclmate/ontology#_Visibility_Protected":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Private"
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Protected"
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Public"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Private"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Protected"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Public"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_Visibility_Protected">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_Visibility_Protected">,
                 );
-              case "http://minorg.github.io/shaclmate/ns#_Visibility_Public":
+              case "http://purl.org/shaclmate/ontology#_Visibility_Public":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Private"
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Protected"
-                    | "http://minorg.github.io/shaclmate/ns#_Visibility_Public"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Private"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Protected"
+                    | "http://purl.org/shaclmate/ontology#_Visibility_Public"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_Visibility_Public">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_Visibility_Public">,
                 );
               default:
                 return purify.Left(
                   new rdfjsResource.Resource.MistypedValueError({
                     actualValue: iri,
                     expectedValueType:
-                      'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_Visibility_Private" | "http://minorg.github.io/shaclmate/ns#_Visibility_Protected" | "http://minorg.github.io/shaclmate/ns#_Visibility_Public">',
+                      'rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_Visibility_Private" | "http://purl.org/shaclmate/ontology#_Visibility_Protected" | "http://purl.org/shaclmate/ontology#_Visibility_Public">',
                     focusResource: _resource,
                     predicate: dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#visibility",
+                      "http://purl.org/shaclmate/ontology#visibility",
                     ),
                   }),
                 );
@@ -1452,42 +1452,42 @@ export interface ShaclmateOntology extends OwlOntology {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly tsDataFactoryVariable: purify.Maybe<string>;
   readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
   >[];
   readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
   >[];
   readonly tsImports: readonly string[];
   readonly tsObjectDeclarationType: purify.Maybe<
     rdfjs.NamedNode<
-      | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-      | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+      | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+      | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
     >
   >;
   readonly tsObjectIdentifierPropertyName: purify.Maybe<string>;
@@ -1513,42 +1513,42 @@ export namespace ShaclmateOntology {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       tsDataFactoryVariable: purify.Maybe<string>;
       tsFeatureExcludes: readonly rdfjs.NamedNode<
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
       >[];
       tsFeatureIncludes: readonly rdfjs.NamedNode<
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
       >[];
       tsImports: readonly string[];
       tsObjectDeclarationType: purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-          | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+          | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+          | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
         >
       >;
       tsObjectIdentifierPropertyName: purify.Maybe<string>;
@@ -1592,7 +1592,7 @@ export namespace ShaclmateOntology {
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsDataFactoryVariable",
+            "http://purl.org/shaclmate/ontology#tsDataFactoryVariable",
           ),
           { unique: true },
         )
@@ -1608,26 +1608,26 @@ export namespace ShaclmateOntology {
     const _tsFeatureExcludesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.NamedNode<
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
       >[]
     > = purify.Either.of([
       ..._resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+            "http://purl.org/shaclmate/ontology#tsFeatureExclude",
           ),
           { unique: true },
         )
@@ -1638,323 +1638,323 @@ export namespace ShaclmateOntology {
             .chain((_value) =>
               _value.toIri().chain((iri) => {
                 switch (iri.value) {
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_All":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_All">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Create":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Create">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Create">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Equals":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Equals">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_FromJson":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_FromJson">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_FromRdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Hash":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Hash">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Json":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Json">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Json">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_None":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_None">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_None">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Rdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Rdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Sparql":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Sparql">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_ToJson":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_ToJson">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_ToRdf">,
                     );
                   default:
                     return purify.Left(
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: iri,
                         expectedValueType:
-                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_None" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                          'rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_All" | "http://purl.org/shaclmate/ontology#_TsFeature_Create" | "http://purl.org/shaclmate/ontology#_TsFeature_Equals" | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson" | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf" | "http://purl.org/shaclmate/ontology#_TsFeature_Hash" | "http://purl.org/shaclmate/ontology#_TsFeature_Json" | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema" | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema" | "http://purl.org/shaclmate/ontology#_TsFeature_None" | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf" | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql" | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson" | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf">',
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
-                          "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+                          "http://purl.org/shaclmate/ontology#tsFeatureExclude",
                         ),
                       }),
                     );
@@ -1973,26 +1973,26 @@ export namespace ShaclmateOntology {
     const _tsFeatureIncludesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.NamedNode<
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
       >[]
     > = purify.Either.of([
       ..._resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+            "http://purl.org/shaclmate/ontology#tsFeatureInclude",
           ),
           { unique: true },
         )
@@ -2003,323 +2003,323 @@ export namespace ShaclmateOntology {
             .chain((_value) =>
               _value.toIri().chain((iri) => {
                 switch (iri.value) {
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_All":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_All">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Create":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Create">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Create">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Equals":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Equals">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_FromJson":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_FromJson">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_FromRdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Hash":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Hash">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Json":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Json">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Json">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_None":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_None">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_None">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Rdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Rdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Sparql":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Sparql">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_ToJson":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_ToJson">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_ToRdf">,
                     );
                   default:
                     return purify.Left(
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: iri,
                         expectedValueType:
-                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_None" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                          'rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_All" | "http://purl.org/shaclmate/ontology#_TsFeature_Create" | "http://purl.org/shaclmate/ontology#_TsFeature_Equals" | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson" | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf" | "http://purl.org/shaclmate/ontology#_TsFeature_Hash" | "http://purl.org/shaclmate/ontology#_TsFeature_Json" | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema" | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema" | "http://purl.org/shaclmate/ontology#_TsFeature_None" | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf" | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql" | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson" | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf">',
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
-                          "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+                          "http://purl.org/shaclmate/ontology#tsFeatureInclude",
                         ),
                       }),
                     );
@@ -2341,9 +2341,7 @@ export namespace ShaclmateOntology {
     > = purify.Either.of([
       ..._resource
         .values(
-          dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsImport",
-          ),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#tsImport"),
           { unique: true },
         )
         .flatMap((_item) =>
@@ -2364,15 +2362,15 @@ export namespace ShaclmateOntology {
       rdfjsResource.Resource.ValueError,
       purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-          | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+          | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+          | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
         >
       >
     > = purify.Either.of(
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsObjectDeclarationType",
+            "http://purl.org/shaclmate/ontology#tsObjectDeclarationType",
           ),
           { unique: true },
         )
@@ -2380,35 +2378,35 @@ export namespace ShaclmateOntology {
         .chain((_value) =>
           _value.toIri().chain((iri) => {
             switch (iri.value) {
-              case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class":
+              case "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-                    | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+                    | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+                    | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class">,
                 );
-              case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface":
+              case "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-                    | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+                    | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+                    | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface">,
                 );
               default:
                 return purify.Left(
                   new rdfjsResource.Resource.MistypedValueError({
                     actualValue: iri,
                     expectedValueType:
-                      'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class" | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface">',
+                      'rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class" | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface">',
                     focusResource: _resource,
                     predicate: dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#tsObjectDeclarationType",
+                      "http://purl.org/shaclmate/ontology#tsObjectDeclarationType",
                     ),
                   }),
                 );
@@ -2430,7 +2428,7 @@ export namespace ShaclmateOntology {
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsObjectIdentifierPropertyName",
+            "http://purl.org/shaclmate/ontology#tsObjectIdentifierPropertyName",
           ),
           { unique: true },
         )
@@ -2451,7 +2449,7 @@ export namespace ShaclmateOntology {
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsObjectTypeDiscriminatorPropertyName",
+            "http://purl.org/shaclmate/ontology#tsObjectTypeDiscriminatorPropertyName",
           ),
           { unique: true },
         )
@@ -2645,50 +2643,50 @@ export interface ShaclmateNodeShape extends ShaclCoreNodeShape {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly identifierMintingStrategy: purify.Maybe<
     rdfjs.NamedNode<
-      | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
-      | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
+      | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256"
+      | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4"
     >
   >;
   readonly mutable: purify.Maybe<boolean>;
   readonly name: purify.Maybe<string>;
   readonly toRdfTypes: readonly rdfjs.NamedNode[];
   readonly tsFeatureExcludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
   >[];
   readonly tsFeatureIncludes: readonly rdfjs.NamedNode<
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-    | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+    | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
   >[];
   readonly tsImports: readonly string[];
   readonly tsObjectDeclarationType: purify.Maybe<
     rdfjs.NamedNode<
-      | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-      | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+      | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+      | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
     >
   >;
   readonly tsObjectIdentifierPropertyName: purify.Maybe<string>;
@@ -2718,50 +2716,50 @@ export namespace ShaclmateNodeShape {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       identifierMintingStrategy: purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
-          | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
+          | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256"
+          | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4"
         >
       >;
       mutable: purify.Maybe<boolean>;
       name: purify.Maybe<string>;
       toRdfTypes: readonly rdfjs.NamedNode[];
       tsFeatureExcludes: readonly rdfjs.NamedNode<
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
       >[];
       tsFeatureIncludes: readonly rdfjs.NamedNode<
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
       >[];
       tsImports: readonly string[];
       tsObjectDeclarationType: purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-          | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+          | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+          | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
         >
       >;
       tsObjectIdentifierPropertyName: purify.Maybe<string>;
@@ -2803,9 +2801,7 @@ export namespace ShaclmateNodeShape {
     > = purify.Either.of(
       _resource
         .values(
-          dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#abstract",
-          ),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#abstract"),
           { unique: true },
         )
         .head()
@@ -2823,7 +2819,7 @@ export namespace ShaclmateNodeShape {
     > = purify.Either.of(
       _resource
         .values(
-          dataFactory.namedNode("http://minorg.github.io/shaclmate/ns#export"),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#export"),
           { unique: true },
         )
         .head()
@@ -2841,7 +2837,7 @@ export namespace ShaclmateNodeShape {
     > = purify.Either.of(
       _resource
         .values(
-          dataFactory.namedNode("http://minorg.github.io/shaclmate/ns#extern"),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#extern"),
           { unique: true },
         )
         .head()
@@ -2860,7 +2856,7 @@ export namespace ShaclmateNodeShape {
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#fromRdfType",
+            "http://purl.org/shaclmate/ontology#fromRdfType",
           ),
           { unique: true },
         )
@@ -2878,15 +2874,15 @@ export namespace ShaclmateNodeShape {
       rdfjsResource.Resource.ValueError,
       purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
-          | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
+          | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256"
+          | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4"
         >
       >
     > = purify.Either.of(
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#identifierMintingStrategy",
+            "http://purl.org/shaclmate/ontology#identifierMintingStrategy",
           ),
           { unique: true },
         )
@@ -2894,35 +2890,35 @@ export namespace ShaclmateNodeShape {
         .chain((_value) =>
           _value.toIri().chain((iri) => {
             switch (iri.value) {
-              case "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256":
+              case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
-                    | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
+                    | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256"
+                    | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256">,
                 );
-              case "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4":
+              case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256"
-                    | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4"
+                    | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256"
+                    | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4">,
                 );
               default:
                 return purify.Left(
                   new rdfjsResource.Resource.MistypedValueError({
                     actualValue: iri,
                     expectedValueType:
-                      'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256" | "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4">',
+                      'rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256" | "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4">',
                     focusResource: _resource,
                     predicate: dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#identifierMintingStrategy",
+                      "http://purl.org/shaclmate/ontology#identifierMintingStrategy",
                     ),
                   }),
                 );
@@ -2943,7 +2939,7 @@ export namespace ShaclmateNodeShape {
     > = purify.Either.of(
       _resource
         .values(
-          dataFactory.namedNode("http://minorg.github.io/shaclmate/ns#mutable"),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#mutable"),
           { unique: true },
         )
         .head()
@@ -2961,7 +2957,7 @@ export namespace ShaclmateNodeShape {
     > = purify.Either.of(
       _resource
         .values(
-          dataFactory.namedNode("http://minorg.github.io/shaclmate/ns#name"),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#name"),
           { unique: true },
         )
         .head()
@@ -2979,9 +2975,7 @@ export namespace ShaclmateNodeShape {
     > = purify.Either.of([
       ..._resource
         .values(
-          dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#toRdfType",
-          ),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#toRdfType"),
           { unique: true },
         )
         .flatMap((_item) =>
@@ -3001,26 +2995,26 @@ export namespace ShaclmateNodeShape {
     const _tsFeatureExcludesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.NamedNode<
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
       >[]
     > = purify.Either.of([
       ..._resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+            "http://purl.org/shaclmate/ontology#tsFeatureExclude",
           ),
           { unique: true },
         )
@@ -3031,323 +3025,323 @@ export namespace ShaclmateNodeShape {
             .chain((_value) =>
               _value.toIri().chain((iri) => {
                 switch (iri.value) {
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_All":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_All">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Create":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Create">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Create">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Equals":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Equals">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_FromJson":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_FromJson">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_FromRdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Hash":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Hash">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Json":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Json">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Json">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_None":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_None">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_None">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Rdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Rdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Sparql":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Sparql">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_ToJson":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_ToJson">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_ToRdf">,
                     );
                   default:
                     return purify.Left(
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: iri,
                         expectedValueType:
-                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_None" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                          'rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_All" | "http://purl.org/shaclmate/ontology#_TsFeature_Create" | "http://purl.org/shaclmate/ontology#_TsFeature_Equals" | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson" | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf" | "http://purl.org/shaclmate/ontology#_TsFeature_Hash" | "http://purl.org/shaclmate/ontology#_TsFeature_Json" | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema" | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema" | "http://purl.org/shaclmate/ontology#_TsFeature_None" | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf" | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql" | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson" | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf">',
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
-                          "http://minorg.github.io/shaclmate/ns#tsFeatureExclude",
+                          "http://purl.org/shaclmate/ontology#tsFeatureExclude",
                         ),
                       }),
                     );
@@ -3366,26 +3360,26 @@ export namespace ShaclmateNodeShape {
     const _tsFeatureIncludesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.NamedNode<
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
       >[]
     > = purify.Either.of([
       ..._resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+            "http://purl.org/shaclmate/ontology#tsFeatureInclude",
           ),
           { unique: true },
         )
@@ -3396,323 +3390,323 @@ export namespace ShaclmateNodeShape {
             .chain((_value) =>
               _value.toIri().chain((iri) => {
                 switch (iri.value) {
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_All":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_All">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Create":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Create">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Create">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Equals":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Equals">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Equals">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_FromJson":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_FromJson">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_FromRdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Hash":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Hash">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Hash">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Json":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Json">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Json">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_None":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_None">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_None">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Rdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Rdf">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_Sparql":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_Sparql">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_ToJson":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_ToJson">,
                     );
-                  case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+                  case "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf":
                     return purify.Either.of<
                       rdfjsResource.Resource.ValueError,
                       rdfjs.NamedNode<
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-                        | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+                        | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
                       >
                     >(
-                      iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">,
+                      iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_ToRdf">,
                     );
                   default:
                     return purify.Left(
                       new rdfjsResource.Resource.MistypedValueError({
                         actualValue: iri,
                         expectedValueType:
-                          'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsFeature_All" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema" | "http://minorg.github.io/shaclmate/ns#_TsFeature_None" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf" | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson" | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf">',
+                          'rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsFeature_All" | "http://purl.org/shaclmate/ontology#_TsFeature_Create" | "http://purl.org/shaclmate/ontology#_TsFeature_Equals" | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson" | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf" | "http://purl.org/shaclmate/ontology#_TsFeature_Hash" | "http://purl.org/shaclmate/ontology#_TsFeature_Json" | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema" | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema" | "http://purl.org/shaclmate/ontology#_TsFeature_None" | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf" | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql" | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson" | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf">',
                         focusResource: _resource,
                         predicate: dataFactory.namedNode(
-                          "http://minorg.github.io/shaclmate/ns#tsFeatureInclude",
+                          "http://purl.org/shaclmate/ontology#tsFeatureInclude",
                         ),
                       }),
                     );
@@ -3734,9 +3728,7 @@ export namespace ShaclmateNodeShape {
     > = purify.Either.of([
       ..._resource
         .values(
-          dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsImport",
-          ),
+          dataFactory.namedNode("http://purl.org/shaclmate/ontology#tsImport"),
           { unique: true },
         )
         .flatMap((_item) =>
@@ -3757,15 +3749,15 @@ export namespace ShaclmateNodeShape {
       rdfjsResource.Resource.ValueError,
       purify.Maybe<
         rdfjs.NamedNode<
-          | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-          | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+          | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+          | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
         >
       >
     > = purify.Either.of(
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsObjectDeclarationType",
+            "http://purl.org/shaclmate/ontology#tsObjectDeclarationType",
           ),
           { unique: true },
         )
@@ -3773,35 +3765,35 @@ export namespace ShaclmateNodeShape {
         .chain((_value) =>
           _value.toIri().chain((iri) => {
             switch (iri.value) {
-              case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class":
+              case "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-                    | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+                    | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+                    | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class">,
                 );
-              case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface":
+              case "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface":
                 return purify.Either.of<
                   rdfjsResource.Resource.ValueError,
                   rdfjs.NamedNode<
-                    | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class"
-                    | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface"
+                    | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class"
+                    | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
                   >
                 >(
-                  iri as rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface">,
+                  iri as rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface">,
                 );
               default:
                 return purify.Left(
                   new rdfjsResource.Resource.MistypedValueError({
                     actualValue: iri,
                     expectedValueType:
-                      'rdfjs.NamedNode<"http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class" | "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface">',
+                      'rdfjs.NamedNode<"http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class" | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface">',
                     focusResource: _resource,
                     predicate: dataFactory.namedNode(
-                      "http://minorg.github.io/shaclmate/ns#tsObjectDeclarationType",
+                      "http://purl.org/shaclmate/ontology#tsObjectDeclarationType",
                     ),
                   }),
                 );
@@ -3823,7 +3815,7 @@ export namespace ShaclmateNodeShape {
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsObjectIdentifierPropertyName",
+            "http://purl.org/shaclmate/ontology#tsObjectIdentifierPropertyName",
           ),
           { unique: true },
         )
@@ -3844,7 +3836,7 @@ export namespace ShaclmateNodeShape {
       _resource
         .values(
           dataFactory.namedNode(
-            "http://minorg.github.io/shaclmate/ns#tsObjectTypeDiscriminatorPropertyName",
+            "http://purl.org/shaclmate/ontology#tsObjectTypeDiscriminatorPropertyName",
           ),
           { unique: true },
         )

@@ -11,12 +11,12 @@ format_rdf() {
 }
 
 # Forms
-#format_rdf $PWD/examples/forms/forms.shaclmate.ttl
-#./packages/cli/cli.sh generate $PWD/examples/forms/forms.shaclmate.ttl >examples/forms/src/generated.ts
+format_rdf $PWD/examples/forms/forms.shaclmate.ttl
+./packages/cli/dist/cli.js generate $PWD/examples/forms/forms.shaclmate.ttl >examples/forms/src/generated.ts
 
 # Kitchen sink
 format_rdf $PWD/examples/kitchen-sink/kitchen-sink.shaclmate.ttl
-./packages/cli/cli.sh show-ast-json $PWD/examples/kitchen-sink/kitchen-sink.shaclmate.ttl >examples/kitchen-sink/ast.json
-./packages/cli/cli.sh generate $PWD/examples/kitchen-sink/kitchen-sink.shaclmate.ttl >examples/kitchen-sink/generated.ts
+./packages/cli/dist/cli.js show-ast-json $PWD/examples/kitchen-sink/kitchen-sink.shaclmate.ttl >examples/kitchen-sink/ast.json
+./packages/cli/dist/cli.js generate $PWD/examples/kitchen-sink/kitchen-sink.shaclmate.ttl >examples/kitchen-sink/generated.ts
 
 npm exec biome -- check --write --unsafe $PWD/examples

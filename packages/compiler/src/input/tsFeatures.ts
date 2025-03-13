@@ -3,51 +3,51 @@ import { Maybe } from "purify-ts";
 import { TsFeature } from "../enums/index.js";
 
 type TsFeatureIri = rdfjs.NamedNode<
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_All"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Create"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Json"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_None"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson"
-  | "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_All"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_Create"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_Equals"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_FromJson"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_Json"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_Hash"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_None"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_Rdf"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_Sparql"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_ToJson"
+  | "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf"
 >;
 
 function iriToTsFeatures(iri: TsFeatureIri): readonly TsFeature[] {
   switch (iri.value) {
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_All":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_All":
       return TsFeature.MEMBERS;
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Create":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_Create":
       return ["create"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Equals":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_Equals":
       return ["equals"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromJson":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_FromJson":
       return ["fromJson"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_FromRdf":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_FromRdf":
       return ["fromRdf"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Hash":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_Hash":
       return ["hash"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Json":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_Json":
       return ["fromJson", "jsonSchema", "jsonUiSchema", "toJson"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonSchema":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_JsonSchema":
       return ["jsonSchema"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_JsonUiSchema":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_JsonUiSchema":
       return ["jsonUiSchema"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_None":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_None":
       return [];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Sparql":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_Sparql":
       return ["sparql"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_Rdf":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_Rdf":
       return ["fromRdf", "toRdf"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToJson":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_ToJson":
       return ["toJson"];
-    case "http://minorg.github.io/shaclmate/ns#_TsFeature_ToRdf":
+    case "http://purl.org/shaclmate/ontology#_TsFeature_ToRdf":
       return ["toRdf"];
   }
 }

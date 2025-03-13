@@ -225,9 +225,9 @@ export class NodeShape extends ShaclCoreNodeShape<
     return this.generatedShaclmateNodeShape.tsObjectDeclarationType
       .map((iri) => {
         switch (iri.value) {
-          case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Class":
+          case "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Class":
             return "class";
-          case "http://minorg.github.io/shaclmate/ns#_TsObjectDeclarationType_Interface":
+          case "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface":
             return "interface";
           default:
             throw new RangeError(iri.value);
@@ -251,9 +251,9 @@ export class NodeShape extends ShaclCoreNodeShape<
     return this.generatedShaclmateNodeShape.identifierMintingStrategy.map(
       (iri) => {
         switch (iri.value) {
-          case "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_SHA256":
+          case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256":
             return "sha256";
-          case "http://minorg.github.io/shaclmate/ns#_IdentifierMintingStrategy_UUIDv4":
+          case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4":
             return "uuidv4";
           default:
             throw new RangeError(iri.value);
