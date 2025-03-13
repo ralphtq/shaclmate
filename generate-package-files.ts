@@ -175,6 +175,7 @@ const packages: readonly Package[] = [
     directory: "examples",
     name: "forms",
     scripts: {
+      clean: "rimraf build",
       dev: "vite --port 3000",
       build: "tsc && vite build",
       start: "vite preview --port 3000",
@@ -356,7 +357,7 @@ fs.writeFileSync(
         ),
       },
       workspaces: packages.map(
-        (package_) => `${package_.type}s/${package_.name}`,
+        (package_) => `${package_.directory}/${package_.name}`,
       ),
     },
     undefined,
