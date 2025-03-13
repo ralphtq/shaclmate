@@ -23,6 +23,10 @@ Note that the `@shaclmate/runtime` package does not include any code itself, onl
 
 ## Features
 
+<<<<<<< Updated upstream
+=======
+* Generated code works in browsers and Node.js
+>>>>>>> Stashed changes
 * TypeScript class or interface generation
 * TypeScript [union type](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) generation from `sh:xone`
 * TypeScript [literal type](https://www.typescriptlang.org/docs/handbook/literal-types.html) generation from `sh:in`
