@@ -2,7 +2,6 @@ import type { BlankNode, NamedNode } from "@rdfjs/types";
 import * as kitchenSink from "@shaclmate/kitchen-sink-example";
 import { DataFactory as dataFactory } from "n3";
 import { NonEmptyList } from "purify-ts";
-import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObjectType.js";
 import { ClassHarness } from "./ClassHarness.js";
 import { ClassUnionHarness } from "./ClassUnionHarness.js";
 import { InterfaceHarness } from "./InterfaceHarness.js";
@@ -158,7 +157,7 @@ export const harnesses = {
     fromJson: kitchenSink.NodeShapeWithExternProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithExternProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithExternProperties({
-      externObjectTypeProperty: new ExternObjectType(
+      externObjectTypeProperty: new kitchenSink.ExternObjectType(
         dataFactory.namedNode("http://example.com/externObjectType"),
       ),
       externProperty: dataFactory.namedNode(
