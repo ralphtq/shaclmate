@@ -264,6 +264,18 @@ export const harnesses = {
     sparqlConstructQueryString:
       kitchenSink.NodeShapeWithMutableProperties.sparqlConstructQueryString,
   }),
+  nodeShapeWithOrderedProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithOrderedProperties.fromJson,
+    fromRdf: kitchenSink.NodeShapeWithOrderedProperties.fromRdf,
+    instance: new kitchenSink.NodeShapeWithOrderedProperties({
+      identifier,
+      propertyA: "testA",
+      propertyB: "testB",
+      propertyC: "testC",
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithOrderedProperties.sparqlConstructQueryString,
+  }),
   nodeShapeWithPropertyCardinalities: new ClassHarness({
     fromJson: kitchenSink.NodeShapeWithPropertyCardinalities.fromJson,
     fromRdf: kitchenSink.NodeShapeWithPropertyCardinalities.fromRdf,

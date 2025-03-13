@@ -4841,6 +4841,440 @@ export namespace NodeShapeWithPropertyCardinalities {
   }
 }
 /**
+ * Shape whose sh:properties have sh:order's. The compiler should order them C, A, B based on sh:order instead of on the declaration or lexicographic orders.
+ */
+export class NodeShapeWithOrderedProperties {
+  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
+  readonly propertyA: string;
+  readonly propertyB: string;
+  readonly propertyC: string;
+  readonly type = "NodeShapeWithOrderedProperties";
+
+  constructor(parameters: {
+    readonly identifier?: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
+    readonly propertyA: string;
+    readonly propertyB: string;
+    readonly propertyC: string;
+  }) {
+    if (typeof parameters.identifier === "object") {
+      this._identifier = parameters.identifier;
+    } else if (typeof parameters.identifier === "string") {
+      this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
+    } else {
+      this._identifier = parameters.identifier as never;
+    }
+
+    this.propertyA = parameters.propertyA;
+    this.propertyB = parameters.propertyB;
+    this.propertyC = parameters.propertyC;
+  }
+
+  get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
+    if (typeof this._identifier === "undefined") {
+      this._identifier = dataFactory.blankNode();
+    }
+    return this._identifier;
+  }
+
+  equals(other: NodeShapeWithOrderedProperties): EqualsResult {
+    return booleanEquals(this.identifier, other.identifier)
+      .mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "identifier",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      }))
+      .chain(() =>
+        strictEquals(this.propertyA, other.propertyA).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "propertyA",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        strictEquals(this.propertyB, other.propertyB).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "propertyB",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        strictEquals(this.propertyC, other.propertyC).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "propertyC",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
+        strictEquals(this.type, other.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: this,
+            right: other,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(_hasher: HasherT): HasherT {
+    _hasher.update(this.identifier.value);
+    _hasher.update(this.propertyA);
+    _hasher.update(this.propertyB);
+    _hasher.update(this.propertyC);
+    return _hasher;
+  }
+
+  toJson(): {
+    readonly "@id": string;
+    readonly propertyA: string;
+    readonly propertyB: string;
+    readonly propertyC: string;
+    readonly type: "NodeShapeWithOrderedProperties";
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id":
+          this.identifier.termType === "BlankNode"
+            ? `_:${this.identifier.value}`
+            : this.identifier.value,
+        propertyA: this.propertyA,
+        propertyB: this.propertyB,
+        propertyC: this.propertyC,
+        type: this.type,
+      } satisfies ReturnType<NodeShapeWithOrderedProperties["toJson"]>),
+    );
+  }
+
+  toRdf({
+    mutateGraph,
+    resourceSet,
+  }: {
+    ignoreRdfType?: boolean;
+    mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
+    resourceSet: rdfjsResource.MutableResourceSet;
+  }): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource(this.identifier, {
+      mutateGraph,
+    });
+    _resource.add(
+      dataFactory.namedNode("http://example.com/propertyA"),
+      this.propertyA,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/propertyB"),
+      this.propertyB,
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/propertyC"),
+      this.propertyC,
+    );
+    return _resource;
+  }
+
+  toString(): string {
+    return JSON.stringify(this.toJson());
+  }
+}
+
+export namespace NodeShapeWithOrderedProperties {
+  export function propertiesFromJson(
+    _json: unknown,
+  ): purify.Either<
+    zod.ZodError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      propertyA: string;
+      propertyB: string;
+      propertyC: string;
+    }
+  > {
+    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+    if (!_jsonSafeParseResult.success) {
+      return purify.Left(_jsonSafeParseResult.error);
+    }
+
+    const _jsonObject = _jsonSafeParseResult.data;
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const propertyA = _jsonObject["propertyA"];
+    const propertyB = _jsonObject["propertyB"];
+    const propertyC = _jsonObject["propertyC"];
+    return purify.Either.of({ identifier, propertyA, propertyB, propertyC });
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, NodeShapeWithOrderedProperties> {
+    return NodeShapeWithOrderedProperties.propertiesFromJson(json).map(
+      (properties) => new NodeShapeWithOrderedProperties(properties),
+    );
+  }
+
+  export function propertiesFromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      propertyA: string;
+      propertyB: string;
+      propertyC: string;
+    }
+  > {
+    const identifier = _resource.identifier;
+    const _propertyAEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/propertyA"), {
+        unique: true,
+      })
+      .head()
+      .chain((_value) => _value.toString());
+    if (_propertyAEither.isLeft()) {
+      return _propertyAEither;
+    }
+
+    const propertyA = _propertyAEither.unsafeCoerce();
+    const _propertyBEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/propertyB"), {
+        unique: true,
+      })
+      .head()
+      .chain((_value) => _value.toString());
+    if (_propertyBEither.isLeft()) {
+      return _propertyBEither;
+    }
+
+    const propertyB = _propertyBEither.unsafeCoerce();
+    const _propertyCEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/propertyC"), {
+        unique: true,
+      })
+      .head()
+      .chain((_value) => _value.toString());
+    if (_propertyCEither.isLeft()) {
+      return _propertyCEither;
+    }
+
+    const propertyC = _propertyCEither.unsafeCoerce();
+    return purify.Either.of({ identifier, propertyA, propertyB, propertyC });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof NodeShapeWithOrderedProperties.propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    NodeShapeWithOrderedProperties
+  > {
+    return NodeShapeWithOrderedProperties.propertiesFromRdf(parameters).map(
+      (properties) => new NodeShapeWithOrderedProperties(properties),
+    );
+  }
+
+  export function jsonSchema() {
+    return zodToJsonSchema(jsonZodSchema());
+  }
+
+  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      elements: [
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
+        { scope: `${scopePrefix}/properties/propertyA`, type: "Control" },
+        { scope: `${scopePrefix}/properties/propertyB`, type: "Control" },
+        { scope: `${scopePrefix}/properties/propertyC`, type: "Control" },
+        {
+          rule: {
+            condition: {
+              schema: { const: "NodeShapeWithOrderedProperties" },
+              scope: `${scopePrefix}/properties/type`,
+            },
+            effect: "HIDE",
+          },
+          scope: `${scopePrefix}/properties/type`,
+          type: "Control",
+        },
+      ],
+      label: "NodeShapeWithOrderedProperties",
+      type: "Group",
+    };
+  }
+
+  export function jsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      propertyA: zod.string(),
+      propertyB: zod.string(),
+      propertyC: zod.string(),
+      type: zod.literal("NodeShapeWithOrderedProperties"),
+    });
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        NodeShapeWithOrderedProperties.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        NodeShapeWithOrderedProperties.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      NodeShapeWithOrderedProperties.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithOrderedProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithOrderedProperties");
+    return [
+      {
+        object: dataFactory.variable!(`${variablePrefix}PropertyA`),
+        predicate: dataFactory.namedNode("http://example.com/propertyA"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}PropertyB`),
+        predicate: dataFactory.namedNode("http://example.com/propertyB"),
+        subject,
+      },
+      {
+        object: dataFactory.variable!(`${variablePrefix}PropertyC`),
+        predicate: dataFactory.namedNode("http://example.com/propertyC"),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("nodeShapeWithOrderedProperties");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "nodeShapeWithOrderedProperties");
+    return [
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}PropertyA`),
+            predicate: dataFactory.namedNode("http://example.com/propertyA"),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}PropertyB`),
+            predicate: dataFactory.namedNode("http://example.com/propertyB"),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(`${variablePrefix}PropertyC`),
+            predicate: dataFactory.namedNode("http://example.com/propertyC"),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+}
+/**
  * Shape with shaclmate:mutable properties.
  */
 export class NodeShapeWithMutableProperties {

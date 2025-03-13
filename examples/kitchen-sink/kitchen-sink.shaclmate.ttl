@@ -435,6 +435,33 @@ shaclmate:toRdfType's are added an serialization.""" ;
         sh:path :mutableSetProperty
     ] .
 
+:NodeShapeWithOrderedProperties
+    shaclmate:name "NodeShapeWithOrderedProperties" ;
+    a sh:NodeShape ;
+    rdfs:comment "Shape whose sh:properties have sh:order's. The compiler should order them C, A, B based on sh:order instead of on the declaration or lexicographic orders." ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "propertyA" ;
+        sh:order 3 ;
+        sh:path :propertyA
+    ], [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "propertyB" ;
+        sh:order 2 ;
+        sh:path :propertyB
+    ], [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "propertyC" ;
+        sh:order 1 ;
+        sh:path :propertyC
+    ] .
+
 :NodeShapeWithPropertyCardinalities
     shaclmate:name "NodeShapeWithPropertyCardinalities" ;
     a sh:NodeShape ;
