@@ -43,11 +43,11 @@ export class PropertyShape extends ShaclCorePropertyShape<
     return this.generatedShaclmatePropertyShape.visibility
       .map((iri) => {
         switch (iri.value) {
-          case "http://minorg.github.io/shaclmate/ns#_Visibility_Private":
+          case "http://purl.org/shaclmate/ontology#_Visibility_Private":
             return "private";
-          case "http://minorg.github.io/shaclmate/ns#_Visibility_Protected":
+          case "http://purl.org/shaclmate/ontology#_Visibility_Protected":
             return "protected";
-          case "http://minorg.github.io/shaclmate/ns#_Visibility_Public":
+          case "http://purl.org/shaclmate/ontology#_Visibility_Public":
             return "public";
           default:
             throw new RangeError(iri.value);
