@@ -25,10 +25,10 @@ interface Package {
     external?: Record<string, string>;
     internal?: readonly string[];
   };
+  directory: "examples" | "packages";
   linkableDependencies?: readonly string[];
   name: PackageName;
   scripts?: Record<string, string>;
-  type: "example" | "package";
 }
 
 const externalDependencyVersions = {
@@ -71,7 +71,7 @@ const packages: readonly Package[] = [
     },
     linkableDependencies: ["rdfjs-resource"],
     name: "shacl-ast",
-    type: "package",
+    directory: "packages",
   },
   {
     dependencies: {
@@ -107,7 +107,7 @@ const packages: readonly Package[] = [
     },
     linkableDependencies: ["rdfjs-resource"],
     name: "compiler",
-    type: "package",
+    directory: "packages",
   },
   {
     dependencies: {
@@ -129,7 +129,7 @@ const packages: readonly Package[] = [
     },
     linkableDependencies: ["rdfjs-resource"],
     name: "runtime",
-    type: "package",
+    directory: "packages",
   },
   {
     bin: {
@@ -147,7 +147,7 @@ const packages: readonly Package[] = [
       internal: ["compiler"],
     },
     name: "cli",
-    type: "package",
+    directory: "packages",
   },
   {
     dependencies: {
@@ -172,8 +172,8 @@ const packages: readonly Package[] = [
         vite: "6.0.7",
       },
     },
+    directory: "examples",
     name: "forms",
-    type: "example",
     scripts: {
       dev: "vite --port 3000",
       build: "tsc && vite build",
@@ -184,8 +184,8 @@ const packages: readonly Package[] = [
     dependencies: {
       internal: ["runtime"],
     },
+    directory: "examples",
     name: "kitchen-sink",
-    type: "example",
   },
 ];
 
@@ -205,7 +205,7 @@ for (const package_ of packages) {
 
   const packageDirectoryPath = path.join(
     myDirPath,
-    `${package_.type}s`,
+    `${package_.directory}`,
     package_.name,
   );
   const srcDirectoryPath = path.join(packageDirectoryPath, "src");
@@ -213,7 +213,7 @@ for (const package_ of packages) {
   fs.mkdirSync(packageDirectoryPath, { recursive: true });
 
   const files = new Set<string>();
-  if (fs.existsSync(srcDirectoryPath)) {
+  if (package_.name !== "forms" && fs.existsSync(srcDirectoryPath)) {
     for (const dirent of fs.readdirSync(srcDirectoryPath, {
       withFileTypes: true,
       recursive: true,
@@ -233,7 +233,6 @@ for (const package_ of packages) {
     }
   }
 
-  const private_ = package_.type !== "package";
   fs.writeFileSync(
     path.join(packageDirectoryPath, "package.json"),
     `${JSON.stringify(
@@ -248,7 +247,7 @@ for (const package_ of packages) {
           ...package_.devDependencies?.external,
         },
         exports:
-          !private_ && files.size > 0
+          files.size > 0
             ? {
                 ".": {
                   types: "./dist/index.d.ts",
@@ -256,10 +255,10 @@ for (const package_ of packages) {
                 },
               }
             : undefined,
-        files: !private_ && files.size > 0 ? [...files].sort() : undefined,
+        files: files.size > 0 ? [...files].sort() : undefined,
         license: "Apache-2.0",
-        name: `@shaclmate/${package_.name}${package_.type === "example" ? `-${package_.type}` : ""}`,
-        private: private_ ? true : undefined,
+        name: `@shaclmate/${package_.name}${package_.directory === "examples" ? "-example" : ""}`,
+        private: package_.directory !== "packages" ? true : undefined,
         repository: {
           type: "git",
           url: "git+https://github.com/minorg/shaclmate",

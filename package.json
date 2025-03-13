@@ -40,11 +40,11 @@
     "watch:kitchen-sink": "npm run watch -w @shaclmate/kitchen-sink"
   },
   "workspaces": [
-    "packages/shacl-ast",
-    "packages/compiler",
-    "packages/runtime",
-    "packages/cli",
-    "examples/forms",
-    "examples/kitchen-sink"
+    "undefineds/shacl-ast",
+    "undefineds/compiler",
+    "undefineds/runtime",
+    "undefineds/cli",
+    "undefineds/forms",
+    "undefineds/kitchen-sink"
   ]
 }

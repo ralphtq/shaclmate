@@ -3,6 +3,16 @@
     "@shaclmate/runtime": "2.0.18"
   },
   "devDependencies": {},
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/*.d.ts",
+    "dist/*.js"
+  ],
   "license": "Apache-2.0",
   "name": "@shaclmate/kitchen-sink-example",
   "private": true,
