@@ -306,7 +306,7 @@ export const harnesses = {
     instance: new kitchenSink.NodeShapeWithTermProperties({
       booleanProperty: true,
       dateProperty: new Date("2025-03-06"),
-      dateTimeProperty: new Date(),
+      dateTimeProperty: new Date(1523268000000),
       identifier,
       iriProperty: dataFactory.namedNode("http://example.com"),
       literalProperty: dataFactory.literal("test"),
