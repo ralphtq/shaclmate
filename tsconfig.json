@@ -9,6 +9,7 @@
     "incremental": true,
     "noUncheckedIndexedAccess": false,
     "outDir": "dist",
+    "rootDir": ".",
     "sourceMap": true
   },
   "extends": ["@tsconfig/strictest/tsconfig.json", "@tsconfig/node18/tsconfig.json"],
