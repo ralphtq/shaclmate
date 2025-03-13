@@ -37,6 +37,7 @@
     "watch:runtime": "npm run watch -w @shaclmate/runtime",
     "watch:cli": "npm run watch -w @shaclmate/cli"
   },
+  "type": "module",
   "workspaces": [
     "packages/shacl-ast",
     "packages/compiler",
