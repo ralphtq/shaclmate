@@ -35,13 +35,16 @@
     "watch:shacl-ast": "npm run watch -w @shaclmate/shacl-ast",
     "watch:compiler": "npm run watch -w @shaclmate/compiler",
     "watch:runtime": "npm run watch -w @shaclmate/runtime",
-    "watch:cli": "npm run watch -w @shaclmate/cli"
+    "watch:cli": "npm run watch -w @shaclmate/cli",
+    "watch:forms": "npm run watch -w @shaclmate/forms",
+    "watch:kitchen-sink": "npm run watch -w @shaclmate/kitchen-sink"
   },
-  "type": "module",
   "workspaces": [
     "packages/shacl-ast",
     "packages/compiler",
     "packages/runtime",
-    "packages/cli"
+    "packages/cli",
+    "examples/forms",
+    "examples/kitchen-sink"
   ]
 }
