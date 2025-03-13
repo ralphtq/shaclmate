@@ -47,6 +47,14 @@ const externalDependencyVersions = {
 
 // Packages should be topologically sorted
 const packages: readonly Package[] = [
+  // Compiler tests depend on kitchen sink
+  {
+    dependencies: {
+      internal: ["runtime"],
+    },
+    directory: "examples",
+    name: "kitchen-sink",
+  },
   {
     dependencies: {
       external: {
@@ -181,13 +189,6 @@ const packages: readonly Package[] = [
       rebuild: "run-s clean build",
       start: "vite preview --port 3000",
     },
-  },
-  {
-    dependencies: {
-      internal: ["runtime"],
-    },
-    directory: "examples",
-    name: "kitchen-sink",
   },
 ];
 

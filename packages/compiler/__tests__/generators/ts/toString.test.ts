@@ -12,7 +12,7 @@ describe("toString", () => {
       parentStringProperty: "parent",
     });
     expect(instance.toString()).toStrictEqual(
-      '{"abcStringProperty":"abc","@id":"http://example.com/test","type":"ConcreteChildClassNodeShape","parentStringProperty":"parent","childStringProperty":"child"}',
+      '{"@id":"http://example.com/test","type":"ConcreteChildClassNodeShape","abcStringProperty":"abc","parentStringProperty":"parent","childStringProperty":"child"}',
     );
   });
 });
