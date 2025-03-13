@@ -10,11 +10,13 @@ Command line program and libraries for generating [TypeScript](https://www.types
 
 ### Generate TypeScript code from SHACL shapes
 
-    npx @shaclmate/cli@latest generate /path/to/shacl-in-rdf.ttl >generated.ts
+    npx -y @shaclmate/cli@latest generate /path/to/shacl-in-rdf.ttl >generated.ts
+
+The generated code is serialized by [ts-morph](https://ts-morph.com/) with minimal indentation and newlines. You will probably want to format it using a tool like [Biome](https://biomejs.dev/) or [prettier](https://prettier.io/).
 
 ### Add runtime library
 
-The generated TypeScript code relies on various third-party libraries such as [`sparql.js`](https://github.com/RubenVerborgh/SPARQL.js/). To include these third-party libraries in your project, add [`@shaclmate/runtime`](https://www.npmjs.com/package/@shaclmate/runtime) to your `package.json` `dependencies`.
+The generated TypeScript code relies on various third-party libraries such as [sparql.js](https://github.com/RubenVerborgh/SPARQL.js/). To include these third-party libraries in your project, add [`@shaclmate/runtime`](https://www.npmjs.com/package/@shaclmate/runtime) to your `package.json` `dependencies`.
 
 Note that the `@shaclmate/runtime` package does not include any code itself, only transitive `dependencies`.
 
@@ -32,7 +34,7 @@ Note that the `@shaclmate/runtime` package does not include any code itself, onl
 * Instance identifier minting by deep hashing or UUID generation
 * [Zod schema](https://zod.dev/) generation. Zod schemas can be converted to [JSON schemas](https://json-schema.org/) using [zod-to-json-schema](https://github.com/StefanTerdell/zod-to-json-schema).
 * [JSON Forms](https://jsonforms.io/) schema generation
-* [`purify-ts`](https://gigobyte.github.io/purify/) [`Maybe`](https://gigobyte.github.io/purify/adts/Maybe) types instead of `null`/`undefined`
+* [purify-ts](https://gigobyte.github.io/purify/) [`Maybe`](https://gigobyte.github.io/purify/adts/Maybe) types instead of `null`/`undefined`
 * Support for using handwritten "extern" types from generated code
 * Built on [RDF/JS](https://rdf.js.org/) standards
 * Include/exclude generated code features at node shape or ontology level
@@ -50,7 +52,7 @@ A "kitchen sink" demonstrating the code shaclmate generates from many different 
 To reproduce the generated code to stdout, run:
 
     cd examples/kitchen-sink
-    npx @shaclmate/cli@latest generate src/kitchen-sink.shaclmate.ttl
+    npx -y @shaclmate/cli@latest generate src/kitchen-sink.shaclmate.ttl
 
 The compiler unit tests in [`packages/compiler/__tests__`](packages/compiler/__tests__) use the kitchen sink examples to test generated code.
 
