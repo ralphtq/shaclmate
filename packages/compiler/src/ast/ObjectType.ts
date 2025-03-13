@@ -184,6 +184,11 @@ export namespace ObjectType {
     readonly name: Name;
 
     /**
+     * Relative order of this property, derived from sh:order.
+     */
+    readonly order: number;
+
+    /**
      * SHACL property path (https://www.w3.org/TR/shacl/#property-paths)
      */
     readonly path: PredicatePath;

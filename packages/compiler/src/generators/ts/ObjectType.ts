@@ -290,9 +290,7 @@ export class ObjectType extends DeclaredType {
 
   @Memoize()
   get properties(): readonly ObjectType.Property[] {
-    const properties = this.lazyProperties()
-      .concat()
-      .sort((left, right) => left.name.localeCompare(right.name));
+    const properties = this.lazyProperties();
     const propertyNames = new Set<string>();
     for (const property of properties) {
       if (propertyNames.has(property.name)) {

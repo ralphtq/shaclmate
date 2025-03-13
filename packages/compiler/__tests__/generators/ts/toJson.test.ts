@@ -32,6 +32,7 @@ describe("toJson", () => {
       "propertyC",
       "propertyB",
       "propertyA",
+      "type",
     ]);
   });
 });

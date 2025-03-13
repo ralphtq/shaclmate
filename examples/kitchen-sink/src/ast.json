@@ -992,11 +992,11 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-195"
+              "value": "n3-197"
             },
-            "shName": "propertyA"
+            "shName": "propertyC"
           },
-          "path": "http://example.com/propertyA",
+          "path": "http://example.com/propertyC",
           "type": {
             "datatype": {
               "termType": "NamedNode",
@@ -1028,11 +1028,11 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-197"
+              "value": "n3-195"
             },
-            "shName": "propertyC"
+            "shName": "propertyA"
           },
-          "path": "http://example.com/propertyC",
+          "path": "http://example.com/propertyA",
           "type": {
             "datatype": {
               "termType": "NamedNode",
