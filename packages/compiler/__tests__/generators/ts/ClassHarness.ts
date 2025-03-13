@@ -1,10 +1,10 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
+import type { EqualsResult } from "@shaclmate/kitchen-sink-example";
 import type {
   MutableResource,
   MutableResourceSet,
   Resource,
 } from "rdfjs-resource";
-import type { EqualsResult } from "../../../../../examples/kitchen-sink/generated.js";
 import { Harness } from "./Harness.js";
 
 export class ClassHarness<
