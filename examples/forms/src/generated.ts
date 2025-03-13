@@ -193,11 +193,11 @@ export function maybeEquals<T>(
 }
 export interface NestedNodeShape {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly type: "NestedNodeShape";
   /**
    * Required string
    */
   readonly requiredStringProperty: string;
-  readonly type: "NestedNodeShape";
 }
 
 export namespace NestedNodeShape {
@@ -214,9 +214,9 @@ export namespace NestedNodeShape {
       identifier = parameters.identifier as never;
     }
 
-    const requiredStringProperty = parameters.requiredStringProperty;
     const type = "NestedNodeShape" as const;
-    return { identifier, requiredStringProperty, type };
+    const requiredStringProperty = parameters.requiredStringProperty;
+    return { identifier, type, requiredStringProperty };
   }
 
   export function equals(
@@ -232,6 +232,17 @@ export namespace NestedNodeShape {
         type: "Property" as const,
       }))
       .chain(() =>
+        strictEquals(left.type, right.type).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "type",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      )
+      .chain(() =>
         strictEquals(
           left.requiredStringProperty,
           right.requiredStringProperty,
@@ -242,28 +253,15 @@ export namespace NestedNodeShape {
           propertyValuesUnequal,
           type: "Property" as const,
         })),
-      )
-      .chain(() =>
-        strictEquals(left.type, right.type).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: left,
-            right: right,
-            propertyName: "type",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      requiredStringProperty: string;
       type: "NestedNodeShape";
+      requiredStringProperty: string;
     }
   > {
     const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
@@ -275,9 +273,9 @@ export namespace NestedNodeShape {
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
-    const requiredStringProperty = _jsonObject["requiredStringProperty"];
     const type = "NestedNodeShape" as const;
-    return purify.Either.of({ identifier, requiredStringProperty, type });
+    const requiredStringProperty = _jsonObject["requiredStringProperty"];
+    return purify.Either.of({ identifier, type, requiredStringProperty });
   }
 
   export function fromJson(
@@ -301,11 +299,12 @@ export namespace NestedNodeShape {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      requiredStringProperty: string;
       type: "NestedNodeShape";
+      requiredStringProperty: string;
     }
   > {
     const identifier = _resource.identifier;
+    const type = "NestedNodeShape" as const;
     const _requiredStringPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       string
@@ -321,8 +320,7 @@ export namespace NestedNodeShape {
     }
 
     const requiredStringProperty = _requiredStringPropertyEither.unsafeCoerce();
-    const type = "NestedNodeShape" as const;
-    return purify.Either.of({ identifier, requiredStringProperty, type });
+    return purify.Either.of({ identifier, type, requiredStringProperty });
   }
 
   export function fromRdf(
@@ -345,11 +343,6 @@ export namespace NestedNodeShape {
           type: "Control",
         },
         {
-          label: "Required string",
-          scope: `${scopePrefix}/properties/requiredStringProperty`,
-          type: "Control",
-        },
-        {
           rule: {
             condition: {
               schema: { const: "NestedNodeShape" },
@@ -358,6 +351,11 @@ export namespace NestedNodeShape {
             effect: "HIDE",
           },
           scope: `${scopePrefix}/properties/type`,
+          type: "Control",
+        },
+        {
+          label: "Required string",
+          scope: `${scopePrefix}/properties/requiredStringProperty`,
           type: "Control",
         },
       ],
@@ -369,8 +367,8 @@ export namespace NestedNodeShape {
   export function jsonZodSchema() {
     return zod.object({
       "@id": zod.string().min(1),
-      requiredStringProperty: zod.string(),
       type: zod.literal("NestedNodeShape"),
+      requiredStringProperty: zod.string(),
     });
   }
 
@@ -476,8 +474,8 @@ export namespace NestedNodeShape {
 
   export function toJson(_nestedNodeShape: NestedNodeShape): {
     readonly "@id": string;
-    readonly requiredStringProperty: string;
     readonly type: "NestedNodeShape";
+    readonly requiredStringProperty: string;
   } {
     return JSON.parse(
       JSON.stringify({
@@ -485,8 +483,8 @@ export namespace NestedNodeShape {
           _nestedNodeShape.identifier.termType === "BlankNode"
             ? `_:${_nestedNodeShape.identifier.value}`
             : _nestedNodeShape.identifier.value,
-        requiredStringProperty: _nestedNodeShape.requiredStringProperty,
         type: _nestedNodeShape.type,
+        requiredStringProperty: _nestedNodeShape.requiredStringProperty,
       } satisfies ReturnType<typeof NestedNodeShape.toJson>),
     );
   }
@@ -516,11 +514,12 @@ export namespace NestedNodeShape {
  * Form
  */
 export interface FormNodeShape {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly type: "FormNodeShape";
   /**
    * Empty string set
    */
   readonly emptyStringSetProperty: readonly string[];
-  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   /**
    * Nested object
    */
@@ -541,28 +540,18 @@ export interface FormNodeShape {
    * Required string
    */
   readonly requiredStringProperty: string;
-  readonly type: "FormNodeShape";
 }
 
 export namespace FormNodeShape {
   export function create(parameters: {
-    readonly emptyStringSetProperty?: readonly string[];
     readonly identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
+    readonly emptyStringSetProperty?: readonly string[];
     readonly nestedObjectProperty: NestedNodeShape;
     readonly nonEmptyStringSetProperty: purify.NonEmptyList<string>;
     readonly optionalStringProperty?: purify.Maybe<string> | string;
     readonly requiredIntegerProperty: number;
     readonly requiredStringProperty: string;
   }): FormNodeShape {
-    let emptyStringSetProperty: readonly string[];
-    if (typeof parameters.emptyStringSetProperty === "undefined") {
-      emptyStringSetProperty = [];
-    } else if (Array.isArray(parameters.emptyStringSetProperty)) {
-      emptyStringSetProperty = parameters.emptyStringSetProperty;
-    } else {
-      emptyStringSetProperty = parameters.emptyStringSetProperty as never;
-    }
-
     let identifier: rdfjs.BlankNode | rdfjs.NamedNode;
     if (typeof parameters.identifier === "object") {
       identifier = parameters.identifier;
@@ -570,6 +559,16 @@ export namespace FormNodeShape {
       identifier = dataFactory.namedNode(parameters.identifier);
     } else {
       identifier = parameters.identifier as never;
+    }
+
+    const type = "FormNodeShape" as const;
+    let emptyStringSetProperty: readonly string[];
+    if (typeof parameters.emptyStringSetProperty === "undefined") {
+      emptyStringSetProperty = [];
+    } else if (Array.isArray(parameters.emptyStringSetProperty)) {
+      emptyStringSetProperty = parameters.emptyStringSetProperty;
+    } else {
+      emptyStringSetProperty = parameters.emptyStringSetProperty as never;
     }
 
     const nestedObjectProperty = parameters.nestedObjectProperty;
@@ -589,16 +588,15 @@ export namespace FormNodeShape {
 
     const requiredIntegerProperty = parameters.requiredIntegerProperty;
     const requiredStringProperty = parameters.requiredStringProperty;
-    const type = "FormNodeShape" as const;
     return {
-      emptyStringSetProperty,
       identifier,
+      type,
+      emptyStringSetProperty,
       nestedObjectProperty,
       nonEmptyStringSetProperty,
       optionalStringProperty,
       requiredIntegerProperty,
       requiredStringProperty,
-      type,
     };
   }
 
@@ -606,27 +604,36 @@ export namespace FormNodeShape {
     left: FormNodeShape,
     right: FormNodeShape,
   ): EqualsResult {
-    return ((left, right) => arrayEquals(left, right, strictEquals))(
-      left.emptyStringSetProperty,
-      right.emptyStringSetProperty,
-    )
+    return booleanEquals(left.identifier, right.identifier)
       .mapLeft((propertyValuesUnequal) => ({
         left: left,
         right: right,
-        propertyName: "emptyStringSetProperty",
+        propertyName: "identifier",
         propertyValuesUnequal,
         type: "Property" as const,
       }))
       .chain(() =>
-        booleanEquals(left.identifier, right.identifier).mapLeft(
+        strictEquals(left.type, right.type).mapLeft(
           (propertyValuesUnequal) => ({
             left: left,
             right: right,
-            propertyName: "identifier",
+            propertyName: "type",
             propertyValuesUnequal,
             type: "Property" as const,
           }),
         ),
+      )
+      .chain(() =>
+        ((left, right) => arrayEquals(left, right, strictEquals))(
+          left.emptyStringSetProperty,
+          right.emptyStringSetProperty,
+        ).mapLeft((propertyValuesUnequal) => ({
+          left: left,
+          right: right,
+          propertyName: "emptyStringSetProperty",
+          propertyValuesUnequal,
+          type: "Property" as const,
+        })),
       )
       .chain(() =>
         NestedNodeShape.equals(
@@ -687,33 +694,20 @@ export namespace FormNodeShape {
           propertyValuesUnequal,
           type: "Property" as const,
         })),
-      )
-      .chain(() =>
-        strictEquals(left.type, right.type).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: left,
-            right: right,
-            propertyName: "type",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
       );
   }
 
-  export function propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
-      emptyStringSetProperty: readonly string[];
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type: "FormNodeShape";
+      emptyStringSetProperty: readonly string[];
       nestedObjectProperty: NestedNodeShape;
       nonEmptyStringSetProperty: purify.NonEmptyList<string>;
       optionalStringProperty: purify.Maybe<string>;
       requiredIntegerProperty: number;
       requiredStringProperty: string;
-      type: "FormNodeShape";
     }
   > {
     const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
@@ -722,10 +716,11 @@ export namespace FormNodeShape {
     }
 
     const _jsonObject = _jsonSafeParseResult.data;
-    const emptyStringSetProperty = _jsonObject["emptyStringSetProperty"];
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
+    const type = "FormNodeShape" as const;
+    const emptyStringSetProperty = _jsonObject["emptyStringSetProperty"];
     const nestedObjectProperty = NestedNodeShape.fromJson(
       _jsonObject["nestedObjectProperty"],
     ).unsafeCoerce();
@@ -737,16 +732,15 @@ export namespace FormNodeShape {
     );
     const requiredIntegerProperty = _jsonObject["requiredIntegerProperty"];
     const requiredStringProperty = _jsonObject["requiredStringProperty"];
-    const type = "FormNodeShape" as const;
     return purify.Either.of({
-      emptyStringSetProperty,
       identifier,
+      type,
+      emptyStringSetProperty,
       nestedObjectProperty,
       nonEmptyStringSetProperty,
       optionalStringProperty,
       requiredIntegerProperty,
       requiredStringProperty,
-      type,
     });
   }
 
@@ -770,16 +764,18 @@ export namespace FormNodeShape {
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
     {
-      emptyStringSetProperty: readonly string[];
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type: "FormNodeShape";
+      emptyStringSetProperty: readonly string[];
       nestedObjectProperty: NestedNodeShape;
       nonEmptyStringSetProperty: purify.NonEmptyList<string>;
       optionalStringProperty: purify.Maybe<string>;
       requiredIntegerProperty: number;
       requiredStringProperty: string;
-      type: "FormNodeShape";
     }
   > {
+    const identifier = _resource.identifier;
+    const type = "FormNodeShape" as const;
     const _emptyStringSetPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly string[]
@@ -803,7 +799,6 @@ export namespace FormNodeShape {
     }
 
     const emptyStringSetProperty = _emptyStringSetPropertyEither.unsafeCoerce();
-    const identifier = _resource.identifier;
     const _nestedObjectPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       NestedNodeShape
@@ -908,16 +903,15 @@ export namespace FormNodeShape {
     }
 
     const requiredStringProperty = _requiredStringPropertyEither.unsafeCoerce();
-    const type = "FormNodeShape" as const;
     return purify.Either.of({
-      emptyStringSetProperty,
       identifier,
+      type,
+      emptyStringSetProperty,
       nestedObjectProperty,
       nonEmptyStringSetProperty,
       optionalStringProperty,
       requiredIntegerProperty,
       requiredStringProperty,
-      type,
     });
   }
 
@@ -936,13 +930,24 @@ export namespace FormNodeShape {
     return {
       elements: [
         {
-          label: "Empty string set",
-          scope: `${scopePrefix}/properties/emptyStringSetProperty`,
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
           type: "Control",
         },
         {
-          label: "Identifier",
-          scope: `${scopePrefix}/properties/@id`,
+          rule: {
+            condition: {
+              schema: { const: "FormNodeShape" },
+              scope: `${scopePrefix}/properties/type`,
+            },
+            effect: "HIDE",
+          },
+          scope: `${scopePrefix}/properties/type`,
+          type: "Control",
+        },
+        {
+          label: "Empty string set",
+          scope: `${scopePrefix}/properties/emptyStringSetProperty`,
           type: "Control",
         },
         NestedNodeShape.jsonUiSchema({
@@ -968,17 +973,6 @@ export namespace FormNodeShape {
           scope: `${scopePrefix}/properties/requiredStringProperty`,
           type: "Control",
         },
-        {
-          rule: {
-            condition: {
-              schema: { const: "FormNodeShape" },
-              scope: `${scopePrefix}/properties/type`,
-            },
-            effect: "HIDE",
-          },
-          scope: `${scopePrefix}/properties/type`,
-          type: "Control",
-        },
       ],
       label: "Form",
       type: "Group",
@@ -987,14 +981,14 @@ export namespace FormNodeShape {
 
   export function jsonZodSchema() {
     return zod.object({
-      emptyStringSetProperty: zod.string().array(),
       "@id": zod.string().min(1),
+      type: zod.literal("FormNodeShape"),
+      emptyStringSetProperty: zod.string().array(),
       nestedObjectProperty: NestedNodeShape.jsonZodSchema(),
       nonEmptyStringSetProperty: zod.string().array().nonempty().min(1),
       optionalStringProperty: zod.string().optional(),
       requiredIntegerProperty: zod.number(),
       requiredStringProperty: zod.string(),
-      type: zod.literal("FormNodeShape"),
     });
   }
 
@@ -1003,11 +997,11 @@ export namespace FormNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_formNodeShape: FormNodeShape, _hasher: HasherT): HasherT {
+    _hasher.update(_formNodeShape.identifier.value);
     for (const _item0 of _formNodeShape.emptyStringSetProperty) {
       _hasher.update(_item0);
     }
 
-    _hasher.update(_formNodeShape.identifier.value);
     NestedNodeShape.hash(_formNodeShape.nestedObjectProperty, _hasher);
     for (const _item0 of _formNodeShape.nonEmptyStringSetProperty) {
       _hasher.update(_item0);
@@ -1245,24 +1239,25 @@ export namespace FormNodeShape {
   }
 
   export function toJson(_formNodeShape: FormNodeShape): {
-    readonly emptyStringSetProperty: readonly string[];
     readonly "@id": string;
+    readonly type: "FormNodeShape";
+    readonly emptyStringSetProperty: readonly string[];
     readonly nestedObjectProperty: ReturnType<typeof NestedNodeShape.toJson>;
     readonly nonEmptyStringSetProperty: readonly string[];
     readonly optionalStringProperty: string | undefined;
     readonly requiredIntegerProperty: number;
     readonly requiredStringProperty: string;
-    readonly type: "FormNodeShape";
   } {
     return JSON.parse(
       JSON.stringify({
-        emptyStringSetProperty: _formNodeShape.emptyStringSetProperty.map(
-          (_item) => _item,
-        ),
         "@id":
           _formNodeShape.identifier.termType === "BlankNode"
             ? `_:${_formNodeShape.identifier.value}`
             : _formNodeShape.identifier.value,
+        type: _formNodeShape.type,
+        emptyStringSetProperty: _formNodeShape.emptyStringSetProperty.map(
+          (_item) => _item,
+        ),
         nestedObjectProperty: NestedNodeShape.toJson(
           _formNodeShape.nestedObjectProperty,
         ),
@@ -1274,7 +1269,6 @@ export namespace FormNodeShape {
           .extract(),
         requiredIntegerProperty: _formNodeShape.requiredIntegerProperty,
         requiredStringProperty: _formNodeShape.requiredStringProperty,
-        type: _formNodeShape.type,
       } satisfies ReturnType<typeof FormNodeShape.toJson>),
     );
   }

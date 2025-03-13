@@ -1,12 +1,12 @@
 import { fail } from "node:assert";
 import type { NamedNode } from "@rdfjs/types";
+import { dash, rdf, schema } from "@tpluscode/rdf-ns-builders";
+import { describe, expect, it } from "vitest";
 import {
   type PredicatePath,
   RdfjsShapesGraph,
   defaultFactory,
-} from "@shaclmate/shacl-ast";
-import { dash, rdf, schema } from "@tpluscode/rdf-ns-builders";
-import { describe, expect, it } from "vitest";
+} from "../src/index.js";
 import { testData } from "./testData.js";
 
 describe("PropertyShape", () => {

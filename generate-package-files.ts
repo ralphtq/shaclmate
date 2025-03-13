@@ -7,7 +7,13 @@ import { stringify as stringifyYaml } from "yaml";
 
 const VERSION = "2.0.18";
 
-type PackageName = "cli" | "compiler" | "runtime" | "shacl-ast";
+type PackageName =
+  | "cli"
+  | "compiler"
+  | "kitchen-sink"
+  | "forms"
+  | "runtime"
+  | "shacl-ast";
 
 interface Package {
   bin?: Record<string, string>;
@@ -19,8 +25,10 @@ interface Package {
     external?: Record<string, string>;
     internal?: readonly string[];
   };
+  directory: "examples" | "packages";
   linkableDependencies?: readonly string[];
   name: PackageName;
+  scripts?: Record<string, string>;
 }
 
 const externalDependencyVersions = {
@@ -39,6 +47,14 @@ const externalDependencyVersions = {
 
 // Packages should be topologically sorted
 const packages: readonly Package[] = [
+  // Compiler tests depend on kitchen sink
+  {
+    dependencies: {
+      internal: ["runtime"],
+    },
+    directory: "examples",
+    name: "kitchen-sink",
+  },
   {
     dependencies: {
       external: {
@@ -63,6 +79,7 @@ const packages: readonly Package[] = [
     },
     linkableDependencies: ["rdfjs-resource"],
     name: "shacl-ast",
+    directory: "packages",
   },
   {
     dependencies: {
@@ -98,6 +115,7 @@ const packages: readonly Package[] = [
     },
     linkableDependencies: ["rdfjs-resource"],
     name: "compiler",
+    directory: "packages",
   },
   {
     dependencies: {
@@ -119,6 +137,7 @@ const packages: readonly Package[] = [
     },
     linkableDependencies: ["rdfjs-resource"],
     name: "runtime",
+    directory: "packages",
   },
   {
     bin: {
@@ -136,6 +155,40 @@ const packages: readonly Package[] = [
       internal: ["compiler"],
     },
     name: "cli",
+    directory: "packages",
+  },
+  {
+    dependencies: {
+      external: {
+        "@jsonforms/core": "3.5.1",
+        "@jsonforms/material-renderers": "3.5.1",
+        "@jsonforms/react": "3.5.1",
+        "@mui/icons-material": "^6.1.0",
+        "@mui/lab": "6.0.0-beta.22",
+        "@mui/material": "^6.1.0",
+        "@mui/x-date-pickers": "^7.17.0",
+        react: "^18",
+        "react-dom": "^18",
+      },
+      internal: ["runtime"],
+    },
+    devDependencies: {
+      external: {
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "@vitejs/plugin-react": "^4.3.4",
+        vite: "6.0.7",
+      },
+    },
+    directory: "examples",
+    name: "forms",
+    scripts: {
+      clean: "rimraf dist",
+      dev: "vite --port 3000",
+      build: "tsc && vite build",
+      rebuild: "run-s clean build",
+      start: "vite preview --port 3000",
+    },
   },
 ];
 
@@ -153,13 +206,17 @@ for (const package_ of packages) {
     internalDevDependencies[`@shaclmate/${internalDevDependency}`] = VERSION;
   }
 
-  const packageDirectoryPath = path.join(myDirPath, "packages", package_.name);
+  const packageDirectoryPath = path.join(
+    myDirPath,
+    `${package_.directory}`,
+    package_.name,
+  );
   const srcDirectoryPath = path.join(packageDirectoryPath, "src");
 
   fs.mkdirSync(packageDirectoryPath, { recursive: true });
 
   const files = new Set<string>();
-  if (fs.existsSync(srcDirectoryPath)) {
+  if (package_.name !== "forms" && fs.existsSync(srcDirectoryPath)) {
     for (const dirent of fs.readdirSync(srcDirectoryPath, {
       withFileTypes: true,
       recursive: true,
@@ -203,8 +260,13 @@ for (const package_ of packages) {
             : undefined,
         files: files.size > 0 ? [...files].sort() : undefined,
         license: "Apache-2.0",
-        name: `@shaclmate/${package_.name}`,
-        scripts: {
+        name: `@shaclmate/${package_.name}${package_.directory === "examples" ? "-example" : ""}`,
+        private: package_.directory !== "packages" ? true : undefined,
+        repository: {
+          type: "git",
+          url: "git+https://github.com/minorg/shaclmate",
+        },
+        scripts: package_.scripts ?? {
           build: `tsc -b${
             package_.bin
               ? ` && ${Object.values(package_.bin)
@@ -230,10 +292,6 @@ for (const package_ of packages) {
           unlink: `npm unlink -g @shaclmate/${package_.name}`,
           watch: "tsc -w --preserveWatchOutput",
           "watch:noEmit": "tsc --noEmit -w --preserveWatchOutput",
-        },
-        repository: {
-          type: "git",
-          url: "git+https://github.com/minorg/shaclmate",
         },
         type: "module",
         version: VERSION,
@@ -300,7 +358,9 @@ fs.writeFileSync(
           {} as Record<string, string>,
         ),
       },
-      workspaces: packages.map((package_) => `packages/${package_.name}`),
+      workspaces: packages.map(
+        (package_) => `${package_.directory}/${package_.name}`,
+      ),
     },
     undefined,
     2,

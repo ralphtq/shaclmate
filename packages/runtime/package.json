@@ -27,6 +27,10 @@
   ],
   "license": "Apache-2.0",
   "name": "@shaclmate/runtime",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minorg/shaclmate"
+  },
   "scripts": {
     "build": "tsc -b",
     "check": "biome check",
@@ -47,10 +51,6 @@
     "unlink": "npm unlink -g @shaclmate/runtime",
     "watch": "tsc -w --preserveWatchOutput",
     "watch:noEmit": "tsc --noEmit -w --preserveWatchOutput"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/minorg/shaclmate"
   },
   "type": "module",
   "version": "2.0.18"

@@ -279,10 +279,19 @@ export class TypeFactory {
           this.createObjectTypeFromAstType(astType),
         ),
       lazyProperties: () => {
-        const properties: ObjectType.Property[] = astType.properties.map(
-          (astProperty) =>
+        const properties: ObjectType.Property[] = astType.properties
+          .toSorted((left, right) => {
+            if (left.order < right.order) {
+              return -1;
+            }
+            if (left.order > right.order) {
+              return 1;
+            }
+            return tsName(left.name).localeCompare(tsName(right.name));
+          })
+          .map((astProperty) =>
             this.createObjectTypePropertyFromAstProperty(astType, astProperty),
-        );
+          );
 
         let identifierPropertyClassDeclarationVisibility: Maybe<PropertyVisibility>;
         if (astType.abstract) {
@@ -306,6 +315,41 @@ export class TypeFactory {
           identifierPropertyClassDeclarationVisibility = Maybe.of("private");
         }
 
+        // Type discriminator property
+        const typeDiscriminatorValues = new Set<string>();
+        if (!astType.abstract) {
+          typeDiscriminatorValues.add(objectType.discriminatorValue);
+        }
+        for (const descendantObjectType of objectType.descendantObjectTypes) {
+          if (!descendantObjectType.abstract) {
+            typeDiscriminatorValues.add(
+              descendantObjectType.discriminatorValue,
+            );
+          }
+        }
+        if (typeDiscriminatorValues.size > 0) {
+          properties.splice(
+            0,
+            0,
+            new ObjectType.TypeDiscriminatorProperty({
+              abstract: astType.abstract,
+              dataFactoryVariable: this.dataFactoryVariable,
+              name: astType.tsTypeDiscriminatorPropertyName,
+              objectType: {
+                declarationType: astType.tsObjectDeclarationType,
+                features: astType.tsFeatures,
+              },
+              override: objectType.parentObjectTypes.length > 0,
+              type: new ObjectType.TypeDiscriminatorProperty.Type({
+                mutable: false,
+                values: [...typeDiscriminatorValues].sort(),
+              }),
+              visibility: "public",
+              value: objectType.discriminatorValue,
+            }),
+          );
+        }
+
         const identifierProperty: ObjectType.IdentifierProperty =
           new ObjectType.IdentifierProperty({
             abstract: astType.abstract,
@@ -326,44 +370,9 @@ export class TypeFactory {
             type: identifierType,
             visibility: "public",
           });
-        properties.push(identifierProperty);
+        properties.splice(0, 0, identifierProperty);
 
-        // Type discriminator property
-        const typeDiscriminatorValues = new Set<string>();
-        if (!astType.abstract) {
-          typeDiscriminatorValues.add(objectType.discriminatorValue);
-        }
-        for (const descendantObjectType of objectType.descendantObjectTypes) {
-          if (!descendantObjectType.abstract) {
-            typeDiscriminatorValues.add(
-              descendantObjectType.discriminatorValue,
-            );
-          }
-        }
-        if (typeDiscriminatorValues.size > 0) {
-          properties.push(
-            new ObjectType.TypeDiscriminatorProperty({
-              abstract: astType.abstract,
-              dataFactoryVariable: this.dataFactoryVariable,
-              name: astType.tsTypeDiscriminatorPropertyName,
-              objectType: {
-                declarationType: astType.tsObjectDeclarationType,
-                features: astType.tsFeatures,
-              },
-              override: objectType.parentObjectTypes.length > 0,
-              type: new ObjectType.TypeDiscriminatorProperty.Type({
-                mutable: false,
-                values: [...typeDiscriminatorValues].sort(),
-              }),
-              visibility: "public",
-              value: objectType.discriminatorValue,
-            }),
-          );
-        }
-
-        return properties.sort((left, right) =>
-          left.name.localeCompare(right.name),
-        );
+        return properties;
       },
       identifierMintingStrategy: astType.identifierMintingStrategy,
       name: tsName(astType.name),

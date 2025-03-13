@@ -46,8 +46,8 @@ describe("sparql", () => {
         .unsafeCoerce();
       const equalsResult = harness.equals(constructInstance as any).extract();
       if (equalsResult !== true) {
-        const toRdfString = quadsToTurtle(toRdfQuads);
-        const constructResultString = quadsToTurtle([
+        const toRdfString = await quadsToTurtle(toRdfQuads);
+        const constructResultString = await quadsToTurtle([
           ...constructResultDataset,
         ]);
         console.log("not equal:\n", toRdfString, "\n", constructResultString);

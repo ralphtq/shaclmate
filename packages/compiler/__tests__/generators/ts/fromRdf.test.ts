@@ -2,7 +2,7 @@ import N3, { DataFactory as dataFactory } from "n3";
 import { MutableResourceSet } from "rdfjs-resource";
 import { describe, it } from "vitest";
 import "./harnesses.js"; // Must be imported before kitchenSink
-import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
+import * as kitchenSink from "@shaclmate/kitchen-sink-example";
 import { harnesses } from "./harnesses.js";
 
 describe("fromRdf", () => {

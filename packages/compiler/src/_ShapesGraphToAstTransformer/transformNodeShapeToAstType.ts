@@ -276,5 +276,15 @@ export function transformNodeShapeToAstType(
     objectType.properties.push(propertyEither.unsafeCoerce());
   }
 
+  objectType.properties.sort((left, right) => {
+    if (left.order < right.order) {
+      return -1;
+    }
+    if (left.order > right.order) {
+      return 1;
+    }
+    return 0;
+  });
+
   return Either.of(objectType);
 }

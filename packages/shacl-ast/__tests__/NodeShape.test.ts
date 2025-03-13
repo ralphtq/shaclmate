@@ -1,6 +1,6 @@
-import { RdfjsShapesGraph, defaultFactory } from "@shaclmate/shacl-ast";
 import { schema } from "@tpluscode/rdf-ns-builders";
 import { describe, it } from "vitest";
+import { RdfjsShapesGraph, defaultFactory } from "../src/index.js";
 import { testData } from "./testData.js";
 
 describe("NodeShape", () => {

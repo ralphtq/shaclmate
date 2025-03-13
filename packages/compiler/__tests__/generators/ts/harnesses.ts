@@ -1,8 +1,7 @@
 import type { BlankNode, NamedNode } from "@rdfjs/types";
+import * as kitchenSink from "@shaclmate/kitchen-sink-example";
 import { DataFactory as dataFactory } from "n3";
 import { NonEmptyList } from "purify-ts";
-import { ExternObjectType } from "../../../../../examples/kitchen-sink/ExternObjectType.js";
-import * as kitchenSink from "../../../../../examples/kitchen-sink/generated.js";
 import { ClassHarness } from "./ClassHarness.js";
 import { ClassUnionHarness } from "./ClassUnionHarness.js";
 import { InterfaceHarness } from "./InterfaceHarness.js";
@@ -158,7 +157,7 @@ export const harnesses = {
     fromJson: kitchenSink.NodeShapeWithExternProperties.fromJson,
     fromRdf: kitchenSink.NodeShapeWithExternProperties.fromRdf,
     instance: new kitchenSink.NodeShapeWithExternProperties({
-      externObjectTypeProperty: new ExternObjectType(
+      externObjectTypeProperty: new kitchenSink.ExternObjectType(
         dataFactory.namedNode("http://example.com/externObjectType"),
       ),
       externProperty: dataFactory.namedNode(
@@ -264,6 +263,18 @@ export const harnesses = {
     sparqlConstructQueryString:
       kitchenSink.NodeShapeWithMutableProperties.sparqlConstructQueryString,
   }),
+  nodeShapeWithOrderedProperties: new ClassHarness({
+    fromJson: kitchenSink.NodeShapeWithOrderedProperties.fromJson,
+    fromRdf: kitchenSink.NodeShapeWithOrderedProperties.fromRdf,
+    instance: new kitchenSink.NodeShapeWithOrderedProperties({
+      identifier,
+      propertyA: "testA",
+      propertyB: "testB",
+      propertyC: "testC",
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.NodeShapeWithOrderedProperties.sparqlConstructQueryString,
+  }),
   nodeShapeWithPropertyCardinalities: new ClassHarness({
     fromJson: kitchenSink.NodeShapeWithPropertyCardinalities.fromJson,
     fromRdf: kitchenSink.NodeShapeWithPropertyCardinalities.fromRdf,
@@ -295,7 +306,7 @@ export const harnesses = {
     instance: new kitchenSink.NodeShapeWithTermProperties({
       booleanProperty: true,
       dateProperty: new Date("2025-03-06"),
-      dateTimeProperty: new Date(),
+      dateTimeProperty: new Date(1523268000000),
       identifier,
       iriProperty: dataFactory.namedNode("http://example.com"),
       literalProperty: dataFactory.literal("test"),

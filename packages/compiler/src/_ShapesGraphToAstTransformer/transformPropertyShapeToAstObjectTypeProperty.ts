@@ -39,6 +39,7 @@ export function transformPropertyShapeToAstObjectTypeProperty(
     label: pickLiteral(propertyShape.labels).map((literal) => literal.value),
     mutable: propertyShape.mutable,
     name: this.shapeAstName(propertyShape),
+    order: propertyShape.order.orDefault(0),
     path,
     type: type.extract() as ast.Type,
     visibility: propertyShape.visibility,

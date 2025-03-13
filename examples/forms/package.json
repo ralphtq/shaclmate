@@ -1,8 +1,6 @@
 {
-  "name": "shaclmate-forms-example",
-  "version": "0.0.1",
-  "private": true,
   "dependencies": {
+    "@shaclmate/runtime": "2.0.18",
     "@jsonforms/core": "3.5.1",
     "@jsonforms/material-renderers": "3.5.1",
     "@jsonforms/react": "3.5.1",
@@ -19,9 +17,20 @@
     "@vitejs/plugin-react": "^4.3.4",
     "vite": "6.0.7"
   },
+  "license": "Apache-2.0",
+  "name": "@shaclmate/forms-example",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/minorg/shaclmate"
+  },
   "scripts": {
+    "clean": "rimraf dist",
     "dev": "vite --port 3000",
     "build": "tsc && vite build",
+    "rebuild": "run-s clean build",
     "start": "vite preview --port 3000"
-  }
+  },
+  "type": "module",
+  "version": "2.0.18"
 }
