@@ -44,11 +44,15 @@ export abstract class Property<
   /**
    * Signature of the property in an interface version of the object.
    */
-  abstract readonly interfacePropertySignature: OptionalKind<PropertySignatureStructure>;
+  abstract readonly interfacePropertySignature: Maybe<
+    OptionalKind<PropertySignatureStructure>
+  >;
   /**
    * Signature of the property when serialized to JSON (the type of toJsonObjectMember).
    */
-  abstract readonly jsonPropertySignature: OptionalKind<PropertySignatureStructure>;
+  abstract readonly jsonPropertySignature: Maybe<
+    OptionalKind<PropertySignatureStructure>
+  >;
   /**
    * Is the property reassignable?
    */
@@ -103,9 +107,7 @@ export abstract class Property<
   /**
    * Imports this property requires when declared in an object.
    */
-  get declarationImports(): readonly Import[] {
-    return [];
-  }
+  abstract get declarationImports(): readonly Import[];
 
   protected static visibilityToScope(
     visibility: PropertyVisibility,
@@ -175,10 +177,10 @@ export abstract class Property<
   /**
    * zod Object key: schema pair on the property serialized by toJsonObjectMember.
    */
-  abstract jsonZodSchema(parameters: { variables: { zod: string } }): {
+  abstract jsonZodSchema(parameters: { variables: { zod: string } }): Maybe<{
     readonly key: string;
     readonly schema: string;
-  };
+  }>;
 
   /**
    * An array of SPARQL.js CONSTRUCT template triples for this property as strings (so they can incorporate runtime calls).
@@ -199,7 +201,7 @@ export abstract class Property<
    */
   abstract toJsonObjectMember(parameters: {
     variables: { value: string };
-  }): string;
+  }): Maybe<string>;
 
   /**
    * Statements to serialize this property to an RDF resource.

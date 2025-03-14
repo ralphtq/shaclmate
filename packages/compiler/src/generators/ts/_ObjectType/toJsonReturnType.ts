@@ -6,10 +6,11 @@ export function toJsonReturnType(this: ObjectType): string {
   if (this.ownProperties.length > 0) {
     typeMembers.push(
       `{ ${this.ownProperties
-        .map((property) => {
-          const propertySignature = property.jsonPropertySignature;
-          return `readonly "${propertySignature.name}": ${propertySignature.type}`;
-        })
+        .flatMap((property) => property.jsonPropertySignature.toList())
+        .map(
+          (propertySignature) =>
+            `readonly "${propertySignature.name}": ${propertySignature.type}`,
+        )
         .join("; ")} }`,
     );
   }

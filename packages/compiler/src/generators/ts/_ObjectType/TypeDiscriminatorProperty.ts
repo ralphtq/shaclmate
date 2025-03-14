@@ -1,3 +1,4 @@
+import type { Import } from "generators/ts/Import.js";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import type {
@@ -68,20 +69,28 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     return Maybe.empty();
   }
 
-  override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {
-    return {
-      isReadonly: true,
-      name: this.name,
-      type: this.type.name,
-    };
+  override get declarationImports(): readonly Import[] {
+    return [];
   }
 
-  override get jsonPropertySignature(): OptionalKind<PropertySignatureStructure> {
-    return {
+  override get interfacePropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.of({
       isReadonly: true,
       name: this.name,
       type: this.type.name,
-    };
+    });
+  }
+
+  override get jsonPropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.of({
+      isReadonly: true,
+      name: this.name,
+      type: this.type.name,
+    });
   }
 
   override get snippetDeclarations(): readonly string[] {
@@ -132,13 +141,13 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
   }: Parameters<
     Property<TypeDiscriminatorProperty.Type>["jsonZodSchema"]
   >[0]): ReturnType<Property<TypeDiscriminatorProperty.Type>["jsonZodSchema"]> {
-    return {
+    return Maybe.of({
       key: this.name,
       schema:
         this.type.values.length > 1
           ? `${variables.zod}.enum(${JSON.stringify(this.type.values)})`
           : `${variables.zod}.literal("${this.type.values[0]}")`,
-    };
+    });
   }
 
   override sparqlConstructTemplateTriples(): readonly string[] {
@@ -153,8 +162,8 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
     variables,
   }: Parameters<
     Property<TypeDiscriminatorProperty.Type>["toJsonObjectMember"]
-  >[0]): string {
-    return `${this.name}: ${variables.value}`;
+  >[0]): Maybe<string> {
+    return Maybe.of(`${this.name}: ${variables.value}`);
   }
 
   override toRdfStatements(): readonly string[] {

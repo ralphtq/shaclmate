@@ -180,20 +180,24 @@ export class IdentifierProperty extends Property<IdentifierType> {
     return imports;
   }
 
-  override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {
-    return {
+  override get interfacePropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.of({
       isReadonly: true,
       name: this.name,
       type: this.type.name,
-    };
+    });
   }
 
-  override get jsonPropertySignature(): OptionalKind<PropertySignatureStructure> {
-    return {
+  override get jsonPropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.of({
       isReadonly: true,
       name: "@id",
       type: "string",
-    };
+    });
   }
 
   override get snippetDeclarations(): readonly string[] {
@@ -326,7 +330,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     Property<IdentifierType>["jsonUiSchemaElement"]
   >[0]): Maybe<string> {
     return Maybe.of(
-      `{ label: "Identifier", scope: \`\${${variables.scopePrefix}}/properties/${this.jsonPropertySignature.name}\`, type: "Control" }`,
+      `{ label: "Identifier", scope: \`\${${variables.scopePrefix}}/properties/${this.jsonPropertySignature.unsafeCoerce().name}\`, type: "Control" }`,
     );
   }
 
@@ -344,10 +348,10 @@ export class IdentifierProperty extends Property<IdentifierType> {
       schema = `${variables.zod}.string().min(1)`;
     }
 
-    return {
-      key: this.jsonPropertySignature.name,
+    return Maybe.of({
+      key: this.jsonPropertySignature.unsafeCoerce().name,
       schema,
-    };
+    });
   }
 
   override sparqlConstructTemplateTriples(): readonly string[] {
@@ -360,7 +364,9 @@ export class IdentifierProperty extends Property<IdentifierType> {
 
   override toJsonObjectMember({
     variables,
-  }: Parameters<Property<IdentifierType>["toJsonObjectMember"]>[0]): string {
+  }: Parameters<
+    Property<IdentifierType>["toJsonObjectMember"]
+  >[0]): Maybe<string> {
     const nodeKinds = [...this.type.nodeKinds];
     const valueToNodeKinds = nodeKinds.map((nodeKind) => {
       switch (nodeKind) {
@@ -373,10 +379,12 @@ export class IdentifierProperty extends Property<IdentifierType> {
       }
     });
     if (valueToNodeKinds.length === 1) {
-      return `"@id": ${valueToNodeKinds[0]}`;
+      return Maybe.of(`"@id": ${valueToNodeKinds[0]}`);
     }
     invariant(valueToNodeKinds.length === 2);
-    return `"@id": ${variables.value}.termType === "${nodeKinds[0]}" ? ${valueToNodeKinds[0]} : ${valueToNodeKinds[1]}`;
+    return Maybe.of(
+      `"@id": ${variables.value}.termType === "${nodeKinds[0]}" ? ${valueToNodeKinds[0]} : ${valueToNodeKinds[1]}`,
+    );
   }
 
   override toRdfStatements(): readonly string[] {

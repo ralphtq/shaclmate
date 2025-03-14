@@ -20,7 +20,9 @@ export function interfaceDeclaration(
   }
 
   const properties: OptionalKind<PropertySignatureStructure>[] =
-    this.properties.map((property) => property.interfacePropertySignature);
+    this.properties.flatMap((property) =>
+      property.interfacePropertySignature.toList(),
+    );
 
   return Maybe.of({
     extends: this.parentObjectTypes.map(

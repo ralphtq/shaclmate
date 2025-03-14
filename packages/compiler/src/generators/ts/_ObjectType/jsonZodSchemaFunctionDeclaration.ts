@@ -23,7 +23,7 @@ export function jsonZodSchemaFunctionDeclaration(
   if (this.properties.length > 0) {
     mergeZodObjectSchemas.push(
       `${variables.zod}.object({ ${this.properties
-        .map((property) => property.jsonZodSchema({ variables }))
+        .flatMap((property) => property.jsonZodSchema({ variables }).toList())
         .map(({ key, schema }) => `"${key}": ${schema}`)
         .join(",")} })`,
     );

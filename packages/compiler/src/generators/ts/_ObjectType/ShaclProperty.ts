@@ -92,21 +92,25 @@ export class ShaclProperty extends Property<Type> {
     return this.type.equalsFunction;
   }
 
-  override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {
-    return {
+  override get interfacePropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.of({
       isReadonly: !this.mutable,
       leadingTrivia: this.declarationComment,
       name: this.name,
       type: this.type.name,
-    };
+    });
   }
 
-  override get jsonPropertySignature(): OptionalKind<PropertySignatureStructure> {
-    return {
+  override get jsonPropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.of({
       isReadonly: true,
       name: this.name,
       type: this.type.jsonName,
-    };
+    });
   }
 
   override get snippetDeclarations(): readonly string[] {
@@ -218,10 +222,10 @@ export class ShaclProperty extends Property<Type> {
     this.comment.alt(this.description).ifJust((description) => {
       schema = `${schema}.describe(${JSON.stringify(description)})`;
     });
-    return {
+    return Maybe.of({
       key: this.name,
       schema,
-    };
+    });
   }
 
   sparqlConstructTemplateTriples({
@@ -258,8 +262,8 @@ export class ShaclProperty extends Property<Type> {
 
   override toJsonObjectMember(
     parameters: Parameters<Property<Type>["toJsonObjectMember"]>[0],
-  ): string {
-    return `${this.name}: ${this.type.toJsonExpression(parameters)}`;
+  ): Maybe<string> {
+    return Maybe.of(`${this.name}: ${this.type.toJsonExpression(parameters)}`);
   }
 
   override toRdfStatements({

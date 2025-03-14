@@ -44,13 +44,15 @@ export function toJsonFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
   }
 
   if (this.ownProperties.length > 0) {
-    for (const property of this.ownProperties) {
-      jsonObjectMembers.push(
-        property.toJsonObjectMember({
-          variables: { value: `${this.thisVariable}.${property.name}` },
-        }),
-      );
-    }
+    jsonObjectMembers.push(
+      ...this.ownProperties.flatMap((property) =>
+        property
+          .toJsonObjectMember({
+            variables: { value: `${this.thisVariable}.${property.name}` },
+          })
+          .toList(),
+      ),
+    );
   }
 
   // 20241220: don't add @type until we're doing JSON-LD
