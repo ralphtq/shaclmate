@@ -36,7 +36,8 @@ shaclmate:ShaclmateNodeShape-fromRdfType
 
 shaclmate:ShaclmateNodeShape-identifierMintingStrategy
     a sh:PropertyShape ;
-    sh:in (shaclmate:_IdentifierMintingStrategy_SHA256
+    sh:in (shaclmate:_IdentifierMintingStrategy_BlankNode
+        shaclmate:_IdentifierMintingStrategy_SHA256
         shaclmate:_IdentifierMintingStrategy_UUIDv4
     ) ;
     sh:maxCount 1 ;

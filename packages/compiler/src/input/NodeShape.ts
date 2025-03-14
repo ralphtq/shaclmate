@@ -251,12 +251,12 @@ export class NodeShape extends ShaclCoreNodeShape<
     return this.generatedShaclmateNodeShape.identifierMintingStrategy.map(
       (iri) => {
         switch (iri.value) {
+          case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_BlankNode":
+            return "blankNode";
           case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256":
             return "sha256";
           case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4":
             return "uuidv4";
-          default:
-            throw new RangeError(iri.value);
         }
       },
     );
