@@ -60,27 +60,34 @@ export class IdentifierProperty extends Property<IdentifierType> {
       return Maybe.empty();
     }
 
-    const mintIdentifier = this.identifierMintingStrategy
-      .map((identifierMintingStrategy) => {
-        switch (identifierMintingStrategy) {
-          case "blankNode":
-            return "dataFactory.blankNode()";
-          case "sha256":
-            return "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`)";
-          case "uuidv4":
-            return "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${uuid.v4()}`)";
-        }
-      })
-      .unsafeCoerce();
+    let memoizeMintedIdentifier: boolean;
+    let mintIdentifier: string;
+    switch (this.identifierMintingStrategy.unsafeCoerce()) {
+      case "blankNode":
+        memoizeMintedIdentifier = true;
+        mintIdentifier = "dataFactory.blankNode()";
+        break;
+      case "sha256":
+        // If the object is mutable don't memoize the minted identifier, since the hash will change if the object mutates.
+        memoizeMintedIdentifier = !this.lazyObjectTypeMutable();
+        mintIdentifier =
+          "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`)";
+        break;
+      case "uuidv4":
+        memoizeMintedIdentifier = true;
+        mintIdentifier =
+          "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${uuid.v4()}`)";
+        break;
+    }
 
     return Maybe.of({
       leadingTrivia: this.override ? "override " : undefined,
       name: this.name,
       returnType: this.type.name,
       statements: [
-        this.lazyObjectTypeMutable()
-          ? `return (typeof this._${this.name} !== "undefined") ? this._${this.name} : ${mintIdentifier}`
-          : `if (typeof this._${this.name} === "undefined") { this._${this.name} = ${mintIdentifier}; } return this._${this.name};`,
+        memoizeMintedIdentifier
+          ? `if (typeof this._${this.name} === "undefined") { this._${this.name} = ${mintIdentifier}; } return this._${this.name};`
+          : `return (typeof this._${this.name} !== "undefined") ? this._${this.name} : ${mintIdentifier}`,
       ],
     } satisfies OptionalKind<GetAccessorDeclarationStructure>);
   }
