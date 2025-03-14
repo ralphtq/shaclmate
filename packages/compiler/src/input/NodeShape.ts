@@ -126,7 +126,9 @@ export class NodeShape extends ShaclCoreNodeShape<
         }
       }
     }
-    return thisMintingStrategy;
+    return thisMintingStrategy.altLazy(() =>
+      this.nodeKinds.has("BlankNode") ? Maybe.of("blankNode") : Maybe.empty(),
+    );
   }
 
   get mutable(): Maybe<boolean> {

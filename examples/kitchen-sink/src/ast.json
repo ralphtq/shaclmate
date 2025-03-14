@@ -465,7 +465,8 @@
               "identifierKinds": [
                 "BlankNode",
                 "NamedNode"
-              ]
+              ],
+              "identifierMintingStrategy": "blankNode"
             },
             "kind": "OptionType"
           }
@@ -514,7 +515,8 @@
               "identifierKinds": [
                 "BlankNode",
                 "NamedNode"
-              ]
+              ],
+              "identifierMintingStrategy": "blankNode"
             },
             "kind": "OptionType"
           }
@@ -862,7 +864,8 @@
                 "identifierKinds": [
                   "BlankNode",
                   "NamedNode"
-                ]
+                ],
+                "identifierMintingStrategy": "blankNode"
               },
               "kind": "ListType"
             },
@@ -1454,7 +1457,8 @@
                   "identifierKinds": [
                     "BlankNode",
                     "NamedNode"
-                  ]
+                  ],
+                  "identifierMintingStrategy": "blankNode"
                 }
               ]
             },

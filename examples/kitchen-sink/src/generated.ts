@@ -2779,9 +2779,10 @@ export class NodeShapeWithTermProperties {
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    return typeof this._identifier !== "undefined"
-      ? this._identifier
-      : dataFactory.blankNode();
+    if (typeof this._identifier === "undefined") {
+      this._identifier = dataFactory.blankNode();
+    }
+    return this._identifier;
   }
 
   equals(other: NodeShapeWithTermProperties): EqualsResult {
@@ -7676,9 +7677,10 @@ export class NodeShapeWithInProperties {
   }
 
   get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    return typeof this._identifier !== "undefined"
-      ? this._identifier
-      : dataFactory.blankNode();
+    if (typeof this._identifier === "undefined") {
+      this._identifier = dataFactory.blankNode();
+    }
+    return this._identifier;
   }
 
   equals(other: NodeShapeWithInProperties): EqualsResult {

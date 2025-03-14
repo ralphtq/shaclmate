@@ -5,7 +5,6 @@ import { rdf, xsd } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { fromRdf } from "rdf-literal";
 import type * as ast from "../../ast/index.js";
-import type { PropertyVisibility } from "../../enums/index.js";
 import { logger } from "../../logger.js";
 import { BooleanType } from "./BooleanType.js";
 import { DateTimeType } from "./DateTimeType.js";
@@ -293,28 +292,6 @@ export class TypeFactory {
             this.createObjectTypePropertyFromAstProperty(astType, astProperty),
           );
 
-        let identifierPropertyClassDeclarationVisibility: Maybe<PropertyVisibility>;
-        if (astType.abstract) {
-          // If the type is abstract, don't declare a property.
-          identifierPropertyClassDeclarationVisibility = Maybe.empty();
-        } else if (
-          astType.ancestorObjectTypes.some(
-            (ancestorObjectType) => !ancestorObjectType.abstract,
-          )
-        ) {
-          // If the type has a non-abstract ancestor, that ancestor will declare the identifier property
-          identifierPropertyClassDeclarationVisibility = Maybe.empty();
-        } else if (
-          astType.descendantObjectTypes.some(
-            (descendantObjectType) => !descendantObjectType.abstract,
-          )
-        ) {
-          // If the type has a non-abstract descendant, declare the identifier property for it
-          identifierPropertyClassDeclarationVisibility = Maybe.of("protected");
-        } else {
-          identifierPropertyClassDeclarationVisibility = Maybe.of("private");
-        }
-
         // Type discriminator property
         const typeDiscriminatorValues = new Set<string>();
         if (!astType.abstract) {
@@ -350,11 +327,36 @@ export class TypeFactory {
           );
         }
 
+        // Every ObjectType has an identifier property. Some are abstract.
         const identifierProperty: ObjectType.IdentifierProperty =
           new ObjectType.IdentifierProperty({
             abstract: astType.abstract,
-            classDeclarationVisibility:
-              identifierPropertyClassDeclarationVisibility,
+            classDeclarationVisibility: (() => {
+              if (astType.abstract) {
+                // If the type is abstract, don't declare an identifier property.
+                return Maybe.empty();
+              }
+
+              if (
+                astType.ancestorObjectTypes.some(
+                  (ancestorObjectType) => !ancestorObjectType.abstract,
+                )
+              ) {
+                // If the type has a non-abstract ancestor, that ancestor will declare the identifier property.
+                return Maybe.empty();
+              }
+
+              if (
+                astType.descendantObjectTypes.some(
+                  (descendantObjectType) => !descendantObjectType.abstract,
+                )
+              ) {
+                // If the type has a non-abstract descendant, declare the identifier property for it.
+                return Maybe.of("protected");
+              }
+
+              return Maybe.of("private");
+            })(),
             dataFactoryVariable: this.dataFactoryVariable,
             identifierMintingStrategy: astType.identifierMintingStrategy,
             name: astType.tsIdentifierPropertyName,
