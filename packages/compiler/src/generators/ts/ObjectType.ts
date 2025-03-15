@@ -460,6 +460,8 @@ export class ObjectType extends DeclaredType {
 }
 
 export namespace ObjectType {
+  export const IdentifierPrefixProperty = _ObjectType.IdentifierPrefixProperty;
+  export type IdentifierPrefixProperty = _ObjectType.IdentifierPrefixProperty;
   export const IdentifierProperty = _ObjectType.IdentifierProperty;
   export type IdentifierProperty = _ObjectType.IdentifierProperty;
   export const Property = _ObjectType.Property;

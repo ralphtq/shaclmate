@@ -23,6 +23,22 @@ import type { Type } from "./Type.js";
 import { UnionType } from "./UnionType.js";
 import { tsName } from "./tsName.js";
 
+function objectTypeNeedsIdentifierPrefixProperty(
+  objectType: ast.ObjectType,
+): boolean {
+  return objectType.identifierMintingStrategy
+    .map((identifierMintingStrategy) => {
+      switch (identifierMintingStrategy) {
+        case "blankNode":
+          return false;
+        case "sha256":
+        case "uuidv4":
+          return true;
+      }
+    })
+    .orDefault(false);
+}
+
 export class TypeFactory {
   private cachedObjectTypePropertiesByIdentifier: TermMap<
     BlankNode | NamedNode,
@@ -292,6 +308,11 @@ export class TypeFactory {
             this.createObjectTypePropertyFromAstProperty(astType, astProperty),
           );
 
+        const lazyMutable = () =>
+          properties.some(
+            (property) => property.mutable || property.type.mutable,
+          );
+
         // Type discriminator property
         const typeDiscriminatorValues = new Set<string>();
         if (!astType.abstract) {
@@ -315,6 +336,7 @@ export class TypeFactory {
               objectType: {
                 declarationType: astType.tsObjectDeclarationType,
                 features: astType.tsFeatures,
+                mutable: lazyMutable,
               },
               override: objectType.parentObjectTypes.length > 0,
               type: new ObjectType.TypeDiscriminatorProperty.Type({
@@ -327,8 +349,40 @@ export class TypeFactory {
           );
         }
 
+        // Some ObjectTypes have an identifierPrefix property, depending on their identifier minting strategy.
+        if (objectTypeNeedsIdentifierPrefixProperty(astType)) {
+          properties.splice(
+            0,
+            0,
+            new ObjectType.IdentifierPrefixProperty({
+              dataFactoryVariable: this.dataFactoryVariable,
+              own: !astType.ancestorObjectTypes.some(
+                objectTypeNeedsIdentifierPrefixProperty,
+              ),
+              name: astType.tsIdentifierPrefixPropertyName,
+              objectType: {
+                declarationType: astType.tsObjectDeclarationType,
+                features: astType.tsFeatures,
+                mutable: lazyMutable,
+              },
+              type: new StringType({
+                dataFactoryVariable: this.dataFactoryVariable,
+                defaultValue: Maybe.empty(),
+                hasValues: [],
+                in_: [],
+                languageIn: [],
+                primitiveDefaultValue: Maybe.empty(),
+                primitiveIn: [],
+              }),
+              visibility: "protected",
+            }),
+          );
+        }
+
         // Every ObjectType has an identifier property. Some are abstract.
-        const identifierProperty: ObjectType.IdentifierProperty =
+        properties.splice(
+          0,
+          0,
           new ObjectType.IdentifierProperty({
             abstract: astType.abstract,
             classDeclarationVisibility: (() => {
@@ -360,19 +414,16 @@ export class TypeFactory {
             dataFactoryVariable: this.dataFactoryVariable,
             identifierMintingStrategy: astType.identifierMintingStrategy,
             name: astType.tsIdentifierPropertyName,
-            lazyObjectTypeMutable: () =>
-              properties.some(
-                (property) => property.mutable || property.type.mutable,
-              ),
             objectType: {
               declarationType: astType.tsObjectDeclarationType,
               features: astType.tsFeatures,
+              mutable: lazyMutable,
             },
             override: astType.parentObjectTypes.length > 0,
             type: identifierType,
             visibility: "public",
-          });
-        properties.splice(0, 0, identifierProperty);
+          }),
+        );
 
         return properties;
       },
@@ -406,6 +457,9 @@ export class TypeFactory {
       objectType: {
         declarationType: astObjectType.tsObjectDeclarationType,
         features: astObjectType.tsFeatures,
+        mutable: () => {
+          throw new Error("not implemented");
+        },
       },
       name: tsName(astObjectTypeProperty.name),
       path: astObjectTypeProperty.path.iri,

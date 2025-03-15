@@ -240,8 +240,22 @@ export class NodeShape extends ShaclCoreNodeShape<
       );
   }
 
+  get tsObjectIdentifierPrefixPropertyName(): Maybe<string> {
+    return this.generatedShaclmateNodeShape.tsObjectIdentifierPrefixPropertyName.altLazy(
+      () =>
+        this.isDefinedBy.chain(
+          (ontology) => ontology.tsObjectIdentifierPrefixPropertyName,
+        ),
+    );
+  }
+
   get tsObjectIdentifierPropertyName(): Maybe<string> {
-    return this.generatedShaclmateNodeShape.tsObjectIdentifierPropertyName;
+    return this.generatedShaclmateNodeShape.tsObjectIdentifierPrefixPropertyName.altLazy(
+      () =>
+        this.isDefinedBy.chain(
+          (ontology) => ontology.tsObjectIdentifierPropertyName,
+        ),
+    );
   }
 
   get tsObjectTypeDiscriminatorPropertyName(): Maybe<string> {

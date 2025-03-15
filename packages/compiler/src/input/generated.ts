@@ -1491,6 +1491,7 @@ export interface ShaclmateOntology extends OwlOntology {
       | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
     >
   >;
+  readonly tsObjectIdentifierPrefixPropertyName: purify.Maybe<string>;
   readonly tsObjectIdentifierPropertyName: purify.Maybe<string>;
   readonly tsObjectTypeDiscriminatorPropertyName: purify.Maybe<string>;
 }
@@ -1552,6 +1553,7 @@ export namespace ShaclmateOntology {
           | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
         >
       >;
+      tsObjectIdentifierPrefixPropertyName: purify.Maybe<string>;
       tsObjectIdentifierPropertyName: purify.Maybe<string>;
       tsObjectTypeDiscriminatorPropertyName: purify.Maybe<string>;
     } & UnwrapR<ReturnType<typeof OwlOntology.propertiesFromRdf>>
@@ -2422,6 +2424,27 @@ export namespace ShaclmateOntology {
 
     const tsObjectDeclarationType =
       _tsObjectDeclarationTypeEither.unsafeCoerce();
+    const _tsObjectIdentifierPrefixPropertyNameEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<string>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode(
+            "http://purl.org/shaclmate/ontology#tsObjectIdentifierPrefixPropertyName",
+          ),
+          { unique: true },
+        )
+        .head()
+        .chain((_value) => _value.toString())
+        .toMaybe(),
+    );
+    if (_tsObjectIdentifierPrefixPropertyNameEither.isLeft()) {
+      return _tsObjectIdentifierPrefixPropertyNameEither;
+    }
+
+    const tsObjectIdentifierPrefixPropertyName =
+      _tsObjectIdentifierPrefixPropertyNameEither.unsafeCoerce();
     const _tsObjectIdentifierPropertyNameEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<string>
@@ -2473,6 +2496,7 @@ export namespace ShaclmateOntology {
       tsFeatureIncludes,
       tsImports,
       tsObjectDeclarationType,
+      tsObjectIdentifierPrefixPropertyName,
       tsObjectIdentifierPropertyName,
       tsObjectTypeDiscriminatorPropertyName,
     });
@@ -2691,6 +2715,7 @@ export interface ShaclmateNodeShape extends ShaclCoreNodeShape {
       | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
     >
   >;
+  readonly tsObjectIdentifierPrefixPropertyName: purify.Maybe<string>;
   readonly tsObjectIdentifierPropertyName: purify.Maybe<string>;
   readonly tsObjectTypeDiscriminatorPropertyName: purify.Maybe<string>;
 }
@@ -2765,6 +2790,7 @@ export namespace ShaclmateNodeShape {
           | "http://purl.org/shaclmate/ontology#_TsObjectDeclarationType_Interface"
         >
       >;
+      tsObjectIdentifierPrefixPropertyName: purify.Maybe<string>;
       tsObjectIdentifierPropertyName: purify.Maybe<string>;
       tsObjectTypeDiscriminatorPropertyName: purify.Maybe<string>;
     } & UnwrapR<ReturnType<typeof ShaclCoreNodeShape.propertiesFromRdf>>
@@ -3825,6 +3851,27 @@ export namespace ShaclmateNodeShape {
 
     const tsObjectDeclarationType =
       _tsObjectDeclarationTypeEither.unsafeCoerce();
+    const _tsObjectIdentifierPrefixPropertyNameEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      purify.Maybe<string>
+    > = purify.Either.of(
+      _resource
+        .values(
+          dataFactory.namedNode(
+            "http://purl.org/shaclmate/ontology#tsObjectIdentifierPrefixPropertyName",
+          ),
+          { unique: true },
+        )
+        .head()
+        .chain((_value) => _value.toString())
+        .toMaybe(),
+    );
+    if (_tsObjectIdentifierPrefixPropertyNameEither.isLeft()) {
+      return _tsObjectIdentifierPrefixPropertyNameEither;
+    }
+
+    const tsObjectIdentifierPrefixPropertyName =
+      _tsObjectIdentifierPrefixPropertyNameEither.unsafeCoerce();
     const _tsObjectIdentifierPropertyNameEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<string>
@@ -3883,6 +3930,7 @@ export namespace ShaclmateNodeShape {
       tsFeatureIncludes,
       tsImports,
       tsObjectDeclarationType,
+      tsObjectIdentifierPrefixPropertyName,
       tsObjectIdentifierPropertyName,
       tsObjectTypeDiscriminatorPropertyName,
     });

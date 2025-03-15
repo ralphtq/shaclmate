@@ -37,4 +37,12 @@ export class Ontology extends OwlOntology {
       },
     );
   }
+
+  get tsObjectIdentifierPrefixPropertyName(): Maybe<string> {
+    return this.generatedShaclmateOntology.tsObjectIdentifierPrefixPropertyName;
+  }
+
+  get tsObjectIdentifierPropertyName(): Maybe<string> {
+    return this.generatedShaclmateOntology.tsObjectIdentifierPropertyName;
+  }
 }

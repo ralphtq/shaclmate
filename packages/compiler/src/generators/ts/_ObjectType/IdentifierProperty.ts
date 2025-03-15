@@ -22,20 +22,17 @@ export class IdentifierProperty extends Property<IdentifierType> {
   readonly mutable = false;
   private readonly classDeclarationVisibility: Maybe<PropertyVisibility>;
   private readonly identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
-  private readonly lazyObjectTypeMutable: () => boolean;
   private readonly override: boolean;
 
   constructor({
     abstract,
     classDeclarationVisibility,
-    lazyObjectTypeMutable,
     identifierMintingStrategy,
     override,
     ...superParameters
   }: {
     abstract: boolean;
     classDeclarationVisibility: Maybe<PropertyVisibility>;
-    lazyObjectTypeMutable: () => boolean;
     identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
     override: boolean;
     type: IdentifierType;
@@ -45,7 +42,6 @@ export class IdentifierProperty extends Property<IdentifierType> {
     this.abstract = abstract;
     this.classDeclarationVisibility = classDeclarationVisibility;
     this.identifierMintingStrategy = identifierMintingStrategy;
-    this.lazyObjectTypeMutable = lazyObjectTypeMutable;
     this.override = override;
   }
 
@@ -69,7 +65,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
         break;
       case "sha256":
         // If the object is mutable don't memoize the minted identifier, since the hash will change if the object mutates.
-        memoizeMintedIdentifier = !this.lazyObjectTypeMutable();
+        memoizeMintedIdentifier = !this.objectType.mutable();
         mintIdentifier =
           "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`)";
         break;

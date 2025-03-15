@@ -82,6 +82,7 @@ export abstract class Property<
   protected readonly objectType: {
     readonly declarationType: TsObjectDeclarationType;
     readonly features: Set<TsFeature>;
+    readonly mutable: () => boolean;
   };
 
   constructor({

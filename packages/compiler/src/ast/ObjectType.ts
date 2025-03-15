@@ -130,6 +130,11 @@ export interface ObjectType {
   readonly tsFeatures: Set<TsFeature>;
 
   /**
+   * Name of the identifier prefix property in TypeScript-generated classes/interfaces.
+   */
+  readonly tsIdentifierPrefixPropertyName: string;
+
+  /**
    * Name of the identifier property in TypeScript-generated classes/interfaces.
    */
   readonly tsIdentifierPropertyName: string;
