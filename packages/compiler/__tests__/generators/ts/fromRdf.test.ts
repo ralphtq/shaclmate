@@ -31,7 +31,7 @@ describe("fromRdf", () => {
       "http://example.com/hasIriProperty",
     );
     const object = dataFactory.namedNode(
-      "http://example.com/NodeShapeWithHasValuePropertiesIri1",
+      "http://example.com/HasValuePropertiesNodeShapeIri1",
     );
     dataset.add(dataFactory.quad(identifier, predicate, object));
     // Add an extra object of the same predicate, which should be ignored
@@ -40,7 +40,7 @@ describe("fromRdf", () => {
         identifier,
         predicate,
         dataFactory.namedNode(
-          "http://example.com/NodeShapeWithHasValuePropertiesIri2",
+          "http://example.com/HasValuePropertiesNodeShapeIri2",
         ),
       ),
     );
