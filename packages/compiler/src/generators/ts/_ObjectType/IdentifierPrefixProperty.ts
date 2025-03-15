@@ -34,10 +34,9 @@ export class IdentifierPrefixProperty extends Property<StringType> {
     OptionalKind<GetAccessorDeclarationStructure>
   > {
     return Maybe.of({
-      leadingTrivia: !this.own ? "override " : undefined,
+      leadingTrivia: `protected ${!this.own ? "override " : ""}`,
       name: this.name,
       returnType: this.type.name,
-      scope: Scope.Protected,
       statements: [
         `return (typeof this._${this.name} !== "undefined") ? this._${this.name} : \`urn:shaclmate:\${this.type}:\``,
       ],
@@ -49,6 +48,7 @@ export class IdentifierPrefixProperty extends Property<StringType> {
   > {
     return this.own
       ? Maybe.of({
+          hasQuestionToken: true,
           isReadonly: true,
           name: `_${this.name}`,
           scope: Scope.Protected,
@@ -99,7 +99,7 @@ export class IdentifierPrefixProperty extends Property<StringType> {
   >[0]): readonly string[] {
     return this.classPropertyDeclaration
       .map((classPropertyDeclaration) => [
-        `if (typeof ${variables.parameter} !== "undefined") { this.${classPropertyDeclaration.name} = ${variables.parameter}; }`,
+        `this.${classPropertyDeclaration.name} = ${variables.parameter};`,
       ])
       .orDefault([]);
   }

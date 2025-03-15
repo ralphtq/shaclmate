@@ -44,7 +44,7 @@ describe("fromRdf", () => {
         ),
       ),
     );
-    const instance = kitchenSink.NodeShapeWithHasValueProperties.fromRdf({
+    const instance = kitchenSink.HasValuePropertiesNodeShape.fromRdf({
       resource: new MutableResourceSet({
         dataFactory,
         dataset: dataset,
@@ -63,7 +63,7 @@ describe("fromRdf", () => {
         dataFactory.literal("nottest"),
       ),
     );
-    const instance = kitchenSink.NodeShapeWithHasValueProperties.fromRdf({
+    const instance = kitchenSink.HasValuePropertiesNodeShape.fromRdf({
       resource: new MutableResourceSet({
         dataFactory,
         dataset: dataset,
@@ -84,7 +84,7 @@ describe("fromRdf", () => {
         dataFactory.literal("whatever"),
       ),
     );
-    const instance = kitchenSink.NodeShapeWithInIdentifier.fromRdf({
+    const instance = kitchenSink.InIdentifierNodeShape.fromRdf({
       resource: new MutableResourceSet({
         dataFactory,
         dataset: dataset,
@@ -105,7 +105,7 @@ describe("fromRdf", () => {
         ),
       ),
     );
-    const instance = kitchenSink.NodeShapeWithInProperties.fromRdf({
+    const instance = kitchenSink.InPropertiesNodeShape.fromRdf({
       resource: new MutableResourceSet({
         dataFactory,
         dataset: dataset,
@@ -122,7 +122,7 @@ describe("fromRdf", () => {
     );
     const object = dataFactory.literal("somethingelse");
     dataset.add(dataFactory.quad(identifier, predicate, object));
-    const instance = kitchenSink.NodeShapeWithInProperties.fromRdf({
+    const instance = kitchenSink.InPropertiesNodeShape.fromRdf({
       resource: new MutableResourceSet({
         dataFactory,
         dataset: dataset,
@@ -150,7 +150,7 @@ describe("fromRdf", () => {
     );
 
     {
-      const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+      const instance = kitchenSink.LanguageInPropertiesNodeShape.fromRdf({
         languageIn: ["en"],
         resource,
       }).unsafeCoerce();
@@ -166,7 +166,7 @@ describe("fromRdf", () => {
     );
 
     {
-      const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+      const instance = kitchenSink.LanguageInPropertiesNodeShape.fromRdf({
         languageIn: ["en"],
         resource,
       }).unsafeCoerce();
@@ -200,7 +200,7 @@ describe("fromRdf", () => {
         dataFactory.literal("envalue", "en"),
       ),
     );
-    const instance = kitchenSink.NodeShapeWithLanguageInProperties.fromRdf({
+    const instance = kitchenSink.LanguageInPropertiesNodeShape.fromRdf({
       resource,
     }).unsafeCoerce();
     expect(instance.languageInProperty.unsafeCoerce().value).toStrictEqual(

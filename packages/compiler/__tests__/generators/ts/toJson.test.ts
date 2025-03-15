@@ -3,9 +3,9 @@ import { harnesses } from "./harnesses.js";
 
 describe("toJson", () => {
   it("union properties", ({ expect }) => {
-    const jsonObject = harnesses.nodeShapeWithUnionProperties.instance.toJson();
+    const jsonObject = harnesses.unionProperties.instance.toJson();
     expect(jsonObject["@id"]).toStrictEqual("http://example.com/instance");
-    expect(jsonObject.type).toStrictEqual("NodeShapeWithUnionProperties");
+    expect(jsonObject.type).toStrictEqual("UnionPropertiesNodeShape");
     expect(jsonObject.orLiteralsProperty).toStrictEqual({
       "@type": "http://www.w3.org/2001/XMLSchema#integer",
       "@value": "1",

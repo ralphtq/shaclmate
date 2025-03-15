@@ -1,0 +1,44 @@
+import { DataFactory as dataFactory } from "n3";
+import { describe, it } from "vitest";
+import "./harnesses.js"; // Must be imported before kitchenSink
+import * as kitchenSink from "@shaclmate/kitchen-sink-example";
+import { harnesses } from "./harnesses.js";
+
+describe("identifier", () => {
+  it("use a blank node if no minting strategy is specified and a blank node is allowed as an identifier", ({
+    expect,
+  }) => {
+    expect(harnesses.blankNodeShape.instance.identifier.termType).toStrictEqual(
+      "BlankNode",
+    );
+  });
+
+  it("don't mint an IRI if one is supplied", ({ expect }) => {
+    expect(
+      harnesses.sha256IriNodeShapeWithExplicitIdentifier.instance.identifier.equals(
+        dataFactory.namedNode("http://example.com/instance"),
+      ),
+    ).toStrictEqual(true);
+  });
+
+  it("mint an IRI with SHA-256 if none is supplied", ({ expect }) => {
+    const instance = new kitchenSink.Sha256IriNodeShape({
+      stringProperty: "test",
+    });
+    expect(
+      instance.identifier.equals(
+        dataFactory.namedNode(
+          "urn:shaclmate:object:Sha256IriNodeShape:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+        ),
+      ),
+    ).toStrictEqual(true);
+  });
+
+  it("mint an IRI with UUIDv4 if none is supplied", ({ expect }) => {
+    const instance =
+      harnesses.uuidv4IriNodeShapeWithoutExplicitIdentifier.instance;
+    expect(instance.identifier.value).toMatch(
+      /urn:shaclmate:object:UuidV4IriNodeShape:[0-9A-Fa-f]{8}-/,
+    );
+  });
+});
