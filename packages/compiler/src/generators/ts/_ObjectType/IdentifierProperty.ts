@@ -67,12 +67,12 @@ export class IdentifierProperty extends Property<IdentifierType> {
         // If the object is mutable don't memoize the minted identifier, since the hash will change if the object mutates.
         memoizeMintedIdentifier = !this.objectType.mutable();
         mintIdentifier =
-          "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`)";
+          "dataFactory.namedNode(`${this.identifierPrefix}${this.hash(sha256.create())}`)";
         break;
       case "uuidv4":
         memoizeMintedIdentifier = true;
         mintIdentifier =
-          "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${uuid.v4()}`)";
+          "dataFactory.namedNode(`${this.identifierPrefix}${uuid.v4()}`)";
         break;
     }
 

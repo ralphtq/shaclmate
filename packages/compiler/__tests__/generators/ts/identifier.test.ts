@@ -21,6 +21,16 @@ describe("identifier", () => {
     ).toStrictEqual(true);
   });
 
+  it("identifier prefix", ({ expect }) => {
+    const instance = new kitchenSink.Sha256IriNodeShape({
+      identifierPrefix: "urn:othernamespace:",
+      stringProperty: "test",
+    });
+    expect(instance.identifier.value).toMatch(
+      "urn:othernamespace:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+    );
+  });
+
   it("mint an IRI with SHA-256 if none is supplied", ({ expect }) => {
     const instance = new kitchenSink.Sha256IriNodeShape({
       stringProperty: "test",
@@ -28,7 +38,7 @@ describe("identifier", () => {
     expect(
       instance.identifier.equals(
         dataFactory.namedNode(
-          "urn:shaclmate:object:Sha256IriNodeShape:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+          "urn:shaclmate:Sha256IriNodeShape:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
         ),
       ),
     ).toStrictEqual(true);
@@ -38,7 +48,7 @@ describe("identifier", () => {
     const instance =
       harnesses.uuidv4IriNodeShapeWithoutExplicitIdentifier.instance;
     expect(instance.identifier.value).toMatch(
-      /urn:shaclmate:object:UuidV4IriNodeShape:[0-9A-Fa-f]{8}-/,
+      /urn:shaclmate:UuidV4IriNodeShape:[0-9A-Fa-f]{8}-/,
     );
   });
 });
