@@ -11,7 +11,7 @@ shaclmate:ShaclmateNodeShape
     shaclmate:name "ShaclmateNodeShape" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf shaclmate:ShaclCoreNodeShape ;
-    sh:property shaclmate:ShaclmateNodeShape-abstract, shaclmate:ShaclmateNodeShape-export, shaclmate:ShaclmateNodeShape-fromRdfType, shaclmate:ShaclmateNodeShape-identifierMintingStrategy, shaclmate:ShaclmateNodeShape-toRdfTypes, shaclmate:ShaclmateShape-extern, shaclmate:ShaclmateShape-mutable, shaclmate:ShaclmateShape-name, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
+    sh:property shaclmate:ShaclmateNodeShape-abstract, shaclmate:ShaclmateNodeShape-export, shaclmate:ShaclmateNodeShape-fromRdfType, shaclmate:ShaclmateNodeShape-identifierMintingStrategy, shaclmate:ShaclmateNodeShape-toRdfTypes, shaclmate:ShaclmateShape-extern, shaclmate:ShaclmateShape-mutable, shaclmate:ShaclmateShape-name, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPrefixPropertyName, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
 
 shaclmate:ShaclmateNodeShape-abstract
     a sh:PropertyShape ;
@@ -36,7 +36,8 @@ shaclmate:ShaclmateNodeShape-fromRdfType
 
 shaclmate:ShaclmateNodeShape-identifierMintingStrategy
     a sh:PropertyShape ;
-    sh:in (shaclmate:_IdentifierMintingStrategy_SHA256
+    sh:in (shaclmate:_IdentifierMintingStrategy_BlankNode
+        shaclmate:_IdentifierMintingStrategy_SHA256
         shaclmate:_IdentifierMintingStrategy_UUIDv4
     ) ;
     sh:maxCount 1 ;
@@ -54,7 +55,7 @@ shaclmate:ShaclmateOntology
     shaclmate:name "ShaclmateOntology" ;
     a owl:Class, sh:NodeShape ;
     rdfs:subClassOf shaclmate:OwlOntology ;
-    sh:property shaclmate:ShaclmateOntology-tsDataFactoryVariable, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
+    sh:property shaclmate:ShaclmateOntology-tsDataFactoryVariable, shaclmate:tsFeatureExcludes, shaclmate:tsFeatureIncludes, shaclmate:tsImports, shaclmate:tsObjectDeclarationType, shaclmate:tsObjectIdentifierPrefixPropertyName, shaclmate:tsObjectIdentifierPropertyName, shaclmate:tsObjectTypeDiscriminatorPropertyName .
 
 shaclmate:ShaclmateOntology-tsDataFactoryVariable
     a sh:PropertyShape ;
@@ -162,6 +163,13 @@ shaclmate:tsObjectDeclarationType
     sh:maxCount 1 ;
     sh:name "tsObjectDeclarationType" ;
     sh:path shaclmate:tsObjectDeclarationType .
+
+shaclmate:tsObjectIdentifierPrefixPropertyName
+    a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "tsObjectIdentifierPrefixPropertyName" ;
+    sh:path shaclmate:tsObjectIdentifierPrefixPropertyName .
 
 shaclmate:tsObjectIdentifierPropertyName
     a sh:PropertyShape ;

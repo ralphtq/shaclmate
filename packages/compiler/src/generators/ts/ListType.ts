@@ -35,8 +35,9 @@ export class ListType extends Type {
     super(superParameters);
     this.identifierNodeKind = identifierNodeKind;
     this.itemType = itemType;
-    this.identifierMintingStrategy =
-      identifierMintingStrategy.orDefault("sha256");
+    this.identifierMintingStrategy = identifierMintingStrategy.orDefault(
+      identifierNodeKind === "BlankNode" ? "blankNode" : "sha256",
+    );
     this._mutable = mutable;
     this.toRdfTypes = toRdfTypes;
   }
@@ -333,6 +334,8 @@ export class ListType extends Type {
       }
       case "NamedNode": {
         switch (this.identifierMintingStrategy) {
+          case "blankNode":
+            throw new RangeError(this.identifierMintingStrategy);
           case "sha256":
             listIdentifier = `dataFactory.namedNode(\`urn:shaclmate:list:\${${variables.value}.reduce(
         (_hasher, _item) => {

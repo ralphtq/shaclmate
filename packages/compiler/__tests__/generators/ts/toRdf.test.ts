@@ -51,7 +51,7 @@ describe("toRdf", () => {
 
   it("explicit RDF types", ({ expect }) => {
     const dataset = new N3.Store();
-    const resource = harnesses.nodeShapeWithExplicitRdfTypes.toRdf({
+    const resource = harnesses.explicitRdfTypes.toRdf({
       mutateGraph: dataFactory.defaultGraph(),
       resourceSet: new MutableResourceSet({
         dataFactory,
@@ -79,7 +79,7 @@ describe("toRdf", () => {
 
   it("should not serialize default values", ({ expect }) => {
     const dataset = new N3.Store();
-    harnesses.nodeShapeWithDefaultValueProperties.toRdf({
+    harnesses.defaultValuePropertiesNodeShape.toRdf({
       mutateGraph: dataFactory.defaultGraph(),
       resourceSet: new MutableResourceSet({ dataFactory, dataset }),
     });
@@ -88,11 +88,10 @@ describe("toRdf", () => {
 
   it("should serialize non-default values", ({ expect }) => {
     const dataset = new N3.Store();
-    const resource =
-      harnesses.nodeShapeWithDefaultValuePropertiesOverriddenDifferent.toRdf({
-        mutateGraph: dataFactory.defaultGraph(),
-        resourceSet: new MutableResourceSet({ dataFactory, dataset }),
-      });
+    const resource = harnesses.defaultValuePropertiesOverriddenDifferent.toRdf({
+      mutateGraph: dataFactory.defaultGraph(),
+      resourceSet: new MutableResourceSet({ dataFactory, dataset }),
+    });
     expect(dataset.size).toStrictEqual(4);
     expect(
       resource

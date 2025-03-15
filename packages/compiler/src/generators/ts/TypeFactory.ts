@@ -5,7 +5,6 @@ import { rdf, xsd } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { fromRdf } from "rdf-literal";
 import type * as ast from "../../ast/index.js";
-import type { PropertyVisibility } from "../../enums/index.js";
 import { logger } from "../../logger.js";
 import { BooleanType } from "./BooleanType.js";
 import { DateTimeType } from "./DateTimeType.js";
@@ -23,6 +22,22 @@ import { TermType } from "./TermType.js";
 import type { Type } from "./Type.js";
 import { UnionType } from "./UnionType.js";
 import { tsName } from "./tsName.js";
+
+function objectTypeNeedsIdentifierPrefixProperty(
+  objectType: ast.ObjectType,
+): boolean {
+  return objectType.identifierMintingStrategy
+    .map((identifierMintingStrategy) => {
+      switch (identifierMintingStrategy) {
+        case "blankNode":
+          return false;
+        case "sha256":
+        case "uuidv4":
+          return true;
+      }
+    })
+    .orDefault(false);
+}
 
 export class TypeFactory {
   private cachedObjectTypePropertiesByIdentifier: TermMap<
@@ -293,27 +308,10 @@ export class TypeFactory {
             this.createObjectTypePropertyFromAstProperty(astType, astProperty),
           );
 
-        let identifierPropertyClassDeclarationVisibility: Maybe<PropertyVisibility>;
-        if (astType.abstract) {
-          // If the type is abstract, don't declare a property.
-          identifierPropertyClassDeclarationVisibility = Maybe.empty();
-        } else if (
-          astType.ancestorObjectTypes.some(
-            (ancestorObjectType) => !ancestorObjectType.abstract,
-          )
-        ) {
-          // If the type has a non-abstract ancestor, that ancestor will declare the identifier property
-          identifierPropertyClassDeclarationVisibility = Maybe.empty();
-        } else if (
-          astType.descendantObjectTypes.some(
-            (descendantObjectType) => !descendantObjectType.abstract,
-          )
-        ) {
-          // If the type has a non-abstract descendant, declare the identifier property for it
-          identifierPropertyClassDeclarationVisibility = Maybe.of("protected");
-        } else {
-          identifierPropertyClassDeclarationVisibility = Maybe.of("private");
-        }
+        const lazyMutable = () =>
+          properties.some(
+            (property) => property.mutable || property.type.mutable,
+          );
 
         // Type discriminator property
         const typeDiscriminatorValues = new Set<string>();
@@ -338,6 +336,7 @@ export class TypeFactory {
               objectType: {
                 declarationType: astType.tsObjectDeclarationType,
                 features: astType.tsFeatures,
+                mutable: lazyMutable,
               },
               override: objectType.parentObjectTypes.length > 0,
               type: new ObjectType.TypeDiscriminatorProperty.Type({
@@ -350,27 +349,81 @@ export class TypeFactory {
           );
         }
 
-        const identifierProperty: ObjectType.IdentifierProperty =
+        // Some ObjectTypes have an identifierPrefix property, depending on their identifier minting strategy.
+        if (objectTypeNeedsIdentifierPrefixProperty(astType)) {
+          properties.splice(
+            0,
+            0,
+            new ObjectType.IdentifierPrefixProperty({
+              dataFactoryVariable: this.dataFactoryVariable,
+              own: !astType.ancestorObjectTypes.some(
+                objectTypeNeedsIdentifierPrefixProperty,
+              ),
+              name: astType.tsIdentifierPrefixPropertyName,
+              objectType: {
+                declarationType: astType.tsObjectDeclarationType,
+                features: astType.tsFeatures,
+                mutable: lazyMutable,
+              },
+              type: new StringType({
+                dataFactoryVariable: this.dataFactoryVariable,
+                defaultValue: Maybe.empty(),
+                hasValues: [],
+                in_: [],
+                languageIn: [],
+                primitiveDefaultValue: Maybe.empty(),
+                primitiveIn: [],
+              }),
+              visibility: "protected",
+            }),
+          );
+        }
+
+        // Every ObjectType has an identifier property. Some are abstract.
+        properties.splice(
+          0,
+          0,
           new ObjectType.IdentifierProperty({
             abstract: astType.abstract,
-            classDeclarationVisibility:
-              identifierPropertyClassDeclarationVisibility,
+            classDeclarationVisibility: (() => {
+              if (astType.abstract) {
+                // If the type is abstract, don't declare an identifier property.
+                return Maybe.empty();
+              }
+
+              if (
+                astType.ancestorObjectTypes.some(
+                  (ancestorObjectType) => !ancestorObjectType.abstract,
+                )
+              ) {
+                // If the type has a non-abstract ancestor, that ancestor will declare the identifier property.
+                return Maybe.empty();
+              }
+
+              if (
+                astType.descendantObjectTypes.some(
+                  (descendantObjectType) => !descendantObjectType.abstract,
+                )
+              ) {
+                // If the type has a non-abstract descendant, declare the identifier property for it.
+                return Maybe.of("protected");
+              }
+
+              return Maybe.of("private");
+            })(),
             dataFactoryVariable: this.dataFactoryVariable,
             identifierMintingStrategy: astType.identifierMintingStrategy,
             name: astType.tsIdentifierPropertyName,
-            lazyObjectTypeMutable: () =>
-              properties.some(
-                (property) => property.mutable || property.type.mutable,
-              ),
             objectType: {
               declarationType: astType.tsObjectDeclarationType,
               features: astType.tsFeatures,
+              mutable: lazyMutable,
             },
             override: astType.parentObjectTypes.length > 0,
             type: identifierType,
             visibility: "public",
-          });
-        properties.splice(0, 0, identifierProperty);
+          }),
+        );
 
         return properties;
       },
@@ -404,6 +457,9 @@ export class TypeFactory {
       objectType: {
         declarationType: astObjectType.tsObjectDeclarationType,
         features: astObjectType.tsFeatures,
+        mutable: () => {
+          throw new Error("not implemented");
+        },
       },
       name: tsName(astObjectTypeProperty.name),
       path: astObjectTypeProperty.path.iri,

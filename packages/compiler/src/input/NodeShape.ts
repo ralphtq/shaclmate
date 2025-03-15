@@ -126,7 +126,9 @@ export class NodeShape extends ShaclCoreNodeShape<
         }
       }
     }
-    return thisMintingStrategy;
+    return thisMintingStrategy.altLazy(() =>
+      this.nodeKinds.has("BlankNode") ? Maybe.of("blankNode") : Maybe.empty(),
+    );
   }
 
   get mutable(): Maybe<boolean> {
@@ -238,8 +240,22 @@ export class NodeShape extends ShaclCoreNodeShape<
       );
   }
 
+  get tsObjectIdentifierPrefixPropertyName(): Maybe<string> {
+    return this.generatedShaclmateNodeShape.tsObjectIdentifierPrefixPropertyName.altLazy(
+      () =>
+        this.isDefinedBy.chain(
+          (ontology) => ontology.tsObjectIdentifierPrefixPropertyName,
+        ),
+    );
+  }
+
   get tsObjectIdentifierPropertyName(): Maybe<string> {
-    return this.generatedShaclmateNodeShape.tsObjectIdentifierPropertyName;
+    return this.generatedShaclmateNodeShape.tsObjectIdentifierPrefixPropertyName.altLazy(
+      () =>
+        this.isDefinedBy.chain(
+          (ontology) => ontology.tsObjectIdentifierPropertyName,
+        ),
+    );
   }
 
   get tsObjectTypeDiscriminatorPropertyName(): Maybe<string> {
@@ -251,12 +267,12 @@ export class NodeShape extends ShaclCoreNodeShape<
     return this.generatedShaclmateNodeShape.identifierMintingStrategy.map(
       (iri) => {
         switch (iri.value) {
+          case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_BlankNode":
+            return "blankNode";
           case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_SHA256":
             return "sha256";
           case "http://purl.org/shaclmate/ontology#_IdentifierMintingStrategy_UUIDv4":
             return "uuidv4";
-          default:
-            throw new RangeError(iri.value);
         }
       },
     );

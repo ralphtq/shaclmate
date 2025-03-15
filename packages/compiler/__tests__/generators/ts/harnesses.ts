@@ -9,6 +9,13 @@ import { InterfaceHarness } from "./InterfaceHarness.js";
 const identifier = dataFactory.namedNode("http://example.com/instance");
 
 export const harnesses = {
+  blankNodeShape: new ClassHarness({
+    fromJson: kitchenSink.BlankNodeShape.fromJson,
+    fromRdf: kitchenSink.BlankNodeShape.fromRdf,
+    instance: new kitchenSink.BlankNodeShape({}),
+    sparqlConstructQueryString:
+      kitchenSink.BlankNodeShape.sparqlConstructQueryString,
+  }),
   concreteChildClassNodeShape: new ClassHarness({
     fromJson: kitchenSink.ConcreteChildClassNodeShape.fromJson,
     fromRdf: kitchenSink.ConcreteChildClassNodeShape.fromRdf,
@@ -31,6 +38,127 @@ export const harnesses = {
     }),
     sparqlConstructQueryString:
       kitchenSink.ConcreteParentClassNodeShape.sparqlConstructQueryString,
+  }),
+  defaultValuePropertiesNodeShape: new ClassHarness({
+    fromJson: kitchenSink.DefaultValuePropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.DefaultValuePropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.DefaultValuePropertiesNodeShape({
+      identifier,
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.DefaultValuePropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  defaultValuePropertiesOverriddenDifferent: new ClassHarness({
+    fromJson: kitchenSink.DefaultValuePropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.DefaultValuePropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.DefaultValuePropertiesNodeShape({
+      falseBooleanProperty: true,
+      identifier,
+      numberProperty: 1,
+      stringProperty: "test",
+      trueBooleanProperty: false,
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.DefaultValuePropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  defaultValuePropertiesOverriddenSame: new ClassHarness({
+    fromJson: kitchenSink.DefaultValuePropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.DefaultValuePropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.DefaultValuePropertiesNodeShape({
+      falseBooleanProperty: false,
+      dateProperty: new Date("2025-03-06"),
+      dateTimeProperty: new Date(1523268000000),
+      identifier,
+      numberProperty: 0,
+      stringProperty: "",
+      trueBooleanProperty: true,
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.DefaultValuePropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  emptyListProperty: new ClassHarness({
+    fromJson: kitchenSink.ListPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.ListPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.ListPropertiesNodeShape({
+      identifier,
+      stringListProperty: [],
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.ListPropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  explicitRdfTypes: new ClassHarness({
+    fromJson: kitchenSink.ExplicitRdfTypesNodeShape.fromJson,
+    fromRdf: kitchenSink.ExplicitRdfTypesNodeShape.fromRdf,
+    instance: new kitchenSink.ExplicitRdfTypesNodeShape({
+      identifier,
+      stringProperty: "test",
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.ExplicitRdfTypesNodeShape.sparqlConstructQueryString,
+  }),
+  externProperties: new ClassHarness({
+    fromJson: kitchenSink.ExternPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.ExternPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.ExternPropertiesNodeShape({
+      externObjectTypeProperty: new kitchenSink.ExternObjectType(
+        dataFactory.namedNode("http://example.com/externObjectType"),
+      ),
+      externProperty: dataFactory.namedNode(
+        "http://example.com/externProperty",
+      ),
+      identifier,
+      inlineProperty: new kitchenSink.InlineNodeShape({
+        stringProperty: "Test",
+      }),
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.ExternPropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  hasValueProperties: new ClassHarness({
+    fromJson: kitchenSink.HasValuePropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.HasValuePropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.HasValuePropertiesNodeShape({
+      hasIriProperty: dataFactory.namedNode(
+        "http://example.com/HasValuePropertiesNodeShapeIri1",
+      ),
+      identifier,
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.HasValuePropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  inIdentifierNodeShape: new ClassHarness({
+    fromJson: kitchenSink.InIdentifierNodeShape.fromJson,
+    fromRdf: kitchenSink.InIdentifierNodeShape.fromRdf,
+    instance: new kitchenSink.InIdentifierNodeShape({
+      identifier: dataFactory.namedNode(
+        "http://example.com/InIdentifierNodeShapeInstance1",
+      ),
+      stringProperty: "doesn't matter",
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.InIdentifierNodeShape.sparqlConstructQueryString,
+  }),
+  inIrisProperty: new ClassHarness({
+    fromJson: kitchenSink.InPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.InPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.InPropertiesNodeShape({
+      identifier,
+      inIrisProperty: dataFactory.namedNode(
+        "http://example.com/InPropertiesNodeShapeIri1",
+      ),
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.InPropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  inLiteralsProperty: new ClassHarness({
+    fromJson: kitchenSink.InPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.InPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.InPropertiesNodeShape({
+      identifier,
+      inStringsProperty: "text",
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.InPropertiesNodeShape.sparqlConstructQueryString,
   }),
   interfaceNodeShape: new InterfaceHarness<
     kitchenSink.InterfaceNodeShape,
@@ -88,150 +216,37 @@ export const harnesses = {
     fromRdf: kitchenSink.IriNodeShape.fromRdf,
     instance: new kitchenSink.IriNodeShape({
       identifier,
-      stringProperty: "test",
     }),
     sparqlConstructQueryString:
       kitchenSink.IriNodeShape.sparqlConstructQueryString,
   }),
-  nodeShapeWithDefaultValueProperties: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithDefaultValueProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
-      identifier,
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithDefaultValueProperties
-        .sparqlConstructQueryString,
-  }),
-  nodeShapeWithDefaultValuePropertiesOverriddenDifferent: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithDefaultValueProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
-      falseBooleanProperty: true,
-      identifier,
-      numberProperty: 1,
-      stringProperty: "test",
-      trueBooleanProperty: false,
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithDefaultValueProperties
-        .sparqlConstructQueryString,
-  }),
-  nodeShapeWithDefaultValuePropertiesOverriddenSame: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithDefaultValueProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithDefaultValueProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithDefaultValueProperties({
-      falseBooleanProperty: false,
-      dateProperty: new Date("2025-03-06"),
-      dateTimeProperty: new Date(1523268000000),
-      identifier,
-      numberProperty: 0,
-      stringProperty: "",
-      trueBooleanProperty: true,
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithDefaultValueProperties
-        .sparqlConstructQueryString,
-  }),
-  nodeShapeWithEmptyListProperty: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithListProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithListProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithListProperties({
-      identifier,
-      stringListProperty: [],
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithListProperties.sparqlConstructQueryString,
-  }),
-  nodeShapeWithExplicitRdfTypes: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithExplicitRdfTypes.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithExplicitRdfTypes.fromRdf,
-    instance: new kitchenSink.NodeShapeWithExplicitRdfTypes({
-      identifier,
-      stringProperty: "test",
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithExplicitRdfTypes.sparqlConstructQueryString,
-  }),
-  nodeShapeWithExternProperties: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithExternProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithExternProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithExternProperties({
-      externObjectTypeProperty: new kitchenSink.ExternObjectType(
-        dataFactory.namedNode("http://example.com/externObjectType"),
-      ),
-      externProperty: dataFactory.namedNode(
-        "http://example.com/externProperty",
-      ),
-      identifier,
-      inlineProperty: new kitchenSink.InlineNodeShape({
-        stringProperty: "Test",
-      }),
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithExternProperties.sparqlConstructQueryString,
-  }),
-  nodeShapeWithHasValueProperties: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithHasValueProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithHasValueProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithHasValueProperties({
-      hasIriProperty: dataFactory.namedNode(
-        "http://example.com/NodeShapeWithHasValuePropertiesIri1",
-      ),
-      identifier,
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithHasValueProperties.sparqlConstructQueryString,
-  }),
-  nodeShapeWithInIdentifier: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithInIdentifier.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithInIdentifier.fromRdf,
-    instance: new kitchenSink.NodeShapeWithInIdentifier({
-      identifier: dataFactory.namedNode(
-        "http://example.com/NodeShapeWithInIdentifierInstance1",
-      ),
-      stringProperty: "doesn't matter",
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithInIdentifier.sparqlConstructQueryString,
-  }),
-  nodeShapeWithInIrisProperty: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithInProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithInProperties({
-      identifier,
-      inIrisProperty: dataFactory.namedNode(
-        "http://example.com/NodeShapeWithInPropertiesIri1",
-      ),
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithInProperties.sparqlConstructQueryString,
-  }),
-  nodeShapeWithInLiteralsProperty: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithInProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithInProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithInProperties({
-      identifier,
-      inStringsProperty: "text",
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithInProperties.sparqlConstructQueryString,
-  }),
-  nodeShapeWithLanguageInProperties: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithLanguageInProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithLanguageInProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithLanguageInProperties({
+  languageInProperties: new ClassHarness({
+    fromJson: kitchenSink.LanguageInPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.LanguageInPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.LanguageInPropertiesNodeShape({
       identifier,
       literalProperty: dataFactory.literal("envalue", "en"),
       languageInProperty: dataFactory.literal("frvalue", "fr"),
     }),
     sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithLanguageInProperties.sparqlConstructQueryString,
+      kitchenSink.LanguageInPropertiesNodeShape.sparqlConstructQueryString,
   }),
-  nodeShapeWithObjectListProperty: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithListProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithListProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithListProperties({
+  mutableProperties: new ClassHarness({
+    fromJson: kitchenSink.MutablePropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.MutablePropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.MutablePropertiesNodeShape({
+      identifier,
+      mutableListProperty: ["test1", "test2"],
+      mutableStringProperty: "test",
+      mutableSetProperty: ["test1", "test2"],
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.MutablePropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  objectListProperty: new ClassHarness({
+    fromJson: kitchenSink.ListPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.ListPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.ListPropertiesNodeShape({
       identifier,
       objectListProperty: [
         new kitchenSink.NonClassNodeShape({ stringProperty: "Test1" }),
@@ -239,46 +254,24 @@ export const harnesses = {
       ],
     }),
     sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithListProperties.sparqlConstructQueryString,
+      kitchenSink.ListPropertiesNodeShape.sparqlConstructQueryString,
   }),
-  nodeShapeWithStringListProperty: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithListProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithListProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithListProperties({
-      identifier,
-      stringListProperty: ["Test1", "Test2"],
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithListProperties.sparqlConstructQueryString,
-  }),
-  nodeShapeWithMutableProperties: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithMutableProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithMutableProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithMutableProperties({
-      identifier,
-      mutableListProperty: ["test1", "test2"],
-      mutableStringProperty: "test",
-      mutableSetProperty: ["test1", "test2"],
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithMutableProperties.sparqlConstructQueryString,
-  }),
-  nodeShapeWithOrderedProperties: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithOrderedProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithOrderedProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithOrderedProperties({
+  orderedProperties: new ClassHarness({
+    fromJson: kitchenSink.OrderedPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.OrderedPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.OrderedPropertiesNodeShape({
       identifier,
       propertyA: "testA",
       propertyB: "testB",
       propertyC: "testC",
     }),
     sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithOrderedProperties.sparqlConstructQueryString,
+      kitchenSink.OrderedPropertiesNodeShape.sparqlConstructQueryString,
   }),
-  nodeShapeWithPropertyCardinalities: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithPropertyCardinalities.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithPropertyCardinalities.fromRdf,
-    instance: new kitchenSink.NodeShapeWithPropertyCardinalities({
+  propertyCardinalities: new ClassHarness({
+    fromJson: kitchenSink.PropertyCardinalitiesNodeShape.fromJson,
+    fromRdf: kitchenSink.PropertyCardinalitiesNodeShape.fromRdf,
+    instance: new kitchenSink.PropertyCardinalitiesNodeShape({
       identifier,
       emptyStringSetProperty: undefined,
       nonEmptyStringSetProperty: NonEmptyList(["test1"]),
@@ -286,48 +279,19 @@ export const harnesses = {
       requiredStringProperty: "test",
     }),
     sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithPropertyCardinalities.sparqlConstructQueryString,
+      kitchenSink.PropertyCardinalitiesNodeShape.sparqlConstructQueryString,
   }),
-  nodeShapeWithPropertyVisibilities: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithPropertyVisibilities.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithPropertyVisibilities.fromRdf,
-    instance: new kitchenSink.NodeShapeWithPropertyVisibilities({
+  propertyVisibilities: new ClassHarness({
+    fromJson: kitchenSink.PropertyVisibilitiesNodeShape.fromJson,
+    fromRdf: kitchenSink.PropertyVisibilitiesNodeShape.fromRdf,
+    instance: new kitchenSink.PropertyVisibilitiesNodeShape({
       identifier,
       privateProperty: "private",
       protectedProperty: "protected",
       publicProperty: "public",
     }),
     sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithPropertyVisibilities.sparqlConstructQueryString,
-  }),
-  nodeShapeWithTermProperties: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithTermProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithTermProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithTermProperties({
-      booleanProperty: true,
-      dateProperty: new Date("2025-03-06"),
-      dateTimeProperty: new Date(1523268000000),
-      identifier,
-      iriProperty: dataFactory.namedNode("http://example.com"),
-      literalProperty: dataFactory.literal("test"),
-      numberProperty: 1,
-      stringProperty: "test",
-      termProperty: 1,
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithTermProperties.sparqlConstructQueryString,
-  }),
-  nodeShapeWithUnionProperties: new ClassHarness({
-    fromJson: kitchenSink.NodeShapeWithUnionProperties.fromJson,
-    fromRdf: kitchenSink.NodeShapeWithUnionProperties.fromRdf,
-    instance: new kitchenSink.NodeShapeWithUnionProperties({
-      identifier,
-      orLiteralsProperty: 1,
-      orUnrelatedProperty: { type: "0-number", value: 1 },
-      orTermsProperty: dataFactory.literal("test"),
-    }),
-    sparqlConstructQueryString:
-      kitchenSink.NodeShapeWithUnionProperties.sparqlConstructQueryString,
+      kitchenSink.PropertyVisibilitiesNodeShape.sparqlConstructQueryString,
   }),
   nonClassNodeShape: new ClassHarness({
     fromJson: kitchenSink.NonClassNodeShape.fromJson,
@@ -358,6 +322,33 @@ export const harnesses = {
     sparqlConstructQueryString:
       kitchenSink.Sha256IriNodeShape.sparqlConstructQueryString,
   }),
+  stringListProperty: new ClassHarness({
+    fromJson: kitchenSink.ListPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.ListPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.ListPropertiesNodeShape({
+      identifier,
+      stringListProperty: ["Test1", "Test2"],
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.ListPropertiesNodeShape.sparqlConstructQueryString,
+  }),
+  termProperties: new ClassHarness({
+    fromJson: kitchenSink.TermPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.TermPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.TermPropertiesNodeShape({
+      booleanProperty: true,
+      dateProperty: new Date("2025-03-06"),
+      dateTimeProperty: new Date(1523268000000),
+      identifier,
+      iriProperty: dataFactory.namedNode("http://example.com"),
+      literalProperty: dataFactory.literal("test"),
+      numberProperty: 1,
+      stringProperty: "test",
+      termProperty: 1,
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.TermPropertiesNodeShape.sparqlConstructQueryString,
+  }),
   unionNodeShapeMember1: new ClassUnionHarness({
     equals: kitchenSink.UnionNodeShape.equals,
     fromJson: kitchenSink.UnionNodeShape.fromJson,
@@ -379,6 +370,18 @@ export const harnesses = {
     }),
     sparqlConstructQueryString:
       kitchenSink.UnionNodeShape.sparqlConstructQueryString,
+  }),
+  unionProperties: new ClassHarness({
+    fromJson: kitchenSink.UnionPropertiesNodeShape.fromJson,
+    fromRdf: kitchenSink.UnionPropertiesNodeShape.fromRdf,
+    instance: new kitchenSink.UnionPropertiesNodeShape({
+      identifier,
+      orLiteralsProperty: 1,
+      orUnrelatedProperty: { type: "0-number", value: 1 },
+      orTermsProperty: dataFactory.literal("test"),
+    }),
+    sparqlConstructQueryString:
+      kitchenSink.UnionPropertiesNodeShape.sparqlConstructQueryString,
   }),
   uuidv4IriNodeShapeWithExplicitIdentifier: new ClassHarness({
     fromJson: kitchenSink.UuidV4IriNodeShape.fromJson,

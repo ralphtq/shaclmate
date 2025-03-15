@@ -225,6 +225,10 @@ export function transformNodeShapeToAstType(
     parentObjectTypes: [], // This is mutable, we'll populate it below
     toRdfTypes: nodeShape.toRdfTypes,
     tsFeatures: nodeShape.tsFeatures.orDefault(new Set(TsFeature.MEMBERS)),
+    tsIdentifierPrefixPropertyName:
+      nodeShape.tsObjectIdentifierPrefixPropertyName.orDefault(
+        "identifierPrefix",
+      ),
     tsIdentifierPropertyName:
       nodeShape.tsObjectIdentifierPropertyName.orDefault("identifier"),
     tsImports: nodeShape.tsImports,

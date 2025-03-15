@@ -21,24 +21,18 @@ export class IdentifierProperty extends Property<IdentifierType> {
   readonly equalsFunction = "booleanEquals";
   readonly mutable = false;
   private readonly classDeclarationVisibility: Maybe<PropertyVisibility>;
-  private readonly identifierMintingStrategy:
-    | IdentifierMintingStrategy
-    | "blankNode"
-    | "none";
-  private readonly lazyObjectTypeMutable: () => boolean;
+  private readonly identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
   private readonly override: boolean;
 
   constructor({
     abstract,
     classDeclarationVisibility,
-    lazyObjectTypeMutable,
     identifierMintingStrategy,
     override,
     ...superParameters
   }: {
     abstract: boolean;
     classDeclarationVisibility: Maybe<PropertyVisibility>;
-    lazyObjectTypeMutable: () => boolean;
     identifierMintingStrategy: Maybe<IdentifierMintingStrategy>;
     override: boolean;
     type: IdentifierType;
@@ -47,14 +41,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     invariant(this.visibility === "public");
     this.abstract = abstract;
     this.classDeclarationVisibility = classDeclarationVisibility;
-    if (identifierMintingStrategy.isJust()) {
-      this.identifierMintingStrategy = identifierMintingStrategy.unsafeCoerce();
-    } else if (this.type.nodeKinds.has("BlankNode")) {
-      this.identifierMintingStrategy = "blankNode";
-    } else {
-      this.identifierMintingStrategy = "none";
-    }
-    this.lazyObjectTypeMutable = lazyObjectTypeMutable;
+    this.identifierMintingStrategy = identifierMintingStrategy;
     this.override = override;
   }
 
@@ -65,21 +52,27 @@ export class IdentifierProperty extends Property<IdentifierType> {
       return Maybe.empty();
     }
 
+    if (this.identifierMintingStrategy.isNothing()) {
+      return Maybe.empty();
+    }
+
+    let memoizeMintedIdentifier: boolean;
     let mintIdentifier: string;
-    switch (this.identifierMintingStrategy) {
+    switch (this.identifierMintingStrategy.unsafeCoerce()) {
       case "blankNode":
+        memoizeMintedIdentifier = true;
         mintIdentifier = "dataFactory.blankNode()";
         break;
-      case "none":
-        // If there's no minting strategy the identifier will be required by the constructor and assigned to a public property.
-        return Maybe.empty();
       case "sha256":
+        // If the object is mutable don't memoize the minted identifier, since the hash will change if the object mutates.
+        memoizeMintedIdentifier = !this.objectType.mutable();
         mintIdentifier =
-          "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${this.hash(sha256.create())}`)";
+          "dataFactory.namedNode(`${this.identifierPrefix}${this.hash(sha256.create())}`)";
         break;
       case "uuidv4":
+        memoizeMintedIdentifier = true;
         mintIdentifier =
-          "dataFactory.namedNode(`urn:shaclmate:object:${this.type}:${uuid.v4()}`)";
+          "dataFactory.namedNode(`${this.identifierPrefix}${uuid.v4()}`)";
         break;
     }
 
@@ -88,9 +81,9 @@ export class IdentifierProperty extends Property<IdentifierType> {
       name: this.name,
       returnType: this.type.name,
       statements: [
-        this.lazyObjectTypeMutable()
-          ? `return (typeof this._${this.name} !== "undefined") ? this._${this.name} : ${mintIdentifier}`
-          : `if (typeof this._${this.name} === "undefined") { this._${this.name} = ${mintIdentifier}; } return this._${this.name};`,
+        memoizeMintedIdentifier
+          ? `if (typeof this._${this.name} === "undefined") { this._${this.name} = ${mintIdentifier}; } return this._${this.name};`
+          : `return (typeof this._${this.name} !== "undefined") ? this._${this.name} : ${mintIdentifier}`,
       ],
     } satisfies OptionalKind<GetAccessorDeclarationStructure>);
   }
@@ -118,24 +111,23 @@ export class IdentifierProperty extends Property<IdentifierType> {
       return Maybe.empty();
     }
 
-    switch (this.identifierMintingStrategy) {
-      case "none":
-        // Immutable, public identifier property, no getter
-        return Maybe.of({
-          isReadonly: true,
-          name: this.name,
-          type: this.type.name,
-        });
-      default:
-        // Mutable _identifier property that will be lazily initialized by the getter to mint the identifier
-        return Maybe.of({
-          name: `_${this.name}`,
-          scope: this.classDeclarationVisibility
-            .map(Property.visibilityToScope)
-            .unsafeCoerce(),
-          type: `${this.type.name} | undefined`,
-        });
+    if (this.identifierMintingStrategy.isJust()) {
+      // Mutable _identifier property that will be lazily initialized by the getter to mint the identifier
+      return Maybe.of({
+        name: `_${this.name}`,
+        scope: this.classDeclarationVisibility
+          .map(Property.visibilityToScope)
+          .unsafeCoerce(),
+        type: `${this.type.name} | undefined`,
+      });
     }
+
+    // Immutable, public identifier property, no getter
+    return Maybe.of({
+      isReadonly: true,
+      name: this.name,
+      type: this.type.name,
+    });
   }
 
   override get constructorParametersPropertySignature(): Maybe<
@@ -155,7 +147,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     return Maybe.of({
       hasQuestionToken:
         this.objectType.declarationType === "class" &&
-        this.identifierMintingStrategy !== "none",
+        this.identifierMintingStrategy.isJust(),
       isReadonly: true,
       name: this.name,
       type: [...typeNames].sort().join(" | "),
@@ -169,33 +161,39 @@ export class IdentifierProperty extends Property<IdentifierType> {
       this.objectType.features.has("hash") &&
       this.objectType.declarationType === "class"
     ) {
-      switch (this.identifierMintingStrategy) {
-        case "sha256":
-          imports.push(Import.SHA256);
-          break;
-        case "uuidv4":
-          imports.push(Import.UUID);
-          break;
-      }
+      this.identifierMintingStrategy.ifJust((identifierMintingStrategy) => {
+        switch (identifierMintingStrategy) {
+          case "sha256":
+            imports.push(Import.SHA256);
+            break;
+          case "uuidv4":
+            imports.push(Import.UUID);
+            break;
+        }
+      });
     }
 
     return imports;
   }
 
-  override get interfacePropertySignature(): OptionalKind<PropertySignatureStructure> {
-    return {
+  override get interfacePropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.of({
       isReadonly: true,
       name: this.name,
       type: this.type.name,
-    };
+    });
   }
 
-  override get jsonPropertySignature(): OptionalKind<PropertySignatureStructure> {
-    return {
+  override get jsonPropertySignature(): Maybe<
+    OptionalKind<PropertySignatureStructure>
+  > {
+    return Maybe.of({
       isReadonly: true,
       name: "@id",
       type: "string",
-    };
+    });
   }
 
   override get snippetDeclarations(): readonly string[] {
@@ -282,9 +280,13 @@ export class IdentifierProperty extends Property<IdentifierType> {
       return [];
     }
 
-    switch (this.identifierMintingStrategy) {
+    if (this.identifierMintingStrategy.isNothing()) {
+      // The identifier minting won't call hash, so we should hash the identifier.
+      return [`${variables.hasher}.update(${variables.value}.value);`];
+    }
+
+    switch (this.identifierMintingStrategy.unsafeCoerce()) {
       case "blankNode":
-      case "none":
       case "uuidv4":
         // The identifier minting won't call hash, so we should hash the identifier.
         return [`${variables.hasher}.update(${variables.value}.value);`];
@@ -324,7 +326,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
     Property<IdentifierType>["jsonUiSchemaElement"]
   >[0]): Maybe<string> {
     return Maybe.of(
-      `{ label: "Identifier", scope: \`\${${variables.scopePrefix}}/properties/${this.jsonPropertySignature.name}\`, type: "Control" }`,
+      `{ label: "Identifier", scope: \`\${${variables.scopePrefix}}/properties/${this.jsonPropertySignature.unsafeCoerce().name}\`, type: "Control" }`,
     );
   }
 
@@ -342,10 +344,10 @@ export class IdentifierProperty extends Property<IdentifierType> {
       schema = `${variables.zod}.string().min(1)`;
     }
 
-    return {
-      key: this.jsonPropertySignature.name,
+    return Maybe.of({
+      key: this.jsonPropertySignature.unsafeCoerce().name,
       schema,
-    };
+    });
   }
 
   override sparqlConstructTemplateTriples(): readonly string[] {
@@ -358,7 +360,9 @@ export class IdentifierProperty extends Property<IdentifierType> {
 
   override toJsonObjectMember({
     variables,
-  }: Parameters<Property<IdentifierType>["toJsonObjectMember"]>[0]): string {
+  }: Parameters<
+    Property<IdentifierType>["toJsonObjectMember"]
+  >[0]): Maybe<string> {
     const nodeKinds = [...this.type.nodeKinds];
     const valueToNodeKinds = nodeKinds.map((nodeKind) => {
       switch (nodeKind) {
@@ -371,10 +375,12 @@ export class IdentifierProperty extends Property<IdentifierType> {
       }
     });
     if (valueToNodeKinds.length === 1) {
-      return `"@id": ${valueToNodeKinds[0]}`;
+      return Maybe.of(`"@id": ${valueToNodeKinds[0]}`);
     }
     invariant(valueToNodeKinds.length === 2);
-    return `"@id": ${variables.value}.termType === "${nodeKinds[0]}" ? ${valueToNodeKinds[0]} : ${valueToNodeKinds[1]}`;
+    return Maybe.of(
+      `"@id": ${variables.value}.termType === "${nodeKinds[0]}" ? ${valueToNodeKinds[0]} : ${valueToNodeKinds[1]}`,
+    );
   }
 
   override toRdfStatements(): readonly string[] {
