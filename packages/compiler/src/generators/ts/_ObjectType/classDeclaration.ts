@@ -127,12 +127,7 @@ function equalsMethodDeclaration(
 function hashMethodDeclarations(
   this: ObjectType,
 ): readonly OptionalKind<MethodDeclarationStructure>[] {
-  return hashFunctionOrMethodDeclarations
-    .bind(this)()
-    .map((hashFunctionOrMethodDeclaration) => ({
-      ...hashFunctionOrMethodDeclaration,
-      name: "hash",
-    }));
+  return hashFunctionOrMethodDeclarations.bind(this)();
 }
 
 function toJsonMethodDeclaration(

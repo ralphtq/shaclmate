@@ -19,6 +19,5 @@ export function hashFunctionDeclarations(
       ...hashFunctionOrMethodDeclaration,
       isExported: true,
       kind: StructureKind.Function,
-      name: this.hashFunctionName,
     }));
 }

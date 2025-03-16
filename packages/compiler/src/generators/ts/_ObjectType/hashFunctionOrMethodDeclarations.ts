@@ -1,9 +1,10 @@
-import type {
-  OptionalKind,
-  ParameterDeclarationStructure,
-  TypeParameterDeclarationStructure,
+import {
+  type OptionalKind,
+  type ParameterDeclarationStructure,
+  Scope,
+  type TypeParameterDeclarationStructure,
 } from "ts-morph";
-import type { ObjectType } from "../ObjectType.js";
+import { ObjectType } from "../ObjectType.js";
 
 const hasherVariable = "_hasher";
 
@@ -15,6 +16,7 @@ export function hashFunctionOrMethodDeclarations(this: ObjectType): readonly {
   name: string;
   parameters: OptionalKind<ParameterDeclarationStructure>[];
   returnType: string;
+  scope?: Scope;
   statements: string[];
   typeParameters: OptionalKind<TypeParameterDeclarationStructure>[];
 }[] {
@@ -22,19 +24,21 @@ export function hashFunctionOrMethodDeclarations(this: ObjectType): readonly {
     return [];
   }
 
-  const propertyHashStatements = this.properties.flatMap((property) =>
-    property.hashStatements({
-      depth: 0,
-      variables: {
-        hasher: hasherVariable,
-        value: `${this.thisVariable}.${property.name}`,
-      },
-    }),
+  const hashOwnShaclPropertiesStatements = this.ownShaclProperties.flatMap(
+    (property) =>
+      property.hashStatements({
+        depth: 0,
+        variables: {
+          hasher: hasherVariable,
+          value: `${this.thisVariable}.${property.name}`,
+        },
+      }),
   );
+
   if (
     this.declarationType === "class" &&
     this.parentObjectTypes.length > 0 &&
-    propertyHashStatements.length === 0
+    hashOwnShaclPropertiesStatements.length === 0
   ) {
     // If there's a parent class and no hash statements in this class, can skip overriding hash
     return [];
@@ -52,20 +56,22 @@ export function hashFunctionOrMethodDeclarations(this: ObjectType): readonly {
     type: "HasherT",
   });
 
-  const statements: string[] = [];
+  const hashShaclPropertiesStatements: string[] = [];
 
   let hasOverrideKeyword = false;
   if (this.parentObjectTypes.length > 0) {
     switch (this.declarationType) {
       case "class": {
-        statements.push(`super.hash(${hasherVariable});`);
+        hashShaclPropertiesStatements.push(
+          `super.hashShaclProperties(${hasherVariable});`,
+        );
         hasOverrideKeyword = true;
         break;
       }
       case "interface": {
         for (const parentObjectType of this.parentObjectTypes) {
-          statements.push(
-            `${parentObjectType.name}.${parentObjectType.hashFunctionName}(${this.thisVariable}, ${hasherVariable});`,
+          hashShaclPropertiesStatements.push(
+            `${parentObjectType.name}.${parentObjectType.hashShaclPropertiesFunctionName}(${this.thisVariable}, ${hasherVariable});`,
           );
         }
         break;
@@ -73,23 +79,53 @@ export function hashFunctionOrMethodDeclarations(this: ObjectType): readonly {
     }
   }
 
-  statements.push(...propertyHashStatements);
-
-  statements.push(`return ${hasherVariable};`);
+  const returnType = "HasherT";
+  const typeParameters = [
+    {
+      name: "HasherT",
+      constraint: hasherTypeConstraint,
+    },
+  ];
 
   return [
     {
       hasOverrideKeyword,
       name: this.declarationType === "class" ? "hash" : this.hashFunctionName,
       parameters,
-      returnType: "HasherT",
-      statements,
-      typeParameters: [
-        {
-          name: "HasherT",
-          constraint: hasherTypeConstraint,
-        },
+      returnType,
+      statements: [
+        ...this.ownProperties
+          .filter((property) => !(property instanceof ObjectType.ShaclProperty))
+          .flatMap((property) =>
+            property.hashStatements({
+              depth: 0,
+              variables: {
+                hasher: hasherVariable,
+                value: `${this.thisVariable}.${property.name}`,
+              },
+            }),
+          ),
+        this.declarationType === "class"
+          ? `this.hashShaclProperties(${hasherVariable});`
+          : `${this.name}.${this.hashShaclPropertiesFunctionName}(${this.thisVariable}, ${hasherVariable});`,
+        `return ${hasherVariable};`,
       ],
+      typeParameters,
+    },
+    {
+      hasOverrideKeyword,
+      name:
+        this.declarationType === "class"
+          ? "hashShaclProperties"
+          : this.hashShaclPropertiesFunctionName,
+      parameters,
+      returnType,
+      scope: this.declarationType === "class" ? Scope.Protected : undefined,
+      statements: [
+        ...hashShaclPropertiesStatements,
+        `return ${hasherVariable};`,
+      ],
+      typeParameters,
     },
   ];
 }

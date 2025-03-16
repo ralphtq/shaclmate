@@ -215,6 +215,16 @@ export class ObjectType extends DeclaredType {
   }
 
   @Memoize()
+  get hashShaclPropertiesFunctionName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `_hash${this.name}ShaclProperties`;
+    return "_hashShaclProperties";
+  }
+
+  @Memoize()
   get identifierProperty(): ObjectType.IdentifierProperty {
     const identifierProperty = this.properties.find(
       (property) => property instanceof ObjectType.IdentifierProperty,
@@ -287,7 +297,7 @@ export class ObjectType extends DeclaredType {
   @Memoize()
   get ownShaclProperties(): readonly ObjectType.Property[] {
     return this.properties.filter(
-      (property) => property instanceof _ObjectType.ShaclProperty,
+      (property) => property instanceof ObjectType.ShaclProperty,
     );
   }
 

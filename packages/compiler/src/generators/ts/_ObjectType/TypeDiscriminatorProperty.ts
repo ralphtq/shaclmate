@@ -115,8 +115,12 @@ export class TypeDiscriminatorProperty extends Property<TypeDiscriminatorPropert
       : [];
   }
 
-  override hashStatements(): readonly string[] {
-    return [];
+  override hashStatements({
+    variables,
+  }: Parameters<
+    Property<TypeDiscriminatorProperty>["hashStatements"]
+  >[0]): readonly string[] {
+    return [`${variables.hasher}.update(${variables.value});`];
   }
 
   override interfaceConstructorStatements(): readonly string[] {
