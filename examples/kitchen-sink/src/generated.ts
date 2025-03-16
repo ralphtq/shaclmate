@@ -13273,19 +13273,23 @@ export namespace DefaultValuePropertiesNodeShape {
   }
 }
 /**
- * Interface node shape that inherits the base interface and is the parent of the ConcreteChildInterfaceNodeShape.
+ * Base interface for other node shapes.
  */
-export interface ConcreteParentInterfaceNodeShape {
+export interface BaseInterfaceWithPropertiesNodeShape {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly type: "ConcreteParentInterfaceNodeShape";
-  readonly parentStringProperty: string;
+  readonly type:
+    | "BaseInterfaceWithPropertiesNodeShape"
+    | "BaseInterfaceWithoutPropertiesNodeShape"
+    | "ConcreteChildInterfaceNodeShape"
+    | "ConcreteParentInterfaceNodeShape";
+  readonly baseStringProperty: string;
 }
 
-export namespace ConcreteParentInterfaceNodeShape {
+export namespace BaseInterfaceWithPropertiesNodeShape {
   export function create(parameters: {
     readonly identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
-    readonly parentStringProperty: string;
-  }): ConcreteParentInterfaceNodeShape {
+    readonly baseStringProperty: string;
+  }): BaseInterfaceWithPropertiesNodeShape {
     let identifier: rdfjs.BlankNode | rdfjs.NamedNode;
     if (typeof parameters.identifier === "object") {
       identifier = parameters.identifier;
@@ -13295,14 +13299,14 @@ export namespace ConcreteParentInterfaceNodeShape {
       identifier = parameters.identifier as never;
     }
 
-    const type = "ConcreteParentInterfaceNodeShape" as const;
-    const parentStringProperty = parameters.parentStringProperty;
-    return { identifier, type, parentStringProperty };
+    const type = "BaseInterfaceWithPropertiesNodeShape" as const;
+    const baseStringProperty = parameters.baseStringProperty;
+    return { identifier, type, baseStringProperty };
   }
 
   export function equals(
-    left: ConcreteParentInterfaceNodeShape,
-    right: ConcreteParentInterfaceNodeShape,
+    left: BaseInterfaceWithPropertiesNodeShape,
+    right: BaseInterfaceWithPropertiesNodeShape,
   ): EqualsResult {
     return booleanEquals(left.identifier, right.identifier)
       .mapLeft((propertyValuesUnequal) => ({
@@ -13324,6 +13328,812 @@ export namespace ConcreteParentInterfaceNodeShape {
         ),
       )
       .chain(() =>
+        strictEquals(left.baseStringProperty, right.baseStringProperty).mapLeft(
+          (propertyValuesUnequal) => ({
+            left: left,
+            right: right,
+            propertyName: "baseStringProperty",
+            propertyValuesUnequal,
+            type: "Property" as const,
+          }),
+        ),
+      );
+  }
+
+  export function _propertiesFromJson(_json: unknown): purify.Either<
+    zod.ZodError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type:
+        | "BaseInterfaceWithPropertiesNodeShape"
+        | "BaseInterfaceWithoutPropertiesNodeShape"
+        | "ConcreteChildInterfaceNodeShape"
+        | "ConcreteParentInterfaceNodeShape";
+      baseStringProperty: string;
+    }
+  > {
+    const _jsonSafeParseResult =
+      baseInterfaceWithPropertiesNodeShapeJsonZodSchema().safeParse(_json);
+    if (!_jsonSafeParseResult.success) {
+      return purify.Left(_jsonSafeParseResult.error);
+    }
+
+    const _jsonObject = _jsonSafeParseResult.data;
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const type = "BaseInterfaceWithPropertiesNodeShape" as const;
+    const baseStringProperty = _jsonObject["baseStringProperty"];
+    return purify.Either.of({ identifier, type, baseStringProperty });
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, BaseInterfaceWithPropertiesNodeShape> {
+    return BaseInterfaceWithPropertiesNodeShape._propertiesFromJson(json);
+  }
+
+  export function _propertiesFromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type:
+        | "BaseInterfaceWithPropertiesNodeShape"
+        | "BaseInterfaceWithoutPropertiesNodeShape"
+        | "ConcreteChildInterfaceNodeShape"
+        | "ConcreteParentInterfaceNodeShape";
+      baseStringProperty: string;
+    }
+  > {
+    if (
+      !_ignoreRdfType &&
+      !_resource.isInstanceOf(
+        dataFactory.namedNode(
+          "http://example.com/BaseInterfaceWithPropertiesNodeShape",
+        ),
+      )
+    ) {
+      return purify.Left(
+        new rdfjsResource.Resource.ValueError({
+          focusResource: _resource,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          predicate: dataFactory.namedNode(
+            "http://example.com/BaseInterfaceWithPropertiesNodeShape",
+          ),
+        }),
+      );
+    }
+
+    const identifier = _resource.identifier;
+    const type = "BaseInterfaceWithPropertiesNodeShape" as const;
+    const _baseStringPropertyEither: purify.Either<
+      rdfjsResource.Resource.ValueError,
+      string
+    > = _resource
+      .values(dataFactory.namedNode("http://example.com/baseStringProperty"), {
+        unique: true,
+      })
+      .head()
+      .chain((_value) => _value.toString());
+    if (_baseStringPropertyEither.isLeft()) {
+      return _baseStringPropertyEither;
+    }
+
+    const baseStringProperty = _baseStringPropertyEither.unsafeCoerce();
+    return purify.Either.of({ identifier, type, baseStringProperty });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    BaseInterfaceWithPropertiesNodeShape
+  > {
+    return BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf(parameters);
+  }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://example.com/BaseInterfaceWithPropertiesNodeShape",
+  );
+
+  export function jsonSchema() {
+    return zodToJsonSchema(baseInterfaceWithPropertiesNodeShapeJsonZodSchema());
+  }
+
+  export function baseInterfaceWithPropertiesNodeShapeJsonUiSchema(parameters?: {
+    scopePrefix?: string;
+  }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      elements: [
+        {
+          label: "Identifier",
+          scope: `${scopePrefix}/properties/@id`,
+          type: "Control",
+        },
+        {
+          rule: {
+            condition: {
+              schema: { const: "BaseInterfaceWithPropertiesNodeShape" },
+              scope: `${scopePrefix}/properties/type`,
+            },
+            effect: "HIDE",
+          },
+          scope: `${scopePrefix}/properties/type`,
+          type: "Control",
+        },
+        {
+          scope: `${scopePrefix}/properties/baseStringProperty`,
+          type: "Control",
+        },
+      ],
+      label: "BaseInterfaceWithPropertiesNodeShape",
+      type: "Group",
+    };
+  }
+
+  export function baseInterfaceWithPropertiesNodeShapeJsonZodSchema() {
+    return zod.object({
+      "@id": zod.string().min(1),
+      type: zod.enum([
+        "BaseInterfaceWithPropertiesNodeShape",
+        "BaseInterfaceWithoutPropertiesNodeShape",
+        "ConcreteChildInterfaceNodeShape",
+        "ConcreteParentInterfaceNodeShape",
+      ]),
+      baseStringProperty: zod.string(),
+    });
+  }
+
+  export function hashBaseInterfaceWithPropertiesNodeShape<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _baseInterfaceWithPropertiesNodeShape: BaseInterfaceWithPropertiesNodeShape,
+    _hasher: HasherT,
+  ): HasherT {
+    _hasher.update(_baseInterfaceWithPropertiesNodeShape.identifier.value);
+    _hasher.update(_baseInterfaceWithPropertiesNodeShape.baseStringProperty);
+    return _hasher;
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        BaseInterfaceWithPropertiesNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        BaseInterfaceWithPropertiesNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      BaseInterfaceWithPropertiesNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("baseInterfaceWithPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "baseInterfaceWithPropertiesNodeShape");
+    return [
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              subject,
+              predicate: dataFactory.namedNode(
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+              ),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
+            },
+          ]),
+      {
+        object: dataFactory.variable!(`${variablePrefix}BaseStringProperty`),
+        predicate: dataFactory.namedNode(
+          "http://example.com/baseStringProperty",
+        ),
+        subject,
+      },
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("baseInterfaceWithPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "baseInterfaceWithPropertiesNodeShape");
+    return [
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.namedNode(
+                    "http://example.com/BaseInterfaceWithPropertiesNodeShape",
+                  ),
+                },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
+                },
+              ],
+              type: "bgp" as const,
+            },
+          ]),
+      {
+        triples: [
+          {
+            object: dataFactory.variable!(
+              `${variablePrefix}BaseStringProperty`,
+            ),
+            predicate: dataFactory.namedNode(
+              "http://example.com/baseStringProperty",
+            ),
+            subject,
+          },
+        ],
+        type: "bgp",
+      },
+    ];
+  }
+
+  export function toJson(
+    _baseInterfaceWithPropertiesNodeShape: BaseInterfaceWithPropertiesNodeShape,
+  ): {
+    readonly "@id": string;
+    readonly type:
+      | "BaseInterfaceWithPropertiesNodeShape"
+      | "BaseInterfaceWithoutPropertiesNodeShape"
+      | "ConcreteChildInterfaceNodeShape"
+      | "ConcreteParentInterfaceNodeShape";
+    readonly baseStringProperty: string;
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id":
+          _baseInterfaceWithPropertiesNodeShape.identifier.termType ===
+          "BlankNode"
+            ? `_:${_baseInterfaceWithPropertiesNodeShape.identifier.value}`
+            : _baseInterfaceWithPropertiesNodeShape.identifier.value,
+        type: _baseInterfaceWithPropertiesNodeShape.type,
+        baseStringProperty:
+          _baseInterfaceWithPropertiesNodeShape.baseStringProperty,
+      } satisfies ReturnType<
+        typeof BaseInterfaceWithPropertiesNodeShape.toJson
+      >),
+    );
+  }
+
+  export function toRdf(
+    _baseInterfaceWithPropertiesNodeShape: BaseInterfaceWithPropertiesNodeShape,
+    {
+      ignoreRdfType,
+      mutateGraph,
+      resourceSet,
+    }: {
+      ignoreRdfType?: boolean;
+      mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource(
+      _baseInterfaceWithPropertiesNodeShape.identifier,
+      { mutateGraph },
+    );
+    if (!ignoreRdfType) {
+      _resource.add(
+        _resource.dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        ),
+        _resource.dataFactory.namedNode(
+          "http://example.com/BaseInterfaceWithPropertiesNodeShape",
+        ),
+      );
+    }
+
+    _resource.add(
+      dataFactory.namedNode("http://example.com/baseStringProperty"),
+      _baseInterfaceWithPropertiesNodeShape.baseStringProperty,
+    );
+    return _resource;
+  }
+}
+/**
+ * Base interface for other node shapes. Put the base interface with properties above the base interface without.
+ */
+export interface BaseInterfaceWithoutPropertiesNodeShape
+  extends BaseInterfaceWithPropertiesNodeShape {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly type:
+    | "BaseInterfaceWithoutPropertiesNodeShape"
+    | "ConcreteChildInterfaceNodeShape"
+    | "ConcreteParentInterfaceNodeShape";
+}
+
+export namespace BaseInterfaceWithoutPropertiesNodeShape {
+  export function create(
+    parameters: {
+      readonly identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
+    } & Parameters<typeof BaseInterfaceWithPropertiesNodeShape.create>[0],
+  ): BaseInterfaceWithoutPropertiesNodeShape {
+    let identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    if (typeof parameters.identifier === "object") {
+      identifier = parameters.identifier;
+    } else if (typeof parameters.identifier === "string") {
+      identifier = dataFactory.namedNode(parameters.identifier);
+    } else {
+      identifier = parameters.identifier as never;
+    }
+
+    const type = "BaseInterfaceWithoutPropertiesNodeShape" as const;
+    return {
+      ...BaseInterfaceWithPropertiesNodeShape.create(parameters),
+      identifier,
+      type,
+    };
+  }
+
+  export function equals(
+    left: BaseInterfaceWithoutPropertiesNodeShape,
+    right: BaseInterfaceWithoutPropertiesNodeShape,
+  ): EqualsResult {
+    return BaseInterfaceWithPropertiesNodeShape.equals(left, right);
+  }
+
+  export function _propertiesFromJson(_json: unknown): purify.Either<
+    zod.ZodError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type:
+        | "BaseInterfaceWithoutPropertiesNodeShape"
+        | "ConcreteChildInterfaceNodeShape"
+        | "ConcreteParentInterfaceNodeShape";
+    } & UnwrapR<
+      ReturnType<
+        typeof BaseInterfaceWithPropertiesNodeShape._propertiesFromJson
+      >
+    >
+  > {
+    const _jsonSafeParseResult =
+      baseInterfaceWithoutPropertiesNodeShapeJsonZodSchema().safeParse(_json);
+    if (!_jsonSafeParseResult.success) {
+      return purify.Left(_jsonSafeParseResult.error);
+    }
+
+    const _jsonObject = _jsonSafeParseResult.data;
+    const _super0Either =
+      BaseInterfaceWithPropertiesNodeShape._propertiesFromJson(_jsonObject);
+    if (_super0Either.isLeft()) {
+      return _super0Either;
+    }
+
+    const _super0 = _super0Either.unsafeCoerce();
+    const identifier = _jsonObject["@id"].startsWith("_:")
+      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
+      : dataFactory.namedNode(_jsonObject["@id"]);
+    const type = "BaseInterfaceWithoutPropertiesNodeShape" as const;
+    return purify.Either.of({ ..._super0, identifier, type });
+  }
+
+  export function fromJson(
+    json: unknown,
+  ): purify.Either<zod.ZodError, BaseInterfaceWithoutPropertiesNodeShape> {
+    return BaseInterfaceWithoutPropertiesNodeShape._propertiesFromJson(json);
+  }
+
+  export function _propertiesFromRdf({
+    ignoreRdfType: _ignoreRdfType,
+    languageIn: _languageIn,
+    resource: _resource,
+    // @ts-ignore
+    ..._context
+  }: {
+    [_index: string]: any;
+    ignoreRdfType?: boolean;
+    languageIn?: readonly string[];
+    resource: rdfjsResource.Resource;
+  }): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type:
+        | "BaseInterfaceWithoutPropertiesNodeShape"
+        | "ConcreteChildInterfaceNodeShape"
+        | "ConcreteParentInterfaceNodeShape";
+    } & UnwrapR<
+      ReturnType<typeof BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf>
+    >
+  > {
+    const _super0Either =
+      BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf({
+        ..._context,
+        ignoreRdfType: true,
+        languageIn: _languageIn,
+        resource: _resource,
+      });
+    if (_super0Either.isLeft()) {
+      return _super0Either;
+    }
+
+    const _super0 = _super0Either.unsafeCoerce();
+    if (
+      !_ignoreRdfType &&
+      !_resource.isInstanceOf(
+        dataFactory.namedNode(
+          "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
+        ),
+      )
+    ) {
+      return purify.Left(
+        new rdfjsResource.Resource.ValueError({
+          focusResource: _resource,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          predicate: dataFactory.namedNode(
+            "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
+          ),
+        }),
+      );
+    }
+
+    const identifier = _resource.identifier;
+    const type = "BaseInterfaceWithoutPropertiesNodeShape" as const;
+    return purify.Either.of({ ..._super0, identifier, type });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    BaseInterfaceWithoutPropertiesNodeShape
+  > {
+    return BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf(
+      parameters,
+    );
+  }
+
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
+  );
+
+  export function jsonSchema() {
+    return zodToJsonSchema(
+      baseInterfaceWithoutPropertiesNodeShapeJsonZodSchema(),
+    );
+  }
+
+  export function baseInterfaceWithoutPropertiesNodeShapeJsonUiSchema(parameters?: {
+    scopePrefix?: string;
+  }) {
+    const scopePrefix = parameters?.scopePrefix ?? "#";
+    return {
+      elements: [
+        BaseInterfaceWithPropertiesNodeShape.baseInterfaceWithPropertiesNodeShapeJsonUiSchema(
+          { scopePrefix },
+        ),
+      ],
+      label: "BaseInterfaceWithoutPropertiesNodeShape",
+      type: "Group",
+    };
+  }
+
+  export function baseInterfaceWithoutPropertiesNodeShapeJsonZodSchema() {
+    return BaseInterfaceWithPropertiesNodeShape.baseInterfaceWithPropertiesNodeShapeJsonZodSchema().merge(
+      zod.object({
+        "@id": zod.string().min(1),
+        type: zod.enum([
+          "BaseInterfaceWithoutPropertiesNodeShape",
+          "ConcreteChildInterfaceNodeShape",
+          "ConcreteParentInterfaceNodeShape",
+        ]),
+      }),
+    );
+  }
+
+  export function hashBaseInterfaceWithoutPropertiesNodeShape<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _baseInterfaceWithoutPropertiesNodeShape: BaseInterfaceWithoutPropertiesNodeShape,
+    _hasher: HasherT,
+  ): HasherT {
+    BaseInterfaceWithPropertiesNodeShape.hashBaseInterfaceWithPropertiesNodeShape(
+      _baseInterfaceWithoutPropertiesNodeShape,
+      _hasher,
+    );
+    _hasher.update(_baseInterfaceWithoutPropertiesNodeShape.identifier.value);
+    return _hasher;
+  }
+
+  export function sparqlConstructQuery(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      prefixes?: { [prefix: string]: string };
+      subject?: sparqljs.Triple["subject"];
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
+  ): sparqljs.ConstructQuery {
+    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
+
+    return {
+      ...queryParameters,
+      prefixes: parameters?.prefixes ?? {},
+      queryType: "CONSTRUCT",
+      template: (queryParameters.template ?? []).concat(
+        BaseInterfaceWithoutPropertiesNodeShape.sparqlConstructTemplateTriples({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+      type: "query",
+      where: (queryParameters.where ?? []).concat(
+        BaseInterfaceWithoutPropertiesNodeShape.sparqlWherePatterns({
+          ignoreRdfType,
+          subject,
+        }),
+      ),
+    };
+  }
+
+  export function sparqlConstructQueryString(
+    parameters?: {
+      ignoreRdfType?: boolean;
+      subject?: sparqljs.Triple["subject"];
+      variablePrefix?: string;
+    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
+      sparqljs.GeneratorOptions,
+  ): string {
+    return new sparqljs.Generator(parameters).stringify(
+      BaseInterfaceWithoutPropertiesNodeShape.sparqlConstructQuery(parameters),
+    );
+  }
+
+  export function sparqlConstructTemplateTriples(parameters?: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Triple[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("baseInterfaceWithoutPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "baseInterfaceWithoutPropertiesNodeShape");
+    return [
+      ...BaseInterfaceWithPropertiesNodeShape.sparqlConstructTemplateTriples({
+        ignoreRdfType: true,
+        subject,
+        variablePrefix,
+      }),
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              subject,
+              predicate: dataFactory.namedNode(
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+              ),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
+            },
+          ]),
+    ];
+  }
+
+  export function sparqlWherePatterns(parameters: {
+    ignoreRdfType?: boolean;
+    subject?: sparqljs.Triple["subject"];
+    variablePrefix?: string;
+  }): readonly sparqljs.Pattern[] {
+    const subject =
+      parameters?.subject ??
+      dataFactory.variable!("baseInterfaceWithoutPropertiesNodeShape");
+    const variablePrefix =
+      parameters?.variablePrefix ??
+      (subject.termType === "Variable"
+        ? subject.value
+        : "baseInterfaceWithoutPropertiesNodeShape");
+    return [
+      ...BaseInterfaceWithPropertiesNodeShape.sparqlWherePatterns({
+        ignoreRdfType: true,
+        subject,
+        variablePrefix,
+      }),
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.namedNode(
+                    "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
+                  ),
+                },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
+                },
+              ],
+              type: "bgp" as const,
+            },
+          ]),
+    ];
+  }
+
+  export function toJson(
+    _baseInterfaceWithoutPropertiesNodeShape: BaseInterfaceWithoutPropertiesNodeShape,
+  ): ReturnType<typeof BaseInterfaceWithPropertiesNodeShape.toJson> {
+    return JSON.parse(
+      JSON.stringify({
+        ...BaseInterfaceWithPropertiesNodeShape.toJson(
+          _baseInterfaceWithoutPropertiesNodeShape,
+        ),
+      } satisfies ReturnType<
+        typeof BaseInterfaceWithoutPropertiesNodeShape.toJson
+      >),
+    );
+  }
+
+  export function toRdf(
+    _baseInterfaceWithoutPropertiesNodeShape: BaseInterfaceWithoutPropertiesNodeShape,
+    {
+      ignoreRdfType,
+      mutateGraph,
+      resourceSet,
+    }: {
+      ignoreRdfType?: boolean;
+      mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    const _resource = BaseInterfaceWithPropertiesNodeShape.toRdf(
+      _baseInterfaceWithoutPropertiesNodeShape,
+      { ignoreRdfType: true, mutateGraph, resourceSet },
+    );
+    if (!ignoreRdfType) {
+      _resource.add(
+        _resource.dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        ),
+        _resource.dataFactory.namedNode(
+          "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
+        ),
+      );
+    }
+
+    return _resource;
+  }
+}
+/**
+ * Interface node shape that inherits the base interface and is the parent of the ConcreteChildInterfaceNodeShape.
+ */
+export interface ConcreteParentInterfaceNodeShape
+  extends BaseInterfaceWithoutPropertiesNodeShape {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly type:
+    | "ConcreteChildInterfaceNodeShape"
+    | "ConcreteParentInterfaceNodeShape";
+  readonly parentStringProperty: string;
+}
+
+export namespace ConcreteParentInterfaceNodeShape {
+  export function create(
+    parameters: {
+      readonly identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
+      readonly parentStringProperty: string;
+    } & Parameters<typeof BaseInterfaceWithoutPropertiesNodeShape.create>[0],
+  ): ConcreteParentInterfaceNodeShape {
+    let identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+    if (typeof parameters.identifier === "object") {
+      identifier = parameters.identifier;
+    } else if (typeof parameters.identifier === "string") {
+      identifier = dataFactory.namedNode(parameters.identifier);
+    } else {
+      identifier = parameters.identifier as never;
+    }
+
+    const type = "ConcreteParentInterfaceNodeShape" as const;
+    const parentStringProperty = parameters.parentStringProperty;
+    return {
+      ...BaseInterfaceWithoutPropertiesNodeShape.create(parameters),
+      identifier,
+      type,
+      parentStringProperty,
+    };
+  }
+
+  export function equals(
+    left: ConcreteParentInterfaceNodeShape,
+    right: ConcreteParentInterfaceNodeShape,
+  ): EqualsResult {
+    return BaseInterfaceWithoutPropertiesNodeShape.equals(left, right).chain(
+      () =>
         strictEquals(
           left.parentStringProperty,
           right.parentStringProperty,
@@ -13334,29 +14144,48 @@ export namespace ConcreteParentInterfaceNodeShape {
           propertyValuesUnequal,
           type: "Property" as const,
         })),
-      );
+    );
   }
 
   export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      type: "ConcreteParentInterfaceNodeShape";
+      type:
+        | "ConcreteChildInterfaceNodeShape"
+        | "ConcreteParentInterfaceNodeShape";
       parentStringProperty: string;
-    }
+    } & UnwrapR<
+      ReturnType<
+        typeof BaseInterfaceWithoutPropertiesNodeShape._propertiesFromJson
+      >
+    >
   > {
-    const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+    const _jsonSafeParseResult =
+      concreteParentInterfaceNodeShapeJsonZodSchema().safeParse(_json);
     if (!_jsonSafeParseResult.success) {
       return purify.Left(_jsonSafeParseResult.error);
     }
 
     const _jsonObject = _jsonSafeParseResult.data;
+    const _super0Either =
+      BaseInterfaceWithoutPropertiesNodeShape._propertiesFromJson(_jsonObject);
+    if (_super0Either.isLeft()) {
+      return _super0Either;
+    }
+
+    const _super0 = _super0Either.unsafeCoerce();
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
     const type = "ConcreteParentInterfaceNodeShape" as const;
     const parentStringProperty = _jsonObject["parentStringProperty"];
-    return purify.Either.of({ identifier, type, parentStringProperty });
+    return purify.Either.of({
+      ..._super0,
+      identifier,
+      type,
+      parentStringProperty,
+    });
   }
 
   export function fromJson(
@@ -13380,10 +14209,47 @@ export namespace ConcreteParentInterfaceNodeShape {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      type: "ConcreteParentInterfaceNodeShape";
+      type:
+        | "ConcreteChildInterfaceNodeShape"
+        | "ConcreteParentInterfaceNodeShape";
       parentStringProperty: string;
-    }
+    } & UnwrapR<
+      ReturnType<
+        typeof BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf
+      >
+    >
   > {
+    const _super0Either =
+      BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf({
+        ..._context,
+        ignoreRdfType: true,
+        languageIn: _languageIn,
+        resource: _resource,
+      });
+    if (_super0Either.isLeft()) {
+      return _super0Either;
+    }
+
+    const _super0 = _super0Either.unsafeCoerce();
+    if (
+      !_ignoreRdfType &&
+      !_resource.isInstanceOf(
+        dataFactory.namedNode(
+          "http://example.com/ConcreteParentInterfaceNodeShape",
+        ),
+      )
+    ) {
+      return purify.Left(
+        new rdfjsResource.Resource.ValueError({
+          focusResource: _resource,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          predicate: dataFactory.namedNode(
+            "http://example.com/ConcreteParentInterfaceNodeShape",
+          ),
+        }),
+      );
+    }
+
     const identifier = _resource.identifier;
     const type = "ConcreteParentInterfaceNodeShape" as const;
     const _parentStringPropertyEither: purify.Either<
@@ -13401,7 +14267,12 @@ export namespace ConcreteParentInterfaceNodeShape {
     }
 
     const parentStringProperty = _parentStringPropertyEither.unsafeCoerce();
-    return purify.Either.of({ identifier, type, parentStringProperty });
+    return purify.Either.of({
+      ..._super0,
+      identifier,
+      type,
+      parentStringProperty,
+    });
   }
 
   export function fromRdf(
@@ -13415,30 +14286,23 @@ export namespace ConcreteParentInterfaceNodeShape {
     return ConcreteParentInterfaceNodeShape._propertiesFromRdf(parameters);
   }
 
+  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
+    "http://example.com/ConcreteParentInterfaceNodeShape",
+  );
+
   export function jsonSchema() {
-    return zodToJsonSchema(jsonZodSchema());
+    return zodToJsonSchema(concreteParentInterfaceNodeShapeJsonZodSchema());
   }
 
-  export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+  export function concreteParentInterfaceNodeShapeJsonUiSchema(parameters?: {
+    scopePrefix?: string;
+  }) {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        {
-          label: "Identifier",
-          scope: `${scopePrefix}/properties/@id`,
-          type: "Control",
-        },
-        {
-          rule: {
-            condition: {
-              schema: { const: "ConcreteParentInterfaceNodeShape" },
-              scope: `${scopePrefix}/properties/type`,
-            },
-            effect: "HIDE",
-          },
-          scope: `${scopePrefix}/properties/type`,
-          type: "Control",
-        },
+        BaseInterfaceWithoutPropertiesNodeShape.baseInterfaceWithoutPropertiesNodeShapeJsonUiSchema(
+          { scopePrefix },
+        ),
         {
           scope: `${scopePrefix}/properties/parentStringProperty`,
           type: "Control",
@@ -13449,15 +14313,20 @@ export namespace ConcreteParentInterfaceNodeShape {
     };
   }
 
-  export function jsonZodSchema() {
-    return zod.object({
-      "@id": zod.string().min(1),
-      type: zod.literal("ConcreteParentInterfaceNodeShape"),
-      parentStringProperty: zod.string(),
-    });
+  export function concreteParentInterfaceNodeShapeJsonZodSchema() {
+    return BaseInterfaceWithoutPropertiesNodeShape.baseInterfaceWithoutPropertiesNodeShapeJsonZodSchema().merge(
+      zod.object({
+        "@id": zod.string().min(1),
+        type: zod.enum([
+          "ConcreteChildInterfaceNodeShape",
+          "ConcreteParentInterfaceNodeShape",
+        ]),
+        parentStringProperty: zod.string(),
+      }),
+    );
   }
 
-  export function hash<
+  export function hashConcreteParentInterfaceNodeShape<
     HasherT extends {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
@@ -13465,6 +14334,10 @@ export namespace ConcreteParentInterfaceNodeShape {
     _concreteParentInterfaceNodeShape: ConcreteParentInterfaceNodeShape,
     _hasher: HasherT,
   ): HasherT {
+    BaseInterfaceWithoutPropertiesNodeShape.hashBaseInterfaceWithoutPropertiesNodeShape(
+      _concreteParentInterfaceNodeShape,
+      _hasher,
+    );
     _hasher.update(_concreteParentInterfaceNodeShape.identifier.value);
     _hasher.update(_concreteParentInterfaceNodeShape.parentStringProperty);
     return _hasher;
@@ -13526,6 +14399,20 @@ export namespace ConcreteParentInterfaceNodeShape {
         ? subject.value
         : "concreteParentInterfaceNodeShape");
     return [
+      ...BaseInterfaceWithoutPropertiesNodeShape.sparqlConstructTemplateTriples(
+        { ignoreRdfType: true, subject, variablePrefix },
+      ),
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              subject,
+              predicate: dataFactory.namedNode(
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+              ),
+              object: dataFactory.variable!(`${variablePrefix}RdfType`),
+            },
+          ]),
       {
         object: dataFactory.variable!(`${variablePrefix}ParentStringProperty`),
         predicate: dataFactory.namedNode(
@@ -13550,6 +14437,41 @@ export namespace ConcreteParentInterfaceNodeShape {
         ? subject.value
         : "concreteParentInterfaceNodeShape");
     return [
+      ...BaseInterfaceWithoutPropertiesNodeShape.sparqlWherePatterns({
+        ignoreRdfType: true,
+        subject,
+        variablePrefix,
+      }),
+      ...(parameters?.ignoreRdfType
+        ? []
+        : [
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.namedNode(
+                    "http://example.com/ConcreteParentInterfaceNodeShape",
+                  ),
+                },
+              ],
+              type: "bgp" as const,
+            },
+            {
+              triples: [
+                {
+                  subject,
+                  predicate: dataFactory.namedNode(
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                  ),
+                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
+                },
+              ],
+              type: "bgp" as const,
+            },
+          ]),
       {
         triples: [
           {
@@ -13569,18 +14491,14 @@ export namespace ConcreteParentInterfaceNodeShape {
 
   export function toJson(
     _concreteParentInterfaceNodeShape: ConcreteParentInterfaceNodeShape,
-  ): {
-    readonly "@id": string;
-    readonly type: "ConcreteParentInterfaceNodeShape";
-    readonly parentStringProperty: string;
-  } {
+  ): { readonly parentStringProperty: string } & ReturnType<
+    typeof BaseInterfaceWithoutPropertiesNodeShape.toJson
+  > {
     return JSON.parse(
       JSON.stringify({
-        "@id":
-          _concreteParentInterfaceNodeShape.identifier.termType === "BlankNode"
-            ? `_:${_concreteParentInterfaceNodeShape.identifier.value}`
-            : _concreteParentInterfaceNodeShape.identifier.value,
-        type: _concreteParentInterfaceNodeShape.type,
+        ...BaseInterfaceWithoutPropertiesNodeShape.toJson(
+          _concreteParentInterfaceNodeShape,
+        ),
         parentStringProperty:
           _concreteParentInterfaceNodeShape.parentStringProperty,
       } satisfies ReturnType<typeof ConcreteParentInterfaceNodeShape.toJson>),
@@ -13590,6 +14508,7 @@ export namespace ConcreteParentInterfaceNodeShape {
   export function toRdf(
     _concreteParentInterfaceNodeShape: ConcreteParentInterfaceNodeShape,
     {
+      ignoreRdfType,
       mutateGraph,
       resourceSet,
     }: {
@@ -13598,10 +14517,21 @@ export namespace ConcreteParentInterfaceNodeShape {
       resourceSet: rdfjsResource.MutableResourceSet;
     },
   ): rdfjsResource.MutableResource {
-    const _resource = resourceSet.mutableResource(
-      _concreteParentInterfaceNodeShape.identifier,
-      { mutateGraph },
+    const _resource = BaseInterfaceWithoutPropertiesNodeShape.toRdf(
+      _concreteParentInterfaceNodeShape,
+      { ignoreRdfType: true, mutateGraph, resourceSet },
     );
+    if (!ignoreRdfType) {
+      _resource.add(
+        _resource.dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        ),
+        _resource.dataFactory.namedNode(
+          "http://example.com/ConcreteParentInterfaceNodeShape",
+        ),
+      );
+    }
+
     _resource.add(
       dataFactory.namedNode("http://example.com/parentStringProperty"),
       _concreteParentInterfaceNodeShape.parentStringProperty,
@@ -13805,7 +14735,9 @@ export namespace ConcreteChildInterfaceNodeShape {
     const scopePrefix = parameters?.scopePrefix ?? "#";
     return {
       elements: [
-        ConcreteParentInterfaceNodeShape.jsonUiSchema({ scopePrefix }),
+        ConcreteParentInterfaceNodeShape.concreteParentInterfaceNodeShapeJsonUiSchema(
+          { scopePrefix },
+        ),
         {
           scope: `${scopePrefix}/properties/childStringProperty`,
           type: "Control",
@@ -13817,7 +14749,7 @@ export namespace ConcreteChildInterfaceNodeShape {
   }
 
   export function concreteChildInterfaceNodeShapeJsonZodSchema() {
-    return ConcreteParentInterfaceNodeShape.jsonZodSchema().merge(
+    return ConcreteParentInterfaceNodeShape.concreteParentInterfaceNodeShapeJsonZodSchema().merge(
       zod.object({
         "@id": zod.string().min(1),
         type: zod.literal("ConcreteChildInterfaceNodeShape"),
@@ -13834,7 +14766,7 @@ export namespace ConcreteChildInterfaceNodeShape {
     _concreteChildInterfaceNodeShape: ConcreteChildInterfaceNodeShape,
     _hasher: HasherT,
   ): HasherT {
-    ConcreteParentInterfaceNodeShape.hash(
+    ConcreteParentInterfaceNodeShape.hashConcreteParentInterfaceNodeShape(
       _concreteChildInterfaceNodeShape,
       _hasher,
     );
@@ -15723,824 +16655,6 @@ export namespace BlankNodeShape {
     variablePrefix?: string;
   }): readonly sparqljs.Pattern[] {
     return [];
-  }
-}
-/**
- * Base interface for other node shapes.
- */
-export interface BaseInterfaceWithPropertiesNodeShape {
-  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly type:
-    | "BaseInterfaceWithPropertiesNodeShape"
-    | "BaseInterfaceWithoutPropertiesNodeShape"
-    | "ConcreteChildInterfaceNodeShape"
-    | "ConcreteParentInterfaceNodeShape";
-  readonly baseStringProperty: string;
-}
-
-export namespace BaseInterfaceWithPropertiesNodeShape {
-  export function create(parameters: {
-    readonly identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
-    readonly baseStringProperty: string;
-  }): BaseInterfaceWithPropertiesNodeShape {
-    let identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-    if (typeof parameters.identifier === "object") {
-      identifier = parameters.identifier;
-    } else if (typeof parameters.identifier === "string") {
-      identifier = dataFactory.namedNode(parameters.identifier);
-    } else {
-      identifier = parameters.identifier as never;
-    }
-
-    const type = "BaseInterfaceWithPropertiesNodeShape" as const;
-    const baseStringProperty = parameters.baseStringProperty;
-    return { identifier, type, baseStringProperty };
-  }
-
-  export function equals(
-    left: BaseInterfaceWithPropertiesNodeShape,
-    right: BaseInterfaceWithPropertiesNodeShape,
-  ): EqualsResult {
-    return booleanEquals(left.identifier, right.identifier)
-      .mapLeft((propertyValuesUnequal) => ({
-        left: left,
-        right: right,
-        propertyName: "identifier",
-        propertyValuesUnequal,
-        type: "Property" as const,
-      }))
-      .chain(() =>
-        strictEquals(left.type, right.type).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: left,
-            right: right,
-            propertyName: "type",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
-      )
-      .chain(() =>
-        strictEquals(left.baseStringProperty, right.baseStringProperty).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: left,
-            right: right,
-            propertyName: "baseStringProperty",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
-      );
-  }
-
-  export function _propertiesFromJson(_json: unknown): purify.Either<
-    zod.ZodError,
-    {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      type:
-        | "BaseInterfaceWithPropertiesNodeShape"
-        | "BaseInterfaceWithoutPropertiesNodeShape"
-        | "ConcreteChildInterfaceNodeShape"
-        | "ConcreteParentInterfaceNodeShape";
-      baseStringProperty: string;
-    }
-  > {
-    const _jsonSafeParseResult =
-      baseInterfaceWithPropertiesNodeShapeJsonZodSchema().safeParse(_json);
-    if (!_jsonSafeParseResult.success) {
-      return purify.Left(_jsonSafeParseResult.error);
-    }
-
-    const _jsonObject = _jsonSafeParseResult.data;
-    const identifier = _jsonObject["@id"].startsWith("_:")
-      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
-      : dataFactory.namedNode(_jsonObject["@id"]);
-    const type = "BaseInterfaceWithPropertiesNodeShape" as const;
-    const baseStringProperty = _jsonObject["baseStringProperty"];
-    return purify.Either.of({ identifier, type, baseStringProperty });
-  }
-
-  export function fromJson(
-    json: unknown,
-  ): purify.Either<zod.ZodError, BaseInterfaceWithPropertiesNodeShape> {
-    return BaseInterfaceWithPropertiesNodeShape._propertiesFromJson(json);
-  }
-
-  export function _propertiesFromRdf({
-    ignoreRdfType: _ignoreRdfType,
-    languageIn: _languageIn,
-    resource: _resource,
-    // @ts-ignore
-    ..._context
-  }: {
-    [_index: string]: any;
-    ignoreRdfType?: boolean;
-    languageIn?: readonly string[];
-    resource: rdfjsResource.Resource;
-  }): purify.Either<
-    rdfjsResource.Resource.ValueError,
-    {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      type:
-        | "BaseInterfaceWithPropertiesNodeShape"
-        | "BaseInterfaceWithoutPropertiesNodeShape"
-        | "ConcreteChildInterfaceNodeShape"
-        | "ConcreteParentInterfaceNodeShape";
-      baseStringProperty: string;
-    }
-  > {
-    if (
-      !_ignoreRdfType &&
-      !_resource.isInstanceOf(
-        dataFactory.namedNode(
-          "http://example.com/BaseInterfaceWithPropertiesNodeShape",
-        ),
-      )
-    ) {
-      return purify.Left(
-        new rdfjsResource.Resource.ValueError({
-          focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
-          predicate: dataFactory.namedNode(
-            "http://example.com/BaseInterfaceWithPropertiesNodeShape",
-          ),
-        }),
-      );
-    }
-
-    const identifier = _resource.identifier;
-    const type = "BaseInterfaceWithPropertiesNodeShape" as const;
-    const _baseStringPropertyEither: purify.Either<
-      rdfjsResource.Resource.ValueError,
-      string
-    > = _resource
-      .values(dataFactory.namedNode("http://example.com/baseStringProperty"), {
-        unique: true,
-      })
-      .head()
-      .chain((_value) => _value.toString());
-    if (_baseStringPropertyEither.isLeft()) {
-      return _baseStringPropertyEither;
-    }
-
-    const baseStringProperty = _baseStringPropertyEither.unsafeCoerce();
-    return purify.Either.of({ identifier, type, baseStringProperty });
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf
-    >[0],
-  ): purify.Either<
-    rdfjsResource.Resource.ValueError,
-    BaseInterfaceWithPropertiesNodeShape
-  > {
-    return BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf(parameters);
-  }
-
-  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
-    "http://example.com/BaseInterfaceWithPropertiesNodeShape",
-  );
-
-  export function jsonSchema() {
-    return zodToJsonSchema(baseInterfaceWithPropertiesNodeShapeJsonZodSchema());
-  }
-
-  export function baseInterfaceWithPropertiesNodeShapeJsonUiSchema(parameters?: {
-    scopePrefix?: string;
-  }) {
-    const scopePrefix = parameters?.scopePrefix ?? "#";
-    return {
-      elements: [
-        {
-          label: "Identifier",
-          scope: `${scopePrefix}/properties/@id`,
-          type: "Control",
-        },
-        {
-          rule: {
-            condition: {
-              schema: { const: "BaseInterfaceWithPropertiesNodeShape" },
-              scope: `${scopePrefix}/properties/type`,
-            },
-            effect: "HIDE",
-          },
-          scope: `${scopePrefix}/properties/type`,
-          type: "Control",
-        },
-        {
-          scope: `${scopePrefix}/properties/baseStringProperty`,
-          type: "Control",
-        },
-      ],
-      label: "BaseInterfaceWithPropertiesNodeShape",
-      type: "Group",
-    };
-  }
-
-  export function baseInterfaceWithPropertiesNodeShapeJsonZodSchema() {
-    return zod.object({
-      "@id": zod.string().min(1),
-      type: zod.enum([
-        "BaseInterfaceWithPropertiesNodeShape",
-        "BaseInterfaceWithoutPropertiesNodeShape",
-        "ConcreteChildInterfaceNodeShape",
-        "ConcreteParentInterfaceNodeShape",
-      ]),
-      baseStringProperty: zod.string(),
-    });
-  }
-
-  export function hashBaseInterfaceWithPropertiesNodeShape<
-    HasherT extends {
-      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
-    },
-  >(
-    _baseInterfaceWithPropertiesNodeShape: BaseInterfaceWithPropertiesNodeShape,
-    _hasher: HasherT,
-  ): HasherT {
-    _hasher.update(_baseInterfaceWithPropertiesNodeShape.identifier.value);
-    _hasher.update(_baseInterfaceWithPropertiesNodeShape.baseStringProperty);
-    return _hasher;
-  }
-
-  export function sparqlConstructQuery(
-    parameters?: {
-      ignoreRdfType?: boolean;
-      prefixes?: { [prefix: string]: string };
-      subject?: sparqljs.Triple["subject"];
-    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
-  ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
-
-    return {
-      ...queryParameters,
-      prefixes: parameters?.prefixes ?? {},
-      queryType: "CONSTRUCT",
-      template: (queryParameters.template ?? []).concat(
-        BaseInterfaceWithPropertiesNodeShape.sparqlConstructTemplateTriples({
-          ignoreRdfType,
-          subject,
-        }),
-      ),
-      type: "query",
-      where: (queryParameters.where ?? []).concat(
-        BaseInterfaceWithPropertiesNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-        }),
-      ),
-    };
-  }
-
-  export function sparqlConstructQueryString(
-    parameters?: {
-      ignoreRdfType?: boolean;
-      subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
-    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
-      sparqljs.GeneratorOptions,
-  ): string {
-    return new sparqljs.Generator(parameters).stringify(
-      BaseInterfaceWithPropertiesNodeShape.sparqlConstructQuery(parameters),
-    );
-  }
-
-  export function sparqlConstructTemplateTriples(parameters?: {
-    ignoreRdfType?: boolean;
-    subject?: sparqljs.Triple["subject"];
-    variablePrefix?: string;
-  }): readonly sparqljs.Triple[] {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable!("baseInterfaceWithPropertiesNodeShape");
-    const variablePrefix =
-      parameters?.variablePrefix ??
-      (subject.termType === "Variable"
-        ? subject.value
-        : "baseInterfaceWithPropertiesNodeShape");
-    return [
-      ...(parameters?.ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable!(`${variablePrefix}RdfType`),
-            },
-          ]),
-      {
-        object: dataFactory.variable!(`${variablePrefix}BaseStringProperty`),
-        predicate: dataFactory.namedNode(
-          "http://example.com/baseStringProperty",
-        ),
-        subject,
-      },
-    ];
-  }
-
-  export function sparqlWherePatterns(parameters: {
-    ignoreRdfType?: boolean;
-    subject?: sparqljs.Triple["subject"];
-    variablePrefix?: string;
-  }): readonly sparqljs.Pattern[] {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable!("baseInterfaceWithPropertiesNodeShape");
-    const variablePrefix =
-      parameters?.variablePrefix ??
-      (subject.termType === "Variable"
-        ? subject.value
-        : "baseInterfaceWithPropertiesNodeShape");
-    return [
-      ...(parameters?.ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.namedNode(
-                    "http://example.com/BaseInterfaceWithPropertiesNodeShape",
-                  ),
-                },
-              ],
-              type: "bgp" as const,
-            },
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
-      {
-        triples: [
-          {
-            object: dataFactory.variable!(
-              `${variablePrefix}BaseStringProperty`,
-            ),
-            predicate: dataFactory.namedNode(
-              "http://example.com/baseStringProperty",
-            ),
-            subject,
-          },
-        ],
-        type: "bgp",
-      },
-    ];
-  }
-
-  export function toJson(
-    _baseInterfaceWithPropertiesNodeShape: BaseInterfaceWithPropertiesNodeShape,
-  ): {
-    readonly "@id": string;
-    readonly type:
-      | "BaseInterfaceWithPropertiesNodeShape"
-      | "BaseInterfaceWithoutPropertiesNodeShape"
-      | "ConcreteChildInterfaceNodeShape"
-      | "ConcreteParentInterfaceNodeShape";
-    readonly baseStringProperty: string;
-  } {
-    return JSON.parse(
-      JSON.stringify({
-        "@id":
-          _baseInterfaceWithPropertiesNodeShape.identifier.termType ===
-          "BlankNode"
-            ? `_:${_baseInterfaceWithPropertiesNodeShape.identifier.value}`
-            : _baseInterfaceWithPropertiesNodeShape.identifier.value,
-        type: _baseInterfaceWithPropertiesNodeShape.type,
-        baseStringProperty:
-          _baseInterfaceWithPropertiesNodeShape.baseStringProperty,
-      } satisfies ReturnType<
-        typeof BaseInterfaceWithPropertiesNodeShape.toJson
-      >),
-    );
-  }
-
-  export function toRdf(
-    _baseInterfaceWithPropertiesNodeShape: BaseInterfaceWithPropertiesNodeShape,
-    {
-      ignoreRdfType,
-      mutateGraph,
-      resourceSet,
-    }: {
-      ignoreRdfType?: boolean;
-      mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
-      resourceSet: rdfjsResource.MutableResourceSet;
-    },
-  ): rdfjsResource.MutableResource {
-    const _resource = resourceSet.mutableResource(
-      _baseInterfaceWithPropertiesNodeShape.identifier,
-      { mutateGraph },
-    );
-    if (!ignoreRdfType) {
-      _resource.add(
-        _resource.dataFactory.namedNode(
-          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-        ),
-        _resource.dataFactory.namedNode(
-          "http://example.com/BaseInterfaceWithPropertiesNodeShape",
-        ),
-      );
-    }
-
-    _resource.add(
-      dataFactory.namedNode("http://example.com/baseStringProperty"),
-      _baseInterfaceWithPropertiesNodeShape.baseStringProperty,
-    );
-    return _resource;
-  }
-}
-/**
- * Base interface for other node shapes. Put the base interface with properties above the base interface without.
- */
-export interface BaseInterfaceWithoutPropertiesNodeShape
-  extends BaseInterfaceWithPropertiesNodeShape {
-  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly type:
-    | "BaseInterfaceWithoutPropertiesNodeShape"
-    | "ConcreteChildInterfaceNodeShape"
-    | "ConcreteParentInterfaceNodeShape";
-}
-
-export namespace BaseInterfaceWithoutPropertiesNodeShape {
-  export function create(
-    parameters: {
-      readonly identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
-    } & Parameters<typeof BaseInterfaceWithPropertiesNodeShape.create>[0],
-  ): BaseInterfaceWithoutPropertiesNodeShape {
-    let identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-    if (typeof parameters.identifier === "object") {
-      identifier = parameters.identifier;
-    } else if (typeof parameters.identifier === "string") {
-      identifier = dataFactory.namedNode(parameters.identifier);
-    } else {
-      identifier = parameters.identifier as never;
-    }
-
-    const type = "BaseInterfaceWithoutPropertiesNodeShape" as const;
-    return {
-      ...BaseInterfaceWithPropertiesNodeShape.create(parameters),
-      identifier,
-      type,
-    };
-  }
-
-  export function equals(
-    left: BaseInterfaceWithoutPropertiesNodeShape,
-    right: BaseInterfaceWithoutPropertiesNodeShape,
-  ): EqualsResult {
-    return BaseInterfaceWithPropertiesNodeShape.equals(left, right);
-  }
-
-  export function _propertiesFromJson(_json: unknown): purify.Either<
-    zod.ZodError,
-    {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      type:
-        | "BaseInterfaceWithoutPropertiesNodeShape"
-        | "ConcreteChildInterfaceNodeShape"
-        | "ConcreteParentInterfaceNodeShape";
-    } & UnwrapR<
-      ReturnType<
-        typeof BaseInterfaceWithPropertiesNodeShape._propertiesFromJson
-      >
-    >
-  > {
-    const _jsonSafeParseResult =
-      baseInterfaceWithoutPropertiesNodeShapeJsonZodSchema().safeParse(_json);
-    if (!_jsonSafeParseResult.success) {
-      return purify.Left(_jsonSafeParseResult.error);
-    }
-
-    const _jsonObject = _jsonSafeParseResult.data;
-    const _super0Either =
-      BaseInterfaceWithPropertiesNodeShape._propertiesFromJson(_jsonObject);
-    if (_super0Either.isLeft()) {
-      return _super0Either;
-    }
-
-    const _super0 = _super0Either.unsafeCoerce();
-    const identifier = _jsonObject["@id"].startsWith("_:")
-      ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
-      : dataFactory.namedNode(_jsonObject["@id"]);
-    const type = "BaseInterfaceWithoutPropertiesNodeShape" as const;
-    return purify.Either.of({ ..._super0, identifier, type });
-  }
-
-  export function fromJson(
-    json: unknown,
-  ): purify.Either<zod.ZodError, BaseInterfaceWithoutPropertiesNodeShape> {
-    return BaseInterfaceWithoutPropertiesNodeShape._propertiesFromJson(json);
-  }
-
-  export function _propertiesFromRdf({
-    ignoreRdfType: _ignoreRdfType,
-    languageIn: _languageIn,
-    resource: _resource,
-    // @ts-ignore
-    ..._context
-  }: {
-    [_index: string]: any;
-    ignoreRdfType?: boolean;
-    languageIn?: readonly string[];
-    resource: rdfjsResource.Resource;
-  }): purify.Either<
-    rdfjsResource.Resource.ValueError,
-    {
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      type:
-        | "BaseInterfaceWithoutPropertiesNodeShape"
-        | "ConcreteChildInterfaceNodeShape"
-        | "ConcreteParentInterfaceNodeShape";
-    } & UnwrapR<
-      ReturnType<typeof BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf>
-    >
-  > {
-    const _super0Either =
-      BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf({
-        ..._context,
-        ignoreRdfType: true,
-        languageIn: _languageIn,
-        resource: _resource,
-      });
-    if (_super0Either.isLeft()) {
-      return _super0Either;
-    }
-
-    const _super0 = _super0Either.unsafeCoerce();
-    if (
-      !_ignoreRdfType &&
-      !_resource.isInstanceOf(
-        dataFactory.namedNode(
-          "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
-        ),
-      )
-    ) {
-      return purify.Left(
-        new rdfjsResource.Resource.ValueError({
-          focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
-          predicate: dataFactory.namedNode(
-            "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
-          ),
-        }),
-      );
-    }
-
-    const identifier = _resource.identifier;
-    const type = "BaseInterfaceWithoutPropertiesNodeShape" as const;
-    return purify.Either.of({ ..._super0, identifier, type });
-  }
-
-  export function fromRdf(
-    parameters: Parameters<
-      typeof BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf
-    >[0],
-  ): purify.Either<
-    rdfjsResource.Resource.ValueError,
-    BaseInterfaceWithoutPropertiesNodeShape
-  > {
-    return BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf(
-      parameters,
-    );
-  }
-
-  export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
-    "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
-  );
-
-  export function jsonSchema() {
-    return zodToJsonSchema(
-      baseInterfaceWithoutPropertiesNodeShapeJsonZodSchema(),
-    );
-  }
-
-  export function baseInterfaceWithoutPropertiesNodeShapeJsonUiSchema(parameters?: {
-    scopePrefix?: string;
-  }) {
-    const scopePrefix = parameters?.scopePrefix ?? "#";
-    return {
-      elements: [
-        BaseInterfaceWithPropertiesNodeShape.baseInterfaceWithPropertiesNodeShapeJsonUiSchema(
-          { scopePrefix },
-        ),
-      ],
-      label: "BaseInterfaceWithoutPropertiesNodeShape",
-      type: "Group",
-    };
-  }
-
-  export function baseInterfaceWithoutPropertiesNodeShapeJsonZodSchema() {
-    return BaseInterfaceWithPropertiesNodeShape.baseInterfaceWithPropertiesNodeShapeJsonZodSchema().merge(
-      zod.object({
-        "@id": zod.string().min(1),
-        type: zod.enum([
-          "BaseInterfaceWithoutPropertiesNodeShape",
-          "ConcreteChildInterfaceNodeShape",
-          "ConcreteParentInterfaceNodeShape",
-        ]),
-      }),
-    );
-  }
-
-  export function hashBaseInterfaceWithoutPropertiesNodeShape<
-    HasherT extends {
-      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
-    },
-  >(
-    _baseInterfaceWithoutPropertiesNodeShape: BaseInterfaceWithoutPropertiesNodeShape,
-    _hasher: HasherT,
-  ): HasherT {
-    BaseInterfaceWithPropertiesNodeShape.hashBaseInterfaceWithPropertiesNodeShape(
-      _baseInterfaceWithoutPropertiesNodeShape,
-      _hasher,
-    );
-    _hasher.update(_baseInterfaceWithoutPropertiesNodeShape.identifier.value);
-    return _hasher;
-  }
-
-  export function sparqlConstructQuery(
-    parameters?: {
-      ignoreRdfType?: boolean;
-      prefixes?: { [prefix: string]: string };
-      subject?: sparqljs.Triple["subject"];
-    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">,
-  ): sparqljs.ConstructQuery {
-    const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {};
-
-    return {
-      ...queryParameters,
-      prefixes: parameters?.prefixes ?? {},
-      queryType: "CONSTRUCT",
-      template: (queryParameters.template ?? []).concat(
-        BaseInterfaceWithoutPropertiesNodeShape.sparqlConstructTemplateTriples({
-          ignoreRdfType,
-          subject,
-        }),
-      ),
-      type: "query",
-      where: (queryParameters.where ?? []).concat(
-        BaseInterfaceWithoutPropertiesNodeShape.sparqlWherePatterns({
-          ignoreRdfType,
-          subject,
-        }),
-      ),
-    };
-  }
-
-  export function sparqlConstructQueryString(
-    parameters?: {
-      ignoreRdfType?: boolean;
-      subject?: sparqljs.Triple["subject"];
-      variablePrefix?: string;
-    } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> &
-      sparqljs.GeneratorOptions,
-  ): string {
-    return new sparqljs.Generator(parameters).stringify(
-      BaseInterfaceWithoutPropertiesNodeShape.sparqlConstructQuery(parameters),
-    );
-  }
-
-  export function sparqlConstructTemplateTriples(parameters?: {
-    ignoreRdfType?: boolean;
-    subject?: sparqljs.Triple["subject"];
-    variablePrefix?: string;
-  }): readonly sparqljs.Triple[] {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable!("baseInterfaceWithoutPropertiesNodeShape");
-    const variablePrefix =
-      parameters?.variablePrefix ??
-      (subject.termType === "Variable"
-        ? subject.value
-        : "baseInterfaceWithoutPropertiesNodeShape");
-    return [
-      ...BaseInterfaceWithPropertiesNodeShape.sparqlConstructTemplateTriples({
-        ignoreRdfType: true,
-        subject,
-        variablePrefix,
-      }),
-      ...(parameters?.ignoreRdfType
-        ? []
-        : [
-            {
-              subject,
-              predicate: dataFactory.namedNode(
-                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-              ),
-              object: dataFactory.variable!(`${variablePrefix}RdfType`),
-            },
-          ]),
-    ];
-  }
-
-  export function sparqlWherePatterns(parameters: {
-    ignoreRdfType?: boolean;
-    subject?: sparqljs.Triple["subject"];
-    variablePrefix?: string;
-  }): readonly sparqljs.Pattern[] {
-    const subject =
-      parameters?.subject ??
-      dataFactory.variable!("baseInterfaceWithoutPropertiesNodeShape");
-    const variablePrefix =
-      parameters?.variablePrefix ??
-      (subject.termType === "Variable"
-        ? subject.value
-        : "baseInterfaceWithoutPropertiesNodeShape");
-    return [
-      ...BaseInterfaceWithPropertiesNodeShape.sparqlWherePatterns({
-        ignoreRdfType: true,
-        subject,
-        variablePrefix,
-      }),
-      ...(parameters?.ignoreRdfType
-        ? []
-        : [
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.namedNode(
-                    "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
-                  ),
-                },
-              ],
-              type: "bgp" as const,
-            },
-            {
-              triples: [
-                {
-                  subject,
-                  predicate: dataFactory.namedNode(
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                  ),
-                  object: dataFactory.variable!(`${variablePrefix}RdfType`),
-                },
-              ],
-              type: "bgp" as const,
-            },
-          ]),
-    ];
-  }
-
-  export function toJson(
-    _baseInterfaceWithoutPropertiesNodeShape: BaseInterfaceWithoutPropertiesNodeShape,
-  ): ReturnType<typeof BaseInterfaceWithPropertiesNodeShape.toJson> {
-    return JSON.parse(
-      JSON.stringify({
-        ...BaseInterfaceWithPropertiesNodeShape.toJson(
-          _baseInterfaceWithoutPropertiesNodeShape,
-        ),
-      } satisfies ReturnType<
-        typeof BaseInterfaceWithoutPropertiesNodeShape.toJson
-      >),
-    );
-  }
-
-  export function toRdf(
-    _baseInterfaceWithoutPropertiesNodeShape: BaseInterfaceWithoutPropertiesNodeShape,
-    {
-      ignoreRdfType,
-      mutateGraph,
-      resourceSet,
-    }: {
-      ignoreRdfType?: boolean;
-      mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
-      resourceSet: rdfjsResource.MutableResourceSet;
-    },
-  ): rdfjsResource.MutableResource {
-    const _resource = BaseInterfaceWithPropertiesNodeShape.toRdf(
-      _baseInterfaceWithoutPropertiesNodeShape,
-      { ignoreRdfType: true, mutateGraph, resourceSet },
-    );
-    if (!ignoreRdfType) {
-      _resource.add(
-        _resource.dataFactory.namedNode(
-          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-        ),
-        _resource.dataFactory.namedNode(
-          "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
-        ),
-      );
-    }
-
-    return _resource;
   }
 }
 /**
