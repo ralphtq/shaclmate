@@ -10,7 +10,7 @@ By constucting types from SHACL in typescript, developers can build applications
 
 A simple example is provided below:
 
-### QUDT Units
+### Example: QUDT Units
 
 __ToDO__
 
