@@ -340,7 +340,7 @@ export class UuidV4IriNodeShape {
 }
 
 export namespace UuidV4IriNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -360,7 +360,7 @@ export namespace UuidV4IriNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, UuidV4IriNodeShape> {
-    return UuidV4IriNodeShape.propertiesFromJson(json).map(
+    return UuidV4IriNodeShape._propertiesFromJson(json).map(
       (properties) => new UuidV4IriNodeShape(properties),
     );
   }
@@ -898,7 +898,7 @@ export class UnionPropertiesNodeShape {
 }
 
 export namespace UnionPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -966,7 +966,7 @@ export namespace UnionPropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, UnionPropertiesNodeShape> {
-    return UnionPropertiesNodeShape.propertiesFromJson(json).map(
+    return UnionPropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new UnionPropertiesNodeShape(properties),
     );
   }
@@ -1505,7 +1505,7 @@ export class UnionNodeShapeMember2 {
 }
 
 export namespace UnionNodeShapeMember2 {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -1527,7 +1527,7 @@ export namespace UnionNodeShapeMember2 {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, UnionNodeShapeMember2> {
-    return UnionNodeShapeMember2.propertiesFromJson(json).map(
+    return UnionNodeShapeMember2._propertiesFromJson(json).map(
       (properties) => new UnionNodeShapeMember2(properties),
     );
   }
@@ -1812,7 +1812,7 @@ export class UnionNodeShapeMember1 {
 }
 
 export namespace UnionNodeShapeMember1 {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -1834,7 +1834,7 @@ export namespace UnionNodeShapeMember1 {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, UnionNodeShapeMember1> {
-    return UnionNodeShapeMember1.propertiesFromJson(json).map(
+    return UnionNodeShapeMember1._propertiesFromJson(json).map(
       (properties) => new UnionNodeShapeMember1(properties),
     );
   }
@@ -2500,7 +2500,7 @@ export class TermPropertiesNodeShape {
 }
 
 export namespace TermPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -2587,7 +2587,7 @@ export namespace TermPropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, TermPropertiesNodeShape> {
-    return TermPropertiesNodeShape.propertiesFromJson(json).map(
+    return TermPropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new TermPropertiesNodeShape(properties),
     );
   }
@@ -3259,7 +3259,7 @@ export class Sha256IriNodeShape {
 }
 
 export namespace Sha256IriNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -3279,7 +3279,7 @@ export namespace Sha256IriNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, Sha256IriNodeShape> {
-    return Sha256IriNodeShape.propertiesFromJson(json).map(
+    return Sha256IriNodeShape._propertiesFromJson(json).map(
       (properties) => new Sha256IriNodeShape(properties),
     );
   }
@@ -3605,7 +3605,7 @@ export class PropertyVisibilitiesNodeShape {
 }
 
 export namespace PropertyVisibilitiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -3637,7 +3637,7 @@ export namespace PropertyVisibilitiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, PropertyVisibilitiesNodeShape> {
-    return PropertyVisibilitiesNodeShape.propertiesFromJson(json).map(
+    return PropertyVisibilitiesNodeShape._propertiesFromJson(json).map(
       (properties) => new PropertyVisibilitiesNodeShape(properties),
     );
   }
@@ -4127,7 +4127,7 @@ export class PropertyCardinalitiesNodeShape {
 }
 
 export namespace PropertyCardinalitiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4166,7 +4166,7 @@ export namespace PropertyCardinalitiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, PropertyCardinalitiesNodeShape> {
-    return PropertyCardinalitiesNodeShape.propertiesFromJson(json).map(
+    return PropertyCardinalitiesNodeShape._propertiesFromJson(json).map(
       (properties) => new PropertyCardinalitiesNodeShape(properties),
     );
   }
@@ -4708,7 +4708,7 @@ export class OrderedPropertiesNodeShape {
 }
 
 export namespace OrderedPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -4735,7 +4735,7 @@ export namespace OrderedPropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, OrderedPropertiesNodeShape> {
-    return OrderedPropertiesNodeShape.propertiesFromJson(json).map(
+    return OrderedPropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new OrderedPropertiesNodeShape(properties),
     );
   }
@@ -5098,7 +5098,7 @@ export class NonClassNodeShape {
 }
 
 export namespace NonClassNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -5120,7 +5120,7 @@ export namespace NonClassNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, NonClassNodeShape> {
-    return NonClassNodeShape.propertiesFromJson(json).map(
+    return NonClassNodeShape._propertiesFromJson(json).map(
       (properties) => new NonClassNodeShape(properties),
     );
   }
@@ -5589,7 +5589,7 @@ export class MutablePropertiesNodeShape {
 }
 
 export namespace MutablePropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -5625,7 +5625,7 @@ export namespace MutablePropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, MutablePropertiesNodeShape> {
-    return MutablePropertiesNodeShape.propertiesFromJson(json).map(
+    return MutablePropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new MutablePropertiesNodeShape(properties),
     );
   }
@@ -6409,7 +6409,7 @@ export class ListPropertiesNodeShape {
 }
 
 export namespace ListPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -6444,7 +6444,7 @@ export namespace ListPropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ListPropertiesNodeShape> {
-    return ListPropertiesNodeShape.propertiesFromJson(json).map(
+    return ListPropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new ListPropertiesNodeShape(properties),
     );
   }
@@ -7265,7 +7265,7 @@ export class LanguageInPropertiesNodeShape {
 }
 
 export namespace LanguageInPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7316,7 +7316,7 @@ export namespace LanguageInPropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, LanguageInPropertiesNodeShape> {
-    return LanguageInPropertiesNodeShape.propertiesFromJson(json).map(
+    return LanguageInPropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new LanguageInPropertiesNodeShape(properties),
     );
   }
@@ -7682,7 +7682,7 @@ export class IriNodeShape {
 }
 
 export namespace IriNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<zod.ZodError, { identifier: rdfjs.NamedNode }> {
     const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
@@ -7698,7 +7698,7 @@ export namespace IriNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, IriNodeShape> {
-    return IriNodeShape.propertiesFromJson(json).map(
+    return IriNodeShape._propertiesFromJson(json).map(
       (properties) => new IriNodeShape(properties),
     );
   }
@@ -7880,7 +7880,7 @@ export namespace InterfaceUnionNodeShapeMember2b {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -7905,7 +7905,7 @@ export namespace InterfaceUnionNodeShapeMember2b {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2b> {
-    return InterfaceUnionNodeShapeMember2b.propertiesFromJson(json);
+    return InterfaceUnionNodeShapeMember2b._propertiesFromJson(json);
   }
 
   export function propertiesFromRdf({
@@ -8207,7 +8207,7 @@ export namespace InterfaceUnionNodeShapeMember2a {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -8232,7 +8232,7 @@ export namespace InterfaceUnionNodeShapeMember2a {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember2a> {
-    return InterfaceUnionNodeShapeMember2a.propertiesFromJson(json);
+    return InterfaceUnionNodeShapeMember2a._propertiesFromJson(json);
   }
 
   export function propertiesFromRdf({
@@ -8534,7 +8534,7 @@ export namespace InterfaceUnionNodeShapeMember1 {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -8559,7 +8559,7 @@ export namespace InterfaceUnionNodeShapeMember1 {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, InterfaceUnionNodeShapeMember1> {
-    return InterfaceUnionNodeShapeMember1.propertiesFromJson(json);
+    return InterfaceUnionNodeShapeMember1._propertiesFromJson(json);
   }
 
   export function propertiesFromRdf({
@@ -8861,7 +8861,7 @@ export namespace InterfaceNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -8886,7 +8886,7 @@ export namespace InterfaceNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, InterfaceNodeShape> {
-    return InterfaceNodeShape.propertiesFromJson(json);
+    return InterfaceNodeShape._propertiesFromJson(json);
   }
 
   export function propertiesFromRdf({
@@ -9416,7 +9416,7 @@ export class InPropertiesNodeShape {
 }
 
 export namespace InPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -9469,7 +9469,7 @@ export namespace InPropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, InPropertiesNodeShape> {
-    return InPropertiesNodeShape.propertiesFromJson(json).map(
+    return InPropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new InPropertiesNodeShape(properties),
     );
   }
@@ -10112,7 +10112,7 @@ export class InIdentifierNodeShape {
 }
 
 export namespace InIdentifierNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.NamedNode<
@@ -10138,7 +10138,7 @@ export namespace InIdentifierNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, InIdentifierNodeShape> {
-    return InIdentifierNodeShape.propertiesFromJson(json).map(
+    return InIdentifierNodeShape._propertiesFromJson(json).map(
       (properties) => new InIdentifierNodeShape(properties),
     );
   }
@@ -10529,7 +10529,7 @@ export class HasValuePropertiesNodeShape {
 }
 
 export namespace HasValuePropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -10558,7 +10558,7 @@ export namespace HasValuePropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, HasValuePropertiesNodeShape> {
-    return HasValuePropertiesNodeShape.propertiesFromJson(json).map(
+    return HasValuePropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new HasValuePropertiesNodeShape(properties),
     );
   }
@@ -10926,7 +10926,7 @@ export class InlineNodeShape {
 }
 
 export namespace InlineNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -10948,7 +10948,7 @@ export namespace InlineNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, InlineNodeShape> {
-    return InlineNodeShape.propertiesFromJson(json).map(
+    return InlineNodeShape._propertiesFromJson(json).map(
       (properties) => new InlineNodeShape(properties),
     );
   }
@@ -11229,7 +11229,7 @@ export class ExternNodeShape {
 }
 
 export namespace ExternNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -11251,7 +11251,7 @@ export namespace ExternNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ExternNodeShape> {
-    return ExternNodeShape.propertiesFromJson(json).map(
+    return ExternNodeShape._propertiesFromJson(json).map(
       (properties) => new ExternNodeShape(properties),
     );
   }
@@ -11649,7 +11649,7 @@ export class ExternPropertiesNodeShape {
 }
 
 export namespace ExternPropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -11691,7 +11691,7 @@ export namespace ExternPropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ExternPropertiesNodeShape> {
-    return ExternPropertiesNodeShape.propertiesFromJson(json).map(
+    return ExternPropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new ExternPropertiesNodeShape(properties),
     );
   }
@@ -12162,7 +12162,7 @@ export class ExplicitRdfTypesNodeShape {
 }
 
 export namespace ExplicitRdfTypesNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -12184,7 +12184,7 @@ export namespace ExplicitRdfTypesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ExplicitRdfTypesNodeShape> {
-    return ExplicitRdfTypesNodeShape.propertiesFromJson(json).map(
+    return ExplicitRdfTypesNodeShape._propertiesFromJson(json).map(
       (properties) => new ExplicitRdfTypesNodeShape(properties),
     );
   }
@@ -12728,7 +12728,7 @@ export class DefaultValuePropertiesNodeShape {
 }
 
 export namespace DefaultValuePropertiesNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -12769,7 +12769,7 @@ export namespace DefaultValuePropertiesNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, DefaultValuePropertiesNodeShape> {
-    return DefaultValuePropertiesNodeShape.propertiesFromJson(json).map(
+    return DefaultValuePropertiesNodeShape._propertiesFromJson(json).map(
       (properties) => new DefaultValuePropertiesNodeShape(properties),
     );
   }
@@ -13395,7 +13395,7 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
 }
 
 namespace AbstractBaseClassWithPropertiesNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -13663,7 +13663,7 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
 }
 
 namespace AbstractBaseClassWithoutPropertiesNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -13982,7 +13982,7 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
 }
 
 export namespace ConcreteParentClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -14019,7 +14019,7 @@ export namespace ConcreteParentClassNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ConcreteParentClassNodeShape> {
-    return ConcreteParentClassNodeShape.propertiesFromJson(json).map(
+    return ConcreteParentClassNodeShape._propertiesFromJson(json).map(
       (properties) => new ConcreteParentClassNodeShape(properties),
     );
   }
@@ -14415,7 +14415,7 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
 }
 
 export namespace ConcreteChildClassNodeShape {
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -14448,7 +14448,7 @@ export namespace ConcreteChildClassNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ConcreteChildClassNodeShape> {
-    return ConcreteChildClassNodeShape.propertiesFromJson(json).map(
+    return ConcreteChildClassNodeShape._propertiesFromJson(json).map(
       (properties) => new ConcreteChildClassNodeShape(properties),
     );
   }
@@ -14807,7 +14807,7 @@ export class BlankNodeShape {
 }
 
 export namespace BlankNodeShape {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,
@@ -14828,7 +14828,7 @@ export namespace BlankNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, BlankNodeShape> {
-    return BlankNodeShape.propertiesFromJson(json).map(
+    return BlankNodeShape._propertiesFromJson(json).map(
       (properties) => new BlankNodeShape(properties),
     );
   }
@@ -15047,7 +15047,7 @@ export abstract class AbstractBaseClassForExternObjectType {
 }
 
 export namespace AbstractBaseClassForExternObjectType {
-  export function propertiesFromJson(
+  export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
     zod.ZodError,

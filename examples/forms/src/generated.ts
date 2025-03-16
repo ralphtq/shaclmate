@@ -256,7 +256,7 @@ export namespace NestedNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -281,7 +281,7 @@ export namespace NestedNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, NestedNodeShape> {
-    return NestedNodeShape.propertiesFromJson(json);
+    return NestedNodeShape._propertiesFromJson(json);
   }
 
   export function propertiesFromRdf({
@@ -697,7 +697,7 @@ export namespace FormNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -747,7 +747,7 @@ export namespace FormNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, FormNodeShape> {
-    return FormNodeShape.propertiesFromJson(json);
+    return FormNodeShape._propertiesFromJson(json);
   }
 
   export function propertiesFromRdf({
