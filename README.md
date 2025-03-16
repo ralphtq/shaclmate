@@ -8,6 +8,12 @@ The motivation for **SHACLmate** arises from the desire software developers fami
 
 By constucting types from SHACL in typescript, developers can build applications without the need for them to learn SPARQL and RDF.
 
+A simple example is provided below:
+
+### QUDT Units
+
+__ToDO__
+
 ## Prerequisites
 
 * [Node.js](https://nodejs.org/) 18+
