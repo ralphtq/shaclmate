@@ -15320,32 +15320,6 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
       : `urn:shaclmate:${this.type}:`;
   }
 
-  override equals(
-    other: AbstractBaseClassWithoutPropertiesNodeShape,
-  ): EqualsResult {
-    return super.equals(other).chain(() =>
-      strictEquals(this.identifierPrefix, other.identifierPrefix).mapLeft(
-        (propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "identifierPrefix",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        }),
-      ),
-    );
-  }
-
-  override toJson(): {} & ReturnType<
-    AbstractBaseClassWithPropertiesNodeShape["toJson"]
-  > {
-    return JSON.parse(
-      JSON.stringify({ ...super.toJson() } satisfies ReturnType<
-        AbstractBaseClassWithoutPropertiesNodeShape["toJson"]
-      >),
-    );
-  }
-
   override toRdf({
     mutateGraph,
     resourceSet,
@@ -15601,31 +15575,18 @@ export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutProper
   }
 
   override equals(other: ConcreteParentClassNodeShape): EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        strictEquals(this.identifierPrefix, other.identifierPrefix).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "identifierPrefix",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
-      )
-      .chain(() =>
-        strictEquals(
-          this.parentStringProperty,
-          other.parentStringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
-          propertyName: "parentStringProperty",
-          propertyValuesUnequal,
-          type: "Property" as const,
-        })),
-      );
+    return super.equals(other).chain(() =>
+      strictEquals(
+        this.parentStringProperty,
+        other.parentStringProperty,
+      ).mapLeft((propertyValuesUnequal) => ({
+        left: this,
+        right: other,
+        propertyName: "parentStringProperty",
+        propertyValuesUnequal,
+        type: "Property" as const,
+      })),
+    );
   }
 
   override hash<
@@ -16034,31 +15995,17 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   }
 
   override equals(other: ConcreteChildClassNodeShape): EqualsResult {
-    return super
-      .equals(other)
-      .chain(() =>
-        strictEquals(this.identifierPrefix, other.identifierPrefix).mapLeft(
-          (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
-            propertyName: "identifierPrefix",
-            propertyValuesUnequal,
-            type: "Property" as const,
-          }),
-        ),
-      )
-      .chain(() =>
-        strictEquals(
-          this.childStringProperty,
-          other.childStringProperty,
-        ).mapLeft((propertyValuesUnequal) => ({
+    return super.equals(other).chain(() =>
+      strictEquals(this.childStringProperty, other.childStringProperty).mapLeft(
+        (propertyValuesUnequal) => ({
           left: this,
           right: other,
           propertyName: "childStringProperty",
           propertyValuesUnequal,
           type: "Property" as const,
-        })),
-      );
+        }),
+      ),
+    );
   }
 
   override hash<
