@@ -1,20 +1,19 @@
-import { Maybe } from "purify-ts";
 import { type FunctionDeclarationStructure, StructureKind } from "ts-morph";
 import type { ObjectType } from "../ObjectType.js";
-import { hashFunctionOrMethodDeclaration } from "./hashFunctionOrMethodDeclaration.js";
+import { hashFunctionOrMethodDeclarations } from "./hashFunctionOrMethodDeclarations.js";
 
-export function hashFunctionDeclaration(
+export function hashFunctionDeclarations(
   this: ObjectType,
-): Maybe<FunctionDeclarationStructure> {
+): readonly FunctionDeclarationStructure[] {
   if (this.declarationType !== "interface") {
-    return Maybe.empty();
+    return [];
   }
 
   if (this.extern) {
-    return Maybe.empty();
+    return [];
   }
 
-  return hashFunctionOrMethodDeclaration
+  return hashFunctionOrMethodDeclarations
     .bind(this)()
     .map((hashFunctionOrMethodDeclaration) => ({
       ...hashFunctionOrMethodDeclaration,

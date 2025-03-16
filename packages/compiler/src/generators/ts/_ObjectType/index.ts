@@ -4,7 +4,7 @@ export * from "./equalsFunctionDeclaration.js";
 export * from "./fromJsonFunctionDeclarations.js";
 export * from "./fromRdfFunctionDeclarations.js";
 export * from "./fromRdfTypeVariableStatement.js";
-export * from "./hashFunctionDeclaration.js";
+export * from "./hashFunctionDeclarations.js";
 export * from "./IdentifierPrefixProperty.js";
 export * from "./IdentifierProperty.js";
 export * from "./interfaceDeclaration.js";

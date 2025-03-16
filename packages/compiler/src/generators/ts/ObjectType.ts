@@ -159,7 +159,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.jsonSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonUiSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),
-      ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
+      ..._ObjectType.hashFunctionDeclarations.bind(this)(),
       ..._ObjectType.sparqlFunctionDeclarations.bind(this)(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.toRdfFunctionDeclaration.bind(this)().toList(),

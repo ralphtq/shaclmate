@@ -1,4 +1,3 @@
-import { Maybe } from "purify-ts";
 import type {
   OptionalKind,
   ParameterDeclarationStructure,
@@ -11,14 +10,16 @@ const hasherVariable = "_hasher";
 export const hasherTypeConstraint =
   "{ update: (message: string | number[] | ArrayBuffer | Uint8Array) => void; }";
 
-export function hashFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
+export function hashFunctionOrMethodDeclarations(this: ObjectType): readonly {
+  hasOverrideKeyword?: boolean;
+  name: string;
   parameters: OptionalKind<ParameterDeclarationStructure>[];
   returnType: string;
   statements: string[];
   typeParameters: OptionalKind<TypeParameterDeclarationStructure>[];
-}> {
+}[] {
   if (!this.features.has("hash")) {
-    return Maybe.empty();
+    return [];
   }
 
   const propertyHashStatements = this.properties.flatMap((property) =>
@@ -36,7 +37,7 @@ export function hashFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
     propertyHashStatements.length === 0
   ) {
     // If there's a parent class and no hash statements in this class, can skip overriding hash
-    return Maybe.empty();
+    return [];
   }
 
   const parameters: OptionalKind<ParameterDeclarationStructure>[] = [];
@@ -76,16 +77,19 @@ export function hashFunctionOrMethodDeclaration(this: ObjectType): Maybe<{
 
   statements.push(`return ${hasherVariable};`);
 
-  return Maybe.of({
-    hasOverrideKeyword,
-    parameters,
-    returnType: "HasherT",
-    statements,
-    typeParameters: [
-      {
-        name: "HasherT",
-        constraint: hasherTypeConstraint,
-      },
-    ],
-  });
+  return [
+    {
+      hasOverrideKeyword,
+      name: this.declarationType === "class" ? "hash" : this.hashFunctionName,
+      parameters,
+      returnType: "HasherT",
+      statements,
+      typeParameters: [
+        {
+          name: "HasherT",
+          constraint: hasherTypeConstraint,
+        },
+      ],
+    },
+  ];
 }

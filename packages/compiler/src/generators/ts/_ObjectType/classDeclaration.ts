@@ -12,7 +12,7 @@ import {
 import type { ObjectType } from "../ObjectType.js";
 import { tsComment } from "../tsComment.js";
 import { equalsFunctionOrMethodDeclaration } from "./equalsFunctionOrMethodDeclaration.js";
-import { hashFunctionOrMethodDeclaration } from "./hashFunctionOrMethodDeclaration.js";
+import { hashFunctionOrMethodDeclarations } from "./hashFunctionOrMethodDeclarations.js";
 import { toJsonFunctionOrMethodDeclaration } from "./toJsonFunctionOrMethodDeclaration.js";
 import { toRdfFunctionOrMethodDeclaration } from "./toRdfFunctionOrMethodDeclaration.js";
 
@@ -108,7 +108,7 @@ export function classDeclaration(
     leadingTrivia: this.comment.alt(this.label).map(tsComment).extract(),
     methods: [
       ...equalsMethodDeclaration.bind(this)().toList(),
-      ...hashMethodDeclaration.bind(this)().toList(),
+      ...hashMethodDeclarations.bind(this)(),
       ...toJsonMethodDeclaration.bind(this)().toList(),
       ...toRdfMethodDeclaration.bind(this)().toList(),
       ...toStringMethodDeclaration.bind(this)().toList(),
@@ -124,10 +124,10 @@ function equalsMethodDeclaration(
   return equalsFunctionOrMethodDeclaration.bind(this)();
 }
 
-function hashMethodDeclaration(
+function hashMethodDeclarations(
   this: ObjectType,
-): Maybe<OptionalKind<MethodDeclarationStructure>> {
-  return hashFunctionOrMethodDeclaration
+): readonly OptionalKind<MethodDeclarationStructure>[] {
+  return hashFunctionOrMethodDeclarations
     .bind(this)()
     .map((hashFunctionOrMethodDeclaration) => ({
       ...hashFunctionOrMethodDeclaration,
