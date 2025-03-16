@@ -53,6 +53,27 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     rdfs:comment "Abstract base for other node shapes. Put the ABC with properties above the ABC without." ;
     rdfs:subClassOf :AbstractBaseClassWithPropertiesNodeShape .
 
+:BaseInterfaceWithPropertiesNodeShape
+    shaclmate:name "BaseInterfaceWithPropertiesNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "Base interface for other node shapes." ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "baseStringProperty" ;
+        sh:path :baseStringProperty
+    ] .
+
+:BaseInterfaceWithoutPropertiesNodeShape
+    shaclmate:name "BaseInterfaceWithoutPropertiesNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "Base interface for other node shapes. Put the base interface with properties above the base interface without." ;
+    rdfs:subClassOf :BaseInterfaceWithPropertiesNodeShape .
+
 :BlankNodeShape
     shaclmate:name "BlankNodeShape" ;
     a sh:NodeShape ;
@@ -61,8 +82,22 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
 :ConcreteChildClassNodeShape
     shaclmate:name "ConcreteChildClassNodeShape" ;
     a owl:Class, sh:NodeShape ;
-    rdfs:comment "Child (class) of ParentClassNodeShape. Should inherit properties, node kinds, and minting strategy." ;
+    rdfs:comment "Child (class) of ConcreteParentClassNodeShape. Should inherit properties, node kinds, and minting strategy." ;
     rdfs:subClassOf :ConcreteParentClassNodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "childStringProperty" ;
+        sh:path :childStringProperty
+    ] .
+
+:ConcreteChildInterfaceNodeShape
+    shaclmate:name "ConcreteChildInterfaceNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "Child interface of ConcreteParentInterfaceNodeShape. Should inherit properties and node kinds." ;
+    rdfs:subClassOf :ConcreteParentInterfaceNodeShape ;
     sh:property [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
@@ -73,9 +108,23 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
 
 :ConcreteParentClassNodeShape
     shaclmate:name "ConcreteParentClassNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
     a owl:Class, sh:NodeShape ;
-    rdfs:comment "Class node shape that inherits the abstract base class and is the parent of the ChildClassNodeShape." ;
+    rdfs:comment "Class node shape that inherits the abstract base class and is the parent of the ConcreteChildClassNodeShape." ;
     rdfs:subClassOf :AbstractBaseClassWithoutPropertiesNodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "parentStringProperty" ;
+        sh:path :parentStringProperty
+    ] .
+
+:ConcreteParentInterfaceNodeShape
+    shaclmate:name "ConcreteParentInterfaceNodeShape" ;
+    a owl:Interface, sh:NodeShape ;
+    rdfs:comment "Interface node shape that inherits the base interface and is the parent of the ConcreteChildInterfaceNodeShape." ;
+    rdfs:subClassOf :BaseInterfaceWithoutPropertiesNodeShape ;
     sh:property [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
