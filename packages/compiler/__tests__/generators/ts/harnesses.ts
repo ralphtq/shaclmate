@@ -28,6 +28,22 @@ export const harnesses = {
     sparqlConstructQueryString:
       kitchenSink.ConcreteChildClassNodeShape.sparqlConstructQueryString,
   }),
+  concreteChildInterfaceNodeShape: new InterfaceHarness({
+    equals: kitchenSink.ConcreteChildInterfaceNodeShape.equals,
+    fromJson: kitchenSink.ConcreteChildInterfaceNodeShape.fromJson,
+    fromRdf: kitchenSink.ConcreteChildInterfaceNodeShape.fromRdf,
+    instance: {
+      baseStringProperty: "abc",
+      childStringProperty: "child",
+      identifier,
+      parentStringProperty: "parent",
+      type: "ConcreteChildInterfaceNodeShape",
+    },
+    sparqlConstructQueryString:
+      kitchenSink.ConcreteChildInterfaceNodeShape.sparqlConstructQueryString,
+    toJson: kitchenSink.ConcreteChildInterfaceNodeShape.toJson,
+    toRdf: kitchenSink.ConcreteChildInterfaceNodeShape.toRdf,
+  }),
   concreteParentClassNodeShape: new ClassHarness({
     fromJson: kitchenSink.ConcreteParentClassNodeShape.fromJson,
     fromRdf: kitchenSink.ConcreteParentClassNodeShape.fromRdf,
@@ -38,6 +54,21 @@ export const harnesses = {
     }),
     sparqlConstructQueryString:
       kitchenSink.ConcreteParentClassNodeShape.sparqlConstructQueryString,
+  }),
+  concreteParentInterfaceNodeShape: new InterfaceHarness({
+    equals: kitchenSink.ConcreteParentInterfaceNodeShape.equals,
+    fromJson: kitchenSink.ConcreteParentInterfaceNodeShape.fromJson,
+    fromRdf: kitchenSink.ConcreteParentInterfaceNodeShape.fromRdf,
+    instance: {
+      baseStringProperty: "abc",
+      identifier,
+      parentStringProperty: "parent",
+      type: "ConcreteParentInterfaceNodeShape",
+    },
+    sparqlConstructQueryString:
+      kitchenSink.ConcreteParentInterfaceNodeShape.sparqlConstructQueryString,
+    toJson: kitchenSink.ConcreteParentInterfaceNodeShape.toJson,
+    toRdf: kitchenSink.ConcreteParentInterfaceNodeShape.toRdf,
   }),
   defaultValuePropertiesNodeShape: new ClassHarness({
     fromJson: kitchenSink.DefaultValuePropertiesNodeShape.fromJson,
