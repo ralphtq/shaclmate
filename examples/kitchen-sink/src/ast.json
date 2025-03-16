@@ -165,6 +165,34 @@
               "termType": "BlankNode",
               "value": "n3-143"
             },
+            "shName": "dateTimeProperty"
+          },
+          "path": "http://example.com/dateTimeProperty",
+          "type": {
+            "hasValue": [],
+            "kind": "LiteralType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-144"
+            },
+            "shName": "numberProperty"
+          },
+          "path": "http://example.com/numberProperty",
+          "type": {
+            "hasValue": [],
+            "kind": "LiteralType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-145"
+            },
             "shName": "stringProperty"
           },
           "path": "http://example.com/stringProperty",
@@ -177,7 +205,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-144"
+              "value": "n3-146"
             },
             "shName": "trueBooleanProperty"
           },
@@ -191,7 +219,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-145"
+              "value": "n3-147"
             },
             "shName": "falseBooleanProperty"
           },
@@ -205,39 +233,11 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-146"
+              "value": "n3-148"
             },
             "shName": "dateProperty"
           },
           "path": "http://example.com/dateProperty",
-          "type": {
-            "hasValue": [],
-            "kind": "LiteralType"
-          }
-        },
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-147"
-            },
-            "shName": "dateTimeProperty"
-          },
-          "path": "http://example.com/dateTimeProperty",
-          "type": {
-            "hasValue": [],
-            "kind": "LiteralType"
-          }
-        },
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-148"
-            },
-            "shName": "numberProperty"
-          },
-          "path": "http://example.com/numberProperty",
           "type": {
             "hasValue": [],
             "kind": "LiteralType"

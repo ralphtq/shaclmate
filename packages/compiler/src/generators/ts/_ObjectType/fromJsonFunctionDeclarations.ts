@@ -29,13 +29,13 @@ export function fromJsonFunctionDeclarations(
 
   this.parentObjectTypes.forEach((parentObjectType, parentObjectTypeI) => {
     propertiesFromJsonFunctionStatements.push(
-      `const _super${parentObjectTypeI}Either = ${parentObjectType.name}.propertiesFromJson(${variables.jsonObject});`,
+      `const _super${parentObjectTypeI}Either = ${parentObjectType.name}._propertiesFromJson(${variables.jsonObject});`,
       `if (_super${parentObjectTypeI}Either.isLeft()) { return _super${parentObjectTypeI}Either; }`,
       `const _super${parentObjectTypeI} = _super${parentObjectTypeI}Either.unsafeCoerce()`,
     );
     initializers.push(`..._super${parentObjectTypeI}`);
     propertiesFromJsonFunctionReturnType.push(
-      `UnwrapR<ReturnType<typeof ${parentObjectType.name}.propertiesFromJson>>`,
+      `UnwrapR<ReturnType<typeof ${parentObjectType.name}._propertiesFromJson>>`,
     );
   });
 
