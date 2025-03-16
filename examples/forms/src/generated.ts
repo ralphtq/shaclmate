@@ -256,9 +256,7 @@ export namespace NestedNodeShape {
       );
   }
 
-  export function _propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -390,6 +388,7 @@ export namespace NestedNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_nestedNodeShape: NestedNodeShape, _hasher: HasherT): HasherT {
+    _hasher.update(_nestedNodeShape.requiredStringProperty);
     return _hasher;
   }
 
@@ -708,9 +707,7 @@ export namespace FormNodeShape {
       );
   }
 
-  export function _propertiesFromJson(
-    _json: unknown,
-  ): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -1021,6 +1018,20 @@ export namespace FormNodeShape {
       update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
     },
   >(_formNodeShape: FormNodeShape, _hasher: HasherT): HasherT {
+    for (const _item0 of _formNodeShape.emptyStringSetProperty) {
+      _hasher.update(_item0);
+    }
+
+    NestedNodeShape.hash(_formNodeShape.nestedObjectProperty, _hasher);
+    for (const _item0 of _formNodeShape.nonEmptyStringSetProperty) {
+      _hasher.update(_item0);
+    }
+
+    _formNodeShape.optionalStringProperty.ifJust((_value0) => {
+      _hasher.update(_value0);
+    });
+    _hasher.update(_formNodeShape.requiredIntegerProperty.toString());
+    _hasher.update(_formNodeShape.requiredStringProperty);
     return _hasher;
   }
 

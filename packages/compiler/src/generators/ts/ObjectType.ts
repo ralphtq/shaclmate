@@ -297,7 +297,7 @@ export class ObjectType extends DeclaredType {
   @Memoize()
   get ownShaclProperties(): readonly ObjectType.Property[] {
     return this.properties.filter(
-      (property) => property instanceof ObjectType.ShaclProperty,
+      (property) => property instanceof _ObjectType.ShaclProperty,
     );
   }
 

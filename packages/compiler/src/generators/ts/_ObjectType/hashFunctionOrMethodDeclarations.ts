@@ -78,6 +78,7 @@ export function hashFunctionOrMethodDeclarations(this: ObjectType): readonly {
       }
     }
   }
+  hashShaclPropertiesStatements.push(...hashOwnShaclPropertiesStatements);
 
   const returnType = "HasherT";
   const typeParameters = [
