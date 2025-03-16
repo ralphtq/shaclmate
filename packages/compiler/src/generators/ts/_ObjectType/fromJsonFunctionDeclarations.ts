@@ -29,13 +29,13 @@ export function fromJsonFunctionDeclarations(
 
   this.parentObjectTypes.forEach((parentObjectType, parentObjectTypeI) => {
     propertiesFromJsonFunctionStatements.push(
-      `const _super${parentObjectTypeI}Either = ${parentObjectType.name}.propertiesFromJson(${variables.jsonObject});`,
+      `const _super${parentObjectTypeI}Either = ${parentObjectType.name}._propertiesFromJson(${variables.jsonObject});`,
       `if (_super${parentObjectTypeI}Either.isLeft()) { return _super${parentObjectTypeI}Either; }`,
       `const _super${parentObjectTypeI} = _super${parentObjectTypeI}Either.unsafeCoerce()`,
     );
     initializers.push(`..._super${parentObjectTypeI}`);
     propertiesFromJsonFunctionReturnType.push(
-      `UnwrapR<ReturnType<typeof ${parentObjectType.name}.propertiesFromJson>>`,
+      `UnwrapR<ReturnType<typeof ${parentObjectType.name}._propertiesFromJson>>`,
     );
   });
 
@@ -67,7 +67,7 @@ export function fromJsonFunctionDeclarations(
   fromJsonFunctionDeclarations.push({
     isExported: true,
     kind: StructureKind.Function,
-    name: "propertiesFromJson",
+    name: "_propertiesFromJson",
     parameters: [
       {
         name: "_json",
@@ -83,11 +83,11 @@ export function fromJsonFunctionDeclarations(
     switch (this.declarationType) {
       case "class":
         fromJsonStatements = [
-          `return ${this.name}.propertiesFromJson(json).map(properties => new ${this.name}(properties));`,
+          `return ${this.name}._propertiesFromJson(json).map(properties => new ${this.name}(properties));`,
         ];
         break;
       case "interface":
-        fromJsonStatements = [`return ${this.name}.propertiesFromJson(json);`];
+        fromJsonStatements = [`return ${this.name}._propertiesFromJson(json);`];
         break;
     }
 

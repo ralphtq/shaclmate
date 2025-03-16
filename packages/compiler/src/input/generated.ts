@@ -54,7 +54,7 @@ export interface BaseShaclCoreShape {
 }
 
 export namespace BaseShaclCoreShape {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -880,7 +880,7 @@ export interface ShaclCorePropertyShape extends BaseShaclCoreShape {
 }
 
 export namespace ShaclCorePropertyShape {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -905,9 +905,9 @@ export namespace ShaclCorePropertyShape {
       order: purify.Maybe<number>;
       path: PropertyPath;
       uniqueLang: purify.Maybe<boolean>;
-    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>>
+    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape._propertiesFromRdf>>
   > {
-    const _super0Either = BaseShaclCoreShape.propertiesFromRdf({
+    const _super0Either = BaseShaclCoreShape._propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -1120,9 +1120,9 @@ export namespace ShaclCorePropertyShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclCorePropertyShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclCorePropertyShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyShape> {
-    return ShaclCorePropertyShape.propertiesFromRdf(parameters);
+    return ShaclCorePropertyShape._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -1145,7 +1145,7 @@ export interface ShaclmatePropertyShape extends ShaclCorePropertyShape {
 }
 
 export namespace ShaclmatePropertyShape {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1171,9 +1171,9 @@ export namespace ShaclmatePropertyShape {
           | "http://purl.org/shaclmate/ontology#_Visibility_Public"
         >
       >;
-    } & UnwrapR<ReturnType<typeof ShaclCorePropertyShape.propertiesFromRdf>>
+    } & UnwrapR<ReturnType<typeof ShaclCorePropertyShape._propertiesFromRdf>>
   > {
-    const _super0Either = ShaclCorePropertyShape.propertiesFromRdf({
+    const _super0Either = ShaclCorePropertyShape._propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -1345,9 +1345,9 @@ export namespace ShaclmatePropertyShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclmatePropertyShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclmatePropertyShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclmatePropertyShape> {
-    return ShaclmatePropertyShape.propertiesFromRdf(parameters);
+    return ShaclmatePropertyShape._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -1361,7 +1361,7 @@ export interface OwlOntology {
 }
 
 export namespace OwlOntology {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1439,9 +1439,9 @@ export namespace OwlOntology {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof OwlOntology.propertiesFromRdf>[0],
+    parameters: Parameters<typeof OwlOntology._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, OwlOntology> {
-    return OwlOntology.propertiesFromRdf(parameters);
+    return OwlOntology._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -1497,7 +1497,7 @@ export interface ShaclmateOntology extends OwlOntology {
 }
 
 export namespace ShaclmateOntology {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1556,9 +1556,9 @@ export namespace ShaclmateOntology {
       tsObjectIdentifierPrefixPropertyName: purify.Maybe<string>;
       tsObjectIdentifierPropertyName: purify.Maybe<string>;
       tsObjectTypeDiscriminatorPropertyName: purify.Maybe<string>;
-    } & UnwrapR<ReturnType<typeof OwlOntology.propertiesFromRdf>>
+    } & UnwrapR<ReturnType<typeof OwlOntology._propertiesFromRdf>>
   > {
-    const _super0Either = OwlOntology.propertiesFromRdf({
+    const _super0Either = OwlOntology._propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -2503,9 +2503,9 @@ export namespace ShaclmateOntology {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclmateOntology.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclmateOntology._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclmateOntology> {
-    return ShaclmateOntology.propertiesFromRdf(parameters);
+    return ShaclmateOntology._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -2521,7 +2521,7 @@ export interface ShaclCoreNodeShape extends BaseShaclCoreShape {
 }
 
 export namespace ShaclCoreNodeShape {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -2540,9 +2540,9 @@ export namespace ShaclCoreNodeShape {
       closed: purify.Maybe<boolean>;
       ignoredProperties: purify.Maybe<readonly rdfjs.NamedNode[]>;
       properties: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>>
+    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape._propertiesFromRdf>>
   > {
-    const _super0Either = BaseShaclCoreShape.propertiesFromRdf({
+    const _super0Either = BaseShaclCoreShape._propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -2650,9 +2650,9 @@ export namespace ShaclCoreNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclCoreNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclCoreNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreNodeShape> {
-    return ShaclCoreNodeShape.propertiesFromRdf(parameters);
+    return ShaclCoreNodeShape._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -2721,7 +2721,7 @@ export interface ShaclmateNodeShape extends ShaclCoreNodeShape {
 }
 
 export namespace ShaclmateNodeShape {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -2793,9 +2793,9 @@ export namespace ShaclmateNodeShape {
       tsObjectIdentifierPrefixPropertyName: purify.Maybe<string>;
       tsObjectIdentifierPropertyName: purify.Maybe<string>;
       tsObjectTypeDiscriminatorPropertyName: purify.Maybe<string>;
-    } & UnwrapR<ReturnType<typeof ShaclCoreNodeShape.propertiesFromRdf>>
+    } & UnwrapR<ReturnType<typeof ShaclCoreNodeShape._propertiesFromRdf>>
   > {
-    const _super0Either = ShaclCoreNodeShape.propertiesFromRdf({
+    const _super0Either = ShaclCoreNodeShape._propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -3937,9 +3937,9 @@ export namespace ShaclmateNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclmateNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclmateNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclmateNodeShape> {
-    return ShaclmateNodeShape.propertiesFromRdf(parameters);
+    return ShaclmateNodeShape._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -3954,7 +3954,7 @@ export interface ShaclCorePropertyGroup {
 }
 
 export namespace ShaclCorePropertyGroup {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -4069,9 +4069,9 @@ export namespace ShaclCorePropertyGroup {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclCorePropertyGroup.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclCorePropertyGroup._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyGroup> {
-    return ShaclCorePropertyGroup.propertiesFromRdf(parameters);
+    return ShaclCorePropertyGroup._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(

@@ -67,7 +67,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
         // If the object is mutable don't memoize the minted identifier, since the hash will change if the object mutates.
         memoizeMintedIdentifier = !this.objectType.mutable();
         mintIdentifier =
-          "dataFactory.namedNode(`${this.identifierPrefix}${this.hash(sha256.create())}`)";
+          "dataFactory.namedNode(`${this.identifierPrefix}${this.hashShaclProperties(sha256.create())}`)";
         break;
       case "uuidv4":
         memoizeMintedIdentifier = true;
@@ -275,25 +275,7 @@ export class IdentifierProperty extends Property<IdentifierType> {
   }: Parameters<
     Property<IdentifierType>["hashStatements"]
   >[0]): readonly string[] {
-    if (this.abstract) {
-      // Identifier will only be hashed by a concrete class.
-      return [];
-    }
-
-    if (this.identifierMintingStrategy.isNothing()) {
-      // The identifier minting won't call hash, so we should hash the identifier.
-      return [`${variables.hasher}.update(${variables.value}.value);`];
-    }
-
-    switch (this.identifierMintingStrategy.unsafeCoerce()) {
-      case "blankNode":
-      case "uuidv4":
-        // The identifier minting won't call hash, so we should hash the identifier.
-        return [`${variables.hasher}.update(${variables.value}.value);`];
-      case "sha256":
-        // The identifier minting will call hash, so we can't hash the identifier.
-        return [];
-    }
+    return [`${variables.hasher}.update(${variables.value}.value);`];
   }
 
   override interfaceConstructorStatements({

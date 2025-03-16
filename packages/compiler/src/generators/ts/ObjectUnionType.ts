@@ -13,7 +13,7 @@ import { DeclaredType } from "./DeclaredType.js";
 import type { Import } from "./Import.js";
 import type { ObjectType } from "./ObjectType.js";
 import type { Type } from "./Type.js";
-import { hasherTypeConstraint } from "./_ObjectType/hashFunctionOrMethodDeclaration.js";
+import { hasherTypeConstraint } from "./_ObjectType/hashFunctionOrMethodDeclarations.js";
 import { sparqlConstructQueryFunctionDeclaration } from "./_ObjectType/sparqlConstructQueryFunctionDeclaration.js";
 import { sparqlConstructQueryStringFunctionDeclaration } from "./_ObjectType/sparqlConstructQueryStringFunctionDeclaration.js";
 import { objectInitializer } from "./objectInitializer.js";

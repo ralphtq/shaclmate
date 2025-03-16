@@ -53,6 +53,27 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     rdfs:comment "Abstract base for other node shapes. Put the ABC with properties above the ABC without." ;
     rdfs:subClassOf :AbstractBaseClassWithPropertiesNodeShape .
 
+:BaseInterfaceWithPropertiesNodeShape
+    shaclmate:name "BaseInterfaceWithPropertiesNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "Base interface for other node shapes." ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "baseStringProperty" ;
+        sh:path :baseStringProperty
+    ] .
+
+:BaseInterfaceWithoutPropertiesNodeShape
+    shaclmate:name "BaseInterfaceWithoutPropertiesNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "Base interface for other node shapes. Put the base interface with properties above the base interface without." ;
+    rdfs:subClassOf :BaseInterfaceWithPropertiesNodeShape .
+
 :BlankNodeShape
     shaclmate:name "BlankNodeShape" ;
     a sh:NodeShape ;
@@ -61,8 +82,22 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
 :ConcreteChildClassNodeShape
     shaclmate:name "ConcreteChildClassNodeShape" ;
     a owl:Class, sh:NodeShape ;
-    rdfs:comment "Child (class) of ParentClassNodeShape. Should inherit properties, node kinds, and minting strategy." ;
+    rdfs:comment "Child (class) of ConcreteParentClassNodeShape. Should inherit properties, node kinds, and minting strategy." ;
     rdfs:subClassOf :ConcreteParentClassNodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "childStringProperty" ;
+        sh:path :childStringProperty
+    ] .
+
+:ConcreteChildInterfaceNodeShape
+    shaclmate:name "ConcreteChildInterfaceNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "Child interface of ConcreteParentInterfaceNodeShape. Should inherit properties and node kinds." ;
+    rdfs:subClassOf :ConcreteParentInterfaceNodeShape ;
     sh:property [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
@@ -74,8 +109,22 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
 :ConcreteParentClassNodeShape
     shaclmate:name "ConcreteParentClassNodeShape" ;
     a owl:Class, sh:NodeShape ;
-    rdfs:comment "Class node shape that inherits the abstract base class and is the parent of the ChildClassNodeShape." ;
+    rdfs:comment "Class node shape that inherits the abstract base class and is the parent of the ConcreteChildClassNodeShape." ;
     rdfs:subClassOf :AbstractBaseClassWithoutPropertiesNodeShape ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "parentStringProperty" ;
+        sh:path :parentStringProperty
+    ] .
+
+:ConcreteParentInterfaceNodeShape
+    shaclmate:name "ConcreteParentInterfaceNodeShape" ;
+    shaclmate:tsObjectDeclarationType shaclmate:_TsObjectDeclarationType_Interface ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "Interface node shape that inherits the base interface and is the parent of the ConcreteChildInterfaceNodeShape." ;
+    rdfs:subClassOf :BaseInterfaceWithoutPropertiesNodeShape ;
     sh:property [
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
@@ -90,18 +139,6 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     a sh:NodeShape ;
     rdfs:comment "Shape with sh:defaultValue properties." ;
     sh:property [
-        sh:defaultValue "2018-04-09T10:00:00Z"^^xsd:dateTime ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:name "dateTimeProperty" ;
-        sh:path :dateTimeProperty
-    ], [
-        sh:defaultValue 0 ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:name "numberProperty" ;
-        sh:path :numberProperty
-    ], [
         sh:defaultValue "" ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
@@ -125,6 +162,18 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
         sh:minCount 1 ;
         sh:name "dateProperty" ;
         sh:path :dateProperty
+    ], [
+        sh:defaultValue "2018-04-09T10:00:00Z"^^xsd:dateTime ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "dateTimeProperty" ;
+        sh:path :dateTimeProperty
+    ], [
+        sh:defaultValue 0 ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "numberProperty" ;
+        sh:path :numberProperty
     ] .
 
 :ExplicitRdfTypesNodeShape
@@ -686,17 +735,6 @@ shaclmate:toRdfType's are added an serialization.""" ;
     rdfs:comment "Shape with sh:xone properties." ;
     sh:property [
         sh:maxCount 1 ;
-        sh:name "orLiteralsProperty" ;
-        sh:path :orLiteralsProperty ;
-        sh:xone ([
-                sh:datatype xsd:integer
-            ]
-            [
-                sh:datatype xsd:string
-            ]
-        )
-    ], [
-        sh:maxCount 1 ;
         sh:name "orTermsProperty" ;
         sh:path :orTermsProperty ;
         sh:xone ([
@@ -715,6 +753,17 @@ shaclmate:toRdfType's are added an serialization.""" ;
             ]
             [
                 sh:node :NonClassNodeShape
+            ]
+        )
+    ], [
+        sh:maxCount 1 ;
+        sh:name "orLiteralsProperty" ;
+        sh:path :orLiteralsProperty ;
+        sh:xone ([
+                sh:datatype xsd:integer
+            ]
+            [
+                sh:datatype xsd:string
             ]
         )
     ] .

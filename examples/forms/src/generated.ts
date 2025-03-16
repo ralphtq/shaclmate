@@ -256,7 +256,7 @@ export namespace NestedNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -281,10 +281,10 @@ export namespace NestedNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, NestedNodeShape> {
-    return NestedNodeShape.propertiesFromJson(json);
+    return NestedNodeShape._propertiesFromJson(json);
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -324,9 +324,9 @@ export namespace NestedNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof NestedNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof NestedNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, NestedNodeShape> {
-    return NestedNodeShape.propertiesFromRdf(parameters);
+    return NestedNodeShape._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -378,6 +378,16 @@ export namespace NestedNodeShape {
     },
   >(_nestedNodeShape: NestedNodeShape, _hasher: HasherT): HasherT {
     _hasher.update(_nestedNodeShape.identifier.value);
+    _hasher.update(_nestedNodeShape.type);
+    NestedNodeShape._hashShaclProperties(_nestedNodeShape, _hasher);
+    return _hasher;
+  }
+
+  export function _hashShaclProperties<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(_nestedNodeShape: NestedNodeShape, _hasher: HasherT): HasherT {
     _hasher.update(_nestedNodeShape.requiredStringProperty);
     return _hasher;
   }
@@ -697,7 +707,7 @@ export namespace FormNodeShape {
       );
   }
 
-  export function propertiesFromJson(_json: unknown): purify.Either<
+  export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
@@ -747,10 +757,10 @@ export namespace FormNodeShape {
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, FormNodeShape> {
-    return FormNodeShape.propertiesFromJson(json);
+    return FormNodeShape._propertiesFromJson(json);
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -916,9 +926,9 @@ export namespace FormNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof FormNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof FormNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, FormNodeShape> {
-    return FormNodeShape.propertiesFromRdf(parameters);
+    return FormNodeShape._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -998,6 +1008,16 @@ export namespace FormNodeShape {
     },
   >(_formNodeShape: FormNodeShape, _hasher: HasherT): HasherT {
     _hasher.update(_formNodeShape.identifier.value);
+    _hasher.update(_formNodeShape.type);
+    FormNodeShape._hashShaclProperties(_formNodeShape, _hasher);
+    return _hasher;
+  }
+
+  export function _hashShaclProperties<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(_formNodeShape: FormNodeShape, _hasher: HasherT): HasherT {
     for (const _item0 of _formNodeShape.emptyStringSetProperty) {
       _hasher.update(_item0);
     }

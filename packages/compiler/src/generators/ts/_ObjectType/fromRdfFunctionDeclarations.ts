@@ -27,13 +27,13 @@ export function fromRdfFunctionDeclarations(
 
   this.parentObjectTypes.forEach((parentObjectType, parentObjectTypeI) => {
     propertiesFromRdfFunctionStatements.push(
-      `const _super${parentObjectTypeI}Either = ${parentObjectType.name}.propertiesFromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: ${variables.resource} });`,
+      `const _super${parentObjectTypeI}Either = ${parentObjectType.name}._propertiesFromRdf({ ...${variables.context}, ignoreRdfType: true, languageIn: ${variables.languageIn}, resource: ${variables.resource} });`,
       `if (_super${parentObjectTypeI}Either.isLeft()) { return _super${parentObjectTypeI}Either; }`,
       `const _super${parentObjectTypeI} = _super${parentObjectTypeI}Either.unsafeCoerce()`,
     );
     initializers.push(`..._super${parentObjectTypeI}`);
     propertiesFromRdfFunctionReturnType.push(
-      `UnwrapR<ReturnType<typeof ${parentObjectType.name}.propertiesFromRdf>>`,
+      `UnwrapR<ReturnType<typeof ${parentObjectType.name}._propertiesFromRdf>>`,
     );
   });
 
@@ -74,7 +74,7 @@ export function fromRdfFunctionDeclarations(
   fromRdfFunctionDeclarations.push({
     isExported: true,
     kind: StructureKind.Function,
-    name: "propertiesFromRdf",
+    name: "_propertiesFromRdf",
     parameters: [
       {
         name: `{ ignoreRdfType: ${variables.ignoreRdfType}, languageIn: ${variables.languageIn}, resource: ${variables.resource},\n// @ts-ignore\n...${variables.context} }`,
@@ -90,12 +90,12 @@ export function fromRdfFunctionDeclarations(
     switch (this.declarationType) {
       case "class":
         fromRdfStatements = [
-          `return ${this.name}.propertiesFromRdf(parameters).map(properties => new ${this.name}(properties));`,
+          `return ${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties));`,
         ];
         break;
       case "interface":
         fromRdfStatements = [
-          `return ${this.name}.propertiesFromRdf(parameters);`,
+          `return ${this.name}._propertiesFromRdf(parameters);`,
         ];
         break;
     }
@@ -107,7 +107,7 @@ export function fromRdfFunctionDeclarations(
       parameters: [
         {
           name: "parameters",
-          type: `Parameters<typeof ${this.name}.propertiesFromRdf>[0]`,
+          type: `Parameters<typeof ${this.name}._propertiesFromRdf>[0]`,
         },
       ],
       returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>`,

@@ -21,10 +21,7 @@ import { Import } from "./Import.js";
 import { SnippetDeclarations } from "./SnippetDeclarations.js";
 import type { Type } from "./Type.js";
 import * as _ObjectType from "./_ObjectType/index.js";
-import {
-  IdentifierProperty,
-  TypeDiscriminatorProperty,
-} from "./_ObjectType/index.js";
+import {} from "./_ObjectType/index.js";
 import { objectInitializer } from "./objectInitializer.js";
 
 export class ObjectType extends DeclaredType {
@@ -90,6 +87,7 @@ export class ObjectType extends DeclaredType {
     this.toRdfTypes = toRdfTypes;
   }
 
+  @Memoize()
   get _discriminatorProperty(): Type.DiscriminatorProperty {
     const discriminatorProperty = this.properties.find(
       (property) => property instanceof ObjectType.TypeDiscriminatorProperty,
@@ -106,6 +104,7 @@ export class ObjectType extends DeclaredType {
     return this.lazyAncestorObjectTypes();
   }
 
+  @Memoize()
   override get conversions(): readonly Type.Conversion[] {
     return [
       {
@@ -117,6 +116,7 @@ export class ObjectType extends DeclaredType {
     ];
   }
 
+  @Memoize()
   get declarationImports(): readonly Import[] {
     if (this.extern) {
       return [];
@@ -159,7 +159,7 @@ export class ObjectType extends DeclaredType {
       ..._ObjectType.jsonSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonUiSchemaFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.jsonZodSchemaFunctionDeclaration.bind(this)().toList(),
-      ..._ObjectType.hashFunctionDeclaration.bind(this)().toList(),
+      ..._ObjectType.hashFunctionDeclarations.bind(this)(),
       ..._ObjectType.sparqlFunctionDeclarations.bind(this)(),
       ..._ObjectType.toJsonFunctionDeclaration.bind(this)().toList(),
       ..._ObjectType.toRdfFunctionDeclaration.bind(this)().toList(),
@@ -182,14 +182,17 @@ export class ObjectType extends DeclaredType {
     return this.lazyDescendantObjectTypes();
   }
 
+  @Memoize()
   override get discriminatorProperty(): Maybe<Type.DiscriminatorProperty> {
     return Maybe.of(this._discriminatorProperty);
   }
 
+  @Memoize()
   get discriminatorValue(): string {
     return this.name;
   }
 
+  @Memoize()
   override get equalsFunction(): string {
     switch (this.declarationType) {
       case "class":
@@ -212,6 +215,16 @@ export class ObjectType extends DeclaredType {
   }
 
   @Memoize()
+  get hashShaclPropertiesFunctionName(): string {
+    if (
+      this.ancestorObjectTypes.length > 0 ||
+      this.descendantObjectTypes.length > 0
+    )
+      return `_hash${this.name}ShaclProperties`;
+    return "_hashShaclProperties";
+  }
+
+  @Memoize()
   get identifierProperty(): ObjectType.IdentifierProperty {
     const identifierProperty = this.properties.find(
       (property) => property instanceof ObjectType.IdentifierProperty,
@@ -225,6 +238,7 @@ export class ObjectType extends DeclaredType {
     return this.identifierProperty.type;
   }
 
+  @Memoize()
   get jsonName(): string {
     if (this.features.has("toJson")) {
       switch (this.declarationType) {
@@ -264,6 +278,7 @@ export class ObjectType extends DeclaredType {
     return "jsonZodSchema";
   }
 
+  @Memoize()
   get mutable(): boolean {
     return this.properties.some((property) => property.mutable);
   }
@@ -276,10 +291,13 @@ export class ObjectType extends DeclaredType {
       invariant(this.properties.length >= 2, this.name);
       return this.properties;
     }
+    return this.ownShaclProperties;
+  }
+
+  @Memoize()
+  get ownShaclProperties(): readonly ObjectType.Property[] {
     return this.properties.filter(
-      (property) =>
-        !(property instanceof IdentifierProperty) &&
-        !(property instanceof TypeDiscriminatorProperty),
+      (property) => property instanceof _ObjectType.ShaclProperty,
     );
   }
 
@@ -300,6 +318,7 @@ export class ObjectType extends DeclaredType {
     return properties;
   }
 
+  @Memoize()
   protected get thisVariable(): string {
     switch (this.declarationType) {
       case "class":

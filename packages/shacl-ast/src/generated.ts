@@ -5,6 +5,8 @@ import * as rdfjsResource from "rdfjs-resource";
 import { PropertyPath } from "./PropertyPath.js";
 type UnwrapR<T> = T extends purify.Either<any, infer R> ? R : never;
 export interface BaseShaclCoreShape {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly type: "ShaclCoreNodeShape" | "ShaclCorePropertyShape";
   readonly and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
   readonly classes: readonly rdfjs.NamedNode[];
   readonly comments: readonly rdfjs.Literal[];
@@ -16,7 +18,6 @@ export interface BaseShaclCoreShape {
     | rdfjs.NamedNode
     | rdfjs.Literal
   )[];
-  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly in_: purify.Maybe<
     readonly (rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal)[]
   >;
@@ -45,12 +46,11 @@ export interface BaseShaclCoreShape {
   readonly not: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
   readonly or: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
   readonly patterns: readonly string[];
-  readonly type: "ShaclCoreNodeShape" | "ShaclCorePropertyShape";
   readonly xone: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
 }
 
 export namespace BaseShaclCoreShape {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -64,6 +64,7 @@ export namespace BaseShaclCoreShape {
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
     {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       and: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
       classes: readonly rdfjs.NamedNode[];
       comments: readonly rdfjs.Literal[];
@@ -71,7 +72,6 @@ export namespace BaseShaclCoreShape {
       deactivated: purify.Maybe<boolean>;
       flags: readonly string[];
       hasValues: readonly (rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal)[];
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       in_: purify.Maybe<
         readonly (rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal)[]
       >;
@@ -103,6 +103,7 @@ export namespace BaseShaclCoreShape {
       xone: readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[];
     }
   > {
+    const identifier = _resource.identifier;
     const _andEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly (readonly (rdfjs.BlankNode | rdfjs.NamedNode)[])[]
@@ -272,7 +273,6 @@ export namespace BaseShaclCoreShape {
     }
 
     const hasValues = _hasValuesEither.unsafeCoerce();
-    const identifier = _resource.identifier;
     const _in_Either: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<
@@ -832,6 +832,7 @@ export namespace BaseShaclCoreShape {
 
     const xone = _xoneEither.unsafeCoerce();
     return purify.Either.of({
+      identifier,
       and,
       classes,
       comments,
@@ -839,7 +840,6 @@ export namespace BaseShaclCoreShape {
       deactivated,
       flags,
       hasValues,
-      identifier,
       in_,
       isDefinedBy,
       labels,
@@ -862,21 +862,21 @@ export namespace BaseShaclCoreShape {
   }
 }
 export interface ShaclCorePropertyShape extends BaseShaclCoreShape {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly type: "ShaclCorePropertyShape";
   readonly defaultValue: purify.Maybe<
     rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
   >;
   readonly descriptions: readonly rdfjs.Literal[];
   readonly groups: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   readonly names: readonly rdfjs.Literal[];
   readonly order: purify.Maybe<number>;
   readonly path: PropertyPath;
-  readonly type: "ShaclCorePropertyShape";
   readonly uniqueLang: purify.Maybe<boolean>;
 }
 
 export namespace ShaclCorePropertyShape {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -890,20 +890,20 @@ export namespace ShaclCorePropertyShape {
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
     {
+      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type: "ShaclCorePropertyShape";
       defaultValue: purify.Maybe<
         rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal
       >;
       descriptions: readonly rdfjs.Literal[];
       groups: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-      identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       names: readonly rdfjs.Literal[];
       order: purify.Maybe<number>;
       path: PropertyPath;
-      type: "ShaclCorePropertyShape";
       uniqueLang: purify.Maybe<boolean>;
-    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>>
+    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape._propertiesFromRdf>>
   > {
-    const _super0Either = BaseShaclCoreShape.propertiesFromRdf({
+    const _super0Either = BaseShaclCoreShape._propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -931,6 +931,8 @@ export namespace ShaclCorePropertyShape {
       );
     }
 
+    const identifier = _resource.identifier;
+    const type = "ShaclCorePropertyShape" as const;
     const _defaultValueEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<rdfjs.BlankNode | rdfjs.NamedNode | rdfjs.Literal>
@@ -1007,7 +1009,6 @@ export namespace ShaclCorePropertyShape {
     }
 
     const groups = _groupsEither.unsafeCoerce();
-    const identifier = _resource.identifier;
     const _namesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.Literal[]
@@ -1082,7 +1083,6 @@ export namespace ShaclCorePropertyShape {
     }
 
     const path = _pathEither.unsafeCoerce();
-    const type = "ShaclCorePropertyShape" as const;
     const _uniqueLangEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<boolean>
@@ -1103,22 +1103,22 @@ export namespace ShaclCorePropertyShape {
     const uniqueLang = _uniqueLangEither.unsafeCoerce();
     return purify.Either.of({
       ..._super0,
+      identifier,
+      type,
       defaultValue,
       descriptions,
       groups,
-      identifier,
       names,
       order,
       path,
-      type,
       uniqueLang,
     });
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclCorePropertyShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclCorePropertyShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyShape> {
-    return ShaclCorePropertyShape.propertiesFromRdf(parameters);
+    return ShaclCorePropertyShape._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -1126,14 +1126,14 @@ export namespace ShaclCorePropertyShape {
   );
 }
 export interface ShaclCorePropertyGroup {
-  readonly comments: readonly rdfjs.Literal[];
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly labels: readonly rdfjs.Literal[];
   readonly type: "ShaclCorePropertyGroup";
+  readonly comments: readonly rdfjs.Literal[];
+  readonly labels: readonly rdfjs.Literal[];
 }
 
 export namespace ShaclCorePropertyGroup {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1147,10 +1147,10 @@ export namespace ShaclCorePropertyGroup {
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
     {
-      comments: readonly rdfjs.Literal[];
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      labels: readonly rdfjs.Literal[];
       type: "ShaclCorePropertyGroup";
+      comments: readonly rdfjs.Literal[];
+      labels: readonly rdfjs.Literal[];
     }
   > {
     if (
@@ -1170,6 +1170,8 @@ export namespace ShaclCorePropertyGroup {
       );
     }
 
+    const identifier = _resource.identifier;
+    const type = "ShaclCorePropertyGroup" as const;
     const _commentsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.Literal[]
@@ -1206,7 +1208,6 @@ export namespace ShaclCorePropertyGroup {
     }
 
     const comments = _commentsEither.unsafeCoerce();
-    const identifier = _resource.identifier;
     const _labelsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.Literal[]
@@ -1243,14 +1244,13 @@ export namespace ShaclCorePropertyGroup {
     }
 
     const labels = _labelsEither.unsafeCoerce();
-    const type = "ShaclCorePropertyGroup" as const;
-    return purify.Either.of({ comments, identifier, labels, type });
+    return purify.Either.of({ identifier, type, comments, labels });
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclCorePropertyGroup.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclCorePropertyGroup._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCorePropertyGroup> {
-    return ShaclCorePropertyGroup.propertiesFromRdf(parameters);
+    return ShaclCorePropertyGroup._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -1258,15 +1258,15 @@ export namespace ShaclCorePropertyGroup {
   );
 }
 export interface ShaclCoreNodeShape extends BaseShaclCoreShape {
-  readonly closed: purify.Maybe<boolean>;
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly type: "ShaclCoreNodeShape";
+  readonly closed: purify.Maybe<boolean>;
   readonly ignoredProperties: purify.Maybe<readonly rdfjs.NamedNode[]>;
   readonly properties: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-  readonly type: "ShaclCoreNodeShape";
 }
 
 export namespace ShaclCoreNodeShape {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1280,14 +1280,14 @@ export namespace ShaclCoreNodeShape {
   }): purify.Either<
     rdfjsResource.Resource.ValueError,
     {
-      closed: purify.Maybe<boolean>;
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type: "ShaclCoreNodeShape";
+      closed: purify.Maybe<boolean>;
       ignoredProperties: purify.Maybe<readonly rdfjs.NamedNode[]>;
       properties: readonly (rdfjs.BlankNode | rdfjs.NamedNode)[];
-      type: "ShaclCoreNodeShape";
-    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape.propertiesFromRdf>>
+    } & UnwrapR<ReturnType<typeof BaseShaclCoreShape._propertiesFromRdf>>
   > {
-    const _super0Either = BaseShaclCoreShape.propertiesFromRdf({
+    const _super0Either = BaseShaclCoreShape._propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -1315,6 +1315,8 @@ export namespace ShaclCoreNodeShape {
       );
     }
 
+    const identifier = _resource.identifier;
+    const type = "ShaclCoreNodeShape" as const;
     const _closedEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<boolean>
@@ -1332,7 +1334,6 @@ export namespace ShaclCoreNodeShape {
     }
 
     const closed = _closedEither.unsafeCoerce();
-    const identifier = _resource.identifier;
     const _ignoredPropertiesEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       purify.Maybe<readonly rdfjs.NamedNode[]>
@@ -1383,21 +1384,20 @@ export namespace ShaclCoreNodeShape {
     }
 
     const properties = _propertiesEither.unsafeCoerce();
-    const type = "ShaclCoreNodeShape" as const;
     return purify.Either.of({
       ..._super0,
-      closed,
       identifier,
+      type,
+      closed,
       ignoredProperties,
       properties,
-      type,
     });
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ShaclCoreNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ShaclCoreNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ShaclCoreNodeShape> {
-    return ShaclCoreNodeShape.propertiesFromRdf(parameters);
+    return ShaclCoreNodeShape._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -1406,12 +1406,12 @@ export namespace ShaclCoreNodeShape {
 }
 export interface OwlOntology {
   readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly labels: readonly rdfjs.Literal[];
   readonly type: "OwlOntology";
+  readonly labels: readonly rdfjs.Literal[];
 }
 
 export namespace OwlOntology {
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1426,8 +1426,8 @@ export namespace OwlOntology {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      labels: readonly rdfjs.Literal[];
       type: "OwlOntology";
+      labels: readonly rdfjs.Literal[];
     }
   > {
     if (
@@ -1448,6 +1448,7 @@ export namespace OwlOntology {
     }
 
     const identifier = _resource.identifier;
+    const type = "OwlOntology" as const;
     const _labelsEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       readonly rdfjs.Literal[]
@@ -1484,14 +1485,13 @@ export namespace OwlOntology {
     }
 
     const labels = _labelsEither.unsafeCoerce();
-    const type = "OwlOntology" as const;
-    return purify.Either.of({ identifier, labels, type });
+    return purify.Either.of({ identifier, type, labels });
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof OwlOntology.propertiesFromRdf>[0],
+    parameters: Parameters<typeof OwlOntology._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, OwlOntology> {
-    return OwlOntology.propertiesFromRdf(parameters);
+    return OwlOntology._propertiesFromRdf(parameters);
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
