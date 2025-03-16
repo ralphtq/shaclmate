@@ -13275,48 +13275,48 @@ export namespace DefaultValuePropertiesNodeShape {
 /**
  * Interface node shape that inherits the base interface and is the parent of the ConcreteChildInterfaceNodeShape.
  */
-export class ConcreteParentInterfaceNodeShape {
-  private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
-  readonly type = "ConcreteParentInterfaceNodeShape";
+export interface ConcreteParentInterfaceNodeShape {
+  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  readonly type: "ConcreteParentInterfaceNodeShape";
   readonly parentStringProperty: string;
+}
 
-  constructor(parameters: {
-    readonly identifier?: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
+export namespace ConcreteParentInterfaceNodeShape {
+  export function create(parameters: {
+    readonly identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
     readonly parentStringProperty: string;
-  }) {
+  }): ConcreteParentInterfaceNodeShape {
+    let identifier: rdfjs.BlankNode | rdfjs.NamedNode;
     if (typeof parameters.identifier === "object") {
-      this._identifier = parameters.identifier;
+      identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
-      this._identifier = dataFactory.namedNode(parameters.identifier);
-    } else if (typeof parameters.identifier === "undefined") {
+      identifier = dataFactory.namedNode(parameters.identifier);
     } else {
-      this._identifier = parameters.identifier as never;
+      identifier = parameters.identifier as never;
     }
 
-    this.parentStringProperty = parameters.parentStringProperty;
+    const type = "ConcreteParentInterfaceNodeShape" as const;
+    const parentStringProperty = parameters.parentStringProperty;
+    return { identifier, type, parentStringProperty };
   }
 
-  get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
-    if (typeof this._identifier === "undefined") {
-      this._identifier = dataFactory.blankNode();
-    }
-    return this._identifier;
-  }
-
-  equals(other: ConcreteParentInterfaceNodeShape): EqualsResult {
-    return booleanEquals(this.identifier, other.identifier)
+  export function equals(
+    left: ConcreteParentInterfaceNodeShape,
+    right: ConcreteParentInterfaceNodeShape,
+  ): EqualsResult {
+    return booleanEquals(left.identifier, right.identifier)
       .mapLeft((propertyValuesUnequal) => ({
-        left: this,
-        right: other,
+        left: left,
+        right: right,
         propertyName: "identifier",
         propertyValuesUnequal,
         type: "Property" as const,
       }))
       .chain(() =>
-        strictEquals(this.type, other.type).mapLeft(
+        strictEquals(left.type, right.type).mapLeft(
           (propertyValuesUnequal) => ({
-            left: this,
-            right: other,
+            left: left,
+            right: right,
             propertyName: "type",
             propertyValuesUnequal,
             type: "Property" as const,
@@ -13325,11 +13325,11 @@ export class ConcreteParentInterfaceNodeShape {
       )
       .chain(() =>
         strictEquals(
-          this.parentStringProperty,
-          other.parentStringProperty,
+          left.parentStringProperty,
+          right.parentStringProperty,
         ).mapLeft((propertyValuesUnequal) => ({
-          left: this,
-          right: other,
+          left: left,
+          right: right,
           propertyName: "parentStringProperty",
           propertyValuesUnequal,
           type: "Property" as const,
@@ -13337,61 +13337,11 @@ export class ConcreteParentInterfaceNodeShape {
       );
   }
 
-  hash<
-    HasherT extends {
-      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
-    },
-  >(_hasher: HasherT): HasherT {
-    _hasher.update(this.identifier.value);
-    _hasher.update(this.parentStringProperty);
-    return _hasher;
-  }
-
-  toJson(): {
-    readonly "@id": string;
-    readonly type: "ConcreteParentInterfaceNodeShape";
-    readonly parentStringProperty: string;
-  } {
-    return JSON.parse(
-      JSON.stringify({
-        "@id":
-          this.identifier.termType === "BlankNode"
-            ? `_:${this.identifier.value}`
-            : this.identifier.value,
-        type: this.type,
-        parentStringProperty: this.parentStringProperty,
-      } satisfies ReturnType<ConcreteParentInterfaceNodeShape["toJson"]>),
-    );
-  }
-
-  toRdf({
-    mutateGraph,
-    resourceSet,
-  }: {
-    ignoreRdfType?: boolean;
-    mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
-    resourceSet: rdfjsResource.MutableResourceSet;
-  }): rdfjsResource.MutableResource {
-    const _resource = resourceSet.mutableResource(this.identifier, {
-      mutateGraph,
-    });
-    _resource.add(
-      dataFactory.namedNode("http://example.com/parentStringProperty"),
-      this.parentStringProperty,
-    );
-    return _resource;
-  }
-
-  toString(): string {
-    return JSON.stringify(this.toJson());
-  }
-}
-
-export namespace ConcreteParentInterfaceNodeShape {
   export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type: "ConcreteParentInterfaceNodeShape";
       parentStringProperty: string;
     }
   > {
@@ -13404,16 +13354,15 @@ export namespace ConcreteParentInterfaceNodeShape {
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
+    const type = "ConcreteParentInterfaceNodeShape" as const;
     const parentStringProperty = _jsonObject["parentStringProperty"];
-    return purify.Either.of({ identifier, parentStringProperty });
+    return purify.Either.of({ identifier, type, parentStringProperty });
   }
 
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ConcreteParentInterfaceNodeShape> {
-    return ConcreteParentInterfaceNodeShape._propertiesFromJson(json).map(
-      (properties) => new ConcreteParentInterfaceNodeShape(properties),
-    );
+    return ConcreteParentInterfaceNodeShape._propertiesFromJson(json);
   }
 
   export function _propertiesFromRdf({
@@ -13431,10 +13380,12 @@ export namespace ConcreteParentInterfaceNodeShape {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+      type: "ConcreteParentInterfaceNodeShape";
       parentStringProperty: string;
     }
   > {
     const identifier = _resource.identifier;
+    const type = "ConcreteParentInterfaceNodeShape" as const;
     const _parentStringPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       string
@@ -13450,7 +13401,7 @@ export namespace ConcreteParentInterfaceNodeShape {
     }
 
     const parentStringProperty = _parentStringPropertyEither.unsafeCoerce();
-    return purify.Either.of({ identifier, parentStringProperty });
+    return purify.Either.of({ identifier, type, parentStringProperty });
   }
 
   export function fromRdf(
@@ -13461,9 +13412,7 @@ export namespace ConcreteParentInterfaceNodeShape {
     rdfjsResource.Resource.ValueError,
     ConcreteParentInterfaceNodeShape
   > {
-    return ConcreteParentInterfaceNodeShape._propertiesFromRdf(parameters).map(
-      (properties) => new ConcreteParentInterfaceNodeShape(properties),
-    );
+    return ConcreteParentInterfaceNodeShape._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -13506,6 +13455,19 @@ export namespace ConcreteParentInterfaceNodeShape {
       type: zod.literal("ConcreteParentInterfaceNodeShape"),
       parentStringProperty: zod.string(),
     });
+  }
+
+  export function hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(
+    _concreteParentInterfaceNodeShape: ConcreteParentInterfaceNodeShape,
+    _hasher: HasherT,
+  ): HasherT {
+    _hasher.update(_concreteParentInterfaceNodeShape.identifier.value);
+    _hasher.update(_concreteParentInterfaceNodeShape.parentStringProperty);
+    return _hasher;
   }
 
   export function sparqlConstructQuery(
@@ -13603,6 +13565,48 @@ export namespace ConcreteParentInterfaceNodeShape {
         type: "bgp",
       },
     ];
+  }
+
+  export function toJson(
+    _concreteParentInterfaceNodeShape: ConcreteParentInterfaceNodeShape,
+  ): {
+    readonly "@id": string;
+    readonly type: "ConcreteParentInterfaceNodeShape";
+    readonly parentStringProperty: string;
+  } {
+    return JSON.parse(
+      JSON.stringify({
+        "@id":
+          _concreteParentInterfaceNodeShape.identifier.termType === "BlankNode"
+            ? `_:${_concreteParentInterfaceNodeShape.identifier.value}`
+            : _concreteParentInterfaceNodeShape.identifier.value,
+        type: _concreteParentInterfaceNodeShape.type,
+        parentStringProperty:
+          _concreteParentInterfaceNodeShape.parentStringProperty,
+      } satisfies ReturnType<typeof ConcreteParentInterfaceNodeShape.toJson>),
+    );
+  }
+
+  export function toRdf(
+    _concreteParentInterfaceNodeShape: ConcreteParentInterfaceNodeShape,
+    {
+      mutateGraph,
+      resourceSet,
+    }: {
+      ignoreRdfType?: boolean;
+      mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
+      resourceSet: rdfjsResource.MutableResourceSet;
+    },
+  ): rdfjsResource.MutableResource {
+    const _resource = resourceSet.mutableResource(
+      _concreteParentInterfaceNodeShape.identifier,
+      { mutateGraph },
+    );
+    _resource.add(
+      dataFactory.namedNode("http://example.com/parentStringProperty"),
+      _concreteParentInterfaceNodeShape.parentStringProperty,
+    );
+    return _resource;
   }
 }
 /**
@@ -13990,7 +13994,7 @@ export namespace ConcreteChildInterfaceNodeShape {
   export function toJson(
     _concreteChildInterfaceNodeShape: ConcreteChildInterfaceNodeShape,
   ): { readonly childStringProperty: string } & ReturnType<
-    ConcreteParentInterfaceNodeShape["toJson"]
+    typeof ConcreteParentInterfaceNodeShape.toJson
   > {
     return JSON.parse(
       JSON.stringify({
@@ -14620,52 +14624,58 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
 /**
  * Class node shape that inherits the abstract base class and is the parent of the ConcreteChildClassNodeShape.
  */
-export interface ConcreteParentClassNodeShape
-  extends AbstractBaseClassWithoutPropertiesNodeShape {
-  readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-  readonly type: "ConcreteChildClassNodeShape" | "ConcreteParentClassNodeShape";
+export class ConcreteParentClassNodeShape extends AbstractBaseClassWithoutPropertiesNodeShape {
+  protected _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
+  override readonly type:
+    | "ConcreteChildClassNodeShape"
+    | "ConcreteParentClassNodeShape" = "ConcreteParentClassNodeShape";
   readonly parentStringProperty: string;
-}
 
-export namespace ConcreteParentClassNodeShape {
-  export function create(
+  constructor(
     parameters: {
-      readonly identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
+      readonly identifier?: (rdfjs.BlankNode | rdfjs.NamedNode) | string;
       readonly identifierPrefix?: string;
       readonly parentStringProperty: string;
-    } & Parameters<
-      typeof AbstractBaseClassWithoutPropertiesNodeShape.create
+    } & ConstructorParameters<
+      typeof AbstractBaseClassWithoutPropertiesNodeShape
     >[0],
-  ): Omit<ConcreteParentClassNodeShape, "identifierPrefix"> {
-    let identifier: rdfjs.BlankNode | rdfjs.NamedNode;
+  ) {
+    super(parameters);
     if (typeof parameters.identifier === "object") {
-      identifier = parameters.identifier;
+      this._identifier = parameters.identifier;
     } else if (typeof parameters.identifier === "string") {
-      identifier = dataFactory.namedNode(parameters.identifier);
+      this._identifier = dataFactory.namedNode(parameters.identifier);
+    } else if (typeof parameters.identifier === "undefined") {
     } else {
-      identifier = parameters.identifier as never;
+      this._identifier = parameters.identifier as never;
     }
 
-    const type = "ConcreteParentClassNodeShape" as const;
-    const parentStringProperty = parameters.parentStringProperty;
-    return {
-      ...AbstractBaseClassWithoutPropertiesNodeShape.create(parameters),
-      identifier,
-      type,
-      parentStringProperty,
-    };
+    this.parentStringProperty = parameters.parentStringProperty;
   }
 
-  export function equals(
-    left: ConcreteParentClassNodeShape,
-    right: ConcreteParentClassNodeShape,
-  ): EqualsResult {
-    return AbstractBaseClassWithoutPropertiesNodeShape.equals(left, right)
+  override get identifier(): rdfjs.BlankNode | rdfjs.NamedNode {
+    if (typeof this._identifier === "undefined") {
+      this._identifier = dataFactory.namedNode(
+        `${this.identifierPrefix}${this.hash(sha256.create())}`,
+      );
+    }
+    return this._identifier;
+  }
+
+  protected override get identifierPrefix(): string {
+    return typeof this._identifierPrefix !== "undefined"
+      ? this._identifierPrefix
+      : `urn:shaclmate:${this.type}:`;
+  }
+
+  override equals(other: ConcreteParentClassNodeShape): EqualsResult {
+    return super
+      .equals(other)
       .chain(() =>
-        strictEquals(left.identifierPrefix, right.identifierPrefix).mapLeft(
+        strictEquals(this.identifierPrefix, other.identifierPrefix).mapLeft(
           (propertyValuesUnequal) => ({
-            left: left,
-            right: right,
+            left: this,
+            right: other,
             propertyName: "identifierPrefix",
             propertyValuesUnequal,
             type: "Property" as const,
@@ -14674,11 +14684,11 @@ export namespace ConcreteParentClassNodeShape {
       )
       .chain(() =>
         strictEquals(
-          left.parentStringProperty,
-          right.parentStringProperty,
+          this.parentStringProperty,
+          other.parentStringProperty,
         ).mapLeft((propertyValuesUnequal) => ({
-          left: left,
-          right: right,
+          left: this,
+          right: other,
           propertyName: "parentStringProperty",
           propertyValuesUnequal,
           type: "Property" as const,
@@ -14686,11 +14696,69 @@ export namespace ConcreteParentClassNodeShape {
       );
   }
 
+  override hash<
+    HasherT extends {
+      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
+    },
+  >(_hasher: HasherT): HasherT {
+    super.hash(_hasher);
+    _hasher.update(this.parentStringProperty);
+    return _hasher;
+  }
+
+  override toJson(): { readonly parentStringProperty: string } & ReturnType<
+    AbstractBaseClassWithoutPropertiesNodeShape["toJson"]
+  > {
+    return JSON.parse(
+      JSON.stringify({
+        ...super.toJson(),
+        parentStringProperty: this.parentStringProperty,
+      } satisfies ReturnType<ConcreteParentClassNodeShape["toJson"]>),
+    );
+  }
+
+  override toRdf({
+    ignoreRdfType,
+    mutateGraph,
+    resourceSet,
+  }: {
+    ignoreRdfType?: boolean;
+    mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
+    resourceSet: rdfjsResource.MutableResourceSet;
+  }): rdfjsResource.MutableResource {
+    const _resource = super.toRdf({
+      ignoreRdfType: true,
+      mutateGraph,
+      resourceSet,
+    });
+    if (!ignoreRdfType) {
+      _resource.add(
+        _resource.dataFactory.namedNode(
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        ),
+        _resource.dataFactory.namedNode(
+          "http://example.com/ConcreteParentClassNodeShape",
+        ),
+      );
+    }
+
+    _resource.add(
+      dataFactory.namedNode("http://example.com/parentStringProperty"),
+      this.parentStringProperty,
+    );
+    return _resource;
+  }
+
+  override toString(): string {
+    return JSON.stringify(this.toJson());
+  }
+}
+
+export namespace ConcreteParentClassNodeShape {
   export function _propertiesFromJson(_json: unknown): purify.Either<
     zod.ZodError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      type: "ConcreteChildClassNodeShape" | "ConcreteParentClassNodeShape";
       parentStringProperty: string;
     } & UnwrapR<
       ReturnType<
@@ -14717,20 +14785,16 @@ export namespace ConcreteParentClassNodeShape {
     const identifier = _jsonObject["@id"].startsWith("_:")
       ? dataFactory.blankNode(_jsonObject["@id"].substring(2))
       : dataFactory.namedNode(_jsonObject["@id"]);
-    const type = "ConcreteParentClassNodeShape" as const;
     const parentStringProperty = _jsonObject["parentStringProperty"];
-    return purify.Either.of({
-      ..._super0,
-      identifier,
-      type,
-      parentStringProperty,
-    });
+    return purify.Either.of({ ..._super0, identifier, parentStringProperty });
   }
 
   export function fromJson(
     json: unknown,
   ): purify.Either<zod.ZodError, ConcreteParentClassNodeShape> {
-    return ConcreteParentClassNodeShape._propertiesFromJson(json);
+    return ConcreteParentClassNodeShape._propertiesFromJson(json).map(
+      (properties) => new ConcreteParentClassNodeShape(properties),
+    );
   }
 
   export function _propertiesFromRdf({
@@ -14748,7 +14812,6 @@ export namespace ConcreteParentClassNodeShape {
     rdfjsResource.Resource.ValueError,
     {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
-      type: "ConcreteChildClassNodeShape" | "ConcreteParentClassNodeShape";
       parentStringProperty: string;
     } & UnwrapR<
       ReturnType<
@@ -14788,7 +14851,6 @@ export namespace ConcreteParentClassNodeShape {
     }
 
     const identifier = _resource.identifier;
-    const type = "ConcreteParentClassNodeShape" as const;
     const _parentStringPropertyEither: purify.Either<
       rdfjsResource.Resource.ValueError,
       string
@@ -14804,12 +14866,7 @@ export namespace ConcreteParentClassNodeShape {
     }
 
     const parentStringProperty = _parentStringPropertyEither.unsafeCoerce();
-    return purify.Either.of({
-      ..._super0,
-      identifier,
-      type,
-      parentStringProperty,
-    });
+    return purify.Either.of({ ..._super0, identifier, parentStringProperty });
   }
 
   export function fromRdf(
@@ -14820,7 +14877,9 @@ export namespace ConcreteParentClassNodeShape {
     rdfjsResource.Resource.ValueError,
     ConcreteParentClassNodeShape
   > {
-    return ConcreteParentClassNodeShape._propertiesFromRdf(parameters);
+    return ConcreteParentClassNodeShape._propertiesFromRdf(parameters).map(
+      (properties) => new ConcreteParentClassNodeShape(properties),
+    );
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -14861,22 +14920,6 @@ export namespace ConcreteParentClassNodeShape {
         parentStringProperty: zod.string(),
       }),
     );
-  }
-
-  export function hashConcreteParentClassNodeShape<
-    HasherT extends {
-      update: (message: string | number[] | ArrayBuffer | Uint8Array) => void;
-    },
-  >(
-    _concreteParentClassNodeShape: ConcreteParentClassNodeShape,
-    _hasher: HasherT,
-  ): HasherT {
-    AbstractBaseClassWithoutPropertiesNodeShape.hashAbstractBaseClassWithoutPropertiesNodeShape(
-      _concreteParentClassNodeShape,
-      _hasher,
-    );
-    _hasher.update(_concreteParentClassNodeShape.parentStringProperty);
-    return _hasher;
   }
 
   export function sparqlConstructQuery(
@@ -15024,56 +15067,6 @@ export namespace ConcreteParentClassNodeShape {
       },
     ];
   }
-
-  export function toJson(
-    _concreteParentClassNodeShape: ConcreteParentClassNodeShape,
-  ): { readonly parentStringProperty: string } & ReturnType<
-    AbstractBaseClassWithoutPropertiesNodeShape["toJson"]
-  > {
-    return JSON.parse(
-      JSON.stringify({
-        ...AbstractBaseClassWithoutPropertiesNodeShape.toJson(
-          _concreteParentClassNodeShape,
-        ),
-        parentStringProperty:
-          _concreteParentClassNodeShape.parentStringProperty,
-      } satisfies ReturnType<typeof ConcreteParentClassNodeShape.toJson>),
-    );
-  }
-
-  export function toRdf(
-    _concreteParentClassNodeShape: ConcreteParentClassNodeShape,
-    {
-      ignoreRdfType,
-      mutateGraph,
-      resourceSet,
-    }: {
-      ignoreRdfType?: boolean;
-      mutateGraph?: rdfjsResource.MutableResource.MutateGraph;
-      resourceSet: rdfjsResource.MutableResourceSet;
-    },
-  ): rdfjsResource.MutableResource {
-    const _resource = AbstractBaseClassWithoutPropertiesNodeShape.toRdf(
-      _concreteParentClassNodeShape,
-      { ignoreRdfType: true, mutateGraph, resourceSet },
-    );
-    if (!ignoreRdfType) {
-      _resource.add(
-        _resource.dataFactory.namedNode(
-          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-        ),
-        _resource.dataFactory.namedNode(
-          "http://example.com/ConcreteParentClassNodeShape",
-        ),
-      );
-    }
-
-    _resource.add(
-      dataFactory.namedNode("http://example.com/parentStringProperty"),
-      _concreteParentClassNodeShape.parentStringProperty,
-    );
-    return _resource;
-  }
 }
 /**
  * Child (class) of ConcreteParentClassNodeShape. Should inherit properties, node kinds, and minting strategy.
@@ -15147,7 +15140,7 @@ export class ConcreteChildClassNodeShape extends ConcreteParentClassNodeShape {
   }
 
   override toJson(): { readonly childStringProperty: string } & ReturnType<
-    typeof ConcreteParentClassNodeShape.toJson
+    ConcreteParentClassNodeShape["toJson"]
   > {
     return JSON.parse(
       JSON.stringify({
