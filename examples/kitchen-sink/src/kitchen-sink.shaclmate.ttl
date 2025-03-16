@@ -90,18 +90,6 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
     a sh:NodeShape ;
     rdfs:comment "Shape with sh:defaultValue properties." ;
     sh:property [
-        sh:defaultValue "" ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:name "stringProperty" ;
-        sh:path :stringProperty
-    ], [
-        sh:defaultValue true ;
-        sh:maxCount 1 ;
-        sh:minCount 1 ;
-        sh:name "trueBooleanProperty" ;
-        sh:path :trueBooleanProperty
-    ], [
         sh:defaultValue false ;
         sh:maxCount 1 ;
         sh:minCount 1 ;
@@ -125,6 +113,18 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
         sh:minCount 1 ;
         sh:name "numberProperty" ;
         sh:path :numberProperty
+    ], [
+        sh:defaultValue "" ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "stringProperty" ;
+        sh:path :stringProperty
+    ], [
+        sh:defaultValue true ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "trueBooleanProperty" ;
+        sh:path :trueBooleanProperty
     ] .
 
 :ExplicitRdfTypesNodeShape

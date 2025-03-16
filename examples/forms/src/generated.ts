@@ -284,7 +284,7 @@ export namespace NestedNodeShape {
     return NestedNodeShape._propertiesFromJson(json);
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -324,9 +324,9 @@ export namespace NestedNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof NestedNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof NestedNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, NestedNodeShape> {
-    return NestedNodeShape.propertiesFromRdf(parameters);
+    return NestedNodeShape._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -750,7 +750,7 @@ export namespace FormNodeShape {
     return FormNodeShape._propertiesFromJson(json);
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -916,9 +916,9 @@ export namespace FormNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof FormNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof FormNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, FormNodeShape> {
-    return FormNodeShape.propertiesFromRdf(parameters);
+    return FormNodeShape._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {

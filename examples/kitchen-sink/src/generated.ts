@@ -365,7 +365,7 @@ export namespace UuidV4IriNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -399,9 +399,9 @@ export namespace UuidV4IriNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof UuidV4IriNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof UuidV4IriNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, UuidV4IriNodeShape> {
-    return UuidV4IriNodeShape.propertiesFromRdf(parameters).map(
+    return UuidV4IriNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new UuidV4IriNodeShape(properties),
     );
   }
@@ -971,7 +971,7 @@ export namespace UnionPropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1133,13 +1133,13 @@ export namespace UnionPropertiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof UnionPropertiesNodeShape.propertiesFromRdf
+      typeof UnionPropertiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     UnionPropertiesNodeShape
   > {
-    return UnionPropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return UnionPropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new UnionPropertiesNodeShape(properties),
     );
   }
@@ -1532,7 +1532,7 @@ export namespace UnionNodeShapeMember2 {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1566,9 +1566,9 @@ export namespace UnionNodeShapeMember2 {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof UnionNodeShapeMember2.propertiesFromRdf>[0],
+    parameters: Parameters<typeof UnionNodeShapeMember2._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, UnionNodeShapeMember2> {
-    return UnionNodeShapeMember2.propertiesFromRdf(parameters).map(
+    return UnionNodeShapeMember2._propertiesFromRdf(parameters).map(
       (properties) => new UnionNodeShapeMember2(properties),
     );
   }
@@ -1839,7 +1839,7 @@ export namespace UnionNodeShapeMember1 {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -1873,9 +1873,9 @@ export namespace UnionNodeShapeMember1 {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof UnionNodeShapeMember1.propertiesFromRdf>[0],
+    parameters: Parameters<typeof UnionNodeShapeMember1._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, UnionNodeShapeMember1> {
-    return UnionNodeShapeMember1.propertiesFromRdf(parameters).map(
+    return UnionNodeShapeMember1._propertiesFromRdf(parameters).map(
       (properties) => new UnionNodeShapeMember1(properties),
     );
   }
@@ -2592,7 +2592,7 @@ export namespace TermPropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -2783,9 +2783,11 @@ export namespace TermPropertiesNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof TermPropertiesNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<
+      typeof TermPropertiesNodeShape._propertiesFromRdf
+    >[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, TermPropertiesNodeShape> {
-    return TermPropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return TermPropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new TermPropertiesNodeShape(properties),
     );
   }
@@ -3284,7 +3286,7 @@ export namespace Sha256IriNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -3318,9 +3320,9 @@ export namespace Sha256IriNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof Sha256IriNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof Sha256IriNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, Sha256IriNodeShape> {
-    return Sha256IriNodeShape.propertiesFromRdf(parameters).map(
+    return Sha256IriNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new Sha256IriNodeShape(properties),
     );
   }
@@ -3642,7 +3644,7 @@ export namespace PropertyVisibilitiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -3715,13 +3717,13 @@ export namespace PropertyVisibilitiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof PropertyVisibilitiesNodeShape.propertiesFromRdf
+      typeof PropertyVisibilitiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     PropertyVisibilitiesNodeShape
   > {
-    return PropertyVisibilitiesNodeShape.propertiesFromRdf(parameters).map(
+    return PropertyVisibilitiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new PropertyVisibilitiesNodeShape(properties),
     );
   }
@@ -4171,7 +4173,7 @@ export namespace PropertyCardinalitiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -4292,13 +4294,13 @@ export namespace PropertyCardinalitiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof PropertyCardinalitiesNodeShape.propertiesFromRdf
+      typeof PropertyCardinalitiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     PropertyCardinalitiesNodeShape
   > {
-    return PropertyCardinalitiesNodeShape.propertiesFromRdf(parameters).map(
+    return PropertyCardinalitiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new PropertyCardinalitiesNodeShape(properties),
     );
   }
@@ -4740,7 +4742,7 @@ export namespace OrderedPropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -4808,13 +4810,13 @@ export namespace OrderedPropertiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof OrderedPropertiesNodeShape.propertiesFromRdf
+      typeof OrderedPropertiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     OrderedPropertiesNodeShape
   > {
-    return OrderedPropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return OrderedPropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new OrderedPropertiesNodeShape(properties),
     );
   }
@@ -5125,7 +5127,7 @@ export namespace NonClassNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -5159,9 +5161,9 @@ export namespace NonClassNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof NonClassNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof NonClassNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, NonClassNodeShape> {
-    return NonClassNodeShape.propertiesFromRdf(parameters).map(
+    return NonClassNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new NonClassNodeShape(properties),
     );
   }
@@ -5630,7 +5632,7 @@ export namespace MutablePropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -5730,13 +5732,13 @@ export namespace MutablePropertiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof MutablePropertiesNodeShape.propertiesFromRdf
+      typeof MutablePropertiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     MutablePropertiesNodeShape
   > {
-    return MutablePropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return MutablePropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new MutablePropertiesNodeShape(properties),
     );
   }
@@ -6449,7 +6451,7 @@ export namespace ListPropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -6541,9 +6543,11 @@ export namespace ListPropertiesNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ListPropertiesNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<
+      typeof ListPropertiesNodeShape._propertiesFromRdf
+    >[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ListPropertiesNodeShape> {
-    return ListPropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return ListPropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new ListPropertiesNodeShape(properties),
     );
   }
@@ -7321,7 +7325,7 @@ export namespace LanguageInPropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -7411,13 +7415,13 @@ export namespace LanguageInPropertiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof LanguageInPropertiesNodeShape.propertiesFromRdf
+      typeof LanguageInPropertiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     LanguageInPropertiesNodeShape
   > {
-    return LanguageInPropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return LanguageInPropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new LanguageInPropertiesNodeShape(properties),
     );
   }
@@ -7703,7 +7707,7 @@ export namespace IriNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -7723,9 +7727,9 @@ export namespace IriNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof IriNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof IriNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, IriNodeShape> {
-    return IriNodeShape.propertiesFromRdf(parameters).map(
+    return IriNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new IriNodeShape(properties),
     );
   }
@@ -7908,7 +7912,7 @@ export namespace InterfaceUnionNodeShapeMember2b {
     return InterfaceUnionNodeShapeMember2b._propertiesFromJson(json);
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -7948,13 +7952,13 @@ export namespace InterfaceUnionNodeShapeMember2b {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof InterfaceUnionNodeShapeMember2b.propertiesFromRdf
+      typeof InterfaceUnionNodeShapeMember2b._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     InterfaceUnionNodeShapeMember2b
   > {
-    return InterfaceUnionNodeShapeMember2b.propertiesFromRdf(parameters);
+    return InterfaceUnionNodeShapeMember2b._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -8235,7 +8239,7 @@ export namespace InterfaceUnionNodeShapeMember2a {
     return InterfaceUnionNodeShapeMember2a._propertiesFromJson(json);
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -8275,13 +8279,13 @@ export namespace InterfaceUnionNodeShapeMember2a {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof InterfaceUnionNodeShapeMember2a.propertiesFromRdf
+      typeof InterfaceUnionNodeShapeMember2a._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     InterfaceUnionNodeShapeMember2a
   > {
-    return InterfaceUnionNodeShapeMember2a.propertiesFromRdf(parameters);
+    return InterfaceUnionNodeShapeMember2a._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -8562,7 +8566,7 @@ export namespace InterfaceUnionNodeShapeMember1 {
     return InterfaceUnionNodeShapeMember1._propertiesFromJson(json);
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -8602,13 +8606,13 @@ export namespace InterfaceUnionNodeShapeMember1 {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof InterfaceUnionNodeShapeMember1.propertiesFromRdf
+      typeof InterfaceUnionNodeShapeMember1._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     InterfaceUnionNodeShapeMember1
   > {
-    return InterfaceUnionNodeShapeMember1.propertiesFromRdf(parameters);
+    return InterfaceUnionNodeShapeMember1._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -8889,7 +8893,7 @@ export namespace InterfaceNodeShape {
     return InterfaceNodeShape._propertiesFromJson(json);
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -8928,9 +8932,9 @@ export namespace InterfaceNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof InterfaceNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof InterfaceNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, InterfaceNodeShape> {
-    return InterfaceNodeShape.propertiesFromRdf(parameters);
+    return InterfaceNodeShape._propertiesFromRdf(parameters);
   }
 
   export function jsonSchema() {
@@ -9474,7 +9478,7 @@ export namespace InPropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -9716,9 +9720,9 @@ export namespace InPropertiesNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof InPropertiesNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof InPropertiesNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, InPropertiesNodeShape> {
-    return InPropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return InPropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new InPropertiesNodeShape(properties),
     );
   }
@@ -10143,7 +10147,7 @@ export namespace InIdentifierNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -10214,9 +10218,9 @@ export namespace InIdentifierNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof InIdentifierNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof InIdentifierNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, InIdentifierNodeShape> {
-    return InIdentifierNodeShape.propertiesFromRdf(parameters).map(
+    return InIdentifierNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new InIdentifierNodeShape(properties),
     );
   }
@@ -10563,7 +10567,7 @@ export namespace HasValuePropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -10633,13 +10637,13 @@ export namespace HasValuePropertiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof HasValuePropertiesNodeShape.propertiesFromRdf
+      typeof HasValuePropertiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     HasValuePropertiesNodeShape
   > {
-    return HasValuePropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return HasValuePropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new HasValuePropertiesNodeShape(properties),
     );
   }
@@ -10953,7 +10957,7 @@ export namespace InlineNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -10987,9 +10991,9 @@ export namespace InlineNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof InlineNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof InlineNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, InlineNodeShape> {
-    return InlineNodeShape.propertiesFromRdf(parameters).map(
+    return InlineNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new InlineNodeShape(properties),
     );
   }
@@ -11256,7 +11260,7 @@ export namespace ExternNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -11290,9 +11294,9 @@ export namespace ExternNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof ExternNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof ExternNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, ExternNodeShape> {
-    return ExternNodeShape.propertiesFromRdf(parameters).map(
+    return ExternNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new ExternNodeShape(properties),
     );
   }
@@ -11696,7 +11700,7 @@ export namespace ExternPropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -11796,13 +11800,13 @@ export namespace ExternPropertiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof ExternPropertiesNodeShape.propertiesFromRdf
+      typeof ExternPropertiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     ExternPropertiesNodeShape
   > {
-    return ExternPropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return ExternPropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new ExternPropertiesNodeShape(properties),
     );
   }
@@ -12189,7 +12193,7 @@ export namespace ExplicitRdfTypesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -12239,13 +12243,13 @@ export namespace ExplicitRdfTypesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof ExplicitRdfTypesNodeShape.propertiesFromRdf
+      typeof ExplicitRdfTypesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     ExplicitRdfTypesNodeShape
   > {
-    return ExplicitRdfTypesNodeShape.propertiesFromRdf(parameters).map(
+    return ExplicitRdfTypesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new ExplicitRdfTypesNodeShape(properties),
     );
   }
@@ -12774,7 +12778,7 @@ export namespace DefaultValuePropertiesNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -12977,13 +12981,13 @@ export namespace DefaultValuePropertiesNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof DefaultValuePropertiesNodeShape.propertiesFromRdf
+      typeof DefaultValuePropertiesNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     DefaultValuePropertiesNodeShape
   > {
-    return DefaultValuePropertiesNodeShape.propertiesFromRdf(parameters).map(
+    return DefaultValuePropertiesNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new DefaultValuePropertiesNodeShape(properties),
     );
   }
@@ -13415,7 +13419,7 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
     return purify.Either.of({ identifier, abcStringProperty });
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -13695,7 +13699,7 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     return purify.Either.of({ ..._super0, identifier });
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -13710,12 +13714,12 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     rdfjsResource.Resource.ValueError,
     { identifier: rdfjs.BlankNode | rdfjs.NamedNode } & UnwrapR<
       ReturnType<
-        typeof AbstractBaseClassWithPropertiesNodeShape.propertiesFromRdf
+        typeof AbstractBaseClassWithPropertiesNodeShape._propertiesFromRdf
       >
     >
   > {
     const _super0Either =
-      AbstractBaseClassWithPropertiesNodeShape.propertiesFromRdf({
+      AbstractBaseClassWithPropertiesNodeShape._propertiesFromRdf({
         ..._context,
         ignoreRdfType: true,
         languageIn: _languageIn,
@@ -14024,7 +14028,7 @@ export namespace ConcreteParentClassNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -14042,12 +14046,12 @@ export namespace ConcreteParentClassNodeShape {
       parentStringProperty: string;
     } & UnwrapR<
       ReturnType<
-        typeof AbstractBaseClassWithoutPropertiesNodeShape.propertiesFromRdf
+        typeof AbstractBaseClassWithoutPropertiesNodeShape._propertiesFromRdf
       >
     >
   > {
     const _super0Either =
-      AbstractBaseClassWithoutPropertiesNodeShape.propertiesFromRdf({
+      AbstractBaseClassWithoutPropertiesNodeShape._propertiesFromRdf({
         ..._context,
         ignoreRdfType: true,
         languageIn: _languageIn,
@@ -14098,13 +14102,13 @@ export namespace ConcreteParentClassNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof ConcreteParentClassNodeShape.propertiesFromRdf
+      typeof ConcreteParentClassNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     ConcreteParentClassNodeShape
   > {
-    return ConcreteParentClassNodeShape.propertiesFromRdf(parameters).map(
+    return ConcreteParentClassNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new ConcreteParentClassNodeShape(properties),
     );
   }
@@ -14453,7 +14457,7 @@ export namespace ConcreteChildClassNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -14470,10 +14474,10 @@ export namespace ConcreteChildClassNodeShape {
       identifier: rdfjs.BlankNode | rdfjs.NamedNode;
       childStringProperty: string;
     } & UnwrapR<
-      ReturnType<typeof ConcreteParentClassNodeShape.propertiesFromRdf>
+      ReturnType<typeof ConcreteParentClassNodeShape._propertiesFromRdf>
     >
   > {
-    const _super0Either = ConcreteParentClassNodeShape.propertiesFromRdf({
+    const _super0Either = ConcreteParentClassNodeShape._propertiesFromRdf({
       ..._context,
       ignoreRdfType: true,
       languageIn: _languageIn,
@@ -14521,13 +14525,13 @@ export namespace ConcreteChildClassNodeShape {
 
   export function fromRdf(
     parameters: Parameters<
-      typeof ConcreteChildClassNodeShape.propertiesFromRdf
+      typeof ConcreteChildClassNodeShape._propertiesFromRdf
     >[0],
   ): purify.Either<
     rdfjsResource.Resource.ValueError,
     ConcreteChildClassNodeShape
   > {
-    return ConcreteChildClassNodeShape.propertiesFromRdf(parameters).map(
+    return ConcreteChildClassNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new ConcreteChildClassNodeShape(properties),
     );
   }
@@ -14833,7 +14837,7 @@ export namespace BlankNodeShape {
     );
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
@@ -14853,9 +14857,9 @@ export namespace BlankNodeShape {
   }
 
   export function fromRdf(
-    parameters: Parameters<typeof BlankNodeShape.propertiesFromRdf>[0],
+    parameters: Parameters<typeof BlankNodeShape._propertiesFromRdf>[0],
   ): purify.Either<rdfjsResource.Resource.ValueError, BlankNodeShape> {
-    return BlankNodeShape.propertiesFromRdf(parameters).map(
+    return BlankNodeShape._propertiesFromRdf(parameters).map(
       (properties) => new BlankNodeShape(properties),
     );
   }
@@ -15067,7 +15071,7 @@ export namespace AbstractBaseClassForExternObjectType {
     return purify.Either.of({ identifier, abcStringProperty });
   }
 
-  export function propertiesFromRdf({
+  export function _propertiesFromRdf({
     ignoreRdfType: _ignoreRdfType,
     languageIn: _languageIn,
     resource: _resource,
