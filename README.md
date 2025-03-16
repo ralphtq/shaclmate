@@ -1,6 +1,12 @@
 # shaclmate
 
-**SHACLMate** is a command line program and libraries for generating [TypeScript](https://www.typescriptlang.org/) code from [SHACL](https://www.w3.org/TR/shacl/) shapes.
+**SHACLmate** is a command line program and libraries for generating [TypeScript](https://www.typescriptlang.org/) code from [SHACL](https://www.w3.org/TR/shacl/) shapes.
+
+## Why SHACLmate
+
+The motivation for **SHACLmate** arises from the desire software developers familiar ways for working with Knowledge Graphs.
+
+By constucting types from SHACL in typescript, developers can build applications without the need for them to learn SPARQL and RDF.
 
 ## Prerequisites
 
