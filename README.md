@@ -1,6 +1,6 @@
 # shaclmate
 
-Command line program and libraries for generating [TypeScript](https://www.typescriptlang.org/) code from [SHACL](https://www.w3.org/TR/shacl/) shapes.
+**SHACLMate** is a command line program and libraries for generating [TypeScript](https://www.typescriptlang.org/) code from [SHACL](https://www.w3.org/TR/shacl/) shapes.
 
 ## Prerequisites
 
