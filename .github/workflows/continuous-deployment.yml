@@ -28,4 +28,5 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Run CLI via npx
-        run: npx -y @shaclmate/cli generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl >/dev/null
+        run: npx -y "@shaclmate/cli@latest" generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl >/dev/null
+        if: always()
