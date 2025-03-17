@@ -53,5 +53,5 @@
     "watch:noEmit": "tsc --noEmit -w --preserveWatchOutput"
   },
   "type": "module",
-  "version": "2.0.18"
+  "version": "2.0.19"
 }
