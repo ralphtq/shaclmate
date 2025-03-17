@@ -18,7 +18,7 @@ SHACLmate currently generates idiomatic TypeScript classes/interfaces from SHACL
 
 ### Generate TypeScript code from SHACL shapes
 
-    npx -y @shaclmate/cli@latest generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl >generated.ts
+    npx -y "@shaclmate/cli@latest" generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl >generated.ts
 
 Substituting the path to your SHACL file for the example path.
 
@@ -62,7 +62,7 @@ A "kitchen sink" demonstrating the code SHACLmate generates from many different 
 
 To reproduce the generated code to stdout, run:
 
-    npx -y @shaclmate/cli@latest generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl
+    npx -y "@shaclmate/cli@latest" generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl
 
 The compiler unit tests in [`packages/compiler/__tests__`](packages/compiler/__tests__) use the kitchen sink examples to test generated code.
 
