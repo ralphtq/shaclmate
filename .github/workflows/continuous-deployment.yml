@@ -19,15 +19,13 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-#      - name: Generate examples
-#        run: ./examples/generate-examples.sh
       - name: Test
         run: npm test
       - name: Run CLI
-        run: packages/cli/dist/cli.js generate examples/kitchen-sink/kitchen-sink.shaclmate.ttl >/dev/null
+        run: packages/cli/dist/cli.js generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl >/dev/null
       - name: Publish
         run: npm publish --access public --workspaces
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Run CLI via npx
-        run: npx -y @shaclmate/cli generate examples/kitchen-sink/kitchen-sink.shaclmate.ttl >/dev/null
+        run: npx -y @shaclmate/cli generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl >/dev/null
