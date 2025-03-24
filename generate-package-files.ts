@@ -5,7 +5,7 @@ import path from "node:path";
 import url from "node:url";
 import { stringify as stringifyYaml } from "yaml";
 
-const VERSION = "2.0.19";
+const VERSION = "2.0.20";
 
 type PackageName =
   | "cli"
@@ -42,7 +42,7 @@ const externalDependencyVersions = {
   n3: "^1.21.3",
   pino: "^9.1.0",
   "purify-ts": "^2.1.0",
-  "rdfjs-resource": "1.0.16",
+  "rdfjs-resource": "1.0.17",
 };
 
 // Packages should be topologically sorted
@@ -404,6 +404,10 @@ fs.writeFileSync(
           {
             name: "Test",
             run: "npm run test:coverage",
+          },
+          {
+            name: "Run CLI",
+            run: "packages/cli/dist/cli.js generate examples/kitchen-sink/src/kitchen-sink.shaclmate.ttl >/dev/null",
           },
           ...packages
             .filter((package_) =>

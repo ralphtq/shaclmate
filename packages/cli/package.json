@@ -3,7 +3,7 @@
     "shaclmate": "dist/cli.js"
   },
   "dependencies": {
-    "@shaclmate/compiler": "2.0.19",
+    "@shaclmate/compiler": "2.0.20",
     "@types/n3": "^1.21.1",
     "@types/rdf-validate-shacl": "^0.4.7",
     "cmd-ts": "^0.13.0",
@@ -50,5 +50,5 @@
     "watch:noEmit": "tsc --noEmit -w --preserveWatchOutput"
   },
   "type": "module",
-  "version": "2.0.19"
+  "version": "2.0.20"
 }
