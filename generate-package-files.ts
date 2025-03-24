@@ -5,7 +5,7 @@ import path from "node:path";
 import url from "node:url";
 import { stringify as stringifyYaml } from "yaml";
 
-const VERSION = "2.0.21";
+const VERSION = "2.0.22";
 
 type PackageName =
   | "cli"
@@ -42,7 +42,7 @@ const externalDependencyVersions = {
   n3: "^1.21.3",
   pino: "^9.1.0",
   "purify-ts": "^2.1.0",
-  "rdfjs-resource": "1.0.18",
+  "rdfjs-resource": "1.0.19",
 };
 
 // Packages should be topologically sorted

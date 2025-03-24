@@ -7,7 +7,7 @@
     "@types/rdfjs__term-map": "^2.0.10",
     "@types/rdfjs__term-set": "^2.0.9",
     "purify-ts": "^2.1.0",
-    "rdfjs-resource": "1.0.18"
+    "rdfjs-resource": "1.0.19"
   },
   "devDependencies": {
     "@types/n3": "^1.21.1",
@@ -51,5 +51,5 @@
     "watch:noEmit": "tsc --noEmit -w --preserveWatchOutput"
   },
   "type": "module",
-  "version": "2.0.21"
+  "version": "2.0.22"
 }
