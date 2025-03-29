@@ -36,6 +36,7 @@ export class ObjectType extends DeclaredType {
   protected readonly toRdfTypes: readonly NamedNode[];
   private readonly imports: readonly string[];
   private readonly lazyAncestorObjectTypes: () => readonly ObjectType[];
+  private readonly lazyChildObjectTypes: () => readonly ObjectType[];
   private readonly lazyDescendantObjectTypes: () => readonly ObjectType[];
   private readonly lazyParentObjectTypes: () => readonly ObjectType[];
   private readonly lazyProperties: () => readonly ObjectType.Property[];
@@ -48,6 +49,7 @@ export class ObjectType extends DeclaredType {
     fromRdfType,
     label,
     lazyAncestorObjectTypes,
+    lazyChildObjectTypes,
     lazyDescendantObjectTypes,
     lazyParentObjectTypes,
     lazyProperties,
@@ -64,6 +66,7 @@ export class ObjectType extends DeclaredType {
     imports: readonly string[];
     label: Maybe<string>;
     lazyAncestorObjectTypes: () => readonly ObjectType[];
+    lazyChildObjectTypes: () => readonly ObjectType[];
     lazyDescendantObjectTypes: () => readonly ObjectType[];
     lazyParentObjectTypes: () => readonly ObjectType[];
     lazyProperties: () => readonly ObjectType.Property[];
@@ -80,6 +83,7 @@ export class ObjectType extends DeclaredType {
     this.label = label;
     // Lazily initialize some members in getters to avoid recursive construction
     this.lazyAncestorObjectTypes = lazyAncestorObjectTypes;
+    this.lazyChildObjectTypes = lazyChildObjectTypes;
     this.lazyDescendantObjectTypes = lazyDescendantObjectTypes;
     this.lazyParentObjectTypes = lazyParentObjectTypes;
     this.lazyProperties = lazyProperties;
@@ -102,6 +106,11 @@ export class ObjectType extends DeclaredType {
   @Memoize()
   get ancestorObjectTypes(): readonly ObjectType[] {
     return this.lazyAncestorObjectTypes();
+  }
+
+  @Memoize()
+  get childObjectTypes(): readonly ObjectType[] {
+    return this.lazyChildObjectTypes();
   }
 
   @Memoize()

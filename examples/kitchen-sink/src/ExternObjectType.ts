@@ -31,7 +31,7 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
     );
   }
 
-  static fromRdf({
+  static override fromRdf({
     extra,
     resource,
   }: {

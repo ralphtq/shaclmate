@@ -39,7 +39,7 @@ export function fromRdfFunctionDeclarations(
 
   this.fromRdfType.ifJust((rdfType) => {
     propertiesFromRdfFunctionStatements.push(
-      `if (!${variables.ignoreRdfType} && !${variables.resource}.isInstanceOf(${this.rdfjsTermExpression(rdfType)})) { return purify.Left(new rdfjsResource.Resource.ValueError(${objectInitializer({ focusResource: variables.resource, message: `\`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} has unexpected RDF type\``, predicate: this.rdfjsTermExpression(rdfType) })})); }`,
+      `if (!${variables.ignoreRdfType} && !${variables.resource}.isInstanceOf(${this.rdfjsTermExpression(rdfType)})) { return purify.Left(new rdfjsResource.Resource.ValueError(${objectInitializer({ focusResource: variables.resource, message: `\`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} has unexpected RDF type (expected ${rdfType.value})\``, predicate: this.rdfjsTermExpression(rdfType) })})); }`,
     );
   });
 
@@ -85,21 +85,36 @@ export function fromRdfFunctionDeclarations(
     statements: propertiesFromRdfFunctionStatements,
   });
 
-  if (!this.abstract) {
-    let fromRdfStatements: string[];
+  let fromRdfStatement: string | undefined;
+  if (this.abstract) {
+    if (this.childObjectTypes.length > 0) {
+      // Similar to an object union type, alt-chain the fromRdf of the different concrete subclasses together
+      fromRdfStatement = `return ${this.childObjectTypes.reduce(
+        (expression, childObjectType) => {
+          const childObjectTypeExpression = `(${childObjectType.name}.fromRdf(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
+          return expression.length > 0
+            ? `${expression}.altLazy(() => ${childObjectTypeExpression})`
+            : childObjectTypeExpression;
+        },
+        "",
+      )};`;
+    }
+  } else {
     switch (this.declarationType) {
       case "class":
-        fromRdfStatements = [
-          `return ${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties));`,
-        ];
+        fromRdfStatement = `${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties))`;
         break;
       case "interface":
-        fromRdfStatements = [
-          `return ${this.name}._propertiesFromRdf(parameters);`,
-        ];
+        fromRdfStatement = `${this.name}._propertiesFromRdf(parameters)`;
         break;
     }
+    if (this.childObjectTypes.length > 0) {
+      fromRdfStatement = `${fromRdfStatement}${this.childObjectTypes.map((childObjectType) => `.altLazy(() => (${childObjectType.name}.fromRdf(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>))`).join("")}`;
+    }
+    fromRdfStatement = `return ${fromRdfStatement};`;
+  }
 
+  if (fromRdfStatement) {
     fromRdfFunctionDeclarations.push({
       isExported: true,
       kind: StructureKind.Function,
@@ -111,7 +126,7 @@ export function fromRdfFunctionDeclarations(
         },
       ],
       returnType: `purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>`,
-      statements: fromRdfStatements,
+      statements: [fromRdfStatement],
     });
   }
 
