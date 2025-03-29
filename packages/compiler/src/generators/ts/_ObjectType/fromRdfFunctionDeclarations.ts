@@ -105,13 +105,13 @@ export function fromRdfFunctionDeclarations(
       )};`;
     }
   } else {
-    let propertiesFromRdfStatement: string;
+    let propertiesFromRdfExpression: string;
     switch (this.declarationType) {
       case "class":
-        propertiesFromRdfStatement = `${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties))`;
+        propertiesFromRdfExpression = `${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties))`;
         break;
       case "interface":
-        propertiesFromRdfStatement = `${this.name}._propertiesFromRdf(parameters)`;
+        propertiesFromRdfExpression = `${this.name}._propertiesFromRdf(parameters)`;
         break;
     }
 
@@ -128,9 +128,9 @@ export function fromRdfFunctionDeclarations(
             : childObjectTypeExpression;
         },
         "",
-      )}.altLazy(() => ${propertiesFromRdfStatement})`;
+      )}.altLazy(() => ${propertiesFromRdfExpression})`;
     } else {
-      fromRdfReturnStatement = propertiesFromRdfStatement;
+      fromRdfReturnStatement = propertiesFromRdfExpression;
     }
     fromRdfReturnStatement = `return ${fromRdfReturnStatement};`;
   }

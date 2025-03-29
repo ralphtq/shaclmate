@@ -25,7 +25,9 @@ export class ExternObjectType extends AbstractBaseClassForExternObjectType {
     return left.equals(right);
   }
 
-  static fromJson(json: unknown): Either<z.ZodError, ExternObjectType> {
+  static override fromJson(
+    json: unknown,
+  ): Either<z.ZodError, ExternObjectType> {
     return AbstractBaseClassForExternObjectType._propertiesFromJson(json).map(
       (properties) => new ExternObjectType(properties.identifier),
     );

@@ -270,6 +270,34 @@
               "termType": "BlankNode",
               "value": "n3-146"
             },
+            "shName": "falseBooleanProperty"
+          },
+          "path": "http://example.com/falseBooleanProperty",
+          "type": {
+            "hasValue": [],
+            "kind": "LiteralType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-147"
+            },
+            "shName": "dateProperty"
+          },
+          "path": "http://example.com/dateProperty",
+          "type": {
+            "hasValue": [],
+            "kind": "LiteralType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-148"
+            },
             "shName": "dateTimeProperty"
           },
           "path": "http://example.com/dateTimeProperty",
@@ -282,7 +310,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-147"
+              "value": "n3-149"
             },
             "shName": "numberProperty"
           },
@@ -296,7 +324,7 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-148"
+              "value": "n3-150"
             },
             "shName": "stringProperty"
           },
@@ -310,39 +338,11 @@
           "name": {
             "identifier": {
               "termType": "BlankNode",
-              "value": "n3-149"
+              "value": "n3-151"
             },
             "shName": "trueBooleanProperty"
           },
           "path": "http://example.com/trueBooleanProperty",
-          "type": {
-            "hasValue": [],
-            "kind": "LiteralType"
-          }
-        },
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-150"
-            },
-            "shName": "falseBooleanProperty"
-          },
-          "path": "http://example.com/falseBooleanProperty",
-          "type": {
-            "hasValue": [],
-            "kind": "LiteralType"
-          }
-        },
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-151"
-            },
-            "shName": "dateProperty"
-          },
-          "path": "http://example.com/dateProperty",
           "type": {
             "hasValue": [],
             "kind": "LiteralType"
@@ -1618,39 +1618,6 @@
               "termType": "BlankNode",
               "value": "n3-230"
             },
-            "shName": "orLiteralsProperty"
-          },
-          "path": "http://example.com/orLiteralsProperty",
-          "type": {
-            "itemType": {
-              "hasValue": [],
-              "kind": "LiteralType"
-            },
-            "kind": "OptionType"
-          }
-        },
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-235"
-            },
-            "shName": "orTermsProperty"
-          },
-          "path": "http://example.com/orTermsProperty",
-          "type": {
-            "itemType": {
-              "kind": "TermType"
-            },
-            "kind": "OptionType"
-          }
-        },
-        {
-          "name": {
-            "identifier": {
-              "termType": "BlankNode",
-              "value": "n3-240"
-            },
             "shName": "orUnrelatedProperty"
           },
           "path": "http://example.com/orUnrelatedProperty",
@@ -1683,6 +1650,39 @@
                   "identifierMintingStrategy": "blankNode"
                 }
               ]
+            },
+            "kind": "OptionType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-235"
+            },
+            "shName": "orLiteralsProperty"
+          },
+          "path": "http://example.com/orLiteralsProperty",
+          "type": {
+            "itemType": {
+              "hasValue": [],
+              "kind": "LiteralType"
+            },
+            "kind": "OptionType"
+          }
+        },
+        {
+          "name": {
+            "identifier": {
+              "termType": "BlankNode",
+              "value": "n3-240"
+            },
+            "shName": "orTermsProperty"
+          },
+          "path": "http://example.com/orTermsProperty",
+          "type": {
+            "itemType": {
+              "kind": "TermType"
             },
             "kind": "OptionType"
           }
