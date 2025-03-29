@@ -12487,7 +12487,7 @@ export namespace ExplicitRdfTypesNodeShape {
       return purify.Left(
         new rdfjsResource.Resource.ValueError({
           focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type (expected http://example.com/FromRdfType)`,
           predicate: dataFactory.namedNode("http://example.com/FromRdfType"),
         }),
       );
@@ -13688,7 +13688,7 @@ export namespace BaseInterfaceWithPropertiesNodeShape {
       return purify.Left(
         new rdfjsResource.Resource.ValueError({
           focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type (expected http://example.com/BaseInterfaceWithPropertiesNodeShape)`,
           predicate: dataFactory.namedNode(
             "http://example.com/BaseInterfaceWithPropertiesNodeShape",
           ),
@@ -13723,7 +13723,17 @@ export namespace BaseInterfaceWithPropertiesNodeShape {
     rdfjsResource.Resource.ValueError,
     BaseInterfaceWithPropertiesNodeShape
   > {
-    return BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf(parameters);
+    return BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf(
+      parameters,
+    ).altLazy(
+      () =>
+        BaseInterfaceWithoutPropertiesNodeShape.fromRdf(
+          parameters,
+        ) as purify.Either<
+          rdfjsResource.Resource.ValueError,
+          BaseInterfaceWithPropertiesNodeShape
+        >,
+    );
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -14136,7 +14146,7 @@ export namespace BaseInterfaceWithoutPropertiesNodeShape {
       return purify.Left(
         new rdfjsResource.Resource.ValueError({
           focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type (expected http://example.com/BaseInterfaceWithoutPropertiesNodeShape)`,
           predicate: dataFactory.namedNode(
             "http://example.com/BaseInterfaceWithoutPropertiesNodeShape",
           ),
@@ -14159,6 +14169,12 @@ export namespace BaseInterfaceWithoutPropertiesNodeShape {
   > {
     return BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf(
       parameters,
+    ).altLazy(
+      () =>
+        ConcreteParentInterfaceNodeShape.fromRdf(parameters) as purify.Either<
+          rdfjsResource.Resource.ValueError,
+          BaseInterfaceWithoutPropertiesNodeShape
+        >,
     );
   }
 
@@ -14553,7 +14569,7 @@ export namespace ConcreteParentInterfaceNodeShape {
       return purify.Left(
         new rdfjsResource.Resource.ValueError({
           focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type (expected http://example.com/ConcreteParentInterfaceNodeShape)`,
           predicate: dataFactory.namedNode(
             "http://example.com/ConcreteParentInterfaceNodeShape",
           ),
@@ -14594,7 +14610,15 @@ export namespace ConcreteParentInterfaceNodeShape {
     rdfjsResource.Resource.ValueError,
     ConcreteParentInterfaceNodeShape
   > {
-    return ConcreteParentInterfaceNodeShape._propertiesFromRdf(parameters);
+    return ConcreteParentInterfaceNodeShape._propertiesFromRdf(
+      parameters,
+    ).altLazy(
+      () =>
+        ConcreteChildInterfaceNodeShape.fromRdf(parameters) as purify.Either<
+          rdfjsResource.Resource.ValueError,
+          ConcreteParentInterfaceNodeShape
+        >,
+    );
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -15003,7 +15027,7 @@ export namespace ConcreteChildInterfaceNodeShape {
       return purify.Left(
         new rdfjsResource.Resource.ValueError({
           focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type (expected http://example.com/ConcreteChildInterfaceNodeShape)`,
           predicate: dataFactory.namedNode(
             "http://example.com/ConcreteChildInterfaceNodeShape",
           ),
@@ -15319,7 +15343,7 @@ export namespace ConcreteChildInterfaceNodeShape {
  *
  * Common pattern: put the minting strategy and nodeKind on an ABC.
  */
-abstract class AbstractBaseClassWithPropertiesNodeShape {
+export abstract class AbstractBaseClassWithPropertiesNodeShape {
   abstract readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   protected readonly _identifierPrefix?: string;
   abstract readonly type:
@@ -15449,7 +15473,7 @@ abstract class AbstractBaseClassWithPropertiesNodeShape {
   }
 }
 
-namespace AbstractBaseClassWithPropertiesNodeShape {
+export namespace AbstractBaseClassWithPropertiesNodeShape {
   export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
@@ -15501,6 +15525,22 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
 
     const abcStringProperty = _abcStringPropertyEither.unsafeCoerce();
     return purify.Either.of({ identifier, abcStringProperty });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof AbstractBaseClassWithPropertiesNodeShape._propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    AbstractBaseClassWithPropertiesNodeShape
+  > {
+    return AbstractBaseClassWithoutPropertiesNodeShape.fromRdf(
+      parameters,
+    ) as purify.Either<
+      rdfjsResource.Resource.ValueError,
+      AbstractBaseClassWithPropertiesNodeShape
+    >;
   }
 
   export function jsonSchema() {
@@ -15649,7 +15689,7 @@ namespace AbstractBaseClassWithPropertiesNodeShape {
 /**
  * Abstract base for other node shapes. Put the ABC with properties above the ABC without.
  */
-abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseClassWithPropertiesNodeShape {
+export abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseClassWithPropertiesNodeShape {
   abstract override readonly identifier: rdfjs.BlankNode | rdfjs.NamedNode;
   abstract override readonly type:
     | "ConcreteChildClassNodeShape"
@@ -15691,7 +15731,7 @@ abstract class AbstractBaseClassWithoutPropertiesNodeShape extends AbstractBaseC
   }
 }
 
-namespace AbstractBaseClassWithoutPropertiesNodeShape {
+export namespace AbstractBaseClassWithoutPropertiesNodeShape {
   export function _propertiesFromJson(
     _json: unknown,
   ): purify.Either<
@@ -15757,6 +15797,20 @@ namespace AbstractBaseClassWithoutPropertiesNodeShape {
     const _super0 = _super0Either.unsafeCoerce();
     const identifier = _resource.identifier;
     return purify.Either.of({ ..._super0, identifier });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof AbstractBaseClassWithoutPropertiesNodeShape._propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    AbstractBaseClassWithoutPropertiesNodeShape
+  > {
+    return ConcreteParentClassNodeShape.fromRdf(parameters) as purify.Either<
+      rdfjsResource.Resource.ValueError,
+      AbstractBaseClassWithoutPropertiesNodeShape
+    >;
   }
 
   export function jsonSchema() {
@@ -16094,7 +16148,7 @@ export namespace ConcreteParentClassNodeShape {
       return purify.Left(
         new rdfjsResource.Resource.ValueError({
           focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type (expected http://example.com/ConcreteParentClassNodeShape)`,
           predicate: dataFactory.namedNode(
             "http://example.com/ConcreteParentClassNodeShape",
           ),
@@ -16129,9 +16183,15 @@ export namespace ConcreteParentClassNodeShape {
     rdfjsResource.Resource.ValueError,
     ConcreteParentClassNodeShape
   > {
-    return ConcreteParentClassNodeShape._propertiesFromRdf(parameters).map(
-      (properties) => new ConcreteParentClassNodeShape(properties),
-    );
+    return ConcreteParentClassNodeShape._propertiesFromRdf(parameters)
+      .map((properties) => new ConcreteParentClassNodeShape(properties))
+      .altLazy(
+        () =>
+          ConcreteChildClassNodeShape.fromRdf(parameters) as purify.Either<
+            rdfjsResource.Resource.ValueError,
+            ConcreteParentClassNodeShape
+          >,
+      );
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(
@@ -16513,7 +16573,7 @@ export namespace ConcreteChildClassNodeShape {
       return purify.Left(
         new rdfjsResource.Resource.ValueError({
           focusResource: _resource,
-          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type`,
+          message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type (expected http://example.com/ConcreteChildClassNodeShape)`,
           predicate: dataFactory.namedNode(
             "http://example.com/ConcreteChildClassNodeShape",
           ),
@@ -17139,6 +17199,20 @@ export namespace AbstractBaseClassForExternObjectType {
 
     const abcStringProperty = _abcStringPropertyEither.unsafeCoerce();
     return purify.Either.of({ identifier, abcStringProperty });
+  }
+
+  export function fromRdf(
+    parameters: Parameters<
+      typeof AbstractBaseClassForExternObjectType._propertiesFromRdf
+    >[0],
+  ): purify.Either<
+    rdfjsResource.Resource.ValueError,
+    AbstractBaseClassForExternObjectType
+  > {
+    return ExternObjectType.fromRdf(parameters) as purify.Either<
+      rdfjsResource.Resource.ValueError,
+      AbstractBaseClassForExternObjectType
+    >;
   }
 
   export function jsonSchema() {

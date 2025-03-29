@@ -24,6 +24,37 @@ describe("fromRdf", () => {
     });
   }
 
+  it("abstract base class fromRdf", ({ expect }) => {
+    const fromRdfInstance =
+      kitchenSink.AbstractBaseClassWithPropertiesNodeShape.fromRdf({
+        resource: harnesses.concreteChildClassNodeShape.toRdf({
+          mutateGraph: dataFactory.defaultGraph(),
+          resourceSet: new MutableResourceSet({
+            dataFactory,
+            dataset: new N3.Store(),
+          }),
+        }) as any,
+      }).unsafeCoerce() as any;
+    expect(
+      harnesses.concreteChildClassNodeShape.equals(fromRdfInstance).extract(),
+    ).toStrictEqual(true);
+  });
+
+  it("concrete base class fromRdf", ({ expect }) => {
+    const fromRdfInstance = kitchenSink.ConcreteParentClassNodeShape.fromRdf({
+      resource: harnesses.concreteChildClassNodeShape.toRdf({
+        mutateGraph: dataFactory.defaultGraph(),
+        resourceSet: new MutableResourceSet({
+          dataFactory,
+          dataset: new N3.Store(),
+        }),
+      }) as any,
+    }).unsafeCoerce() as any;
+    expect(
+      harnesses.concreteChildClassNodeShape.equals(fromRdfInstance).extract(),
+    ).toStrictEqual(true);
+  });
+
   it("ensure hasValue (sh:hasValue)", ({ expect }) => {
     const dataset = new N3.Store();
     const identifier = dataFactory.blankNode();

@@ -26,7 +26,6 @@
 
 :AbstractBaseClassWithPropertiesNodeShape
     shaclmate:abstract true ;
-    shaclmate:export false ;
     shaclmate:identifierMintingStrategy shaclmate:_IdentifierMintingStrategy_SHA256 ;
     shaclmate:name "AbstractBaseClassWithPropertiesNodeShape" ;
     a owl:Class, sh:NodeShape ;
@@ -47,7 +46,6 @@ Common pattern: put the minting strategy and nodeKind on an ABC.
 
 :AbstractBaseClassWithoutPropertiesNodeShape
     shaclmate:abstract true ;
-    shaclmate:export false ;
     shaclmate:name "AbstractBaseClassWithoutPropertiesNodeShape" ;
     a owl:Class, sh:NodeShape ;
     rdfs:comment "Abstract base for other node shapes. Put the ABC with properties above the ABC without." ;
