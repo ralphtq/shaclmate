@@ -165,8 +165,11 @@ export class ShaclProperty extends Property<Type> {
   override fromRdfStatements({
     variables,
   }: Parameters<Property<Type>["fromRdfStatements"]>[0]): readonly string[] {
+    // Assume the property has the correct range and ignore the object's RDF type.
+    // This also accommodates the case where the object of a property is a dangling identifier that's not the
+    // subject of any statements.
     return [
-      `const _${this.name}Either: purify.Either<rdfjsResource.Resource.ValueError, ${this.type.name}> = ${this.type.fromRdfExpression({ variables: { ...variables, predicate: this.pathExpression, resourceValues: `${variables.resource}.values(${this.pathExpression}, { unique: true })` } })};`,
+      `const _${this.name}Either: purify.Either<rdfjsResource.Resource.ValueError, ${this.type.name}> = ${this.type.fromRdfExpression({ variables: { ...variables, ignoreRdfType: true, predicate: this.pathExpression, resourceValues: `${variables.resource}.values(${this.pathExpression}, { unique: true })` } })};`,
       `if (_${this.name}Either.isLeft()) { return _${this.name}Either; }`,
       `const ${this.name} = _${this.name}Either.unsafeCoerce();`,
     ];
