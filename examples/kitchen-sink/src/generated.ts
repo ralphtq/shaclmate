@@ -13723,16 +13723,15 @@ export namespace BaseInterfaceWithPropertiesNodeShape {
     rdfjsResource.Resource.ValueError,
     BaseInterfaceWithPropertiesNodeShape
   > {
-    return BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf(
-      parameters,
-    ).altLazy(
-      () =>
-        BaseInterfaceWithoutPropertiesNodeShape.fromRdf(
-          parameters,
-        ) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          BaseInterfaceWithPropertiesNodeShape
-        >,
+    return (
+      BaseInterfaceWithoutPropertiesNodeShape.fromRdf(
+        parameters,
+      ) as purify.Either<
+        rdfjsResource.Resource.ValueError,
+        BaseInterfaceWithPropertiesNodeShape
+      >
+    ).altLazy(() =>
+      BaseInterfaceWithPropertiesNodeShape._propertiesFromRdf(parameters),
     );
   }
 
@@ -14167,14 +14166,13 @@ export namespace BaseInterfaceWithoutPropertiesNodeShape {
     rdfjsResource.Resource.ValueError,
     BaseInterfaceWithoutPropertiesNodeShape
   > {
-    return BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf(
-      parameters,
-    ).altLazy(
-      () =>
-        ConcreteParentInterfaceNodeShape.fromRdf(parameters) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          BaseInterfaceWithoutPropertiesNodeShape
-        >,
+    return (
+      ConcreteParentInterfaceNodeShape.fromRdf(parameters) as purify.Either<
+        rdfjsResource.Resource.ValueError,
+        BaseInterfaceWithoutPropertiesNodeShape
+      >
+    ).altLazy(() =>
+      BaseInterfaceWithoutPropertiesNodeShape._propertiesFromRdf(parameters),
     );
   }
 
@@ -14610,14 +14608,13 @@ export namespace ConcreteParentInterfaceNodeShape {
     rdfjsResource.Resource.ValueError,
     ConcreteParentInterfaceNodeShape
   > {
-    return ConcreteParentInterfaceNodeShape._propertiesFromRdf(
-      parameters,
-    ).altLazy(
-      () =>
-        ConcreteChildInterfaceNodeShape.fromRdf(parameters) as purify.Either<
-          rdfjsResource.Resource.ValueError,
-          ConcreteParentInterfaceNodeShape
-        >,
+    return (
+      ConcreteChildInterfaceNodeShape.fromRdf(parameters) as purify.Either<
+        rdfjsResource.Resource.ValueError,
+        ConcreteParentInterfaceNodeShape
+      >
+    ).altLazy(() =>
+      ConcreteParentInterfaceNodeShape._propertiesFromRdf(parameters),
     );
   }
 
@@ -16183,15 +16180,16 @@ export namespace ConcreteParentClassNodeShape {
     rdfjsResource.Resource.ValueError,
     ConcreteParentClassNodeShape
   > {
-    return ConcreteParentClassNodeShape._propertiesFromRdf(parameters)
-      .map((properties) => new ConcreteParentClassNodeShape(properties))
-      .altLazy(
-        () =>
-          ConcreteChildClassNodeShape.fromRdf(parameters) as purify.Either<
-            rdfjsResource.Resource.ValueError,
-            ConcreteParentClassNodeShape
-          >,
-      );
+    return (
+      ConcreteChildClassNodeShape.fromRdf(parameters) as purify.Either<
+        rdfjsResource.Resource.ValueError,
+        ConcreteParentClassNodeShape
+      >
+    ).altLazy(() =>
+      ConcreteParentClassNodeShape._propertiesFromRdf(parameters).map(
+        (properties) => new ConcreteParentClassNodeShape(properties),
+      ),
+    );
   }
 
   export const fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode(

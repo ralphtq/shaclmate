@@ -100,16 +100,28 @@ export function fromRdfFunctionDeclarations(
       )};`;
     }
   } else {
+    let propertiesFromRdfStatement: string;
     switch (this.declarationType) {
       case "class":
-        fromRdfStatement = `${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties))`;
+        propertiesFromRdfStatement = `${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties))`;
         break;
       case "interface":
-        fromRdfStatement = `${this.name}._propertiesFromRdf(parameters)`;
+        propertiesFromRdfStatement = `${this.name}._propertiesFromRdf(parameters)`;
         break;
     }
+
     if (this.childObjectTypes.length > 0) {
-      fromRdfStatement = `${fromRdfStatement}${this.childObjectTypes.map((childObjectType) => `.altLazy(() => (${childObjectType.name}.fromRdf(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>))`).join("")}`;
+      fromRdfStatement = `${this.childObjectTypes.reduce(
+        (expression, childObjectType) => {
+          const childObjectTypeExpression = `(${childObjectType.name}.fromRdf(parameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
+          return expression.length > 0
+            ? `${expression}.altLazy(() => ${childObjectTypeExpression})`
+            : childObjectTypeExpression;
+        },
+        "",
+      )}.altLazy(() => ${propertiesFromRdfStatement})`;
+    } else {
+      fromRdfStatement = propertiesFromRdfStatement;
     }
     fromRdfStatement = `return ${fromRdfStatement};`;
   }
