@@ -68,6 +68,7 @@ export abstract class Type {
   abstract fromRdfExpression(parameters: {
     variables: {
       context: string;
+      ignoreRdfType?: boolean;
       languageIn: string;
       predicate: string;
       resource: string;

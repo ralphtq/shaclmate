@@ -193,12 +193,13 @@ ${this.memberTypeTraits
     });
   }
 
-  override fromRdfExpression(
-    parameters: Parameters<Type["fromRdfExpression"]>[0],
-  ): string {
+  override fromRdfExpression({
+    variables,
+  }: Parameters<Type["fromRdfExpression"]>[0]): string {
     return this.memberTypeTraits.reduce((expression, memberTypeTraits) => {
-      let typeExpression =
-        memberTypeTraits.memberType.fromRdfExpression(parameters);
+      let typeExpression = memberTypeTraits.memberType.fromRdfExpression({
+        variables: { ...variables, ignoreRdfType: false },
+      });
       if (this._discriminatorProperty.kind === "synthetic") {
         typeExpression = `${typeExpression}.map(value => ({ ${this._discriminatorProperty.name}: "${memberTypeTraits.discriminatorPropertyValues[0]}" as const, value }) as (${this.name}))`;
       }

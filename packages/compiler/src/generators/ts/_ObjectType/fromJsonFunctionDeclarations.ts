@@ -78,19 +78,53 @@ export function fromJsonFunctionDeclarations(
     statements: propertiesFromJsonFunctionStatements,
   });
 
-  if (!this.abstract) {
-    let fromJsonStatements: string[];
+  let fromJsonStatements: string[];
+  if (this.abstract) {
+    if (this.childObjectTypes.length > 0) {
+      // Similar to an object union type, alt-chain the fromJson of the different concrete subclasses together
+      fromJsonStatements = [
+        `return ${this.childObjectTypes.reduce(
+          (expression, childObjectType) => {
+            const childObjectTypeExpression = `(${childObjectType.name}.fromJson(json) as purify.Either<zod.ZodError, ${this.name}>)`;
+            return expression.length > 0
+              ? `${expression}.altLazy(() => ${childObjectTypeExpression})`
+              : childObjectTypeExpression;
+          },
+          "",
+        )};`,
+      ];
+    } else {
+      fromJsonStatements = [];
+    }
+  } else {
+    let propertiesFromJsonExpression: string;
     switch (this.declarationType) {
       case "class":
-        fromJsonStatements = [
-          `return ${this.name}._propertiesFromJson(json).map(properties => new ${this.name}(properties));`,
-        ];
+        propertiesFromJsonExpression = `${this.name}._propertiesFromJson(json).map(properties => new ${this.name}(properties))`;
         break;
       case "interface":
-        fromJsonStatements = [`return ${this.name}._propertiesFromJson(json);`];
+        propertiesFromJsonExpression = `${this.name}._propertiesFromJson(json)`;
         break;
     }
 
+    if (this.childObjectTypes.length > 0) {
+      fromJsonStatements = [
+        `return ${this.childObjectTypes.reduce(
+          (expression, childObjectType) => {
+            const childObjectTypeExpression = `(${childObjectType.name}.fromJson(json) as purify.Either<zod.ZodError, ${this.name}>)`;
+            return expression.length > 0
+              ? `${expression}.altLazy(() => ${childObjectTypeExpression})`
+              : childObjectTypeExpression;
+          },
+          "",
+        )}.altLazy(() => ${propertiesFromJsonExpression});`,
+      ];
+    } else {
+      fromJsonStatements = [`return ${propertiesFromJsonExpression};`];
+    }
+  }
+
+  if (fromJsonStatements.length > 0) {
     fromJsonFunctionDeclarations.push({
       isExported: true,
       kind: StructureKind.Function,
