@@ -39,7 +39,7 @@ export function fromRdfFunctionDeclarations(
 
   this.fromRdfType.ifJust((rdfType) => {
     propertiesFromRdfFunctionStatements.push(
-      `if (!${variables.ignoreRdfType} && !${variables.resource}.isInstanceOf(${this.rdfjsTermExpression(rdfType)})) { return purify.Left(new rdfjsResource.Resource.ValueError(${objectInitializer({ focusResource: variables.resource, message: `\`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} has unexpected RDF type\``, predicate: this.rdfjsTermExpression(rdfType) })})); }`,
+      `if (!${variables.ignoreRdfType} && !${variables.resource}.isInstanceOf(${this.rdfjsTermExpression(rdfType)})) { return purify.Left(new rdfjsResource.Resource.ValueError(${objectInitializer({ focusResource: variables.resource, message: `\`\${rdfjsResource.Resource.Identifier.toString(${variables.resource}.identifier)} has unexpected RDF type (expected ${rdfType.value})\``, predicate: this.rdfjsTermExpression(rdfType) })})); }`,
     );
   });
 
@@ -85,21 +85,61 @@ export function fromRdfFunctionDeclarations(
     statements: propertiesFromRdfFunctionStatements,
   });
 
-  if (!this.abstract) {
-    let fromRdfStatements: string[];
+  const fromRdfStatements: string[] = [];
+  let fromRdfReturnStatement: string | undefined;
+  if (this.abstract) {
+    if (this.childObjectTypes.length > 0) {
+      // Can't ignore the RDF type if we're doing a union.
+      fromRdfStatements.push(
+        "const { ignoreRdfType: _ignoreRdfType, ...otherParameters } = parameters",
+      );
+      // Similar to an object union type, alt-chain the fromRdf of the different concrete subclasses together
+      fromRdfReturnStatement = `return ${this.childObjectTypes.reduce(
+        (expression, childObjectType) => {
+          const childObjectTypeExpression = `(${childObjectType.name}.fromRdf(otherParameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
+          return expression.length > 0
+            ? `${expression}.altLazy(() => ${childObjectTypeExpression})`
+            : childObjectTypeExpression;
+        },
+        "",
+      )};`;
+    }
+  } else {
+    let propertiesFromRdfExpression: string;
     switch (this.declarationType) {
       case "class":
-        fromRdfStatements = [
-          `return ${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties));`,
-        ];
+        propertiesFromRdfExpression = `${this.name}._propertiesFromRdf(parameters).map(properties => new ${this.name}(properties))`;
         break;
       case "interface":
-        fromRdfStatements = [
-          `return ${this.name}._propertiesFromRdf(parameters);`,
-        ];
+        propertiesFromRdfExpression = `${this.name}._propertiesFromRdf(parameters)`;
         break;
     }
 
+    if (this.childObjectTypes.length > 0) {
+      // Can't ignore the RDF type if we're trying the child object type.
+      fromRdfStatements.push(
+        "const { ignoreRdfType: _ignoreRdfType, ...otherParameters } = parameters",
+      );
+      fromRdfReturnStatement = `${this.childObjectTypes.reduce(
+        (expression, childObjectType) => {
+          const childObjectTypeExpression = `(${childObjectType.name}.fromRdf(otherParameters) as purify.Either<rdfjsResource.Resource.ValueError, ${this.name}>)`;
+          return expression.length > 0
+            ? `${expression}.altLazy(() => ${childObjectTypeExpression})`
+            : childObjectTypeExpression;
+        },
+        "",
+      )}.altLazy(() => ${propertiesFromRdfExpression})`;
+    } else {
+      fromRdfReturnStatement = propertiesFromRdfExpression;
+    }
+    fromRdfReturnStatement = `return ${fromRdfReturnStatement};`;
+  }
+
+  if (fromRdfReturnStatement) {
+    fromRdfStatements.push(fromRdfReturnStatement);
+  }
+
+  if (fromRdfStatements.length > 0) {
     fromRdfFunctionDeclarations.push({
       isExported: true,
       kind: StructureKind.Function,

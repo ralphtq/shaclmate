@@ -285,6 +285,10 @@ export class TypeFactory {
         astType.ancestorObjectTypes.map((astType) =>
           this.createObjectTypeFromAstType(astType),
         ),
+      lazyChildObjectTypes: () =>
+        astType.childObjectTypes.map((astType) =>
+          this.createObjectTypeFromAstType(astType),
+        ),
       lazyDescendantObjectTypes: () =>
         astType.descendantObjectTypes.map((astType) =>
           this.createObjectTypeFromAstType(astType),

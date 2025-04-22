@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@shaclmate/shacl-ast": "2.0.18",
+    "@shaclmate/shacl-ast": "2.0.22",
     "@rdfjs/prefix-map": "^0.1.2",
     "@rdfjs/term-map": "^2.0.2",
     "@rdfjs/term-set": "^2.0.3",
@@ -20,7 +20,7 @@
     "typescript-memoize": "^1.1.1"
   },
   "devDependencies": {
-    "@shaclmate/runtime": "2.0.18",
+    "@shaclmate/runtime": "2.0.22",
     "oxigraph": "^0.4.0"
   },
   "exports": {
@@ -77,5 +77,5 @@
     "watch:noEmit": "tsc --noEmit -w --preserveWatchOutput"
   },
   "type": "module",
-  "version": "2.0.18"
+  "version": "2.0.22"
 }
