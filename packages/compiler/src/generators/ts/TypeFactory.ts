@@ -168,7 +168,7 @@ export class TypeFactory {
             }
           }
 
-          if (datatype.equals(xsd.anyURI) || datatype.equals(xsd.string)) {
+          if (datatype.equals(xsd.anyURI) || datatype.equals(xsd.string) || datatype.equals(rdf.HTML)) {
             return new StringType({
               dataFactoryVariable: this.dataFactoryVariable,
               defaultValue: astType.defaultValue,
@@ -185,7 +185,7 @@ export class TypeFactory {
           if (datatype.equals(rdf.langString)) {
             // Drop down
           } else {
-            logger.warn("unrecognized literal datatype: %s", datatype.value);
+            logger.warn("unrecognized literal datatype encountered: %s", datatype.value);
           }
         } else if (datatypes.size > 0) {
           logger.warn(
