@@ -1,7 +1,7 @@
 import TermMap from "@rdfjs/term-map";
 import TermSet from "@rdfjs/term-set";
 import type { BlankNode, NamedNode } from "@rdfjs/types";
-import { rdf, xsd } from "@tpluscode/rdf-ns-builders";
+import { qudt, rdf, xsd } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { fromRdf } from "rdf-literal";
 import type * as ast from "../../ast/index.js";
@@ -168,7 +168,11 @@ export class TypeFactory {
             }
           }
 
-          if (datatype.equals(xsd.anyURI) || datatype.equals(xsd.string) || datatype.equals(rdf.HTML)) {
+          if (datatype.equals(xsd.anyURI) 
+            || datatype.equals(xsd.string)
+            || datatype.equals(rdf.HTML)
+            || datatype.equals(qudt.LatexString)
+            || datatype.equals(qudt.UCUMcs)) {
             return new StringType({
               dataFactoryVariable: this.dataFactoryVariable,
               defaultValue: astType.defaultValue,
@@ -185,7 +189,7 @@ export class TypeFactory {
           if (datatype.equals(rdf.langString)) {
             // Drop down
           } else {
-            logger.warn("unrecognized literal datatype encountered: %s", datatype.value);
+            logger.warn("unrecognized literal datatype: %s", datatype.value);
           }
         } else if (datatypes.size > 0) {
           logger.warn(
