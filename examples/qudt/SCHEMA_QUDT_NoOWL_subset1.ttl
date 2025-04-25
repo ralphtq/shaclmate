@@ -2776,6 +2776,8 @@ qudt:SystemOfUnits-prefix
 qudt:Unit-altSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
+  sh:datatype xsd:string ;
+  sh:minCount 0 ;
   sh:path qudt:altSymbol .
 
 qudt:Unit-applicableSystem
