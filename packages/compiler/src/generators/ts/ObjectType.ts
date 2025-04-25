@@ -1,5 +1,6 @@
 import type { NamedNode } from "@rdfjs/types";
 import { camelCase } from "change-case";
+import { logger } from "../../logger.js";
 import { Maybe } from "purify-ts";
 import { invariant } from "ts-invariant";
 import {
@@ -89,6 +90,11 @@ export class ObjectType extends DeclaredType {
     this.lazyProperties = lazyProperties;
     this.identifierMintingStrategy = identifierMintingStrategy;
     this.toRdfTypes = toRdfTypes;
+    logger.warn(
+      "ObjectType: %s, from %s",
+      JSON.stringify(this.label),
+      JSON.stringify(this.fromRdfType)
+    );
   }
 
   @Memoize()

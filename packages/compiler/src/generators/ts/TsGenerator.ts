@@ -4,6 +4,7 @@ import {
   type SourceFile,
 } from "ts-morph";
 import * as ast from "../../ast/index.js";
+import { logger } from "../../logger.js";
 import type { Generator } from "../Generator.js";
 import type { Import } from "./Import.js";
 import { ObjectType } from "./ObjectType.js";
@@ -91,6 +92,11 @@ export class TsGenerator implements Generator {
       for (const snippetDeclaration of declaredType.snippetDeclarations(
         declaredType.features,
       )) {
+        logger.warn(
+          "Snippet: %s of kind %s",
+          JSON.stringify(declaredType.name),
+          JSON.stringify(declaredType.kind)
+        );
         if (!addedSnippetDeclarations.has(snippetDeclaration)) {
           sourceFile.addStatements([snippetDeclaration]);
           addedSnippetDeclarations.add(snippetDeclaration);

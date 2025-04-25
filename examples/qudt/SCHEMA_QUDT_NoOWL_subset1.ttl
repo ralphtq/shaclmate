@@ -548,7 +548,7 @@ qudt:QuantityKindDimensionVector
 
   For example, the dimension of the physical quantity kind $\\it{speed}$ is $\\boxed{length/time}$, $L/T$ or $LT^{-1}$,
    and the dimension of the physical quantity kind force is $\\boxed{mass \\times acceleration}$ or $\\boxed{mass \\times (length/time)/time}$, $ML/T^2$ or $MLT^{-2}$ respectively.
- """^^qudt:LatexString ;
+ """^^xsd:string ;
   qudt:informativeReference "http://en.wikipedia.org/wiki/Dimensional_analysis"^^xsd:anyURI ;
   qudt:informativeReference "http://web.mit.edu/2.25/www/pdf/DA_unified.pdf"^^xsd:anyURI ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
@@ -624,7 +624,7 @@ qudt:QuantityType
   dcterms:description """
   A $\\textit{Quantity Type}$ is an enumeration of quantity kinds. 
   It specializes $\\boxed{dtype:EnumeratedValue}$ by constrinaing $\\boxed{dtype:value}$ to instances of $\\boxed{qudt:QuantityKind}$.
-  """^^qudt:LatexString ;
+  """^^xsd:string ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Quantity type" ;
   rdfs:subClassOf qudt:EnumeratedValue ;
@@ -815,7 +815,7 @@ qudt:Unit
   For example, the meter is a quantity of length that has been rigorously defined and standardized by the BIPM (International Board of Weights and Measures). 
   Any measurement of the length can be expressed as a number multiplied by the unit meter. 
   More formally, the value of a physical quantity Q with respect to a unit (U) is expressed as the scalar multiple of a real number (n) and U, as  $Q = nU$.
-  """^^qudt:LatexString ;
+  """^^xsd:string ;
   qudt:informativeReference "http://dbpedia.org/resource/Category:Units_of_measure"^^xsd:anyURI ;
   qudt:informativeReference "http://www.allmeasures.com/Fullconversion.asp"^^xsd:anyURI ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
@@ -927,7 +927,7 @@ qudt:acronym
 
 qudt:altSymbol
   a rdf:Property ;
-  dcterms:description "An alternative symbol"^^qudt:LatexString ;
+  dcterms:description "An alternative symbol"^^xsd:string ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "alt symbol" ;
   rdfs:subPropertyOf dtype:literal .
@@ -1028,7 +1028,7 @@ qudt:coherentUnitSystem
   In the old c.g.s. system , with its base units the centimetre and the gram, the corresponding coherent units were the dyne and the erg,
    respectively the force that causes 1 gram to be accelerated at 1 centimetre per (1) second per (1) second, and the work done by 1 dyne acting over 1 centimetre. 
   So $1\\,newton = 10^5 dyne$, $1 joule = 10^7 erg$, making each of the four compatible in a decimal sense within its respective other system, but not coherent therein.</p>
-  """^^qudt:LatexString ;
+  """^^xsd:string ;
   qudt:informativeReference "https://en.wikipedia.org/wiki/Coherence_(units_of_measurement)"^^xsd:anyURI ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "coherent unit system" ;
@@ -1513,7 +1513,7 @@ qudt:latexSymbol
   The symbol is a glyph that is used to represent some concept, typically a unit or a quantity, in a compact form. 
   For example, the symbol for an Ohm is $ohm$. 
   This contrasts with 'unit:abbreviation', which gives a short alphanumeric abbreviation for the unit, 'ohm' for Ohm.
-  """^^qudt:LatexString ;
+  """^^xsd:string ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "latex symbol" .
 
@@ -1689,7 +1689,7 @@ qudt:standardUncertaintySN
 
 qudt:symbol
   a rdf:Property ;
-  dcterms:description "The symbol is a glyph that is used to represent some concept, typically a unit or a quantity, in a compact form. For example, the symbol for an Ohm is $ohm$. This contrasts with 'unit:abbreviation', which gives a short alphanumeric abbreviation for the unit, 'ohm' for Ohm."^^qudt:LatexString ;
+  dcterms:description "The symbol is a glyph that is used to represent some concept, typically a unit or a quantity, in a compact form. For example, the symbol for an Ohm is $ohm$. This contrasts with 'unit:abbreviation', which gives a short alphanumeric abbreviation for the unit, 'ohm' for Ohm."^^xsd:string ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "symbol" ;
   rdfs:subPropertyOf dtype:literal .
@@ -1794,7 +1794,7 @@ qudt:AbstractQuantityKind-broader
 qudt:AbstractQuantityKind-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -1806,7 +1806,7 @@ qudt:AbstractQuantityKind-symbol
   sh:path qudt:symbol .
 
 qudt:Aspect
-  a qudt:AspectClass, sh:NodeShape ;
+  a rdfs:AspectClass, sh:NodeShape ;
   dcterms:description "An aspect is an abstract type class that defines properties that can be reused."^^rdf:HTML ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "QUDT Aspect" ;
@@ -1951,6 +1951,7 @@ qudt:DataItem-value
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   sh:maxCount 1 ;
+  sh:datatype xsd:string ;
 #  sh:node qudt:NumericListShape ;
   sh:path qudt:value .
 
@@ -2087,12 +2088,12 @@ qudt:InformativeReferencePropertyShape
   ] ) ;
   sh:path qudt:informativeReference .
 
-qudt:LatexString
-  a rdfs:Datatype, sh:NodeShape ;
-  dcterms:description "A type of string in which some characters may be wrapped with '$' and '$ characters for LaTeX rendering." ;
-  rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  rdfs:label "Latex String" ;
-  rdfs:subClassOf xsd:string .
+# qudt:LatexString
+#   a rdfs:Datatype, sh:NodeShape ;
+#   dcterms:description "A type of string in which some characters may be wrapped with '$' and '$ characters for LaTeX rendering." ;
+#   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
+#   rdfs:label "Latex String" ;
+#   rdfs:subClassOf xsd:string .
 
 qudt:NumericTypeUnion
   a rdf:List ;
@@ -2195,14 +2196,14 @@ qudt:PhysicalConstant-isoNormativeReference
 qudt:PhysicalConstant-latexDefinition
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:maxCount 1 ;
   sh:path qudt:latexDefinition .
 
 qudt:PhysicalConstant-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -2234,7 +2235,8 @@ qudt:PhysicalConstant-symbol
 qudt:PhysicalConstant-ucumCode
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:UCUMcs ;
+  # sh:datatype qudt:UCUMcs ;
+  sh:datatype xsd:string ;
   sh:path qudt:ucumCode .
 
 qudt:Prefix-altSymbol
@@ -2245,7 +2247,7 @@ qudt:Prefix-altSymbol
 qudt:Prefix-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -2326,19 +2328,20 @@ qudt:Quantifiable-value
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   sh:maxCount 1 ;
-  sh:node ( [
-    sh:or qudt:NumericTypeUnion ;
-  ] [
-    sh:property [
-      sh:class qudt:DataItem ;
-      sh:path qudt:value ;
-    ] ;
-  ] [
-    sh:property [
-      sh:class qudt:EnumeratedValue ;
-      sh:path qudt:value ;
-    ] ;
-  ] ) ;
+  sh:datatype xsd:string ;
+  # sh:node ( [
+  #   sh:or qudt:NumericTypeUnion ;
+  # ] [
+  #   sh:property [
+  #     sh:class qudt:DataItem ;
+  #     sh:path qudt:value ;
+  #   ] ;
+  # ] [
+  #   sh:property [
+  #     sh:class qudt:EnumeratedValue ;
+  #     sh:path qudt:value ;
+  #   ] ;
+  # ] ) ;
   sh:path qudt:value .
 
 qudt:Quantifiable-valueSN
@@ -2475,7 +2478,7 @@ qudt:QuantityKind-iec61360Code
 qudt:QuantityKind-latexDefinition
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:maxCount 1 ;
   sh:path qudt:latexDefinition .
 
@@ -2572,14 +2575,14 @@ qudt:QuantityKindDimensionVector-hasReferenceQuantityKind
 qudt:QuantityKindDimensionVector-latexDefinition
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:maxCount 1 ;
   sh:path qudt:latexDefinition .
 
 qudt:QuantityKindDimensionVector-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -2619,11 +2622,12 @@ qudt:ScalarDataItem-value
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qydt> ;
   sh:maxCount 1 ;
-  sh:or ( [
-    sh:class qudt:QuantityValue ;
-  ] [
-    sh:or qudt:NumericTypeUnion ;
-  ] ) ;
+  sh:datatype xsd:string ;
+  # sh:or ( [
+  #   sh:class qudt:QuantityValue ;
+  # ] [
+  #   sh:or qudt:NumericTypeUnion ;
+  # ] ) ;
   sh:path qudt:value .
 
 qudt:Scale-dataStructure
@@ -2760,14 +2764,14 @@ qudt:SystemOfUnits-prefix
   sh:class qudt:Prefix ;
   sh:path qudt:prefix .
 
-qudt:UCUMcs
-  a rdfs:Datatype, sh:NodeShape ;
-  dcterms:description "Lexical pattern for the case-sensitive version of UCUM code" ;
-  dcterms:source <https://ucum.org/ucum.html> ;
-  rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  rdfs:label "case-sensitive UCUM code" ;
-  rdfs:seeAlso <https://ucum.org/ucum.html> ;
-  rdfs:subClassOf xsd:string .
+# qudt:UCUMcs
+#   a rdfs:Datatype, sh:NodeShape ;
+#   dcterms:description "Lexical pattern for the case-sensitive version of UCUM code" ;
+#   dcterms:source <https://ucum.org/ucum.html> ;
+#   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
+#   rdfs:label "case-sensitive UCUM code" ;
+#   rdfs:seeAlso <https://ucum.org/ucum.html> ;
+#   rdfs:subClassOf xsd:string .
 
 qudt:Unit-altSymbol
   a sh:PropertyShape ;
@@ -2850,7 +2854,7 @@ qudt:Unit-hasDimensionVector
 qudt:Unit-hasFactorUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:nodeKind sh:BlankNodeOrIRI ;
+  # sh:nodeKind sh:BlankNodeOrIRI ;
   sh:path qudt:hasFactorUnit .
 
 qudt:Unit-hasQuantityKind
@@ -2870,14 +2874,14 @@ qudt:Unit-iec61360Code
 qudt:Unit-latexDefinition
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:minCount 0 ;
   sh:path qudt:latexDefinition .
 
 qudt:Unit-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:LatexString ;
+  sh:datatype xsd:string ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -2919,7 +2923,7 @@ qudt:Unit-scalingOf
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   sh:class qudt:Unit ;
   sh:maxCount 1 ;
-  sh:nodeKind sh:BlankNodeOrIRI ;
+  # sh:nodeKind sh:BlankNodeOrIRI ;
   sh:path qudt:scalingOf .
 
 qudt:Unit-siExactMatch
@@ -2945,7 +2949,8 @@ qudt:Unit-symbol
 qudt:Unit-ucumCode
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype qudt:UCUMcs ;
+  # sh:datatype qudt:UCUMcs ;
+  sh:datatype xsd:string ;
   sh:path qudt:ucumCode ;
   sh:pattern "[\\x21-\\x7e]+" .
 

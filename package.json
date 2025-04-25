@@ -24,7 +24,7 @@
     "check:write": "biome check --write",
     "check:write:unsafe": "biome check --write --unsafe",
     "clean": "npm run clean --workspaces",
-    "dev": "node packages/cli/dist/cli.js generate",
+    "dev": "node --stack-size=4000 --stack-trace-limit=100 packages/cli/dist/cli.js generate",
     "generate-package-files": "tsx generate-package-files.ts",
     "link": "npm link --workspaces",
     "link-dependencies": "npm run link-dependencies --workspaces",
