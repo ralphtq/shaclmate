@@ -7,6 +7,7 @@
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix shaclmate: <http://purl.org/shaclmate/ontology#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix vaem: <http://www.linkedmodel.org/schema/vaem#> .
 @prefix voag: <http://voag.linkedmodel.org/schema/voag#> .
@@ -866,6 +867,48 @@ qudt:UserQuantityKind
   rdfs:label "User Quantity Kind" ;
   rdfs:subClassOf qudt:AbstractQuantityKind ;
   sh:property qudt:UserQuantityKind-hasQuantityKind .
+
+qudt:ObjectListShape
+    shaclmate:name "ObjectListShape" ;
+    a owl:Class, sh:NodeShape ;
+    rdfs:comment "A node shape that models an RDF list. Should be transformed into a list data structure when used as a property instead of surfacing the RDF list structure in code." ;
+    rdfs:subClassOf rdf:List ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh:property qudt:ObjectListShape-first, qudt:ObjectListShape-rest .
+
+qudt:ObjectListShape-first
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "first" ;
+    sh:node qudt:NonClassNodeShape ;
+    sh:path rdf:first .
+
+qudt:ObjectListShape-rest
+    a sh:PropertyShape ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "rest" ;
+    sh:path rdf:rest ;
+    sh:xone ([
+            sh:class qudt:ObjectListShape
+        ]
+        [
+            sh:hasValue ( )
+        ]
+    ) .
+
+qudt:NonClassNodeShape
+    shaclmate:name "NonClassNodeShape" ;
+    a sh:NodeShape ;
+    rdfs:comment "Node shape that isn't an rdfs:Class." ;
+    sh:property [
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:minCount 1 ;
+        sh:name "stringProperty" ;
+        sh:path qudt:stringProperty
+    ] .
 
 dcterms:abstract
   a rdf:Property ;
