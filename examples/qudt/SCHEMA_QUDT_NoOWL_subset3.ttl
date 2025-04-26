@@ -24,15 +24,22 @@
   rdfs:label "QUDT SHACL Schema Version $$QUDT_VERSION$$" ;
   vaem:hasGraphMetadata vaem:GMD_SHACLQUDT-SCHEMA .
 
-qudt:AbstractQuantityKind
+# qudt:AbstractQuantityKind
+#   a rdfs:Class, sh:NodeShape ;
+#   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
+#   rdfs:label "Quantity Kind (abstract)" ;
+#   rdfs:subClassOf qudt:Concept ;
+#   sh:property qudt:AbstractQuantityKind-altSymbol ;
+#   sh:property qudt:AbstractQuantityKind-broader ;
+#   sh:property qudt:AbstractQuantityKind-latexSymbol ;
+#   sh:property qudt:AbstractQuantityKind-symbol .
+
+qudt:AbstractUnit
   a rdfs:Class, sh:NodeShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  rdfs:label "Quantity Kind (abstract)" ;
-  rdfs:subClassOf qudt:Concept ;
-  sh:property qudt:AbstractQuantityKind-altSymbol ;
-  sh:property qudt:AbstractQuantityKind-broader ;
-  sh:property qudt:AbstractQuantityKind-latexSymbol ;
-  sh:property qudt:AbstractQuantityKind-symbol .
+  rdfs:label "Abstract Unit" ;
+  rdfs:subClassOf qudt:Concept .
+  # rdfs:subClassOf qudt:Verifiable .
 
 qudt:AngleUnit
   a rdfs:Class, sh:NodeShape ;
@@ -447,7 +454,7 @@ qudt:Prefix
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Prefix" ;
   rdfs:subClassOf qudt:Concept ;
-  rdfs:subClassOf qudt:Verifiable ;
+  # rdfs:subClassOf qudt:Verifiable ;
   sh:property qudt:Prefix-altSymbol ;
   sh:property qudt:Prefix-latexSymbol ;
   sh:property qudt:Prefix-prefixMultiplier ;
@@ -456,49 +463,49 @@ qudt:Prefix
   sh:property qudt:Prefix-symbol ;
   sh:property qudt:Prefix-ucumCode .
 
-qudt:Quantifiable
-  a rdfs:Class, sh:NodeShape ;
-  dcterms:description """
-  <p><em>Quantifiable</em> is an aspect class that affords to an entity properties for being measurable,
-   observable, or countable.
-  </p>"""^^rdf:HTML ;
-  rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  rdfs:label "Quantifiable" ;
-  rdfs:subClassOf qudt:Aspect ;
-  sh:property qudt:Quantifiable-datatype ;
-  sh:property qudt:Quantifiable-hasUnit ;
-  sh:property qudt:Quantifiable-relativeStandardUncertainty ;
-  sh:property qudt:Quantifiable-standardUncertainty ;
-  sh:property qudt:Quantifiable-standardUncertaintySN ;
-  sh:property qudt:Quantifiable-value ;
-  sh:property qudt:Quantifiable-valueSN .
+# qudt:Quantifiable
+#   a rdfs:Class, sh:NodeShape ;
+#   dcterms:description """
+#   <p><em>Quantifiable</em> is an aspect class that affords to an entity properties for being measurable,
+#    observable, or countable.
+#   </p>"""^^rdf:HTML ;
+#   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
+#   rdfs:label "Quantifiable" ;
+#   rdfs:subClassOf qudt:Aspect ;
+#   sh:property qudt:Quantifiable-datatype ;
+#   sh:property qudt:Quantifiable-hasUnit ;
+#   sh:property qudt:Quantifiable-relativeStandardUncertainty ;
+#   sh:property qudt:Quantifiable-standardUncertainty ;
+#   sh:property qudt:Quantifiable-standardUncertaintySN ;
+#   sh:property qudt:Quantifiable-value ;
+#   sh:property qudt:Quantifiable-valueSN .
 
-qudt:Quantity
-  a rdfs:Class, sh:NodeShape ;
-  dcterms:description """
-  <p>A <b>Quantity</b> is the measurement of an observable property of a particular object, event, or physical system. 
-  A quantity is always associated with the context of measurement (i.e. the thing measured, the measured value, the accuracy of measurement, etc.) whereas the 
-  underlying <b>quantity kind</b> is independent of any particular measurement. Thus, length is a quantity kind while the height of a rocket is a specific 
-  quantity of length; its magnitude that may be expressed in meters, feet, inches, etc. Examples of physical quantities include physical constants, such as 
-  the speed of light in a vacuum, Planck's constant, the electric permittivity of free space, and the fine structure constant. </p>
-<p>In other words, quantities are quantifiable aspects of the world, such as the duration of a movie, the distance between two points, 
-velocity of a car, the pressure of the atmosphere, and a person's weight; and units are used to describe their numerical measure.</p> 
-<p>Many <b>quantity kinds</b> are related to each other by various physical laws, and as a result, the associated units of some quantity 
-kinds can be expressed as products (or ratios) of powers of other quantity kinds (e.g., momentum is mass times velocity and velocity is defined as distance 
-divided by time). In this way, some quantities can be calculated from other measured quantities using their associations to the quantity kinds in these 
-expressions. These quantity kind relationships are also discussed in dimensional analysis. Those that cannot be so expressed can be regarded 
-as "fundamental" in this sense.</p>
-<p>A quantity is distinguished from a "quantity kind" in that the former carries a value and the latter is a type specifier.
-</p>"""^^rdf:HTML ;
-  qudt:dbpediaMatch "http://dbpedia.org/resource/Quantity"^^xsd:anyURI ;
-  rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  rdfs:label "Quantity" ;
-  rdfs:subClassOf qudt:Concept ;
-  rdfs:subClassOf qudt:Quantifiable ;
-  rdfs:subClassOf qudt:Verifiable ;
-  sh:property qudt:Quantity-hasQuantityKind ;
-  sh:property qudt:Quantity-isDeltaQuantity ;
-  sh:property qudt:Quantity-quantityValue .
+# qudt:Quantity
+#   a rdfs:Class, sh:NodeShape ;
+#   dcterms:description """
+#   <p>A <b>Quantity</b> is the measurement of an observable property of a particular object, event, or physical system. 
+#   A quantity is always associated with the context of measurement (i.e. the thing measured, the measured value, the accuracy of measurement, etc.) whereas the 
+#   underlying <b>quantity kind</b> is independent of any particular measurement. Thus, length is a quantity kind while the height of a rocket is a specific 
+#   quantity of length; its magnitude that may be expressed in meters, feet, inches, etc. Examples of physical quantities include physical constants, such as 
+#   the speed of light in a vacuum, Planck's constant, the electric permittivity of free space, and the fine structure constant. </p>
+# <p>In other words, quantities are quantifiable aspects of the world, such as the duration of a movie, the distance between two points, 
+# velocity of a car, the pressure of the atmosphere, and a person's weight; and units are used to describe their numerical measure.</p> 
+# <p>Many <b>quantity kinds</b> are related to each other by various physical laws, and as a result, the associated units of some quantity 
+# kinds can be expressed as products (or ratios) of powers of other quantity kinds (e.g., momentum is mass times velocity and velocity is defined as distance 
+# divided by time). In this way, some quantities can be calculated from other measured quantities using their associations to the quantity kinds in these 
+# expressions. These quantity kind relationships are also discussed in dimensional analysis. Those that cannot be so expressed can be regarded 
+# as "fundamental" in this sense.</p>
+# <p>A quantity is distinguished from a "quantity kind" in that the former carries a value and the latter is a type specifier.
+# </p>"""^^rdf:HTML ;
+#   qudt:dbpediaMatch "http://dbpedia.org/resource/Quantity"^^xsd:anyURI ;
+#   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
+#   rdfs:label "Quantity" ;
+#   # rdfs:subClassOf qudt:Concept ;
+#   rdfs:subClassOf qudt:Quantifiable ;
+#   # rdfs:subClassOf qudt:Verifiable ;
+#   sh:property qudt:Quantity-hasQuantityKind ;
+#   sh:property qudt:Quantity-isDeltaQuantity ;
+#   sh:property qudt:Quantity-quantityValue .
 
 qudt:QuantityKind
   a rdfs:Class, sh:NodeShape ;
@@ -511,7 +518,7 @@ qudt:QuantityKind
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Quantity Kind" ;
   rdfs:subClassOf qudt:AbstractQuantityKind ;
-  rdfs:subClassOf qudt:Verifiable ;
+  # rdfs:subClassOf qudt:Verifiable ;
   sh:property qudt:QuantityKind-applicableCGSUnit ;
   sh:property qudt:QuantityKind-applicableISOUnit ;
   sh:property qudt:QuantityKind-applicableImperialUnit ;
@@ -526,12 +533,12 @@ qudt:QuantityKind
   sh:property qudt:QuantityKind-belongsToSystemOfQuantities ;
   sh:property qudt:QuantityKind-dimensionVectorForSI ;
   sh:property qudt:QuantityKind-expression ;
-  sh:property qudt:QuantityKind-hasDimensionVector ;
+  # sh:property qudt:QuantityKind-hasDimensionVector ;
   sh:property qudt:QuantityKind-iec61360Code ;
   sh:property qudt:QuantityKind-latexDefinition ;
   sh:property qudt:QuantityKind-mathMLdefinition ;
-  sh:property qudt:QuantityKind-qkdvDenominator ;
-  sh:property qudt:QuantityKind-qkdvNumerator ;
+  # sh:property qudt:QuantityKind-qkdvDenominator ;
+  # sh:property qudt:QuantityKind-qkdvNumerator ;
   sh:property qudt:QuantityKind-siExactMatch .
 
 qudt:QuantityKindDimensionVector
@@ -548,7 +555,7 @@ qudt:QuantityKindDimensionVector
 
   For example, the dimension of the physical quantity kind $\\it{speed}$ is $\\boxed{length/time}$, $L/T$ or $LT^{-1}$,
    and the dimension of the physical quantity kind force is $\\boxed{mass \\times acceleration}$ or $\\boxed{mass \\times (length/time)/time}$, $ML/T^2$ or $MLT^{-2}$ respectively.
- """^^xsd:string ;
+ """^^qudt:LatexString ;
   qudt:informativeReference "http://en.wikipedia.org/wiki/Dimensional_analysis"^^xsd:anyURI ;
   qudt:informativeReference "http://web.mit.edu/2.25/www/pdf/DA_unified.pdf"^^xsd:anyURI ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
@@ -624,7 +631,7 @@ qudt:QuantityType
   dcterms:description """
   A $\\textit{Quantity Type}$ is an enumeration of quantity kinds. 
   It specializes $\\boxed{dtype:EnumeratedValue}$ by constrinaing $\\boxed{dtype:value}$ to instances of $\\boxed{qudt:QuantityKind}$.
-  """^^xsd:string ;
+  """^^qudt:LatexString ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Quantity type" ;
   rdfs:subClassOf qudt:EnumeratedValue ;
@@ -637,9 +644,9 @@ qudt:QuantityValue
   </p>"""^^rdf:HTML ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Quantity value" ;
-  rdfs:subClassOf qudt:Concept ;
-  rdfs:subClassOf qudt:Quantifiable ;
-  rdfs:subClassOf qudt:Verifiable .
+  # rdfs:subClassOf qudt:Concept ;
+  rdfs:subClassOf qudt:Quantifiable .
+  # rdfs:subClassOf qudt:Verifiable .
 
 qudt:RatioScale
   a rdfs:Class, sh:NodeShape ;
@@ -665,7 +672,7 @@ qudt:Rule
   a rdfs:Class, sh:NodeShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Rule" ;
-  rdfs:subClassOf qudt:Concept ;
+  # rdfs:subClassOf qudt:Concept ;
   rdfs:subClassOf qudt:Verifiable ;
   sh:property qudt:Rule-example ;
   sh:property qudt:Rule-rationale ;
@@ -706,7 +713,7 @@ qudt:Scale
   </p>"""^^rdf:HTML ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Scale" ;
-  rdfs:subClassOf qudt:Concept ;
+  # rdfs:subClassOf qudt:Concept ;
   rdfs:subClassOf qudt:Verifiable ;
   sh:property qudt:Scale-dataStructure ;
   sh:property qudt:Scale-permissibleMaths ;
@@ -770,13 +777,14 @@ qudt:SystemOfQuantityKinds
   </p>"""^^rdf:HTML ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "System of Quantity Kinds" ;
-  rdfs:subClassOf qudt:Concept ;
+  # rdfs:subClassOf qudt:Concept ;
   rdfs:subClassOf qudt:Verifiable ;
   sh:property qudt:SystemOfQuantityKinds-baseDimensionEnumeration ;
-  sh:property qudt:SystemOfQuantityKinds-hasBaseQuantityKind ;
-  sh:property qudt:SystemOfQuantityKinds-hasQuantityKind ;
-  sh:property qudt:SystemOfQuantityKinds-hasUnitSystem ;
-  sh:property qudt:SystemOfQuantityKinds-systemDerivedQuantityKind .
+  # sh:property qudt:SystemOfQuantityKinds-hasBaseQuantityKind ;
+  # sh:property qudt:SystemOfQuantityKinds-hasQuantityKind ;
+  # sh:property qudt:SystemOfQuantityKinds-hasUnitSystem ;
+  # sh:property qudt:SystemOfQuantityKinds-systemDerivedQuantityKind 
+  .
 
 qudt:SystemOfUnits
   a rdfs:Class, sh:NodeShape ;
@@ -789,16 +797,16 @@ qudt:SystemOfUnits
   qudt:informativeReference "http://www.ieeeghn.org/wiki/index.php/System_of_Measurement_Units"^^xsd:anyURI ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "System of Units" ;
-  rdfs:subClassOf qudt:Concept ;
+  # rdfs:subClassOf qudt:Concept ;
   rdfs:subClassOf qudt:Verifiable ;
-  sh:property qudt:SystemOfUnits-applicablePhysicalConstant ;
-  sh:property qudt:SystemOfUnits-hasAllowedUnit ;
-  sh:property qudt:SystemOfUnits-hasBaseUnit ;
-  sh:property qudt:SystemOfUnits-hasCoherentUnit ;
-  sh:property qudt:SystemOfUnits-hasDefinedUnit ;
-  sh:property qudt:SystemOfUnits-hasDerivedCoherentUnit ;
-  sh:property qudt:SystemOfUnits-hasDerivedUnit ;
-  sh:property qudt:SystemOfUnits-hasUnit ;
+  # sh:property qudt:SystemOfUnits-applicablePhysicalConstant ;
+  # sh:property qudt:SystemOfUnits-hasAllowedUnit ;
+  # sh:property qudt:SystemOfUnits-hasBaseUnit ;
+  # sh:property qudt:SystemOfUnits-hasCoherentUnit ;
+  # sh:property qudt:SystemOfUnits-hasDefinedUnit ;
+  # sh:property qudt:SystemOfUnits-hasDerivedCoherentUnit ;
+  # sh:property qudt:SystemOfUnits-hasDerivedUnit ;
+  # sh:property qudt:SystemOfUnits-hasUnit ;
   sh:property qudt:SystemOfUnits-prefix .
 
 qudt:TransformType
@@ -815,13 +823,12 @@ qudt:Unit
   For example, the meter is a quantity of length that has been rigorously defined and standardized by the BIPM (International Board of Weights and Measures). 
   Any measurement of the length can be expressed as a number multiplied by the unit meter. 
   More formally, the value of a physical quantity Q with respect to a unit (U) is expressed as the scalar multiple of a real number (n) and U, as  $Q = nU$.
-  """^^xsd:string ;
+  """^^qudt:LatexString ;
   qudt:informativeReference "http://dbpedia.org/resource/Category:Units_of_measure"^^xsd:anyURI ;
   qudt:informativeReference "http://www.allmeasures.com/Fullconversion.asp"^^xsd:anyURI ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Unit" ;
-  rdfs:subClassOf qudt:Concept ;
-  rdfs:subClassOf qudt:Verifiable ;
+  rdfs:subClassOf qudt:AbstractUnit ;
   sh:property qudt:Unit-altSymbol ;
   sh:property qudt:Unit-applicableSystem ;
   sh:property qudt:Unit-conversionMultiplier ;
@@ -927,7 +934,7 @@ qudt:acronym
 
 qudt:altSymbol
   a rdf:Property ;
-  dcterms:description "An alternative symbol"^^xsd:string ;
+  dcterms:description "An alternative symbol"^^qudt:LatexString ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "alt symbol" ;
   rdfs:subPropertyOf dtype:literal .
@@ -1028,7 +1035,7 @@ qudt:coherentUnitSystem
   In the old c.g.s. system , with its base units the centimetre and the gram, the corresponding coherent units were the dyne and the erg,
    respectively the force that causes 1 gram to be accelerated at 1 centimetre per (1) second per (1) second, and the work done by 1 dyne acting over 1 centimetre. 
   So $1\\,newton = 10^5 dyne$, $1 joule = 10^7 erg$, making each of the four compatible in a decimal sense within its respective other system, but not coherent therein.</p>
-  """^^xsd:string ;
+  """^^qudt:LatexString ;
   qudt:informativeReference "https://en.wikipedia.org/wiki/Coherence_(units_of_measurement)"^^xsd:anyURI ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "coherent unit system" ;
@@ -1513,7 +1520,7 @@ qudt:latexSymbol
   The symbol is a glyph that is used to represent some concept, typically a unit or a quantity, in a compact form. 
   For example, the symbol for an Ohm is $ohm$. 
   This contrasts with 'unit:abbreviation', which gives a short alphanumeric abbreviation for the unit, 'ohm' for Ohm.
-  """^^xsd:string ;
+  """^^qudt:LatexString ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "latex symbol" .
 
@@ -1689,7 +1696,7 @@ qudt:standardUncertaintySN
 
 qudt:symbol
   a rdf:Property ;
-  dcterms:description "The symbol is a glyph that is used to represent some concept, typically a unit or a quantity, in a compact form. For example, the symbol for an Ohm is $ohm$. This contrasts with 'unit:abbreviation', which gives a short alphanumeric abbreviation for the unit, 'ohm' for Ohm."^^xsd:string ;
+  dcterms:description "The symbol is a glyph that is used to represent some concept, typically a unit or a quantity, in a compact form. For example, the symbol for an Ohm is $ohm$. This contrasts with 'unit:abbreviation', which gives a short alphanumeric abbreviation for the unit, 'ohm' for Ohm."^^qudt:LatexString ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "symbol" ;
   rdfs:subPropertyOf dtype:literal .
@@ -1794,7 +1801,7 @@ qudt:AbstractQuantityKind-broader
 qudt:AbstractQuantityKind-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  sh:datatype qudt:LatexString ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -1806,7 +1813,7 @@ qudt:AbstractQuantityKind-symbol
   sh:path qudt:symbol .
 
 qudt:Aspect
-  a rdfs:AspectClass, sh:NodeShape ;
+  a qudt:AspectClass, sh:NodeShape ;
   dcterms:description "An aspect is an abstract type class that defines properties that can be reused."^^rdf:HTML ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "QUDT Aspect" ;
@@ -1882,7 +1889,7 @@ qudt:Concept-description
 qudt:Concept-exactMatch
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Concept ;
+  # sh:class qudt:Concept ;
   sh:path qudt:exactMatch .
 
 qudt:Concept-guidance
@@ -1925,7 +1932,7 @@ qudt:ConstantValue-exactConstant
 qudt:ContextualUnit-broader
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path skos:broader .
 
 qudt:CurrencyUnit-currencyCode
@@ -1951,7 +1958,6 @@ qudt:DataItem-value
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   sh:maxCount 1 ;
-  sh:datatype xsd:string ;
 #  sh:node qudt:NumericListShape ;
   sh:path qudt:value .
 
@@ -2024,7 +2030,7 @@ qudt:FactorUnit-exponent
 qudt:FactorUnit-hasUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:maxCount 1 ;
   sh:path qudt:hasUnit .
 
@@ -2158,7 +2164,7 @@ qudt:PhysicalConstant-applicableSystem
 qudt:PhysicalConstant-applicableUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path qudt:applicableUnit .
 
 qudt:PhysicalConstant-dbpediaMatch
@@ -2196,14 +2202,14 @@ qudt:PhysicalConstant-isoNormativeReference
 qudt:PhysicalConstant-latexDefinition
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  sh:datatype qudt:LatexString ;
   sh:maxCount 1 ;
   sh:path qudt:latexDefinition .
 
 qudt:PhysicalConstant-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  sh:datatype qudt:LatexString ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -2235,8 +2241,7 @@ qudt:PhysicalConstant-symbol
 qudt:PhysicalConstant-ucumCode
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  # sh:datatype qudt:UCUMcs ;
-  sh:datatype xsd:string ;
+  sh:datatype qudt:UCUMcs ;
   sh:path qudt:ucumCode .
 
 qudt:Prefix-altSymbol
@@ -2247,7 +2252,7 @@ qudt:Prefix-altSymbol
 qudt:Prefix-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  sh:datatype qudt:LatexString ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -2299,7 +2304,7 @@ qudt:Quantifiable-datatype
 qudt:Quantifiable-hasUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:maxCount 1 ;
   sh:path qudt:hasUnit .
 
@@ -2328,20 +2333,19 @@ qudt:Quantifiable-value
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   sh:maxCount 1 ;
-  sh:datatype xsd:string ;
-  # sh:node ( [
-  #   sh:or qudt:NumericTypeUnion ;
-  # ] [
-  #   sh:property [
-  #     sh:class qudt:DataItem ;
-  #     sh:path qudt:value ;
-  #   ] ;
-  # ] [
-  #   sh:property [
-  #     sh:class qudt:EnumeratedValue ;
-  #     sh:path qudt:value ;
-  #   ] ;
-  # ] ) ;
+  sh:node ( [
+    sh:or qudt:NumericTypeUnion ;
+  ] [
+    sh:property [
+      sh:class qudt:DataItem ;
+      sh:path qudt:value ;
+    ] ;
+  ] [
+    sh:property [
+      sh:class qudt:EnumeratedValue ;
+      sh:path qudt:value ;
+    ] ;
+  ] ) ;
   sh:path qudt:value .
 
 qudt:Quantifiable-valueSN
@@ -2372,42 +2376,42 @@ qudt:Quantity-quantityValue
 qudt:QuantityKind-applicableCGSUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:minCount 0 ;
   sh:path qudt:applicableCGSUnit .
 
 qudt:QuantityKind-applicableISOUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:minCount 0 ;
   sh:path qudt:applicableISOUnit .
 
 qudt:QuantityKind-applicableImperialUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:minCount 0 ;
   sh:path qudt:applicableImperialUnit .
 
 qudt:QuantityKind-applicableSIUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:minCount 0 ;
   sh:path qudt:applicableSIUnit .
 
 qudt:QuantityKind-applicableUSCustomaryUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:minCount 0 ;
   sh:path qudt:applicableUSCustomaryUnit .
 
 qudt:QuantityKind-applicableUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:minCount 0 ;
   sh:path qudt:applicableUnit .
 
@@ -2478,7 +2482,7 @@ qudt:QuantityKind-iec61360Code
 qudt:QuantityKind-latexDefinition
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  # sh:datatype qudt:LatexString ;
   sh:maxCount 1 ;
   sh:path qudt:latexDefinition .
 
@@ -2575,14 +2579,14 @@ qudt:QuantityKindDimensionVector-hasReferenceQuantityKind
 qudt:QuantityKindDimensionVector-latexDefinition
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  # sh:datatype qudt:LatexString ;
   sh:maxCount 1 ;
   sh:path qudt:latexDefinition .
 
 qudt:QuantityKindDimensionVector-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  # sh:datatype qudt:LatexString ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -2622,12 +2626,11 @@ qudt:ScalarDataItem-value
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qydt> ;
   sh:maxCount 1 ;
-  sh:datatype xsd:string ;
-  # sh:or ( [
-  #   sh:class qudt:QuantityValue ;
-  # ] [
-  #   sh:or qudt:NumericTypeUnion ;
-  # ] ) ;
+  sh:or ( [
+    sh:class qudt:QuantityValue ;
+  ] [
+    sh:or qudt:NumericTypeUnion ;
+  ] ) ;
   sh:path qudt:value .
 
 qudt:Scale-dataStructure
@@ -2719,43 +2722,43 @@ qudt:SystemOfUnits-applicablePhysicalConstant
 qudt:SystemOfUnits-hasAllowedUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path qudt:hasAllowedUnit .
 
 qudt:SystemOfUnits-hasBaseUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path qudt:hasBaseUnit .
 
 qudt:SystemOfUnits-hasCoherentUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path qudt:hasCoherentUnit .
 
 qudt:SystemOfUnits-hasDefinedUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path qudt:hasDefinedUnit .
 
 qudt:SystemOfUnits-hasDerivedCoherentUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path qudt:hasDerivedCoherentUnit .
 
 qudt:SystemOfUnits-hasDerivedUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path qudt:hasDerivedUnit .
 
 qudt:SystemOfUnits-hasUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:path qudt:hasUnit .
 
 qudt:SystemOfUnits-prefix
@@ -2776,8 +2779,6 @@ qudt:SystemOfUnits-prefix
 qudt:Unit-altSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
-  sh:minCount 0 ;
   sh:path qudt:altSymbol .
 
 qudt:Unit-applicableSystem
@@ -2856,7 +2857,7 @@ qudt:Unit-hasDimensionVector
 qudt:Unit-hasFactorUnit
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  # sh:nodeKind sh:BlankNodeOrIRI ;
+  sh:nodeKind sh:BlankNodeOrIRI ;
   sh:path qudt:hasFactorUnit .
 
 qudt:Unit-hasQuantityKind
@@ -2876,14 +2877,14 @@ qudt:Unit-iec61360Code
 qudt:Unit-latexDefinition
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  # sh:datatype qudt:LatexString ;
   sh:minCount 0 ;
   sh:path qudt:latexDefinition .
 
 qudt:Unit-latexSymbol
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:datatype xsd:string ;
+  # sh:datatype qudt:LatexString ;
   sh:minCount 0 ;
   sh:path qudt:latexSymbol .
 
@@ -2923,9 +2924,9 @@ qudt:Unit-qkdvNumerator
 qudt:Unit-scalingOf
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  sh:class qudt:Unit ;
+  sh:class qudt:AbstractUnit ;
   sh:maxCount 1 ;
-  # sh:nodeKind sh:BlankNodeOrIRI ;
+  sh:nodeKind sh:BlankNodeOrIRI ;
   sh:path qudt:scalingOf .
 
 qudt:Unit-siExactMatch
@@ -2951,8 +2952,7 @@ qudt:Unit-symbol
 qudt:Unit-ucumCode
   a sh:PropertyShape ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
-  # sh:datatype qudt:UCUMcs ;
-  sh:datatype xsd:string ;
+  sh:datatype qudt:UCUMcs ;
   sh:path qudt:ucumCode ;
   sh:pattern "[\\x21-\\x7e]+" .
 
@@ -2990,10 +2990,11 @@ qudt:Verifiable
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
   rdfs:label "Verifiable" ;
   rdfs:subClassOf qudt:Aspect ;
-  sh:property qudt:InformativeReferencePropertyShape ;
-  sh:property qudt:Verifiable-dbpediaMatch ;
-  sh:property qudt:Verifiable-isoNormativeReference ;
-  sh:property qudt:Verifiable-normativeReference .
+  # sh:property qudt:InformativeReferencePropertyShape ;
+  # sh:property qudt:Verifiable-dbpediaMatch ;
+  # sh:property qudt:Verifiable-isoNormativeReference ;
+  # sh:property qudt:Verifiable-normativeReference .
+  .
 
 qudt:Verifiable-dbpediaMatch
   a sh:PropertyShape ;
