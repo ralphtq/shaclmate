@@ -110,7 +110,6 @@ export function strictEquals<T extends bigint | boolean | number | string>(
 ): EqualsResult {
   return EqualsResult.fromBooleanEqualsResult(left, right, left === right);
 }
-type UnwrapR<T> = T extends purify.Either<any, infer R> ? R : never
 export function arrayEquals<T>(
   leftArray: readonly T[],
   rightArray: readonly T[],
@@ -173,6 +172,7 @@ export function arrayEquals<T>(
 
   return EqualsResult.Equal;
 }
+type UnwrapR<T> = T extends purify.Either<any, infer R> ? R : never
 export function maybeEquals<T>(
   leftMaybe: purify.Maybe<T>,
   rightMaybe: purify.Maybe<T>,
@@ -200,6 +200,104 @@ export function maybeEquals<T>(
   }
 
   return EqualsResult.Equal;
+}
+export class qudt_ScoreListShape {
+    private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
+    readonly type = "qudt_ScoreListShape";
+
+    constructor(parameters: { readonly identifier?: (rdfjs.BlankNode | rdfjs.NamedNode) | string }) {
+        if (typeof parameters.identifier === "object") { this._identifier = parameters.identifier; } else if (typeof parameters.identifier === "string") { this._identifier = dataFactory.namedNode(parameters.identifier); } else if (typeof parameters.identifier === "undefined") { } else { this._identifier =( parameters.identifier) as never;
+         }
+    }
+
+    get identifier(): (rdfjs.BlankNode | rdfjs.NamedNode) {
+        if (typeof this._identifier === "undefined") { this._identifier = dataFactory.blankNode(); } return this._identifier;
+    }
+
+    equals(other: qudt_ScoreListShape): EqualsResult {
+        return (booleanEquals)(this.identifier, other.identifier).mapLeft(propertyValuesUnequal => ({ left: this, right: other, propertyName: "identifier", propertyValuesUnequal, type: "Property" as const })).chain(() => (strictEquals)(this.type, other.type).mapLeft(propertyValuesUnequal => ({ left: this, right: other, propertyName: "type", propertyValuesUnequal, type: "Property" as const })));
+    }
+
+    hash<HasherT extends { update: (message: string | number[] | ArrayBuffer | Uint8Array) => void; }>(_hasher: HasherT): HasherT {
+        _hasher.update(this.identifier.value);
+        _hasher.update(this.type);
+        this.hashShaclProperties(_hasher);
+        return _hasher;
+    }
+
+    protected hashShaclProperties<HasherT extends { update: (message: string | number[] | ArrayBuffer | Uint8Array) => void; }>(_hasher: HasherT): HasherT {
+        return _hasher;
+    }
+
+    toJson(): { readonly "@id": string; readonly "type": "qudt_ScoreListShape" } {
+        return JSON.parse(JSON.stringify({ "@id": this.identifier.termType === "BlankNode" ? `_:${this.identifier.value}` : this.identifier.value,type: this.type } satisfies ReturnType<qudt_ScoreListShape["toJson"]>));
+    }
+
+    toRdf({ mutateGraph, resourceSet }: { ignoreRdfType?: boolean; mutateGraph?: rdfjsResource.MutableResource.MutateGraph, resourceSet: rdfjsResource.MutableResourceSet }): rdfjsResource.MutableResource {
+        const _resource = resourceSet.mutableResource(this.identifier, { mutateGraph });
+        return _resource;
+    }
+
+    toString(): string {
+        return JSON.stringify(this.toJson());
+    }
+}
+
+export namespace qudt_ScoreListShape {
+    export function _propertiesFromJson(_json: unknown): purify.Either<zod.ZodError, { identifier: (rdfjs.BlankNode | rdfjs.NamedNode); }> {
+        const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+        if (!_jsonSafeParseResult.success) { return purify.Left(_jsonSafeParseResult.error); }
+
+        const _jsonObject = _jsonSafeParseResult.data;
+        const identifier = (_jsonObject["@id"].startsWith("_:") ? dataFactory.blankNode(_jsonObject["@id"].substring(2)) : dataFactory.namedNode(_jsonObject["@id"]));
+        return purify.Either.of({ identifier })
+    }
+
+    export function fromJson(json: unknown): purify.Either<zod.ZodError, qudt_ScoreListShape> {
+        return qudt_ScoreListShape._propertiesFromJson(json).map(properties => new qudt_ScoreListShape(properties));
+    }
+
+    export function _propertiesFromRdf({ ignoreRdfType: _ignoreRdfType, languageIn: _languageIn, resource: _resource,
+        // @ts-ignore
+        ..._context }: { [_index: string]: any; ignoreRdfType?: boolean; languageIn?: readonly string[]; resource: rdfjsResource.Resource; }): purify.Either<rdfjsResource.Resource.ValueError, { identifier: (rdfjs.BlankNode | rdfjs.NamedNode); }> {
+        const identifier = _resource.identifier
+        return purify.Either.of({ identifier })
+    }
+
+    export function fromRdf(parameters: Parameters<typeof qudt_ScoreListShape._propertiesFromRdf>[0]): purify.Either<rdfjsResource.Resource.ValueError, qudt_ScoreListShape> {
+        return qudt_ScoreListShape._propertiesFromRdf(parameters).map(properties => new qudt_ScoreListShape(properties));
+    }
+
+    export function jsonSchema() {
+        return zodToJsonSchema(jsonZodSchema());
+    }
+
+    export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+        const scopePrefix = parameters?.scopePrefix ?? "#";
+        return { "elements": [ { label: "Identifier", scope: `${scopePrefix}/properties/@id`, type: "Control" }, { rule: { condition: { schema: { const: "qudt_ScoreListShape" }, scope: `${scopePrefix}/properties/type` }, effect: "HIDE" }, scope: `${scopePrefix}/properties/type`, type: "Control" } ], label: "qudt_ScoreListShape", type: "Group" }
+    }
+
+    export function jsonZodSchema() {
+        return zod.object({ "@id": zod.string().min(1),"type": zod.literal("qudt_ScoreListShape") });
+    }
+
+    export function sparqlConstructQuery(parameters?: { ignoreRdfType?: boolean; prefixes?: { [prefix: string]: string }; subject?: sparqljs.Triple["subject"]; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">): sparqljs.ConstructQuery {
+        const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {}
+
+        return { ...queryParameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: (queryParameters.template ?? []).concat(qudt_ScoreListShape.sparqlConstructTemplateTriples({ ignoreRdfType, subject })), type: "query", where: (queryParameters.where ?? []).concat(qudt_ScoreListShape.sparqlWherePatterns({ ignoreRdfType, subject })) };
+    }
+
+    export function sparqlConstructQueryString(parameters?: { ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"]; variablePrefix?: string; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> & sparqljs.GeneratorOptions): string {
+        return new sparqljs.Generator(parameters).stringify(qudt_ScoreListShape.sparqlConstructQuery(parameters));
+    }
+
+    export function sparqlConstructTemplateTriples(_parameters?: { ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"], variablePrefix?: string }): readonly sparqljs.Triple[] {
+        return [];
+    }
+
+    export function sparqlWherePatterns(_parameters: { ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"], variablePrefix?: string }): readonly sparqljs.Pattern[] {
+        return [];
+    }
 }
 /**
  * QUDT Aspect
@@ -311,6 +409,126 @@ export namespace QUDT_Aspect {
         const subject = parameters?.subject ?? dataFactory.variable!("qudtAspect");
         const variablePrefix = parameters?.variablePrefix ?? (subject.termType === "Variable" ? subject.value : "qudtAspect");
         return [...(parameters?.ignoreRdfType ? [] : [{ triples: [{ subject, predicate: dataFactory.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), object: dataFactory.namedNode("http://qudt.org/schema/qudt/Aspect") }], type: "bgp" as const }, { triples: [{ subject, predicate: dataFactory.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), object: dataFactory.variable!(`${variablePrefix}RdfType`) }], type: "bgp" as const }])];
+    }
+}
+export class qudt_Person {
+    private _identifier: (rdfjs.BlankNode | rdfjs.NamedNode) | undefined;
+    readonly type = "qudt_Person";
+    readonly qudt_hasScores: readonly (qudt_ScoreListShape)[];
+
+    constructor(parameters: { readonly identifier?: (rdfjs.BlankNode | rdfjs.NamedNode) | string, readonly qudt_hasScores?: readonly (qudt_ScoreListShape)[] }) {
+        if (typeof parameters.identifier === "object") { this._identifier = parameters.identifier; } else if (typeof parameters.identifier === "string") { this._identifier = dataFactory.namedNode(parameters.identifier); } else if (typeof parameters.identifier === "undefined") { } else { this._identifier =( parameters.identifier) as never;
+         }
+
+        if (typeof parameters.qudt_hasScores === "undefined") { this.qudt_hasScores = []; } else if (Array.isArray(parameters.qudt_hasScores)) { this.qudt_hasScores = parameters.qudt_hasScores; } else { this.qudt_hasScores =( parameters.qudt_hasScores) as never;
+         }
+    }
+
+    get identifier(): (rdfjs.BlankNode | rdfjs.NamedNode) {
+        if (typeof this._identifier === "undefined") { this._identifier = dataFactory.blankNode(); } return this._identifier;
+    }
+
+    equals(other: qudt_Person): EqualsResult {
+        return (booleanEquals)(this.identifier, other.identifier).mapLeft(propertyValuesUnequal => ({ left: this, right: other, propertyName: "identifier", propertyValuesUnequal, type: "Property" as const })).chain(() => (strictEquals)(this.type, other.type).mapLeft(propertyValuesUnequal => ({ left: this, right: other, propertyName: "type", propertyValuesUnequal, type: "Property" as const }))).chain(() => (((left, right) => arrayEquals(left, right, ((left, right) => left.equals(right)))))(this.qudt_hasScores, other.qudt_hasScores).mapLeft(propertyValuesUnequal => ({ left: this, right: other, propertyName: "qudt_hasScores", propertyValuesUnequal, type: "Property" as const })));
+    }
+
+    hash<HasherT extends { update: (message: string | number[] | ArrayBuffer | Uint8Array) => void; }>(_hasher: HasherT): HasherT {
+        _hasher.update(this.identifier.value);
+        _hasher.update(this.type);
+        this.hashShaclProperties(_hasher);
+        return _hasher;
+    }
+
+    protected hashShaclProperties<HasherT extends { update: (message: string | number[] | ArrayBuffer | Uint8Array) => void; }>(_hasher: HasherT): HasherT {
+        for (const _item0 of this.qudt_hasScores) { _item0.hash(_hasher); }
+
+        return _hasher;
+    }
+
+    toJson(): { readonly "@id": string; readonly "type": "qudt_Person"; readonly "qudt_hasScores": readonly (ReturnType<qudt_ScoreListShape["toJson"]>)[] } {
+        return JSON.parse(JSON.stringify({ "@id": this.identifier.termType === "BlankNode" ? `_:${this.identifier.value}` : this.identifier.value,type: this.type,qudt_hasScores: this.qudt_hasScores.map(_item => (_item.toJson())) } satisfies ReturnType<qudt_Person["toJson"]>));
+    }
+
+    toRdf({ ignoreRdfType, mutateGraph, resourceSet }: { ignoreRdfType?: boolean; mutateGraph?: rdfjsResource.MutableResource.MutateGraph, resourceSet: rdfjsResource.MutableResourceSet }): rdfjsResource.MutableResource {
+        const _resource = resourceSet.mutableResource(this.identifier, { mutateGraph });
+        if (!ignoreRdfType) { _resource.add(_resource.dataFactory.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), _resource.dataFactory.namedNode("http://qudt.org/schema/qudt/Person")); }
+
+        _resource.add(dataFactory.namedNode("http://qudt.org/schema/qudt/hasScores"), this.qudt_hasScores.map((_item) => _item.toRdf({ mutateGraph: mutateGraph, resourceSet: resourceSet })));
+        return _resource;
+    }
+
+    toString(): string {
+        return JSON.stringify(this.toJson());
+    }
+}
+
+export namespace qudt_Person {
+    export function _propertiesFromJson(_json: unknown): purify.Either<zod.ZodError, { identifier: (rdfjs.BlankNode | rdfjs.NamedNode); qudt_hasScores: readonly (qudt_ScoreListShape)[]; }> {
+        const _jsonSafeParseResult = jsonZodSchema().safeParse(_json);
+        if (!_jsonSafeParseResult.success) { return purify.Left(_jsonSafeParseResult.error); }
+
+        const _jsonObject = _jsonSafeParseResult.data;
+        const identifier = (_jsonObject["@id"].startsWith("_:") ? dataFactory.blankNode(_jsonObject["@id"].substring(2)) : dataFactory.namedNode(_jsonObject["@id"]));
+        const qudt_hasScores = _jsonObject["qudt_hasScores"].map(_item => (qudt_ScoreListShape.fromJson(_item).unsafeCoerce()));
+        return purify.Either.of({ identifier, qudt_hasScores })
+    }
+
+    export function fromJson(json: unknown): purify.Either<zod.ZodError, qudt_Person> {
+        return qudt_Person._propertiesFromJson(json).map(properties => new qudt_Person(properties));
+    }
+
+    export function _propertiesFromRdf({ ignoreRdfType: _ignoreRdfType, languageIn: _languageIn, resource: _resource,
+        // @ts-ignore
+        ..._context }: { [_index: string]: any; ignoreRdfType?: boolean; languageIn?: readonly string[]; resource: rdfjsResource.Resource; }): purify.Either<rdfjsResource.Resource.ValueError, { identifier: (rdfjs.BlankNode | rdfjs.NamedNode); qudt_hasScores: readonly (qudt_ScoreListShape)[]; }> {
+        if (!_ignoreRdfType && !_resource.isInstanceOf(dataFactory.namedNode("http://qudt.org/schema/qudt/Person"))) { return purify.Left(new rdfjsResource.Resource.ValueError({ focusResource: _resource, message: `${rdfjsResource.Resource.Identifier.toString(_resource.identifier)} has unexpected RDF type (expected http://qudt.org/schema/qudt/Person)`, predicate: dataFactory.namedNode("http://qudt.org/schema/qudt/Person") })); }
+
+        const identifier = _resource.identifier
+        const _qudt_hasScoresEither: purify.Either<rdfjsResource.Resource.ValueError, readonly (qudt_ScoreListShape)[]> = purify.Either.of([..._resource.values(dataFactory.namedNode("http://qudt.org/schema/qudt/hasScores"), { unique: true }).flatMap(_item => _item.toValues().head().chain(value => value.toResource()).chain(_resource => qudt_ScoreListShape.fromRdf({ ..._context, ignoreRdfType: true, languageIn: _languageIn, resource: _resource })).toMaybe().toList())]);
+        if (_qudt_hasScoresEither.isLeft()) { return _qudt_hasScoresEither; }
+
+        const qudt_hasScores = _qudt_hasScoresEither.unsafeCoerce();
+        return purify.Either.of({ identifier, qudt_hasScores })
+    }
+
+    export function fromRdf(parameters: Parameters<typeof qudt_Person._propertiesFromRdf>[0]): purify.Either<rdfjsResource.Resource.ValueError, qudt_Person> {
+        return qudt_Person._propertiesFromRdf(parameters).map(properties => new qudt_Person(properties));
+    }
+
+    export let fromRdfType: rdfjs.NamedNode<string> = dataFactory.namedNode("http://qudt.org/schema/qudt/Person");
+
+    export function jsonSchema() {
+        return zodToJsonSchema(jsonZodSchema());
+    }
+
+    export function jsonUiSchema(parameters?: { scopePrefix?: string }) {
+        const scopePrefix = parameters?.scopePrefix ?? "#";
+        return { "elements": [ { label: "Identifier", scope: `${scopePrefix}/properties/@id`, type: "Control" }, { rule: { condition: { schema: { const: "qudt_Person" }, scope: `${scopePrefix}/properties/type` }, effect: "HIDE" }, scope: `${scopePrefix}/properties/type`, type: "Control" }, qudt_ScoreListShape.jsonUiSchema({ scopePrefix: `${scopePrefix}/properties/qudt_hasScores` }) ], label: "qudt_Person", type: "Group" }
+    }
+
+    export function jsonZodSchema() {
+        return zod.object({ "@id": zod.string().min(1),"type": zod.literal("qudt_Person"),"qudt_hasScores": qudt_ScoreListShape.jsonZodSchema().array() });
+    }
+
+    export function sparqlConstructQuery(parameters?: { ignoreRdfType?: boolean; prefixes?: { [prefix: string]: string }; subject?: sparqljs.Triple["subject"]; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type">): sparqljs.ConstructQuery {
+        const { ignoreRdfType, subject, ...queryParameters } = parameters ?? {}
+
+        return { ...queryParameters, prefixes: parameters?.prefixes ?? {}, queryType: "CONSTRUCT", template: (queryParameters.template ?? []).concat(qudt_Person.sparqlConstructTemplateTriples({ ignoreRdfType, subject })), type: "query", where: (queryParameters.where ?? []).concat(qudt_Person.sparqlWherePatterns({ ignoreRdfType, subject })) };
+    }
+
+    export function sparqlConstructQueryString(parameters?: { ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"]; variablePrefix?: string; } & Omit<sparqljs.ConstructQuery, "prefixes" | "queryType" | "type"> & sparqljs.GeneratorOptions): string {
+        return new sparqljs.Generator(parameters).stringify(qudt_Person.sparqlConstructQuery(parameters));
+    }
+
+    export function sparqlConstructTemplateTriples(parameters?: { ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"], variablePrefix?: string }): readonly sparqljs.Triple[] {
+        const subject = parameters?.subject ?? dataFactory.variable!("qudtPerson");
+        const variablePrefix = parameters?.variablePrefix ?? (subject.termType === "Variable" ? subject.value : "qudtPerson");
+        return [...(parameters?.ignoreRdfType ? [] : [{ subject, predicate: dataFactory.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), object: dataFactory.variable!(`${variablePrefix}RdfType`) }]), { object: dataFactory.variable!(`${variablePrefix}QudtHasScores`), predicate: dataFactory.namedNode("http://qudt.org/schema/qudt/hasScores"), subject }, ...qudt_ScoreListShape.sparqlConstructTemplateTriples({ ignoreRdfType: true, subject: dataFactory.variable!(`${variablePrefix}QudtHasScores`), variablePrefix: `${variablePrefix}QudtHasScores` })];
+    }
+
+    export function sparqlWherePatterns(parameters: { ignoreRdfType?: boolean; subject?: sparqljs.Triple["subject"], variablePrefix?: string }): readonly sparqljs.Pattern[] {
+        const subject = parameters?.subject ?? dataFactory.variable!("qudtPerson");
+        const variablePrefix = parameters?.variablePrefix ?? (subject.termType === "Variable" ? subject.value : "qudtPerson");
+        return [...(parameters?.ignoreRdfType ? [] : [{ triples: [{ subject, predicate: dataFactory.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), object: dataFactory.namedNode("http://qudt.org/schema/qudt/Person") }], type: "bgp" as const }, { triples: [{ subject, predicate: dataFactory.namedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), object: dataFactory.variable!(`${variablePrefix}RdfType`) }], type: "bgp" as const }]), { patterns: [{ triples: [{ object: dataFactory.variable!(`${variablePrefix}QudtHasScores`), predicate: dataFactory.namedNode("http://qudt.org/schema/qudt/hasScores"), subject }], type: "bgp" }, ...qudt_ScoreListShape.sparqlWherePatterns({ ignoreRdfType: true, subject: dataFactory.variable!(`${variablePrefix}QudtHasScores`), variablePrefix: `${variablePrefix}QudtHasScores` })], type: "optional" }];
     }
 }
 /**

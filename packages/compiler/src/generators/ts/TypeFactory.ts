@@ -1,7 +1,7 @@
 import TermMap from "@rdfjs/term-map";
 import TermSet from "@rdfjs/term-set";
 import type { BlankNode, NamedNode } from "@rdfjs/types";
-import { qudt, rdf, xsd } from "@tpluscode/rdf-ns-builders";
+import { dash, qudt, rdf, xsd } from "@tpluscode/rdf-ns-builders";
 import { Maybe } from "purify-ts";
 import { fromRdf } from "rdf-literal";
 import type * as ast from "../../ast/index.js";

@@ -910,6 +910,23 @@ qudt:NonClassNodeShape
         sh:path qudt:stringProperty
     ] .
 
+qudt:ScoreListShape a sh:ListShape ;
+  sh:member [
+    sh:datatype xsd:integer
+  ] .
+
+qudt:Person
+  a rdfs:Class, sh:NodeShape ;
+  sh:property [
+    sh:path qudt:hasScores ;
+    sh:node qudt:ScoreListShape ;
+  ] .
+
+# qudt:Person1
+#   a qudt:Person ;
+#   qudt:hasScores (1 2) ;
+#   .
+
 dcterms:abstract
   a rdf:Property ;
   rdfs:isDefinedBy <http://qudt.org/$$QUDT_VERSION$$/schema/shacl/qudt> ;
